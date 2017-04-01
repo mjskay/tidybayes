@@ -43,6 +43,19 @@ all_names <- function(x) {
     }
 }
 
+# given a quoted expression, replace all character vectors in 
+# the expression with names
+characters_to_names = function(expr) {
+    if (is.character(expr)) {
+        as.name(expr)
+    } else if (length(expr) == 1) {
+        expr
+    } else {
+        for (i in length(expr)) expr[[i]] = characters_to_names(expr[[i]])
+        expr
+    }
+}
+
 #parse a variable spec in the form variable_name[index_name_1, index_name_2, ..] | wide_index
 #into a list with three elements:
 # 1. A vector of variable names
