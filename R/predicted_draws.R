@@ -257,11 +257,12 @@ fitted_predicted_draws_brmsfit_ = function(f_fitted_predicted, model, newdata, o
   #for predictions from categorical models in brms, we can use the "levels" attribute
   #to recover the original factor levels. But we must be careful: dirichlet models also
   #get this attribute set, so we must also test that responses are all positive integer values.
+  # multinomial models also get this attribute, so need to check the family as well.
   prediction_levels = attr(fits_preds, "levels", exact = TRUE)
   if (!is.null(prediction_levels) &
-      is_integerish(fits_preds_df[[output_name]]) &
-      all(fits_preds_df[[output_name]] >= 1)
-    ) {
+      is_integerish(fits_preds_df[[output_name]])
+      & model$family$family != "multinomial")
+  {
     fits_preds_df[[output_name]] = factor(
       fits_preds_df[[output_name]],
       levels = seq_along(prediction_levels),
