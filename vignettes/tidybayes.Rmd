@@ -40,7 +40,7 @@ knitr::opts_chunk$set(
   fig.height = small_height,
   eval = if (isTRUE(exists("params"))) params$EVAL else FALSE
 )
-if (capabilities("cairo")) {
+if (capabilities("cairo") && Sys.info()[['sysname']] != "Darwin") {
   knitr::opts_chunk$set(
     dev.args = list(png = list(type = "cairo"))
   )
