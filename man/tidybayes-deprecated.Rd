@@ -69,7 +69,7 @@ when iteration information is not available --- new functions always set \code{.
 but may not set \code{.iteration}), so be careful when upgrading to new function names.
 See \emph{Deprecated Arguments and Column Names}, below, for more information.
 
-Deprecated functions are:
+Deprecated functions include:
 
 \itemize{
 
@@ -121,8 +121,8 @@ existing knowledge of ggplot; instead, I think it is more flexible to design geo
 that can used within a complete ggplot workflow. \code{\link[=stat_eye]{stat_eye()}} offers a horizontal
 eye plot geom that can be used instead of \code{ggeye}.
 
-\item See \link{tidybayes-deprecated-geoms} for a list of deprecated geoms (mainly
-horizontal shortcut geoms that are no longer necessary due to automatic orientation detection.)
+\item See the sections below for additional deprecated functions, including
+horizontal geoms, stats, and point_intervals
 
 }
 }

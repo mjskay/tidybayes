@@ -3,6 +3,9 @@
 # Author: mjskay
 ###############################################################################
 
+# Names that should be suppressed from global variable check by codetools
+# Names used broadly should be put in _global_variables.R
+globalVariables(c(".lower", ".upper", ".width"))
 
 
 # tidybayes-deprecated ----------------------------------------------------
@@ -24,7 +27,7 @@
 #' but may not set `.iteration`), so be careful when upgrading to new function names.
 #' See *Deprecated Arguments and Column Names*, below, for more information.
 #'
-#' Deprecated functions are:
+#' Deprecated functions include:
 #'
 #' \itemize{
 #'
@@ -76,8 +79,8 @@
 #'   that can used within a complete ggplot workflow. [stat_eye()] offers a horizontal
 #'   eye plot geom that can be used instead of `ggeye`.
 #'
-#'   \item See [tidybayes-deprecated-geoms] for a list of deprecated geoms (mainly
-#'   horizontal shortcut geoms that are no longer necessary due to automatic orientation detection.)
+#'   \item See the sections below for additional deprecated functions, including
+#'   horizontal geoms, stats, and point_intervals
 #'
 #' }
 #'

@@ -578,6 +578,7 @@ all_elements_identical = function(.list) {
 }
 
 # a faster version of abind::abind(..., along = 0)
+#' @importFrom rlang `%||%`
 abind0 = function(vectors) {
   if (!is.list(vectors)) {
     return(vectors)
