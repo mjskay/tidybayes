@@ -206,13 +206,11 @@ that <code>add_predicted_draws</code> standardizes argument names and values acr
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)</div><div class='output co'>#&gt; <span class='message'>Want to understand how all the pieces fit together? Read R for Data</span>
-#&gt; <span class='message'>Science: https://r4ds.had.co.nz/</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'dplyr'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:stats':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:base':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'>
 <span class='kw'>if</span> (
@@ -244,11 +242,9 @@ that <code>add_predicted_draws</code> standardizes argument names and values acr
 }</div><div class='output co'>#&gt; <span class='message'>Loading 'brms' package (version 2.13.0). Useful instructions</span>
 #&gt; <span class='message'>can be found by typing help('brms'). A more detailed introduction</span>
 #&gt; <span class='message'>to the package is available through vignette('brms_overview').</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘brms’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:tidybayes’:</span>
+#&gt; <span class='message'>Attaching package: 'brms'</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:tidybayes':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    dstudent_t, pstudent_t, qstudent_t, rstudent_t</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:ggdist’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    dstudent_t, pstudent_t, qstudent_t, rstudent_t</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:stats’:</span>
+#&gt; <span class='message'>    dstudent_t, pstudent_t, qstudent_t, rstudent_t</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:stats':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    ar</span></div><div class='output co'>#&gt; <span class='message'>Compiling the C++ model</span></div><div class='output co'>#&gt; <span class='message'>Start sampling</span></div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL '25f45a6264f61abd51c4fa26350dd4ea' NOW (CHAIN 1).
@@ -271,9 +267,9 @@ that <code>add_predicted_draws</code> standardizes argument names and values acr
 #&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.178 seconds (Warm-up)
-#&gt; Chain 1:                0.061 seconds (Sampling)
-#&gt; Chain 1:                0.239 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.278 seconds (Warm-up)
+#&gt; Chain 1:                0.082 seconds (Sampling)
+#&gt; Chain 1:                0.36 seconds (Total)
 #&gt; Chain 1: </div><div class='output co'>#&gt; <span class='warning'>Warning: The largest R-hat is 1.05, indicating chains have not mixed.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
 #&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#r-hat</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>

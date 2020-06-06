@@ -190,7 +190,7 @@ library(cowplot)
 library(RColorBrewer)
 library(gganimate)
 
-theme_set(theme_tidybayes() + panel_border() + background_grid())
+theme_set(theme_tidybayes() + panel_border())
 ```
 
 Imagine this dataset:
@@ -635,7 +635,7 @@ p = mtcars %>%
   transition_states(.draw, 0, 1) +
   shadow_mark(past = TRUE, future = TRUE, alpha = 1/20, color = "gray50")
 
-animate(p, nframes = ndraws, fps = 2.5, width = 700, height = 432, res = 100, dev = "png", type = "cairo")
+animate(p, nframes = ndraws, fps = 2.5, width = 672, height = 480, res = 100, dev = "png", type = "cairo")
 ```
 
 ![](man/figures/README/hops-1.gif)<!-- -->

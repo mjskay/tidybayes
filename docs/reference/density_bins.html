@@ -224,16 +224,12 @@ functions may be deprecated in the future.</p></div>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>purrr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘purrr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:magrittr’:</span>
+#&gt; <span class='message'>Attaching package: 'purrr'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:magrittr':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    set_names</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
+#&gt; <span class='message'>    set_names</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'tidyr'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:magrittr':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    is_null</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘tidyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:magrittr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    extract</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='input'>
+#&gt; <span class='message'>    extract</span></div><div class='input'>
 <span class='kw'>if</span> (
   <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"rstanarm"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>&amp;&amp;</span>
   <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"modelr"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -279,9 +275,9 @@ functions may be deprecated in the future.</p></div>
 #&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.27 seconds (Warm-up)
-#&gt; Chain 1:                0.282 seconds (Sampling)
-#&gt; Chain 1:                0.552 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.327 seconds (Warm-up)
+#&gt; Chain 1:                0.59 seconds (Sampling)
+#&gt; Chain 1:                0.917 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'continuous' NOW (CHAIN 2).
@@ -304,9 +300,9 @@ functions may be deprecated in the future.</p></div>
 #&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.262 seconds (Warm-up)
-#&gt; Chain 2:                0.236 seconds (Sampling)
-#&gt; Chain 2:                0.498 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.475 seconds (Warm-up)
+#&gt; Chain 2:                0.397 seconds (Sampling)
+#&gt; Chain 2:                0.872 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'continuous' NOW (CHAIN 3).
@@ -329,9 +325,9 @@ functions may be deprecated in the future.</p></div>
 #&gt; Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.251 seconds (Warm-up)
-#&gt; Chain 3:                0.261 seconds (Sampling)
-#&gt; Chain 3:                0.512 seconds (Total)
+#&gt; Chain 3:  Elapsed Time: 0.403 seconds (Warm-up)
+#&gt; Chain 3:                0.415 seconds (Sampling)
+#&gt; Chain 3:                0.818 seconds (Total)
 #&gt; Chain 3: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'continuous' NOW (CHAIN 4).
@@ -354,9 +350,9 @@ functions may be deprecated in the future.</p></div>
 #&gt; Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 4: 
-#&gt; Chain 4:  Elapsed Time: 0.272 seconds (Warm-up)
-#&gt; Chain 4:                0.286 seconds (Sampling)
-#&gt; Chain 4:                0.558 seconds (Total)
+#&gt; Chain 4:  Elapsed Time: 0.421 seconds (Warm-up)
+#&gt; Chain 4:                0.373 seconds (Sampling)
+#&gt; Chain 4:                0.794 seconds (Total)
 #&gt; Chain 4: </div><div class='output co'>#&gt; <span class='message'>`summarise()` regrouping output by 'cyl', 'hp' (override with `.groups` argument)</span></div><div class='img'><img src='density_bins-1.png' alt='' width='700' height='433' /></div><div class='input'># }
 </div></pre>
   </div>
