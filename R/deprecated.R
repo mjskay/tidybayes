@@ -887,42 +887,42 @@ stat_histintervalh = function(..., slab_type = "histogram" , orientation = "hori
 
 # horizontal point_intervals ----------------------------------------------
 
-#' @rdname point_interval
+#' @rdname tidybayes-deprecated
 #' @export
 point_intervalh = flip_aes(point_interval)
 
 #' @export
-#' @rdname point_interval
+#' @rdname tidybayes-deprecated
 mean_qih = flip_aes(mean_qi)
 
 #' @export
-#' @rdname point_interval
+#' @rdname tidybayes-deprecated
 median_qih = flip_aes(median_qi)
 
 #' @export
-#' @rdname point_interval
+#' @rdname tidybayes-deprecated
 mode_qih = flip_aes(mode_qi)
 
 #' @export
-#' @rdname point_interval
+#' @rdname tidybayes-deprecated
 mean_hdih = flip_aes(mean_hdi)
 
 #' @export
-#' @rdname point_interval
+#' @rdname tidybayes-deprecated
 median_hdih = flip_aes(median_hdi)
 
 #' @export
-#' @rdname point_interval
+#' @rdname tidybayes-deprecated
 mode_hdih = flip_aes(mode_hdi)
 
 #' @export
-#' @rdname point_interval
+#' @rdname tidybayes-deprecated
 mean_hdcih = flip_aes(mean_hdci)
 
 #' @export
-#' @rdname point_interval
+#' @rdname tidybayes-deprecated
 median_hdcih = flip_aes(median_hdci)
 
 #' @export
-#' @rdname point_interval
+#' @rdname tidybayes-deprecated
 mode_hdcih = flip_aes(mode_hdci)
