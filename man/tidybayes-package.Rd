@@ -23,7 +23,8 @@ at making the visualization of model output easier.
 For a comprehensive overview of the package, see \code{vignette("tidybayes")}.
 For overviews aimed at the \code{rstanarm} and \code{brms} packages, see
 \code{vignette("tidy-rstanarm")} and \code{vignette("tidy-brms")}. For an overview
-of the majority of geoms in tidybayes, see \code{vignette("slabinterval")}.
+of the majority of geoms in the ggdist/tidybayes family, see
+\code{vignette("slabinterval", package = "ggdist")}.
 
 For a list of supported models, see \link{tidybayes-models}.
 }

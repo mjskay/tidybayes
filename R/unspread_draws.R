@@ -35,7 +35,7 @@ globalVariables(c("..dimension_values"))
 #'
 #' library(dplyr)
 #'
-#' data(RankCorr, package = "tidybayes")
+#' data(RankCorr, package = "ggdist")
 #'
 #' # We can use unspread_draws to allow us to manipulate draws with tidybayes
 #' # and then transform the draws into a form we can use with packages like bayesplot.

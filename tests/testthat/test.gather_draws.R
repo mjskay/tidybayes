@@ -10,7 +10,7 @@ context("gather_draws")
 
 
 test_that("regular expressions for parameter names work on non-indexed parameters", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   ref = RankCorr %>% spread_draws(typical_r) %>% gather_variables()
 
@@ -18,7 +18,7 @@ test_that("regular expressions for parameter names work on non-indexed parameter
 })
 
 test_that("regular expressions for parameter names work on indexed parameters", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   ref = RankCorr %>% spread_draws(c(tau, u_tau)[i]) %>% gather_variables()
 
@@ -26,7 +26,7 @@ test_that("regular expressions for parameter names work on indexed parameters", 
 })
 
 test_that("gather_draws works on a combination of 0 and 1-dimensional values (with correct groups)", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   ref = RankCorr %>%
     spread_draws(tau[i], typical_r) %>%

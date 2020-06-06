@@ -25,7 +25,7 @@
 #' data(line, package = "coda")
 #' get_variables(line)
 #'
-#' data(RankCorr, package = "tidybayes")
+#' data(RankCorr, package = "ggdist")
 #' get_variables(RankCorr)
 #'
 #' @importFrom magrittr %>%

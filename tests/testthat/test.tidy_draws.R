@@ -163,7 +163,7 @@ test_that("tidy_draws works with jagsUI", {
 
 # existing data frames ----------------------------------------------------
 test_that("tidy_draws is idempotent on existing data frames", {
-  data(RankCorr)
+  data(RankCorr, package = "ggdist")
 
   tidy_rc = tidy_draws(RankCorr)
 
@@ -171,7 +171,7 @@ test_that("tidy_draws is idempotent on existing data frames", {
 })
 
 test_that("tidy_draws works on existing data frames with numeric columns", {
-  data(RankCorr)
+  data(RankCorr, package = "ggdist")
 
   tidy_rc = tidy_draws(RankCorr)
   tidy_rc_n = tidy_rc
@@ -190,7 +190,7 @@ test_that("tidy_draws works on existing data frames with numeric columns", {
 })
 
 test_that("tidy_draws fails on existing data frames with incorrect column types", {
-  data(RankCorr)
+  data(RankCorr, package = "ggdist")
 
   tidy_rc = tidy_draws(RankCorr)
   tidy_rc$.chain = "a"
@@ -203,7 +203,7 @@ test_that("tidy_draws fails on existing data frames with incorrect column types"
 })
 
 test_that("tidy_draws fails on existing data frames with incorrect column types", {
-  data(RankCorr)
+  data(RankCorr, package = "ggdist")
 
   tidy_rc = tidy_draws(RankCorr)
   tidy_rc$.draw = 1

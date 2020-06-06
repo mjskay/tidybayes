@@ -1,4 +1,4 @@
-# flip_aes
+# flip_aes, for deprecated point_intervalh functions
 #
 # Originally based on https://github.com/lionel-/ggstance/blob/master/R/flip-aes.R by lionel-
 # Modified to add flip_aes.function, customizable lookup table and horizontal/vertical lookups by mjskay
@@ -40,7 +40,13 @@ flip_aes.data.frame = function(x, lookup = flip_aes_lookup) {
   x
 }
 
-flip_aes.function = function(x, lookup = flip_aes_lookup) function(...) flip_aes(x(...), lookup = lookup)
+flip_aes.function = function(x, lookup = flip_aes_lookup) {
+  name = force(deparse(substitute(x)))
+  function(...) {
+    .Deprecated(name, package = "tidybayes")
+    flip_aes(x(...), lookup = lookup)
+  }
+}
 
 
 horizontal_aes = function(x) flip_aes(x, lookup = horizontal_aes_lookup)

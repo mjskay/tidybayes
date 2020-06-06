@@ -16,6 +16,7 @@ Description: Compose data for and extract, manipulate, and visualize posterior d
 Depends:
     R (>= 3.5.0)
 Imports:
+    ggdist (>= 2.1.0),
     plyr,
     dplyr (>= 0.8.0),
     tidyr (>= 1.0.0),
@@ -60,6 +61,8 @@ Suggests:
     png,
     pkgdown,
     transformr
+Remotes:
+    mjskay/ggdist
 License: GPL (>= 3)
 Language: en-US
 BugReports: https://github.com/mjskay/tidybayes/issues/new
@@ -69,51 +72,47 @@ RoxygenNote: 7.1.0
 LazyData: true
 Encoding: UTF-8
 Collate:
+    "ggdist-geom_slabinterval.R"
+    "ggdist-geom_dotsinterval.R"
+    "ggdist-geom_interval.R"
+    "ggdist-geom_lineribbon.R"
+    "ggdist-geom_pointinterval.R"
+    "ggdist-lkjcorr_marginal.R"
+    "ggdist-parse_dist.R"
+    "ggdist-scales.R"
+    "ggdist-stat_slabinterval.R"
+    "ggdist-stat_dist_slabinterval.R"
+    "ggdist-stat_sample_slabinterval.R"
+    "ggdist-stat_dotsinterval.R"
+    "ggdist-stat_pointinterval.R"
+    "ggdist-stat_interval.R"
+    "ggdist-stat_lineribbon.R"
+    "ggdist-student_t.R"
+    "ggdist-theme_ggdist.R"
+    "ggdist-tidy_format_translators.R"
     "tidybayes-package.R"
     "add_draws.R"
-    "binning_methods.R"
     "combine_chains.R"
     "compare_levels.R"
     "compose_data.R"
-    "data.R"
     "density_bins.R"
-    "draw_key_slabinterval.R"
     "fitted_draws.R"
     "flip_aes.R"
     "gather_draws.R"
     "gather_emmeans_draws.R"
     "gather_pairs.R"
     "gather_variables.R"
-    "geom.R"
-    "geom_slabinterval.R"
-    "geom_dotsinterval.R"
-    "geom_interval.R"
-    "geom_lineribbon.R"
-    "geom_pointinterval.R"
     "get_variables.R"
     "global_variables.R"
-    "lkjcorr_marginal.R"
     "onAttach.R"
-    "parse_dist.R"
     "point_interval.R"
     "predict_curve.R"
     "predicted_draws.R"
     "recover_types.R"
     "residual_draws.R"
     "sample_draws.R"
-    "scales.R"
     "spread_draws.R"
-    "stat.R"
-    "stat_slabinterval.R"
-    "stat_dist_slabinterval.R"
-    "stat_sample_slabinterval.R"
-    "stat_dotsinterval.R"
-    "stat_pointinterval.R"
-    "stat_interval.R"
-    "stat_lineribbon.R"
-    "theme_tidybayes.R"
     "tidy_draws.R"
-    "tidy_format_translators.R"
     "tidybayes-models.R"
     "ungather_draws.R"
     "unspread_draws.R"

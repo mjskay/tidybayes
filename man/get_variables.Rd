@@ -37,7 +37,7 @@ in order to extract draws from models in a tidy format.
 data(line, package = "coda")
 get_variables(line)
 
-data(RankCorr, package = "tidybayes")
+data(RankCorr, package = "ggdist")
 get_variables(RankCorr)
 
 }

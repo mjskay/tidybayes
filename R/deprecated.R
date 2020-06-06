@@ -110,6 +110,21 @@
 #' - `geom_dotsintervalh` / `stat_intervalh` / `stat_dist_intervalh`
 #' - `stat_histintervalh`
 #'
+#' @section Deprecated Horizontal Point/Interval Functions:
+#'
+#' These functions ending in `h` (e.g., `point_intervalh`, `median_qih`)
+#' used to be needed for use with `ggstance::stat_summaryh`, but are
+#' no longer necessary because `ggplot2::stat_summary()` supports
+#' automatic orientation detection, so they have been deprecated.
+#' They behave identically to the corresponding function without the `h`,
+#' except that when passed a vector, they return a data frame with
+#' `x`/`xmin`/`xmax` instead of `y`/`ymin`/`ymax`.
+#'
+#' - `point_intervalh`
+#' - `mean_qih` / `median_qih` / `mode_qih`
+#' - `mean_hdih` / `median_hdih` / `mode_hdih`
+#' - `mean_hdcih` / `median_hdcih` / `mode_hdcih`
+#'
 #' @section Deprecated Arguments and Column Names:
 #'
 #' Versions of tidybayes before version 1.0 used a different naming scheme for several
@@ -156,7 +171,7 @@ ggeye = function(data = NULL, mapping = NULL, ...) {
 }
 
 
-# deprecated names for [add_]fitted_draws -------------------------------
+# [add_]fitted_draws aliases -------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -182,7 +197,7 @@ add_fitted_samples = function(newdata, model, ..., n = NULL) {
 }
 
 
-# deprecated names for [add_]predicted_draws ----------------------------
+# [add_]predicted_draws aliases ----------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -209,7 +224,7 @@ add_predicted_samples = function(newdata, model, ..., n = NULL) {
 }
 
 
-# deprecated names for gather_draws --------------------------------------
+# gather_draws aliases --------------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -221,7 +236,7 @@ gather_samples = function(...) {
 }
 
 
-# deprecated names for gather_emmeans_draws -----------------------------
+# gather_emmeans_draws aliases -----------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -242,7 +257,7 @@ gather_emmeans_samples = function(...) {
 }
 
 
-# deprecated names for gather_variables -----------------------------------
+# gather_variables aliases -----------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -254,7 +269,7 @@ gather_terms = function(...) {
 }
 
 
-# deprecated names for spread_draws --------------------------------------
+# spread_draws aliases --------------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -284,7 +299,7 @@ spread_samples = function(...) {
 }
 
 
-# deprecated names for tidy_draws --------------------------------------
+# tidy_draws aliases --------------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -305,7 +320,7 @@ as_sample_data_frame = function(...) {
 }
 
 
-# deprecated names for ungather_draws --------------------------------------
+# ungather_draws aliases --------------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -317,7 +332,7 @@ ungather_samples = function(..., term = "term", estimate = "estimate", indices =
 }
 
 
-# deprecated names for unspread_draws --------------------------------------
+# unspread_draws alises --------------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -329,7 +344,7 @@ unspread_samples = function(..., indices = c(".chain", ".iteration", ".draw")) {
 }
 
 
-# deprecated names for get_variables --------------------------------------
+# get_variables aliases --------------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -341,7 +356,7 @@ parameters = function(model) {
 }
 
 
-# deprecated eye geom spellings -------------------------------------------
+# eye geom aliases -------------------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -404,7 +419,7 @@ geom_halfeyeh = function(
 }
 
 
-# deprecated horizontal geoms -----------------------------------
+# horizontal geoms -----------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -434,7 +449,7 @@ geom_intervalh = function(
 ) {
   .Deprecated("geom_interval", package = "tidybayes")
 
-  layer_geom_slabinterval(
+  ggdist:::layer_geom_slabinterval(
     data = data,
     mapping = mapping,
     default_mapping = aes(xmin = .lower, xmax = .upper, color = forcats::fct_rev(ordered(.width))),
@@ -455,16 +470,17 @@ geom_intervalh = function(
 #' @rdname tidybayes-deprecated
 #' @format NULL
 #' @usage NULL
+#' @importFrom plyr defaults
 #' @export
-GeomIntervalh = ggproto("GeomIntervalh", GeomSlabinterval,
+GeomIntervalh = ggproto("GeomIntervalh", ggdist::GeomSlabinterval,
   default_aes = defaults(aes(
     datatype = "interval"
-  ), GeomSlabinterval$default_aes),
+  ), ggdist::GeomSlabinterval$default_aes),
 
   default_key_aes = defaults(aes(
     size = 4,
     fill = NA
-  ), GeomSlabinterval$default_key_aes),
+  ), ggdist::GeomSlabinterval$default_key_aes),
 
   default_params = defaults(list(
     side = "both",
@@ -472,7 +488,7 @@ GeomIntervalh = ggproto("GeomIntervalh", GeomSlabinterval,
     interval_size_range = c(1, 6),
     show_slab = FALSE,
     show_point = FALSE
-  ), GeomSlabinterval$default_params),
+  ), ggdist::GeomSlabinterval$default_params),
 
   default_datatype = "interval"
 )
@@ -496,7 +512,7 @@ geom_pointintervalh = function(
 ) {
   .Deprecated("geom_pointinterval", package = "tidybayes")
 
-  layer_geom_slabinterval(
+  ggdist:::layer_geom_slabinterval(
     data = data,
     mapping = mapping,
     default_mapping = aes(xmin = .lower, xmax = .upper, size = -.width),
@@ -514,26 +530,25 @@ geom_pointintervalh = function(
     show.legend = show.legend
   )
 }
-
-#' @rdname tidybayes-ggproto
+#' @rdname tidybayes-deprecated
 #' @format NULL
 #' @usage NULL
 #' @import ggplot2
 #' @export
-GeomPointintervalh = ggproto("GeomPointintervalh", GeomSlabinterval,
+GeomPointintervalh = ggproto("GeomPointintervalh", ggdist::GeomSlabinterval,
   default_aes = defaults(aes(
     datatype = "interval"
-  ), GeomSlabinterval$default_aes),
+  ), ggdist::GeomSlabinterval$default_aes),
 
   default_key_aes = defaults(aes(
     fill = NA
-  ), GeomSlabinterval$default_key_aes),
+  ), ggdist::GeomSlabinterval$default_key_aes),
 
   default_params = defaults(list(
     side = "both",
     orientation = "horizontal",
     show_slab = FALSE
-  ), GeomSlabinterval$default_params),
+  ), ggdist::GeomSlabinterval$default_params),
 
   default_datatype = "interval"
 )
@@ -556,7 +571,7 @@ geom_dotsintervalh = function(..., orientation = "horizontal") {
   geom_dotsinterval(..., orientation = orientation)
 }
 
-# deprecated horizontal stat_dists ----------------------------------------
+# horizontal stat_dists ----------------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -657,7 +672,7 @@ stat_dist_dotsintervalh = function(..., orientation = "horizontal") {
 }
 
 
-# deprecated horizontal stats ---------------------------------------------
+# horizontal stats ---------------------------------------------
 
 #' @rdname tidybayes-deprecated
 #' @format NULL
@@ -740,10 +755,10 @@ stat_intervalh = function(
     )
   )
 }
-StatIntervalh = ggproto("StatIntervalh", StatInterval,
+StatIntervalh = ggproto("StatIntervalh", ggdist::StatInterval,
   default_params = defaults(list(
     orientation = "horizontal"
-  ), StatInterval$default_params)
+  ), ggdist::StatInterval$default_params)
 )
 
 #' @rdname tidybayes-deprecated
@@ -798,10 +813,10 @@ stat_pointintervalh = function(
     )
   )
 }
-StatPointintervalh = ggproto("StatPointintervalh", StatPointinterval,
+StatPointintervalh = ggproto("StatPointintervalh", ggdist::StatPointinterval,
   default_params = defaults(list(
     orientation = "horizontal"
-  ), StatPointinterval$default_params)
+  ), ggdist::StatPointinterval$default_params)
 )
 
 #' @rdname tidybayes-deprecated
@@ -865,3 +880,46 @@ stat_histintervalh = function(..., slab_type = "histogram" , orientation = "hori
   .Deprecated("stat_dotsinterval", package = "tidybayes")
   stat_sample_slabinterval(..., slab_type = slab_type, orientation = orientation)
 }
+
+
+# horizontal point_intervals ----------------------------------------------
+
+#' @rdname point_interval
+#' @export
+point_intervalh = flip_aes(point_interval)
+
+#' @export
+#' @rdname point_interval
+mean_qih = flip_aes(mean_qi)
+
+#' @export
+#' @rdname point_interval
+median_qih = flip_aes(median_qi)
+
+#' @export
+#' @rdname point_interval
+mode_qih = flip_aes(mode_qi)
+
+#' @export
+#' @rdname point_interval
+mean_hdih = flip_aes(mean_hdi)
+
+#' @export
+#' @rdname point_interval
+median_hdih = flip_aes(median_hdi)
+
+#' @export
+#' @rdname point_interval
+mode_hdih = flip_aes(mode_hdi)
+
+#' @export
+#' @rdname point_interval
+mean_hdcih = flip_aes(mean_hdci)
+
+#' @export
+#' @rdname point_interval
+median_hdcih = flip_aes(median_hdci)
+
+#' @export
+#' @rdname point_interval
+mode_hdcih = flip_aes(mode_hdci)

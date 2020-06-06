@@ -369,7 +369,7 @@ There are a variety of additional stats for visualizing distributions in the `ge
 
 <img src="slabinterval_family.png" width="700" alt="The slabinterval family of geoms and stats" />
 
-See `vignette("slabinterval")` for an overview.
+See `vignette("slabinterval", package = "ggdist")` for an overview.
 
 
 ## Posterior fits

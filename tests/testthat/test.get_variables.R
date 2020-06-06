@@ -9,7 +9,7 @@ context("get_variables")
 
 
 test_that("mcmc variable extraction works", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   ref = dimnames(RankCorr[[1]])[[2]]
 

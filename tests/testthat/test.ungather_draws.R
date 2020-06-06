@@ -14,7 +14,7 @@ test_that("ungather_draws raises an error when not provided with anything to ung
 })
 
 test_that("ungather_draws works on a simple parameter with no dimensions", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   ref = tibble(
       .chain = as.integer(1),
@@ -42,7 +42,7 @@ test_that("ungather_draws works on a simple parameter with no dimensions", {
 
 
 test_that("ungather_draws works on multiple parameters with different dimensions", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   result = RankCorr %>%
     gather_draws(b[i, j], c(u_tau, tau)[i]) %>%
@@ -57,7 +57,7 @@ test_that("ungather_draws works on multiple parameters with different dimensions
 
 
 test_that("ungather_draws(drop_indices = TRUE) drops draw indices", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   result = RankCorr %>%
     gather_draws(b[i, j], c(u_tau, tau)[i]) %>%

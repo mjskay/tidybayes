@@ -109,7 +109,7 @@ comparison_types = within(list(), {
 #' library(dplyr)
 #' library(ggplot2)
 #'
-#' data(RankCorr, package = "tidybayes")
+#' data(RankCorr, package = "ggdist")
 #'
 #' # Let's do all pairwise comparisons of b[i,1]:
 #' RankCorr %>%

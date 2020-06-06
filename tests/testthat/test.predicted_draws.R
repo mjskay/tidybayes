@@ -20,7 +20,7 @@ mtcars_tbl = mtcars %>%
 
 
 test_that("[add_]predicted_draws throws an error on unsupported models", {
-  data("RankCorr", package = "tidybayes")
+  data("RankCorr", package = "ggdist")
 
   expect_error(predicted_draws(RankCorr, data.frame()),
     'Models of type "mcmc.list" are not currently supported by `predicted_draws`')

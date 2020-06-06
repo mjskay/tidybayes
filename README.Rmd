@@ -25,8 +25,10 @@ dir.create("README_models", showWarnings = FALSE)
 
 ![Preview of tidybayes plots](man/figures/preview.gif)
 
-`tidybayes` is an R package that aims to make it easy to integrate popular Bayesian 
-modeling methods into a tidy data + ggplot workflow.
+[tidybayes](http://mjskay.github.io/tidybayes) is an R package that aims to make it easy to integrate popular Bayesian 
+modeling methods into a tidy data + ggplot workflow. It builds on top of (and re-exports)
+several functions for visualizing uncertainty from its sister package, 
+[ggdist](http://mjskay.github.io/ggdist)
 
 [Tidy](http://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
 data frames (one observation per row) are particularly convenient for use
@@ -40,10 +42,10 @@ two common (often tedious) operations:
 * __Composing data__ for use with the model. This often means translating
   data from a `data.frame` into a `list` , making sure `factors` are encoded as
   numerical data, adding variables to store the length of indices, etc. This
-  package helps automate these operations using the `compose_data` function, which
+  package helps automate these operations using the `compose_data()` function, which
   automatically handles data types like `numeric`, `logical`, `factor`, and `ordinal`, 
   and allows easy extensions for converting other data types into a format the
-  model understands by providing your own implementation of the generic `as_data_list`.
+  model understands by providing your own implementation of the generic `as_data_list()`.
 
 * __Extracting tidy draws__ from the model. This often means extracting indices
   from parameters with names like `"b[1,1]"`, `"b[1,2]"` into separate columns
@@ -54,7 +56,7 @@ two common (often tedious) operations:
   variable with indices into useful long-format 
   ("[tidy](http://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)") 
   data frames, with automatic back-conversion of common data types (factors, logicals)
-  using the `spread_draws` and `gather_draws` functions, including automatic 
+  using the `spread_draws()` and `gather_draws()` functions, including automatic 
   recovery of factor levels corresponding to variable indices. In most cases this
   kind of long-format data is much easier to use with other data-manipulation and 
   plotting packages (e.g., `dplyr`, `tidyr`, `ggplot2`) than the format provided 
@@ -65,36 +67,36 @@ and visualization tasks common to many models:
 
 * __Extracting tidy fits and predictions__ from models. For models like those
   provided by `rstanarm` and `brms`, `tidybayes` provides a tidy analog of the
-  `fitted` and `predict` functions, called `add_fitted_draws` and 
-  `add_predicted_draws`. These functions are modeled after the `modelr::add_predictions`
+  `fitted` and `predict` functions, called `add_fitted_draws()` and 
+  `add_predicted_draws()`. These functions are modeled after the `modelr::add_predictions()`
   function, and turn a grid of predictions into a long-format data frame of
   draws from either the fits or predictions from a model. These functions make
   it straightforward to generate arbitrary fit lines from a model.
   
-* __Summarizing posterior distributions__ from models. The `point_interval`
-  family of functions (`median_qi`, `mean_qi`, `mode_hdi`, etc) are methods 
+* __Summarizing posterior distributions__ from models. The `ggdist::point_interval()`
+  family of functions (`median_qi()`, `mean_qi()`, `mode_hdi()`, etc) are methods 
   for generating point summaries and intervals that are designed with tidy workflows 
   in mind. They can generate point summaries plus an arbitrary number of probability 
   intervals *from* tidy data frames of draws, they *return* tidy data frames,
-  and they **respect data frame groups**.
+  and they **respect data frame groups**. These functions 
 
 * __Visualizing priors and posteriors__. The focus on tidy data makes the output from tidybayes
   easy to visualize using `ggplot`. Existing `geom`s (like `geom_pointrange` and 
-  `geom_linerange`) can give useful output, but `tidybayes` also includes several
+  `geom_linerange`) can give useful output, but `tidybayes` (via `ggdist`) also includes several
   geoms and stats to simplify common combinations of `stats` and `geoms` with sensible
-  defaults suitable for visualizing posterior point summaries and intervals (`geom_pointinterval()`,
-  `stat_pointinterval()`), visualizing
-  distributions with point summaries and intervals (the `stat_sample_slabinterval()` family of
+  defaults suitable for visualizing posterior point summaries and intervals (`ggdist::geom_pointinterval()`,
+  `ggdist::stat_pointinterval()`), visualizing
+  distributions with point summaries and intervals (the `ggdist::stat_sample_slabinterval()` family of
   stats, including eye plots, half-eye plots, CCDF bar plots, gradient plots, dotplots, and histograms), 
-  and visualizing fit lines with an arbitrary number of uncertainty bands (`geom_lineribbon()` 
-  and `stat_lineribbon()`). Priors can also be visualized in the same way using the 
-  `stat_dist_slabinterval()` family of stats. The `geom_dotsinterval()` family also
+  and visualizing fit lines with an arbitrary number of uncertainty bands (`ggdist::geom_lineribbon()` 
+  and `ggdist::stat_lineribbon()`). Priors can also be visualized in the same way using the 
+  `ggdist::stat_dist_slabinterval()` family of stats. The `ggdist::geom_dotsinterval()` family also
   automatically finds good binning parameters for dotplots, and can be used to easily construct
   quantile dotplots of posteriors (see example in this document).
   
   ![The slabinterval family of geoms and stats](man/figures/slabinterval_family.png)
 
-  See `vignette("slabinterval")` for more information.
+  See `vignette("slabinterval", package = "ggdist")` for more information.
 
 * __Comparing a variable across levels of a factor__, which often means first
   generating pairs of levels of a factor (according to some desired set of 
@@ -285,7 +287,7 @@ m %>%
   stat_halfeye()
 ```
 
-A variety of other stats and geoms for visualizing priors and posteriors are available; see `vignette("slabinterval")` for an overview of them.
+A variety of other stats and geoms for visualizing priors and posteriors are available; see `vignette("slabinterval", package = "ggdist")` for an overview of them.
 
 ### Plotting posteriors as quantile dotplots
 

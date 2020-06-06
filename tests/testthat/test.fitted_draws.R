@@ -20,7 +20,7 @@ mtcars_tbl = mtcars %>%
 
 
 test_that("[add_]fitted_draws throws an error on unsupported models", {
-  data("RankCorr", package = "tidybayes")
+  data("RankCorr", package = "ggdist")
 
   expect_error(fitted_draws(RankCorr, data.frame()),
     'Models of type "mcmc.list" are not currently supported by `fitted_draws`')

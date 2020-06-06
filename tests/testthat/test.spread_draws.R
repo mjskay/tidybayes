@@ -10,7 +10,7 @@ context("spread_draws")
 
 
 #set up datasets
-data(RankCorr, package = "tidybayes")
+data(RankCorr, package = "ggdist")
 
 # subset of RankCorr (for speed)
 RankCorr_s = RankCorr[[1]][1:10,]
@@ -48,7 +48,7 @@ test_that("parse_variable_spec rejects incorrect usage of `|`", {
 # tests for spread_draws ===================================================
 
 test_that("spread_draws correctly rejects missing variables", {
-  data("RankCorr", package = "tidybayes")
+  data("RankCorr", package = "ggdist")
 
   expect_error(spread_draws(RankCorr, c(a, b)),
     "No variables found matching spec: c\\(a,b\\)")

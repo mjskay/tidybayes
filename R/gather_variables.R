@@ -63,7 +63,7 @@
 #'
 #' library(dplyr)
 #'
-#' data(RankCorr, package = "tidybayes")
+#' data(RankCorr, package = "ggdist")
 #'
 #' RankCorr %>%
 #'   spread_draws(b[i,v], tau[i]) %>%

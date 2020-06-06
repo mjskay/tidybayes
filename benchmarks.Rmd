@@ -125,7 +125,7 @@ system.time(spread_draws(ldf, a[i], b[i]))
 This tends to be slower than spreading without array columns. Last test was ~0.08 seconds on `monarch`.
 
 ```{r}
-data(RankCorr)
+data(RankCorr, package = "ggdist")
 system.time(spread_draws(RankCorr, b[.,.]))
 ```
 

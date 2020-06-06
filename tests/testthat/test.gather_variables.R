@@ -10,7 +10,7 @@ context("gather_variables")
 
 
 test_that("gather_variables works on the results of tidy_draws", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   ref = RankCorr %>%
     tidy_draws() %>%
@@ -27,7 +27,7 @@ test_that("gather_variables works on the results of tidy_draws", {
 
 
 test_that("gather_variables works on the results of spread_draws with multiple variables and dimensions", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   ref = RankCorr %>%
     spread_draws(b[i, v], tau[i]) %>%

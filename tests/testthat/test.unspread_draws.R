@@ -10,7 +10,7 @@ context("unspread_draws")
 
 
 test_that("unspread_draws works on a simple parameter with no dimensions", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   ref = tibble(
       .chain = as.integer(1),
@@ -38,7 +38,7 @@ test_that("unspread_draws works on a simple parameter with no dimensions", {
 
 
 test_that("unspread_draws works on a multiple parameters with different dimensions", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   result = RankCorr %>%
     spread_draws(b[i, j], c(u_tau, tau)[i]) %>%
@@ -53,7 +53,7 @@ test_that("unspread_draws works on a multiple parameters with different dimensio
 
 
 test_that("unspread_draws(drop_indices = TRUE) drops draw indices", {
-  data(RankCorr, package = "tidybayes")
+  data(RankCorr, package = "ggdist")
 
   result = RankCorr %>%
     spread_draws(b[i, j], c(u_tau, tau)[i]) %>%

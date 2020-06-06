@@ -27,6 +27,7 @@
 \alias{geom_intervalh}
 \alias{GeomIntervalh}
 \alias{geom_pointintervalh}
+\alias{GeomPointintervalh}
 \alias{geom_dotsh}
 \alias{geom_dotsintervalh}
 \alias{stat_dist_eyeh}
@@ -157,6 +158,24 @@ These deprecated stats and geoms include:
 \item \code{geom_dotsh} / \code{stat_dotsh} / \code{stat_dist_dotsh}
 \item \code{geom_dotsintervalh} / \code{stat_intervalh} / \code{stat_dist_intervalh}
 \item \code{stat_histintervalh}
+}
+}
+
+\section{Deprecated Horizontal Point/Interval Functions}{
+
+
+These functions ending in \code{h} (e.g., \code{point_intervalh}, \code{median_qih})
+used to be needed for use with \code{ggstance::stat_summaryh}, but are
+no longer necessary because \code{ggplot2::stat_summary()} supports
+automatic orientation detection, so they have been deprecated.
+They behave identically to the corresponding function without the \code{h},
+except that when passed a vector, they return a data frame with
+\code{x}/\code{xmin}/\code{xmax} instead of \code{y}/\code{ymin}/\code{ymax}.
+\itemize{
+\item \code{point_intervalh}
+\item \code{mean_qih} / \code{median_qih} / \code{mode_qih}
+\item \code{mean_hdih} / \code{median_hdih} / \code{mode_hdih}
+\item \code{mean_hdcih} / \code{median_hdcih} / \code{mode_hdcih}
 }
 }
 

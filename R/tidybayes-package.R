@@ -24,7 +24,8 @@
 #' For a comprehensive overview of the package, see `vignette("tidybayes")`.
 #' For overviews aimed at the `rstanarm` and `brms` packages, see
 #' `vignette("tidy-rstanarm")` and `vignette("tidy-brms")`. For an overview
-#' of the majority of geoms in tidybayes, see `vignette("slabinterval")`.
+#' of the majority of geoms in the ggdist/tidybayes family, see
+#' `vignette("slabinterval", package = "ggdist")`.
 #'
 #' For a list of supported models, see [tidybayes-models].
 #'
