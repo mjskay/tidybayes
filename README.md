@@ -1,5 +1,5 @@
 
-# tidybayes: Bayesian analysis + tidy data + geoms <img id="tidybayes_logo" src="man/figures/logo.svg" align="right" />
+# tidybayes: Bayesian analysis + tidy data + geoms
 
 [![Build
 status](https://travis-ci.org/mjskay/tidybayes.png?branch=master)](https://travis-ci.org/mjskay/tidybayes)
@@ -285,21 +285,21 @@ m %>%
     ## # Groups:   condition [1]
     ##    condition condition_mean .chain .iteration .draw response_sd
     ##    <chr>              <dbl>  <int>      <int> <int>       <dbl>
-    ##  1 A                 0.157       1          1     1       0.673
-    ##  2 A                 0.362       1          2     2       0.532
-    ##  3 A                 0.195       1          3     3       0.565
-    ##  4 A                 0.245       1          4     4       0.535
-    ##  5 A                 0.134       1          5     5       0.510
-    ##  6 A                 0.273       1          6     6       0.511
-    ##  7 A                -0.0745      1          7     7       0.627
-    ##  8 A                 0.116       1          8     8       0.610
-    ##  9 A                 0.0902      1          9     9       0.485
-    ## 10 A                 0.210       1         10    10       0.594
-    ## 11 A                 0.118       1         11    11       0.478
-    ## 12 A                 0.218       1         12    12       0.544
-    ## 13 A                 0.238       1         13    13       0.493
-    ## 14 A                 0.0558      1         14    14       0.607
-    ## 15 A                 0.180       1         15    15       0.582
+    ##  1 A                0.00544      1          1     1       0.576
+    ##  2 A               -0.0836       1          2     2       0.576
+    ##  3 A                0.0324       1          3     3       0.551
+    ##  4 A                0.113        1          4     4       0.576
+    ##  5 A                0.157        1          5     5       0.583
+    ##  6 A                0.218        1          6     6       0.621
+    ##  7 A                0.276        1          7     7       0.641
+    ##  8 A                0.0130       1          8     8       0.637
+    ##  9 A                0.152        1          9     9       0.609
+    ## 10 A                0.192        1         10    10       0.521
+    ## 11 A                0.154        1         11    11       0.558
+    ## 12 A                0.298        1         12    12       0.552
+    ## 13 A                0.349        1         13    13       0.531
+    ## 14 A                0.471        1         14    14       0.566
+    ## 15 A                0.313        1         15    15       0.568
 
 The condition numbers are automatically turned back into text (“A”, “B”,
 “C”, …) and split into their own column. A long-format data frame is
@@ -394,11 +394,11 @@ m %>%
     ## # A tibble: 5 x 7
     ##   condition condition_mean .lower .upper .width .point .interval
     ##   <chr>              <dbl>  <dbl>  <dbl>  <dbl> <chr>  <chr>    
-    ## 1 A                  0.196 -0.153  0.551   0.95 median qi       
-    ## 2 B                  1.00   0.654  1.35    0.95 median qi       
-    ## 3 C                  1.83   1.49   2.17    0.95 median qi       
-    ## 4 D                  1.02   0.654  1.38    0.95 median qi       
-    ## 5 E                 -0.890 -1.24  -0.520   0.95 median qi
+    ## 1 A                  0.199 -0.142  0.549   0.95 median qi       
+    ## 2 B                  1.01   0.651  1.34    0.95 median qi       
+    ## 3 C                  1.84   1.48   2.19    0.95 median qi       
+    ## 4 D                  1.02   0.681  1.37    0.95 median qi       
+    ## 5 E                 -0.890 -1.23  -0.529   0.95 median qi
 
 ### Comparison to other models via compatibility with `broom`
 
@@ -447,11 +447,11 @@ bayes_results
     ## # A tibble: 5 x 8
     ##   condition estimate conf.low conf.high .width .point .interval model
     ##   <chr>        <dbl>    <dbl>     <dbl>  <dbl> <chr>  <chr>     <chr>
-    ## 1 A            0.196   -0.153     0.551   0.95 median qi        Bayes
-    ## 2 B            1.00     0.654     1.35    0.95 median qi        Bayes
-    ## 3 C            1.83     1.49      2.17    0.95 median qi        Bayes
-    ## 4 D            1.02     0.654     1.38    0.95 median qi        Bayes
-    ## 5 E           -0.890   -1.24     -0.520   0.95 median qi        Bayes
+    ## 1 A            0.199   -0.142     0.549   0.95 median qi        Bayes
+    ## 2 B            1.01     0.651     1.34    0.95 median qi        Bayes
+    ## 3 C            1.84     1.48      2.19    0.95 median qi        Bayes
+    ## 4 D            1.02     0.681     1.37    0.95 median qi        Bayes
+    ## 5 E           -0.890   -1.23     -0.529   0.95 median qi        Bayes
 
 This makes it easy to bind the two results together and plot them:
 
