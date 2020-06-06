@@ -73,17 +73,17 @@ and visualization tasks common to many models:
   draws from either the fits or predictions from a model. These functions make
   it straightforward to generate arbitrary fit lines from a model.
   
-* __Summarizing posterior distributions__ from models. The `ggdist::point_interval()`
-  family of functions (`median_qi()`, `mean_qi()`, `mode_hdi()`, etc) are methods 
-  for generating point summaries and intervals that are designed with tidy workflows 
+* __Summarizing posterior distributions__ from models. `tidybayes` re-exports the 
+  `ggdist::point_interval()` family of functions (`median_qi()`, `mean_qi()`, `mode_hdi()`, etc),
+  which are methods for generating point summaries and intervals that are designed with tidy workflows 
   in mind. They can generate point summaries plus an arbitrary number of probability 
   intervals *from* tidy data frames of draws, they *return* tidy data frames,
   and they **respect data frame groups**. These functions 
 
 * __Visualizing priors and posteriors__. The focus on tidy data makes the output from tidybayes
-  easy to visualize using `ggplot`. Existing `geom`s (like `geom_pointrange` and 
-  `geom_linerange`) can give useful output, but `tidybayes` (via `ggdist`) also includes several
-  geoms and stats to simplify common combinations of `stats` and `geoms` with sensible
+  easy to visualize using `ggplot`. While existing `geom`s (like `ggdist::geom_pointrange()` and 
+  `ggdist::geom_linerange()`) can give useful output, the output from `tidybayes` is designed to work
+  well with several geoms and stats in its sister package, `ggdist`. These geoms have sensible
   defaults suitable for visualizing posterior point summaries and intervals (`ggdist::geom_pointinterval()`,
   `ggdist::stat_pointinterval()`), visualizing
   distributions with point summaries and intervals (the `ggdist::stat_sample_slabinterval()` family of
@@ -92,7 +92,8 @@ and visualization tasks common to many models:
   and `ggdist::stat_lineribbon()`). Priors can also be visualized in the same way using the 
   `ggdist::stat_dist_slabinterval()` family of stats. The `ggdist::geom_dotsinterval()` family also
   automatically finds good binning parameters for dotplots, and can be used to easily construct
-  quantile dotplots of posteriors (see example in this document).
+  quantile dotplots of posteriors (see example in this document). For convenience, `tidybayes`
+  re-exports the `ggdist` stats and geoms.
   
   ![The slabinterval family of geoms and stats](man/figures/slabinterval_family.png)
 
@@ -235,7 +236,7 @@ model {
 
 ### Composing data for input to model: `compose_data`
 
-We have compiled and loaded this model into the variable `ABC_stan`. Rather than munge the data into a format Stan likes ourselves, we will use the `tidybayes::compose_data` function, which takes our `ABC` data frame and automatically generates a list of the following elements:
+We have compiled and loaded this model into the variable `ABC_stan`. Rather than munge the data into a format Stan likes ourselves, we will use the `tidybayes::compose_data()` function, which takes our `ABC` data frame and automatically generates a list of the following elements:
 
 * `n`: number of observations in the data frame
 * `n_condition`: number of levels of the condition factor
@@ -250,7 +251,7 @@ m = sampling(ABC_stan, data = compose_data(ABC), control = list(adapt_delta=0.99
 
 ### Getting tidy draws from the model: `spread_draws`
 
-We decorate the fitted model using `tidybayes::recover_types`, which will ensure that numeric indices (like `condition`) are back-translated back into factors when we extract data:
+We decorate the fitted model using `tidybayes::recover_types()`, which will ensure that numeric indices (like `condition`) are back-translated back into factors when we extract data:
 
 ```{r recover_types}
 m %<>% recover_types(ABC)
@@ -269,7 +270,7 @@ The condition numbers are automatically turned back into text ("A", "B", "C", ..
 
 ### Plotting posteriors as eye plots: `stat_eye()`
 
-Automatic splitting of indices into columns makes it easy to plot the condition means here. We will employ the `tidybayes::stat_eye()` geom, which combines a violin plot of the posterior density, median, 66% and 95% quantile interval to give an "eye plot" of the posterior. The point and interval types are customizable using the `point_interval()` family of functions. A "half-eye" plot (non-mirrored density) is also available as `tidybayes::stat_halfeye()`. All tidybayes geometries automatically detect their appropriate orientation, though this can be overridden with the `orientation` parameter if the detection fails.
+Automatic splitting of indices into columns makes it easy to plot the condition means here. We will employ the `ggdist::stat_eye()` geom, which combines a violin plot of the posterior density, median, 66% and 95% quantile interval to give an "eye plot" of the posterior. The point and interval types are customizable using the `point_interval()` family of functions. A "half-eye" plot (non-mirrored density) is also available as `ggdist::stat_halfeye()`. All tidybayes geometries automatically detect their appropriate orientation, though this can be overridden with the `orientation` parameter if the detection fails.
 
 ```{r stat_eye}
 m %>%
@@ -293,7 +294,7 @@ A variety of other stats and geoms for visualizing priors and posteriors are ava
 
 Intervals are nice if the alpha level happens to line up with whatever decision you are trying to make, but getting a shape of the posterior is better (hence eye plots, above). On the other hand, making inferences from density plots is imprecise (estimating the area of one shape as a proportion of another is a hard perceptual task). Reasoning about probability in frequency formats is easier, motivating [quantile dotplots](https://github.com/mjskay/when-ish-is-my-bus/blob/master/quantile-dotplots.md) ([Kay et al. 2016](https://doi.org/10.1145/2858036.2858558), [Fernandes et al. 2018](https://doi.org/10.1145/3173574.3173718)), which also allow precise estimation of arbitrary intervals (down to the dot resolution of the plot, 100 in the example below). 
 
-Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `stat_dots()` is the variant designed for use on samples:
+Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `ggdist::stat_dots()` is the variant designed for use on samples:
 
 ```{r quantile_dotplots}
 m %>%
@@ -306,7 +307,7 @@ The idea is to get away from thinking about the posterior as indicating one cano
 
 ### Point and interval summaries
 
-The functions `tidybayes::median_qi`, `tidybayes::mean_qi`, `tidybayes::mode_hdi`, etc (the `point_interval` functions) give tidy output of point summaries and intervals:
+The functions `ggdist::median_qi()`, `ggdist::mean_qi()`, `ggdist::mode_hdi()`, etc (the `point_interval` functions) give tidy output of point summaries and intervals:
 
 ```{r median_qi}
 m %>%
@@ -317,7 +318,7 @@ m %>%
 
 ### Comparison to other models via compatibility with `broom`
 
-Translation functions like `tidybayes::to_broom_names`, `tidybayes::from_broom_names`, `tidybayes::to_ggmcmc_names`, etc. can be used to translate between common tidy format data frames with different naming schemes. This makes it easy, for example, to compare points summaries and intervals between `tidybayes` output and models that are supported by `broom::tidy`.
+Translation functions like `ggdist::to_broom_names()`, `ggdist::from_broom_names()`, `ggdist::to_ggmcmc_names()`, etc. can be used to translate between common tidy format data frames with different naming schemes. This makes it easy, for example, to compare points summaries and intervals between `tidybayes` output and models that are supported by `broom::tidy`.
 
 For example, let's compare against ordinary least squares (OLS) regression:
 
@@ -330,7 +331,7 @@ linear_results =
 linear_results
 ```
 
-Using `tidybayes::to_broom_names`, we'll convert the output from `median_qi` (which uses names `.lower` and `.upper`) to use names from `broom` (`conf.low` and `conf.high`) so that comparison with output from `broom::tidy` is easy:
+Using `ggdist::to_broom_names()`, we'll convert the output from `median_qi` (which uses names `.lower` and `.upper`) to use names from `broom` (`conf.low` and `conf.high`) so that comparison with output from `broom::tidy` is easy:
 
 ```{r broom_tidybayes}
 bayes_results = m %>%
@@ -399,7 +400,7 @@ m_mpg = brm(
 )
 ```
 
-Now we will use `modelr::data_grid`, `tidybayes::add_predicted_draws`, and `tidybayes::stat_lineribbon` to generate a fit curve with multiple probability bands:
+Now we will use `modelr::data_grid`, `tidybayes::add_predicted_draws()`, and `ggdist::stat_lineribbon()` to generate a fit curve with multiple probability bands:
 
 ```{r pp_bands}
 mtcars %>%
@@ -411,7 +412,7 @@ mtcars %>%
   scale_fill_brewer()
 ```
 
-`stat_lineribbon(aes(y = .prediction), .width = c(.99, .95, .8, .5))` is one of several shortcut geoms that simplify common combinations of `tidybayes` functions and `ggplot` geoms. It is roughly equivalent to the following:
+`ggdist::stat_lineribbon(aes(y = .prediction), .width = c(.99, .95, .8, .5))` is one of several shortcut geoms that simplify common combinations of `tidybayes` functions and `ggplot` geoms. It is roughly equivalent to the following:
 
 ```r
   stat_summary(
@@ -448,7 +449,7 @@ mtcars %>%
   facet_wrap(~ am)                                  # facet by am
 ```
 
-Or, if you would like overplotted posterior fit lines, you can instead use `tidybayes::add_fitted_draws` to get draws from fit lines (instead of predictions), select some reasonable number of them (say `n = 100`), and then plot them:
+Or, if you would like overplotted posterior fit lines, you can instead use `tidybayes::add_fitted_draws()` to get draws from fit lines (instead of predictions), select some reasonable number of them (say `n = 100`), and then plot them:
 
 ```{r spaghetti}
 mtcars %>%

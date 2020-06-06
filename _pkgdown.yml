@@ -68,55 +68,9 @@ reference:
   - density_bins
   - histogram_bins
 
-- title: Point summaries and intervals
-  desc:  Calculate point summaries and intervals on (grouped) data frames of draws
-  contents:
-  - point_interval
-  - qi
-  - hdi
-  - Mode
-  - ends_with("hdci")
-  - ends_with("hdi")
-  - ends_with("qi")
-  - ends_with("hdcih")
-  - ends_with("hdih")
-  - ends_with("qih")
-
-- title: Visualizing draws
-  desc:  Stats and geoms for visualizing tidy data frames of draws
-  contents:
-  - geom_slabinterval
-  - stat_sample_slabinterval
-  - geom_interval
-  - geom_lineribbon
-  - geom_pointinterval
-  - geom_dotsinterval
-  - stat_interval
-  - stat_lineribbon
-  - stat_pointinterval
-  - stat_dotsinterval
-
-- title: Visualizing analytical distributions
-  desc:  Stats, geoms, and helper functions for visualizing analytical distributions, such as priors
-  contents:
-  - stat_dist_slabinterval
-  - stat_dist_dotsinterval
-  - parse_dist
-  - lkjcorr_marginal
-  - marginalize_lkjcorr
-
-- title: GGplot scales
-  desc:  Scales for custom aesthetics used by tidybayes geoms and stats
-  contents:
-  - scales
-
-- title: GGplot theme
-  desc:  Tidybayes theme for ggplot2
-  contents:
-  - theme_tidybayes
-  - facet_title_left_horizontal
-  - facet_title_right_horizontal
-  - axis_titles_bottom_left
+- title: Point summaries, intervals, geoms, and stats
+  desc:  For the `point_interval` family (`median_qi`, etc) and various `geom`s and `stat`s for
+    visualizing posteriors, see the [ggdist documentation](https://mjskay.github.io/ggdist/reference/)
 
 - title: Deprecated functions
   desc: Deprecated functions

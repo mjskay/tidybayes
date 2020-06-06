@@ -119,12 +119,6 @@ dimensions) into one of two types of long-format data frames." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/freq-uncertainty-vis.html">Frequentist uncertainty visualization</a>
-    </li>
-    <li>
-      <a href="../articles/slabinterval.html">Slab + interval stats and geoms</a>
-    </li>
-    <li>
       <a href="../articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a>
     </li>
     <li>
@@ -224,7 +218,7 @@ all dimensions used on the variables you specify.</p>
 be spread across the data frame as column names, whereas <code>gather_draws</code> will
 gather variables into a single column named <code>".variable"</code> and place values of variables into a
 column named <code>".value"</code>. To use naming schemes from other packages (such as <code>broom</code>), consider passing
-results through functions like <code><a href='tidy-format-translators.html'>to_broom_names()</a></code> or <code><a href='tidy-format-translators.html'>to_ggmcmc_names()</a></code>.</p>
+results through functions like <code><a href='http://mjskay.github.io/ggdist/reference/tidy-format-translators.html'>to_broom_names()</a></code> or <code><a href='http://mjskay.github.io/ggdist/reference/tidy-format-translators.html'>to_ggmcmc_names()</a></code>.</p>
 <p>For example, <code>spread_draws(fit, a[i], b[i,v])</code> might return a grouped
 data frame (grouped by <code>i</code> and <code>v</code>), with:</p><ul>
 <li><p>column <code>".chain"</code>: the chain number. <code>NA</code> if not applicable to the model
@@ -366,7 +360,7 @@ missing entries given the value <code>NA</code>.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>RankCorr</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"tidybayes"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>RankCorr</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"ggdist"</span>)
 
 <span class='no'>RankCorr</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>spread_draws</span>(<span class='no'>b</span>[<span class='no'>i</span>, <span class='no'>j</span>])</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 12,000 x 6</span><span>
@@ -419,7 +413,7 @@ missing entries given the value <code>NA</code>.</p>
 #&gt; </span><span style='color: #949494;'># ... with 17,990 more rows</span><span></div><div class='input'>
 <span class='no'>RankCorr</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>gather_draws</span>(<span class='no'>tau</span>[<span class='no'>i</span>], <span class='no'>typical_r</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='point_interval.html'>median_qi</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 4 x 8</span><span>
+  <span class='fu'><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>median_qi</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 4 x 8</span><span>
 #&gt; </span><span style='color: #949494;'># Groups:   i [4]</span><span>
 #&gt;       i .variable .value .lower .upper .width .point .interval
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    

@@ -62,27 +62,6 @@
 \alias{median_hdcih}
 \alias{mode_hdcih}
 \title{Deprecated functions, arguments, and column names in tidybayes}
-\usage{
-point_intervalh(...)
-
-mean_qih(...)
-
-median_qih(...)
-
-mode_qih(...)
-
-mean_hdih(...)
-
-median_hdih(...)
-
-mode_hdih(...)
-
-mean_hdcih(...)
-
-median_hdcih(...)
-
-mode_hdcih(...)
-}
 \description{
 Deprecated functions, arguments, and column names and their alternatives are listed below.
 Many of the deprecations are due to a naming scheme overhaul in tidybayes version 1.0

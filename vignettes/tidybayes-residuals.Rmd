@@ -61,6 +61,7 @@ The following libraries are required to run this vignette:
 library(dplyr)
 library(purrr)
 library(tidyr)
+library(ggdist)
 library(tidybayes)
 library(ggplot2)
 library(cowplot)

@@ -119,12 +119,6 @@ prediction curve)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/freq-uncertainty-vis.html">Frequentist uncertainty visualization</a>
-    </li>
-    <li>
-      <a href="../articles/slabinterval.html">Slab + interval stats and geoms</a>
-    </li>
-    <li>
       <a href="../articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a>
     </li>
     <li>
@@ -201,7 +195,7 @@ variables passed into this function in <code>...</code>.</p></td>
       <th>summary</th>
       <td><p>The function to apply to summarize each predicted response.
 Useful functions (if you just want a curve) might be <code><a href='https://rdrr.io/r/stats/median.html'>median()</a></code>,
-<code><a href='https://rdrr.io/r/base/mean.html'>mean()</a></code>, or <code><a href='point_interval.html'>Mode()</a></code>. If you want predictive distribution
+<code><a href='https://rdrr.io/r/base/mean.html'>mean()</a></code>, or <code><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>Mode()</a></code>. If you want predictive distribution
 at each point on the curve, try <code><a href='density_bins.html'>density_bins()</a></code> or
 <code><a href='density_bins.html'>histogram_bins()</a></code>.</p></td>
     </tr>
@@ -238,7 +232,7 @@ so the data frame returned by <code>predict_curve</code> with <code>summary = de
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><strong>This function is deprecated.</strong> Use <code><a href='https://modelr.tidyverse.org/reference/data_grid.html'>modelr::data_grid()</a></code> combined
-with <code><a href='point_interval.html'>point_interval()</a></code> or <code><a href='https://dplyr.tidyverse.org/reference/do.html'>dplyr::do()</a></code> and
+with <code><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>point_interval()</a></code> or <code><a href='https://dplyr.tidyverse.org/reference/do.html'>dplyr::do()</a></code> and
 <code><a href='density_bins.html'>density_bins()</a></code> instead.</p>
 <p>The function generates a predictive curve given posterior draws
 (<code>data</code>), an expression (<code>formula</code>), and a set of variables

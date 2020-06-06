@@ -122,12 +122,6 @@ Deprecated Horizontal Shortcut Geoms and Stats)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/freq-uncertainty-vis.html">Frequentist uncertainty visualization</a>
-    </li>
-    <li>
-      <a href="../articles/slabinterval.html">Slab + interval stats and geoms</a>
-    </li>
-    <li>
       <a href="../articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a>
     </li>
     <li>
@@ -175,6 +169,25 @@ the deprecation of horizontal shortcut geoms and stats in tidybayes 2.1 (see
 <em>Deprecated Horizontal Shortcut Geoms and Stats</em>).</p>
     </div>
 
+    <pre class="usage"><span class='fu'>point_intervalh</span>(<span class='no'>...</span>)
+
+<span class='fu'>mean_qih</span>(<span class='no'>...</span>)
+
+<span class='fu'>median_qih</span>(<span class='no'>...</span>)
+
+<span class='fu'>mode_qih</span>(<span class='no'>...</span>)
+
+<span class='fu'>mean_hdih</span>(<span class='no'>...</span>)
+
+<span class='fu'>median_hdih</span>(<span class='no'>...</span>)
+
+<span class='fu'>mode_hdih</span>(<span class='no'>...</span>)
+
+<span class='fu'>mean_hdcih</span>(<span class='no'>...</span>)
+
+<span class='fu'>median_hdcih</span>(<span class='no'>...</span>)
+
+<span class='fu'>mode_hdcih</span>(<span class='no'>...</span>)</pre>
 
 
     <h2 class="hasAnchor" id="deprecated-functions"><a class="anchor" href="#deprecated-functions"></a>Deprecated Functions</h2>
@@ -188,7 +201,7 @@ functions use <code>.variable</code> and <code>.value</code>; or they set <code>
 when iteration information is not available --- new functions always set <code>.draw</code>
 but may not set <code>.iteration</code>), so be careful when upgrading to new function names.
 See <em>Deprecated Arguments and Column Names</em>, below, for more information.</p>
-<p>Deprecated functions are:</p>
+<p>Deprecated functions include:</p>
 <ul>
 <li><p><code>spread_samples</code>, <code>extract_samples</code>, and <code>tidy_samples</code> are
 deprecated names for <code><a href='spread_draws.html'>spread_draws()</a></code>. The spread/gather terminology
@@ -227,10 +240,10 @@ describing multiple realizations from a distribution.</p></li>
 <li><p><code>ggeye</code> is deprecated: for a package whose goal is flexible and customizable
 visualization, monolithic functions are inflexible and do not sufficiently capitalize on users'
 existing knowledge of ggplot; instead, I think it is more flexible to design geoms and stats
-that can used within a complete ggplot workflow. <code><a href='stat_sample_slabinterval.html'>stat_eye()</a></code> offers a horizontal
+that can used within a complete ggplot workflow. <code><a href='http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html'>stat_eye()</a></code> offers a horizontal
 eye plot geom that can be used instead of <code>ggeye</code>.</p></li>
-<li><p>See tidybayes-deprecated-geoms for a list of deprecated geoms (mainly
-horizontal shortcut geoms that are no longer necessary due to automatic orientation detection.)</p></li>
+<li><p>See the sections below for additional deprecated functions, including
+horizontal geoms, stats, and point_intervals</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="deprecated-eye-geom-spellings"><a class="anchor" href="#deprecated-eye-geom-spellings"></a>Deprecated Eye Geom Spellings</h2>
@@ -238,8 +251,8 @@ horizontal shortcut geoms that are no longer necessary due to automatic orientat
     
 
 
-<p><code>geom_eye</code>, <code>geom_eyeh</code>, and <code>geom_halfeyeh</code> are deprecated spellings of <code><a href='stat_sample_slabinterval.html'>stat_eye()</a></code> and
-<code><a href='stat_sample_slabinterval.html'>stat_halfeye()</a></code> from before name standardization of stats and geoms. Use those functions instead.</p>
+<p><code>geom_eye</code>, <code>geom_eyeh</code>, and <code>geom_halfeyeh</code> are deprecated spellings of <code><a href='http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html'>stat_eye()</a></code> and
+<code><a href='http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html'>stat_halfeye()</a></code> from before name standardization of stats and geoms. Use those functions instead.</p>
     <h2 class="hasAnchor" id="deprecated-horizontal-shortcut-geoms-and-stats"><a class="anchor" href="#deprecated-horizontal-shortcut-geoms-and-stats"></a>Deprecated Horizontal Shortcut Geoms and Stats</h2>
 
     
@@ -249,9 +262,9 @@ horizontal shortcut geoms that are no longer necessary due to automatic orientat
 shortcut geoms and stats (which end in <code>h</code>) are no longer necessary, and are
 deprecated. In most cases, these can simply be replaced with the same
 geom without the <code>h</code> suffix and they will remain horizontal; e.g.
-<code><a href='stat_sample_slabinterval.html'>stat_halfeyeh(...)</a></code> can simply be replaced with <code><a href='stat_sample_slabinterval.html'>stat_halfeye(...)</a></code>.
+<code>stat_halfeyeh(...)</code> can simply be replaced with <code><a href='http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html'>stat_halfeye(...)</a></code>.
 If automatic orientation detection fails, override it with the <code>orientation</code>
-parameter; e.g. <code><a href='stat_sample_slabinterval.html'>stat_halfeye(orientation = "horizontal")</a></code>.</p>
+parameter; e.g. <code><a href='http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html'>stat_halfeye(orientation = "horizontal")</a></code>.</p>
 <p>These deprecated stats and geoms include:</p><ul>
 <li><p><code>stat_eyeh</code> / <code>stat_dist_eyeh</code></p></li>
 <li><p><code>stat_halfeyeh</code> / <code>stat_dist_halfeyeh</code></p></li>
@@ -264,6 +277,24 @@ parameter; e.g. <code><a href='stat_sample_slabinterval.html'>stat_halfeye(orien
 <li><p><code>geom_dotsh</code> / <code>stat_dotsh</code> / <code>stat_dist_dotsh</code></p></li>
 <li><p><code>geom_dotsintervalh</code> / <code>stat_intervalh</code> / <code>stat_dist_intervalh</code></p></li>
 <li><p><code>stat_histintervalh</code></p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="deprecated-horizontal-point-interval-functions"><a class="anchor" href="#deprecated-horizontal-point-interval-functions"></a>Deprecated Horizontal Point/Interval Functions</h2>
+
+    
+
+
+<p>These functions ending in <code>h</code> (e.g., <code>point_intervalh</code>, <code>median_qih</code>)
+used to be needed for use with <code><a href='https://rdrr.io/pkg/ggstance/man/stat_summaryh.html'>ggstance::stat_summaryh</a></code>, but are
+no longer necessary because <code><a href='https://ggplot2.tidyverse.org/reference/stat_summary.html'>ggplot2::stat_summary()</a></code> supports
+automatic orientation detection, so they have been deprecated.
+They behave identically to the corresponding function without the <code>h</code>,
+except that when passed a vector, they return a data frame with
+<code>x</code>/<code>xmin</code>/<code>xmax</code> instead of <code>y</code>/<code>ymin</code>/<code>ymax</code>.</p><ul>
+<li><p><code>point_intervalh</code></p></li>
+<li><p><code>mean_qih</code> / <code>median_qih</code> / <code>mode_qih</code></p></li>
+<li><p><code>mean_hdih</code> / <code>median_hdih</code> / <code>mode_hdih</code></p></li>
+<li><p><code>mean_hdcih</code> / <code>median_hdcih</code> / <code>mode_hdcih</code></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="deprecated-arguments-and-column-names"><a class="anchor" href="#deprecated-arguments-and-column-names"></a>Deprecated Arguments and Column Names</h2>
@@ -286,8 +317,8 @@ and <code>.iteration</code> to uniquely identify draws when you do not care abou
 <code>.iteration</code> are still provided for identifying draws <em>within</em> chains, if desired).</p></li>
 </ul>
 
-<p>To translate to/from the old naming scheme in output, use <code><a href='tidy-format-translators.html'>to_broom_names()</a></code>
-and <code><a href='tidy-format-translators.html'>from_broom_names()</a></code>.</p>
+<p>To translate to/from the old naming scheme in output, use <code><a href='http://mjskay.github.io/ggdist/reference/tidy-format-translators.html'>to_broom_names()</a></code>
+and <code><a href='http://mjskay.github.io/ggdist/reference/tidy-format-translators.html'>from_broom_names()</a></code>.</p>
 <p>Many of these names were updated in version 1.0 in order to
 make terminology more consistent and in order to satisfy these criteria:</p>
 <ul>

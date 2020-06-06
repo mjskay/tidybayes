@@ -50,7 +50,7 @@ dir.create("models", showWarnings = FALSE)
 
 ## Introduction
   
-This vignette describes how to use the `tidybayes` package to extract [tidy](http://dx.doi.org/10.18637/jss.v059.i10) data frames of draws from posterior distributions of model variables, fits, and predictions from `brms::brm`. For a more general introduction to `tidybayes` and its use on general-purpose Bayesian modeling languages (like Stan and JAGS), see `vignette("tidybayes")`.
+This vignette describes how to use the `tidybayes` and `ggdist` packages to extract and visualize [tidy](http://dx.doi.org/10.18637/jss.v059.i10) data frames of draws from posterior distributions of model variables, fits, and predictions from `brms::brm`. For a more general introduction to `tidybayes` and its use on general-purpose Bayesian modeling languages (like Stan and JAGS), see `vignette("tidybayes")`. 
 
 
 ## Setup
@@ -64,6 +64,7 @@ library(purrr)
 library(forcats)
 library(tidyr)
 library(modelr)
+library(ggdist)
 library(tidybayes)
 library(ggplot2)
 library(cowplot)
@@ -299,7 +300,7 @@ m %>%
 
 ## Plotting point summaries and intervals
 
-Plotting point summaries and with one interval is straightforward using `geom_pointinterval()`:
+Plotting point summaries and with one interval is straightforward using `ggdist::geom_pointinterval()`:
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 m %>%
@@ -320,7 +321,7 @@ m %>%
   median_qi(condition_mean = b_Intercept + r_condition, .width = c(.95, .8, .5))
 ```
 
-The results are in a tidy format: one row per group and uncertainty interval width (`.width`). This facilitates plotting. For example, assigning `-.width` to the `size` aesthetic will show all intervals, making thicker lines correspond to smaller intervals. The `geom_pointinterval()` geom automatically sets the `size` aesthetic appropriately based on the `.width` column in the data to produce plots of points with multiple probability levels:
+The results are in a tidy format: one row per group and uncertainty interval width (`.width`). This facilitates plotting. For example, assigning `-.width` to the `size` aesthetic will show all intervals, making thicker lines correspond to smaller intervals. The `ggdist::geom_pointinterval()` geom automatically sets the `size` aesthetic appropriately based on the `.width` column in the data to produce plots of points with multiple probability levels:
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 m %>%
@@ -333,7 +334,7 @@ m %>%
 
 ## Intervals with densities
 
-To see the density along with the intervals, we can use `stat_eye()` ("eye plots", which combine intervals with violin plots), or `stat_halfeye()` (interval + density plots):
+To see the density along with the intervals, we can use `ggdist::stat_eye()` ("eye plots", which combine intervals with violin plots), or `ggdist::stat_halfeye()` (interval + density plots):
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 m %>%
@@ -343,7 +344,7 @@ m %>%
   stat_halfeye()
 ```
 
-Or say you want to annotate portions of the densities in color; the `fill` aesthetic can vary within a slab in all geoms and stats in the `geom_slabinterval()` family, including `stat_halfeye()`. For example, if you want to annotate a domain-specific region of practical equivalence (ROPE), you could do something like this:
+Or say you want to annotate portions of the densities in color; the `fill` aesthetic can vary within a slab in all geoms and stats in the `ggdist::geom_slabinterval()` family, including `ggdist::stat_halfeye()`. For example, if you want to annotate a domain-specific region of practical equivalence (ROPE), you could do something like this:
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 m %>%
@@ -358,7 +359,7 @@ m %>%
 
 ## Other visualizations of distributions: `stat_slabinterval`
 
-There are a variety of additional stats for visualizing distributions in the `geom_slabinterval()` family of stats and geoms:
+There are a variety of additional stats for visualizing distributions in the `ggdist::geom_slabinterval()` family of stats and geoms:
 
 <img src="slabinterval_family.png" width="700" alt="The slabinterval family of geoms and stats" />
 
@@ -376,7 +377,7 @@ ABC %>%
   head(10)
 ```
 
-To plot this example, we'll also show the use of `stat_pointinterval()` instead of `geom_pointinterval()`, which summarizes draws into points and intervals within ggplot:
+To plot this example, we'll also show the use of `ggdist::stat_pointinterval()` instead of `ggdist::geom_pointinterval()`, which summarizes draws into points and intervals within ggplot:
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
@@ -391,7 +392,7 @@ ABC %>%
 
 Intervals are nice if the alpha level happens to line up with whatever decision you are trying to make, but getting a shape of the posterior is better (hence eye plots, above). On the other hand, making inferences from density plots is imprecise (estimating the area of one shape as a proportion of another is a hard perceptual task). Reasoning about probability in frequency formats is easier, motivating [quantile dotplots](https://github.com/mjskay/when-ish-is-my-bus/blob/master/quantile-dotplots.md) ([Kay et al. 2016](https://doi.org/10.1145/2858036.2858558), [Fernandes et al. 2018](https://doi.org/10.1145/3173574.3173718)), which also allow precise estimation of arbitrary intervals (down to the dot resolution of the plot, 100 in the example below). 
 
-Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `stat_dots()` is the variant designed for use on samples:
+Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `ggdist::stat_dots()` is the variant designed for use on samples:
 
 ```{r fig.width = med_width, fig.height = med_height}
 ABC %>%
@@ -408,7 +409,7 @@ The idea is to get away from thinking about the posterior as indicating one cano
 
 Where `add_fitted_draws()` is analogous to `brms::fitted.brmsfit()` (or `brms::posterior_linpred()`), `add_predicted_draws()` is analogous to `brms::predict.brmsfit()` (or `brms::posterior_predict()`), giving draws from the posterior predictive distribution.
 
-Here is an example of posterior predictive distributions plotted using `stat_slab()`:
+Here is an example of posterior predictive distributions plotted using `ggdist::stat_slab()`:
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 ABC %>%
@@ -418,7 +419,7 @@ ABC %>%
   stat_slab()
 ```
 
-We could also use `tidybayes::stat_interval()` to plot predictive bands alongside the data:
+We could also use `ggdist::stat_interval()` to plot predictive bands alongside the data:
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 ABC %>%
@@ -454,7 +455,7 @@ ABC %>%
 
 The above approach to posterior predictions integrates over the parameter uncertainty to give a single posterior predictive distribution. Another approach, often used by John Kruschke in his book [Doing Bayesian Data Analysis](https://sites.google.com/site/doingbayesiandataanalysis/), is to attempt to show both the predictive uncertainty and the parameter uncertainty simultaneously by showing several possible predictive distributions implied by the posterior.
 
-We can do this pretty easily by asking for the distributional parameters for a given prediction implied by the posterior. We'll do it explicitly here by setting `dpar = c("mu", "sigma")` in `add_fitted_draws()`. Rather than specifying the parameters explicitly, you can also just set `dpar = TRUE` to get draws from all distributional parameters in a model, and this will work for any response distribution supported by brms. Then, we can select a small number of draws using `sample_draws()` and then use `stat_dist_slab()` to visualize each predictive distribution implied by the values of `mu` and `sigma`:
+We can do this pretty easily by asking for the distributional parameters for a given prediction implied by the posterior. We'll do it explicitly here by setting `dpar = c("mu", "sigma")` in `add_fitted_draws()`. Rather than specifying the parameters explicitly, you can also just set `dpar = TRUE` to get draws from all distributional parameters in a model, and this will work for any response distribution supported by brms. Then, we can select a small number of draws using `sample_draws()` and then use `ggdist::stat_dist_slab()` to visualize each predictive distribution implied by the values of `mu` and `sigma`:
 
 ```{r fig.width = small_width, fig.height = small_height}
 ABC %>%
@@ -645,7 +646,7 @@ By setting `dpar = TRUE`, all distributional parameters are added as additional 
 
 If we wish compare the means from each condition, `compare_levels()` facilitates comparisons of the value of some variable across levels of a factor. By default it computes all pairwise differences. 
 
-Let's demonstrate `compare_levels()` with `stat_halfeye()`:
+Let's demonstrate `compare_levels()` with `ggdist::stat_halfeye()`:
 
 ```{r fig.width = small_width, fig.height = small_height}
 #N.B. the syntax for compare_levels is experimental and may change

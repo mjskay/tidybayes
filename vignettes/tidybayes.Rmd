@@ -50,7 +50,8 @@ dir.create("models", showWarnings = FALSE)
 
 ## Introduction
   
-This vignette introduces the `tidybayes` package, which facilitates the use of tidy data (one observation per row) with Bayesian models in R. This vignette is geared towards working with tidy data in general-purpose modeling functions like JAGS or Stan. For a similar introduction to the use of `tidybayes` with high-level modeling functions such as those in `brms` or `rstanarm`, see <code>[vignette("tidy-brms")](tidy-brms.html)</code> or <code>[vignette("tidy-rstanarm")](tidy-rstanarm.html)</code>.
+This vignette introduces the `tidybayes` package, which facilitates the use of tidy data (one observation per row) with Bayesian models in R. This vignette is geared towards working with tidy data in general-purpose modeling functions like JAGS or Stan. For a similar introduction to the use of `tidybayes` with high-level modeling functions such as those in `brms` or `rstanarm`, see <code>[vignette("tidy-brms")](tidy-brms.html)</code> or <code>[vignette("tidy-rstanarm")](tidy-rstanarm.html)</code>. This vignette also describes how to use
+`ggdist` (the sister package to `tidybayes`) for visualizing model output.
   
 The default output (and sometimes input) data formats of popular modeling functions like JAGS and Stan often don't quite conform to the ideal of [tidy data](http://dx.doi.org/10.18637/jss.v059.i10). For example, input formats might expect a list instead of a data frame, and for all variables to be encoded as numeric values (requiring translation of factors to numeric values and the creation of index variables to store the number of levels per factor or the number of observations in a data frame). Output formats will often be in matrix form (requiring conversion for use with libraries like ggplot), and will use numeric indices (requiring conversion back into factor level names if the you wish to make meaningfully-labeled plots or tables). `tidybayes` automates all of these sorts of tasks.
   
@@ -94,6 +95,7 @@ library(magrittr)
 library(dplyr)
 library(forcats)
 library(modelr)
+library(ggdist)
 library(tidybayes)
 library(ggplot2)
 library(cowplot)
@@ -318,7 +320,7 @@ When given only a single column, `median_qi` will use the names `.lower` and `.u
 
 ### Using `geom_pointinterval`
 
-Plotting medians and intervals is straightforward using `geom_pointinterval()`, which is similar to `ggplot2::geom_pointrange()` but with sensible defaults for multiple intervals (functionality we will use later):
+Plotting medians and intervals is straightforward using `ggdist::geom_pointinterval()`, which is similar to `ggplot2::geom_pointrange()` but with sensible defaults for multiple intervals (functionality we will use later):
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
@@ -330,7 +332,7 @@ m %>%
 
 ### Using `stat_pointinterval``
 
-Rather than summarizing the posterior before calling ggplot, we could also use `stat_pointinterval()` to perform the summary within ggplot:
+Rather than summarizing the posterior before calling ggplot, we could also use `ggdist::stat_pointinterval()` to perform the summary within ggplot:
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
@@ -339,11 +341,11 @@ m %>%
   stat_pointinterval()
 ```
 
-These functions have `.width = c(.66, .95)` by default (showing 66% and 95% intervals), but this can be changed by passing a `.width` argument to `stat_pointinterval()`.
+These functions have `.width = c(.66, .95)` by default (showing 66% and 95% intervals), but this can be changed by passing a `.width` argument to `ggdist::stat_pointinterval()`.
 
 ### Intervals with posterior violins ("eye plots"): `stat_eye`
 
-The `stat_eye()` geom provides a shortcut to generating "eye plots" (combinations of intervals and densities, drawn as violin plots):
+The `ggdist::stat_eye()` geom provides a shortcut to generating "eye plots" (combinations of intervals and densities, drawn as violin plots):
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 m %>%
@@ -354,7 +356,7 @@ m %>%
 
 ### Intervals with posterior densities ("half-eye plots"): `stat_halfeye`
 
-If you prefer densities over violins, you can use `stat_halfeye()`. This example also demonstrates how to change the interval probability (here, to 90% and 50% intervals):
+If you prefer densities over violins, you can use `ggdist::stat_halfeye()`. This example also demonstrates how to change the interval probability (here, to 90% and 50% intervals):
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 m %>%
@@ -363,7 +365,7 @@ m %>%
   stat_halfeye(.width = c(.90, .5))
 ```
 
-Or say you want to annotate portions of the densities in color; the `fill` aesthetic can vary within a slab in all geoms and stats in the `geom_slabinterval()` family, including `stat_halfeye()`. For example, if you want to annotate a domain-specific region of practical equivalence (ROPE), you could do something like this:
+Or say you want to annotate portions of the densities in color; the `fill` aesthetic can vary within a slab in all geoms and stats in the `ggdist::geom_slabinterval()` family, including `ggdist::stat_halfeye()`. For example, if you want to annotate a domain-specific region of practical equivalence (ROPE), you could do something like this:
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 m %>%
@@ -376,7 +378,7 @@ m %>%
 
 ### Other visualizations of distributions: `stat_slabinterval`
 
-There are a variety of additional stats for visualizing distributions in the `geom_slabinterval()` family of stats and geoms:
+There are a variety of additional stats for visualizing distributions in the `ggdist::geom_slabinterval()` family of stats and geoms:
 
 <img src="slabinterval_family.png" width="700" alt="The slabinterval family of geoms and stats" />
 
@@ -403,7 +405,7 @@ m %>%
   geom_pointinterval()
 ```
 
-`geom_pointinterval()` includes 
+`ggdist::geom_pointinterval()` includes 
 `size = -.width` as a default aesthetic mapping to facilitate exactly this usage. This, the above can be simplified to:
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
@@ -414,7 +416,7 @@ m %>%
   geom_pointinterval()
 ```
 
-Just as the `point_interval()` functions can generate an arbitrary number of intervals per distribution, so too can `geom_pointinterval()` draw an arbitrary number of intervals, though in most cases this starts to get pretty silly (and will require the use of `interval_size_range =`, which determines the minimum and maximum line thickness, to make it legible). Here it is with 3:
+Just as the `point_interval()` functions can generate an arbitrary number of intervals per distribution, so too can `ggdist::geom_pointinterval()` draw an arbitrary number of intervals, though in most cases this starts to get pretty silly (and will require the use of `interval_size_range =`, which determines the minimum and maximum line thickness, to make it legible). Here it is with 3:
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 m %>%
@@ -428,7 +430,7 @@ m %>%
 
 Intervals are nice if the alpha level happens to line up with whatever decision you are trying to make, but getting a shape of the posterior is better (hence eye plots, above). On the other hand, making inferences from density plots is imprecise (estimating the area of one shape as a proportion of another is a hard perceptual task). Reasoning about probability in frequency formats is easier, motivating [quantile dotplots](https://github.com/mjskay/when-ish-is-my-bus/blob/master/quantile-dotplots.md) ([Kay et al. 2016](https://doi.org/10.1145/2858036.2858558), [Fernandes et al. 2018](https://doi.org/10.1145/3173574.3173718)), which also allow precise estimation of arbitrary intervals (down to the dot resolution of the plot, 100 in the example below). 
 
-Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `stat_dots()` is the variant designed for use on samples:
+Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `ggdist::stat_dots()` is the variant designed for use on samples:
 
 ```{r fig.width = med_width, fig.height = med_height}
 m %>%
@@ -495,7 +497,7 @@ m %>%
 
 ## Posterior predictions
 
-We can use combinations of variables with difference indices to generate predictions from the model. In this case, we can combine the condition means with the residual standard deviation to generate predictive distributions from the model, then show the distributions using `stat_slab()`:
+We can use combinations of variables with difference indices to generate predictions from the model. In this case, we can combine the condition means with the residual standard deviation to generate predictive distributions from the model, then show the distributions using `ggdist::stat_slab()`:
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 m %>%
@@ -626,7 +628,7 @@ m_mpg = brm(
 )
 ```
 
-We can draw fit curves with probability bands using `add_fitted_draws()` and `stat_lineribbon()`:
+We can draw fit curves with probability bands using `add_fitted_draws()` and `ggdist::stat_lineribbon()`:
 
 ```{r}
 mtcars %>%
@@ -714,7 +716,7 @@ Functions from other packages might expect draws in the form of a data frame or 
 
 It may be desirable to use the `spread_draws()` or `gather_draws()` functions to transform your draws in some way, and then convert them *back* into the draw $\times$ variable format to pass them into functions from other packages, like `bayesplot`. The `unspread_draws()` and `ungather_draws()` functions invert `spread_draws()` and `gather_draws()` to return a data frame with variable column names that include indices in them and draws as rows.
 
-As an example, let's re-do the previous example of `compare_levels()`, but use `bayesplot::mcmc_areas()` to plot the results instead of `stat_eye()`. First, the result of `compare_levels()` looks like this:
+As an example, let's re-do the previous example of `compare_levels()`, but use `bayesplot::mcmc_areas()` to plot the results instead of `ggdist::stat_eye()`. First, the result of `compare_levels()` looks like this:
 
 ```{r}
 m %>%

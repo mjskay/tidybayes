@@ -117,12 +117,6 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/freq-uncertainty-vis.html">Frequentist uncertainty visualization</a>
-    </li>
-    <li>
-      <a href="articles/slabinterval.html">Slab + interval stats and geoms</a>
-    </li>
-    <li>
       <a href="articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a>
     </li>
     <li>
@@ -177,16 +171,16 @@
 <h2 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h2>
 <div class="sourceCode" id="cb1"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)</pre></html></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co">## -- Attaching packages ------------------------------------------------------------ tidyverse 1.2.1 --</span></a>
-<a class="sourceLine" id="cb2-2" title="2"></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="co">## v ggplot2 3.2.1     v purrr   0.3.2</span></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="co">## v tibble  2.1.3     v dplyr   0.8.3</span></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="co">## v tidyr   1.0.0     v stringr 1.4.0</span></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="co">## v readr   1.3.1     v forcats 0.4.0</span></a>
-<a class="sourceLine" id="cb2-7" title="7"></a>
-<a class="sourceLine" id="cb2-8" title="8"><span class="co">## -- Conflicts --------------------------------------------------------------- tidyverse_conflicts() --</span></a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="co">## x dplyr::filter() masks stats::filter()</span></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="co">## x dplyr::lag()    masks stats::lag()</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">## -- Attaching packages ------------------------------------------------------------ tidyverse 1.2.1 --</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">## v ggplot2 3.2.1     v purrr   0.3.2</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">## v tibble  2.1.3     v dplyr   0.8.3</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">## v tidyr   1.0.0     v stringr 1.4.0</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">## v readr   1.3.1     v forcats 0.4.0</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">## -- Conflicts --------------------------------------------------------------- tidyverse_conflicts() --</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co">## x dplyr::filter() masks stats::filter()</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co">## x dplyr::lag()    masks stats::lag()</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidybayes</span>)</pre></html></div>
 </div>
 <div id="spreadgather_draws" class="section level2">
@@ -216,28 +210,28 @@
 ) <span class="kw">%&gt;%</span>
   <span class="fu">as_tibble</span>()
 <span class="no">df</span></pre></html></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">## # A tibble: 50,000 x 15</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="co">##    .chain .iteration .draw `a[2]`  `b[2]` `c[2]`  `d[2]`  `e[2]` `f[2]`</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="co">##    &lt;lgl&gt;  &lt;lgl&gt;      &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="co">##  1 NA     NA             1 -1.21   0.491  -1.42   0.892  -0.553  -0.276</span></a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="co">##  2 NA     NA             2  0.277  0.0250  0.317 -0.573  -1.13    0.919</span></a>
-<a class="sourceLine" id="cb5-6" title="6"><span class="co">##  3 NA     NA             3  1.08   1.30    0.728  0.0640  0.0360 -1.02 </span></a>
-<a class="sourceLine" id="cb5-7" title="7"><span class="co">##  4 NA     NA             4 -2.35  -0.235  -1.90   0.0434 -1.17   -1.42 </span></a>
-<a class="sourceLine" id="cb5-8" title="8"><span class="co">##  5 NA     NA             5  0.429 -0.453  -1.14   1.80    0.0443 -0.660</span></a>
-<a class="sourceLine" id="cb5-9" title="9"><span class="co">##  6 NA     NA             6  0.506 -0.0111  0.577 -2.58    0.269   0.296</span></a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="co">##  7 NA     NA             7 -0.575  0.933   0.198 -0.218  -0.182  -0.906</span></a>
-<a class="sourceLine" id="cb5-11" title="11"><span class="co">##  8 NA     NA             8 -0.547 -0.729   1.07   2.15   -1.27   -1.05 </span></a>
-<a class="sourceLine" id="cb5-12" title="12"><span class="co">##  9 NA     NA             9 -0.564  1.40    0.626  1.11    0.738  -0.778</span></a>
-<a class="sourceLine" id="cb5-13" title="13"><span class="co">## 10 NA     NA            10 -0.890 -0.0584 -0.700 -0.956  -2.27    1.02 </span></a>
-<a class="sourceLine" id="cb5-14" title="14"><span class="co">## # ... with 49,990 more rows, and 6 more variables: `g[2]` &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb5-15" title="15"><span class="co">## #   `h[2]` &lt;dbl&gt;, `i[2]` &lt;dbl&gt;, `j[2]` &lt;dbl&gt;, `k[2]` &lt;dbl&gt;, `l[2]` &lt;dbl&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">## # A tibble: 50,000 x 15</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co">##    .chain .iteration .draw `a[2]`  `b[2]` `c[2]`  `d[2]`  `e[2]` `f[2]`</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">##    &lt;lgl&gt;  &lt;lgl&gt;      &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">##  1 NA     NA             1 -1.21   0.491  -1.42   0.892  -0.553  -0.276</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co">##  2 NA     NA             2  0.277  0.0250  0.317 -0.573  -1.13    0.919</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co">##  3 NA     NA             3  1.08   1.30    0.728  0.0640  0.0360 -1.02 </span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="co">##  4 NA     NA             4 -2.35  -0.235  -1.90   0.0434 -1.17   -1.42 </span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co">##  5 NA     NA             5  0.429 -0.453  -1.14   1.80    0.0443 -0.660</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co">##  6 NA     NA             6  0.506 -0.0111  0.577 -2.58    0.269   0.296</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co">##  7 NA     NA             7 -0.575  0.933   0.198 -0.218  -0.182  -0.906</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="co">##  8 NA     NA             8 -0.547 -0.729   1.07   2.15   -1.27   -1.05 </span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="co">##  9 NA     NA             9 -0.564  1.40    0.626  1.11    0.738  -0.778</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co">## 10 NA     NA            10 -0.890 -0.0584 -0.700 -0.956  -2.27    1.02 </span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="co">## # ... with 49,990 more rows, and 6 more variables: `g[2]` &lt;dbl&gt;,</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a><span class="co">## #   `h[2]` &lt;dbl&gt;, `i[2]` &lt;dbl&gt;, `j[2]` &lt;dbl&gt;, `k[2]` &lt;dbl&gt;, `l[2]` &lt;dbl&gt;</span></span></code></pre></div>
 <div id="spreading-with-indices" class="section level3">
 <h3 class="hasAnchor">
 <a href="#spreading-with-indices" class="anchor"></a>Spreading with indices</h3>
 <p>This should be fairly fast. Last test was ~= 0.03 seconds on <code>monarch</code>.</p>
 <div class="sourceCode" id="cb6"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="reference/spread_draws.html">spread_draws</a></span>(<span class="no">df</span>, <span class="no">`.`</span>[<span class="no">index</span>], <span class="kw">regex</span> <span class="kw">=</span> <span class="fl">TRUE</span>))</pre></html></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co">##    user  system elapsed </span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="co">##    0.05    0.00    0.04</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">##    user  system elapsed </span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co">##    0.05    0.00    0.04</span></span></code></pre></div>
 <div id="separate-spec-version" class="section level4">
 <h4 class="hasAnchor">
 <a href="#separate-spec-version" class="anchor"></a>Separate-spec version</h4>
@@ -246,30 +240,30 @@
   <span class="no">a</span>[<span class="no">index</span>], <span class="no">b</span>[<span class="no">index</span>], <span class="no">c</span>[<span class="no">index</span>], <span class="no">d</span>[<span class="no">index</span>], <span class="no">e</span>[<span class="no">index</span>], <span class="no">f</span>[<span class="no">index</span>],
   <span class="no">g</span>[<span class="no">index</span>], <span class="no">h</span>[<span class="no">index</span>], <span class="no">i</span>[<span class="no">index</span>], <span class="no">j</span>[<span class="no">index</span>], <span class="no">k</span>[<span class="no">index</span>], <span class="no">l</span>[<span class="no">index</span>]
 ))</pre></html></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co">##    user  system elapsed </span></a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="co">##    0.33    0.05    0.37</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">##    user  system elapsed </span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">##    0.33    0.05    0.37</span></span></code></pre></div>
 </div>
 <div id="using-gather_draws" class="section level4">
 <h4 class="hasAnchor">
 <a href="#using-gather_draws" class="anchor"></a>Using gather_draws</h4>
 <p>This is slower than the spread_draws version even though it shouldn’t really have to be. This is a result of spread_draws_long_ doing a spread that is later undone by gather_draws. Could either use a flag to skip this (although that is a little complicated as the <code><a href="https://rdrr.io/r/base/Logic.html">|</a></code> syntax might need the spread anyway) or rely on switching to nesting throughout the entire pipeline to just make the spread/gather round trip not so costly. Last test was ~= 0.13 seconds on <code>monarch</code>.</p>
 <div class="sourceCode" id="cb10"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="reference/spread_draws.html">gather_draws</a></span>(<span class="no">df</span>, <span class="no">`.`</span>[<span class="no">index</span>], <span class="kw">regex</span> <span class="kw">=</span> <span class="fl">TRUE</span>))</pre></html></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co">##    user  system elapsed </span></a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="co">##    0.13    0.03    0.16</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">##    user  system elapsed </span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="co">##    0.13    0.03    0.16</span></span></code></pre></div>
 </div>
 </div>
 <div id="array-columns" class="section level3">
 <h3 class="hasAnchor">
 <a href="#array-columns" class="anchor"></a>Array columns</h3>
 <p>This tends to be slower than spreading without array columns. Last test was ~0.08 seconds on <code>monarch</code>.</p>
-<div class="sourceCode" id="cb12"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">RankCorr</span>)
+<div class="sourceCode" id="cb12"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">RankCorr</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"ggdist"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="reference/spread_draws.html">spread_draws</a></span>(<span class="no">RankCorr</span>, <span class="no">b</span>[<span class="no">.</span>,<span class="no">.</span>]))</pre></html></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co">##    user  system elapsed </span></a>
-<a class="sourceLine" id="cb13-2" title="2"><span class="co">##    0.07    0.00    0.06</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">##    user  system elapsed </span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="co">##    0.07    0.00    0.06</span></span></code></pre></div>
 <p>And this is currently very slow. Last test was ~0.5 seconds on <code>monarch</code>.</p>
 <div class="sourceCode" id="cb14"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="reference/spread_draws.html">spread_draws</a></span>(<span class="no">df</span>, <span class="no">a</span>[<span class="no">.</span>]))</pre></html></div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">##    user  system elapsed </span></a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="co">##    0.47    0.06    0.53</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">##    user  system elapsed </span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="co">##    0.47    0.06    0.53</span></span></code></pre></div>
 </div>
 </div>
 </div>

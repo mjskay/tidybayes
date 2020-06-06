@@ -34,37 +34,10 @@
     <loc>http://mjskay.github.io/tidybayes/reference/gather_variables.html</loc>
   </url>
   <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/geom_dotsinterval.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/geom_eye.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/geom_interval.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/geom_lineribbon.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/geom_pointinterval.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/geom_slabinterval.html</loc>
-  </url>
-  <url>
     <loc>http://mjskay.github.io/tidybayes/reference/get_variables.html</loc>
   </url>
   <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/lkjcorr_marginal.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/marginalize_lkjcorr.html</loc>
-  </url>
-  <url>
     <loc>http://mjskay.github.io/tidybayes/reference/n_prefix.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/parse_dist.html</loc>
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/reference/point_interval.html</loc>
@@ -73,49 +46,19 @@
     <loc>http://mjskay.github.io/tidybayes/reference/predict_curve.html</loc>
   </url>
   <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/RankCorr.html</loc>
+    <loc>http://mjskay.github.io/tidybayes/reference/recover_types.html</loc>
   </url>
   <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/recover_types.html</loc>
+    <loc>http://mjskay.github.io/tidybayes/reference/reexports.html</loc>
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/reference/sample_draws.html</loc>
   </url>
   <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/scales.html</loc>
-  </url>
-  <url>
     <loc>http://mjskay.github.io/tidybayes/reference/spread_draws.html</loc>
   </url>
   <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/stat_dist_slabinterval.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/stat_interval.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/stat_lineribbon.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/stat_pointinterval.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/stat_sample_slabinterval.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/stat_slabinterval.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/theme_tidybayes.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/tidy-format-translators.html</loc>
-  </url>
-  <url>
     <loc>http://mjskay.github.io/tidybayes/reference/tidybayes-deprecated.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/tidybayes-ggproto.html</loc>
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/reference/tidybayes-models.html</loc>
@@ -131,12 +74,6 @@
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/reference/x_at_y.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/articles/freq-uncertainty-vis.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/articles/slabinterval.html</loc>
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/articles/tidy-brms.html</loc>
