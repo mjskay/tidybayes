@@ -60,6 +60,10 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
+# cargo: for gifski
+# libudunits2-dev   for units (transformr)
+# libgdal-dev       for sf (transformr)
+          sudo apt-get install jags cargo libudunits2-dev libgdal-dev
 
       - name: Install dependencies
         run: |
