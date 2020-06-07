@@ -658,6 +658,5 @@ have encountered, but I would love to make it cover more\!
 ## Citing `tidybayes`
 
 Matthew Kay (2020). *tidybayes: Tidy Data and Geoms for Bayesian
-Models*. R package version 2.0.3.9000,
-<https://mjskay.github.io/tidybayes/>. DOI:
-[10.5281/zenodo.1308151](https://doi.org/10.5281/zenodo.1308151).
+Models*. R package version 2.1.0, <https://mjskay.github.io/tidybayes/>.
+DOI: [10.5281/zenodo.1308151](https://doi.org/10.5281/zenodo.1308151).
