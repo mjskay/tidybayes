@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -155,13 +155,21 @@
       <small>Source: <a href='https://github.com/mjskay/tidybayes/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="tidybayes-2039000" class="section level1">
-<h1 class="page-header" data-toc-text="2.0.3.9000">
-<a href="#tidybayes-2039000" class="anchor"></a>tidybayes 2.0.3.9000<small> Unreleased </small>
+    <div id="tidybayes-210" class="section level1">
+<h1 class="page-header" data-toc-text="2.1.0">
+<a href="#tidybayes-210" class="anchor"></a>tidybayes 2.1.0<small> Unreleased </small>
 </h1>
 <ul>
+<li>Initial split from tidybayes: ggdist now contains all stats/geoms from tidybayes (except deprecated ones), all support functions for stats/geoms (such as <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">point_interval()</a></code>), <code>vignette("slabinterval")</code>, and <code>vignette("freq-uncertainty-vis")</code>. Tidybayes retains all other functions, and re-exports all <code>ggdist</code> functions for now.</li>
+<li>All stats and geoms now support automatic orientation determination. Thus, all <code>h</code>-suffix geoms are now deprecated. Those geoms have been left in <code>tidybayes</code> and give a deprecation warning when used; they cannot be used from <code>ggdist</code> directly.</li>
+<li>The <code>h</code>-suffix <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">point_interval()</a></code> functions are also deprecated, since they are not needed in tidybayes nor in <code><a href="https://ggplot2.tidyverse.org/reference/stat_summary.html">ggplot2::stat_summary()</a></code>.</li>
 <li>
-<code><a href="http://mjskay.github.io/ggdist/reference/geom_interval.html">geom_interval()</a></code> and <code><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">geom_pointinterval()</a></code> no longer automatically set the <code>ymin</code> and <code>ymax</code> aesthetics in order to work better with automatic orientation detection. <code><a href="../reference/tidybayes-deprecated.html">geom_intervalh()</a></code> and <code><a href="../reference/tidybayes-deprecated.html">geom_pointintervalh()</a></code> still do, since they are deprecated anyway (so supporting the old behavior is fine in these functions).</li>
+<code><a href="http://mjskay.github.io/ggdist/reference/geom_interval.html">geom_interval()</a></code>, <code><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">geom_pointinterval()</a></code>, and <code><a href="http://mjskay.github.io/ggdist/reference/geom_lineribbon.html">geom_lineribbon()</a></code> no longer automatically set the <code>ymin</code> and <code>ymax</code> aesthetics if <code>.lower</code> or <code>.upper</code> are present in the data. This allows them to work better with automatic orientation detection (and was a bad feature to have existed in the first place anyway). The deprecated <code><a href="../reference/tidybayes-deprecated.html">tidybayes::geom_intervalh()</a></code> and <code><a href="../reference/tidybayes-deprecated.html">tidybayes::geom_pointintervalh()</a></code> still automatically set those aesthetics, since they are deprecated anyway (so supporting the old behavior is fine in these functions).</li>
+<li>
+<code><a href="http://mjskay.github.io/ggdist/reference/geom_lineribbon.html">geom_lineribbon()</a></code>/<code><a href="http://mjskay.github.io/ggdist/reference/stat_lineribbon.html">stat_lineribbon()</a></code> now supports a <code>step</code> argument for creating stepped lineribbons. H/T to Solomon Kurz for the suggestion.</li>
+<li>
+<code>ggdist</code> now has its own implementation of the scaled and shifted Student’s t distribution (<code><a href="http://mjskay.github.io/ggdist/reference/student_t.html">dstudent_t()</a></code>, <code><a href="http://mjskay.github.io/ggdist/reference/student_t.html">qstudent_t()</a></code>, etc), since it is very useful for visualizing confidence distributions. That is re-exported in <code>tidybayes</code> as well`.</li>
+<li>All deprecated functions and geoms now throw deprecation warnings (previously, several deprecated functions did not).</li>
 </ul>
 </div>
     <div id="tidybayes-203" class="section level1">

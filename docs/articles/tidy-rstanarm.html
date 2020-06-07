@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
       </span>
     </div>
 
@@ -653,9 +653,7 @@ img {
 <p><img src="tidy-rstanarm_files/figure-html/unnamed-chunk-34-1.png" width="648"></p>
 <p>Or we can create animated <a href="https://mucollective.northwestern.edu/project/hops-trends">hypothetical outcome plots (HOPs)</a> of fit lines:</p>
 <div class="sourceCode" id="cb56"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123456</span>)
-<span class="co"># to keep the example small we use 20 frames, </span>
-<span class="co"># but something like 100 would be better</span>
-<span class="no">ndraws</span> <span class="kw">=</span> <span class="fl">20</span>
+<span class="no">ndraws</span> <span class="kw">=</span> <span class="fl">50</span>
 
 <span class="no">p</span> <span class="kw">=</span> <span class="no">mtcars</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="no">cyl</span>) <span class="kw">%&gt;%</span>
@@ -781,7 +779,7 @@ Pr(Y = j) &amp;= Pr(Y \le j) - Pr(Y \le j - 1)\\
 <p>For example, the threshold vector from one row of this data frame (i.e., from one draw from the posterior) looks like this:</p>
 <div class="sourceCode" id="cb67"><html><body><pre class="r"><span class="no">thresholds</span>[<span class="fl">1</span>,]$<span class="no">threshold</span></pre></body></html></div>
 <pre><code>## [[1]]
-## [1] -0.8525933  0.3726449  1.3601501        Inf</code></pre>
+## [1] -0.7971541  0.3208580  1.6155096        Inf</code></pre>
 <p>We can combine those thresholds (the <span class="math inline">\(\alpha_j\)</span> values from the above formula) with the <code>.value</code> from <code><a href="../reference/add_predicted_draws.html">add_fitted_draws()</a></code> (<span class="math inline">\(\beta x\)</span> from the above formula) to calculate per-category probabilities:</p>
 <div class="sourceCode" id="cb69"><html><body><pre class="r"><span class="no">esoph</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span>(<span class="no">agegp</span>) <span class="kw">%&gt;%</span>
