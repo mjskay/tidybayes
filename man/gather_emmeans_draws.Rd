@@ -21,7 +21,7 @@ gather_emmeans_draws(object, value = ".value", ...)
 
 \item{...}{Additional arguments passed to the underlying method for the type of object given.}
 
-\item{grid}{If \code{object} is an \code{\link[emmeans:emm_list]{emmeans::emm_list()}}, the name of the output column to use to contain the name of the
+\item{grid}{If \code{object} is an \code{\link[emmeans:emm_list-object]{emmeans::emm_list()}}, the name of the output column to use to contain the name of the
 reference grid that a given row corresponds to. Defaults to \code{".grid"}.}
 }
 \value{
@@ -30,7 +30,7 @@ additional column called \code{.value} (by default) containing marginal draws. T
 frame is grouped by the columns from the reference grid to make use of summary functions like
 \code{\link[=point_interval]{point_interval()}} straightforward.
 
-If \code{object} is an \code{\link[emmeans:emm_list]{emmeans::emm_list()}}, which contains estimates from different reference grids,
+If \code{object} is an \code{\link[emmeans:emm_list-object]{emmeans::emm_list()}}, which contains estimates from different reference grids,
 an additional column with the default name of \code{".grid"} is added to indicate the reference grid for each row in the output.
 The name of this column is controlled by the \code{grid} argument.
 }

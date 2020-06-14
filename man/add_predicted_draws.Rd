@@ -204,7 +204,7 @@ model given.}
 
 \item{re_formula}{formula containing group-level effects to be considered in the prediction.
 If \code{NULL} (default), include all group-level effects; if \code{NA}, include no group-level effects.
-Some model types (such as \link[brms:brmsfit]{brms::brmsfit} and \link[rstanarm:stanreg-objects]{rstanarm::stanreg-objects}) allow
+Some model types (such as \link[brms:brmsfit-class]{brms::brmsfit} and \link[rstanarm:stanreg-objects]{rstanarm::stanreg-objects}) allow
 marginalizing over grouping factors by specifying new levels of a factor in \code{newdata}. In the case of
 \code{\link[brms:brm]{brms::brm()}}, you must also pass \code{allow_new_levels = TRUE} here to include new levels (see
 \code{\link[brms:predict.brmsfit]{brms::predict.brmsfit()}}).}
@@ -256,11 +256,11 @@ the data frame in a long format.
 }
 \details{
 \code{add_fitted_draws} adds draws from (possibly transformed) posterior linear predictors (or "link-level" predictors) to
-the data. It corresponds to \code{\link[rstanarm:posterior_linpred]{rstanarm::posterior_linpred()}} in \code{rstanarm} or
+the data. It corresponds to \code{\link[rstanarm:posterior_linpred.stanreg]{rstanarm::posterior_linpred()}} in \code{rstanarm} or
 \code{\link[brms:fitted.brmsfit]{brms::fitted.brmsfit()}} in \code{brms}.
 
 \code{add_predicted_draws} adds draws from posterior predictions to
-the data. It corresponds to \code{\link[rstanarm:posterior_predict]{rstanarm::posterior_predict()}} in \code{rstanarm} or
+the data. It corresponds to \code{\link[rstanarm:posterior_predict.stanreg]{rstanarm::posterior_predict()}} in \code{rstanarm} or
 \code{\link[brms:predict.brmsfit]{brms::predict.brmsfit()}} in \code{brms}.
 
 \code{add_fitted_draws} and \code{fitted_draws} are alternate spellings of the
@@ -273,7 +273,7 @@ are the preferred spellings.
 
 \code{add_linpred_draws} and \code{linpred_draws} are alternative spellings of \code{fitted_draws}
 and \code{add_fitted_draws} for consistency with \code{rstanarm} terminology (specifically
-\code{\link[rstanarm:posterior_linpred]{rstanarm::posterior_linpred()}}).
+\code{\link[rstanarm:posterior_linpred.stanreg]{rstanarm::posterior_linpred()}}).
 }
 \examples{
 \donttest{

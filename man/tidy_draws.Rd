@@ -61,8 +61,8 @@ function, provide support for extracting variable dimensions are so are often mo
 
 To provide support for new models in tidybayes,
 you must provide an implementation of this function \emph{or} an implementation
-of \code{\link[coda:as.mcmc.list]{coda::as.mcmc.list()}} (\code{tidy_draws} should work on any model
-with an implementation of \code{\link[coda:as.mcmc.list]{coda::as.mcmc.list()}})
+of \code{\link[coda:mcmc.list]{coda::as.mcmc.list()}} (\code{tidy_draws} should work on any model
+with an implementation of \code{\link[coda:mcmc.list]{coda::as.mcmc.list()}})
 
 \code{tidy_draws} can be applied to a data frame that is already a tidy-format data frame
 of draws, provided it has one row per draw. In other words, it can be applied to data frames
