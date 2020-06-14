@@ -13,15 +13,11 @@ is not affected.
 
 ## Test environments
 * Windows 10 (local), R-release 4.0.0
-* Windows (github), R-devel 2020-06-05 r78647
+* Windows 10 (local), R-devel 2020-06-03 r78637
 * Windows (github), R-release 4.0.1
-* Linux (github), R-release 4.0.1
+* Windows (github), R-devel 2020-06-12 r78687
 * MacOs (github), R-release 4.0.0
-
-
-* Windows 10 (local), R-devel 2020-03-16 r77936
-* Windows (win-builder), R-release 3.6.3
-* Windows (win-builder), R-devel
+* Linux (github), R-release 4.0.1
 
 ## R CMD check results
 0 errors | 0 warnings | 0 notes
