@@ -1,7 +1,7 @@
 Package: tidybayes
 Title: Tidy Data and 'Geoms' for Bayesian Models
 Version: 2.1.0
-Date: 2020-06-06
+Date: 2020-06-14
 Authors@R: c(
         person("Matthew", "Kay", role = c("aut", "cre"), email = "mjskay@umich.edu"),
         person("Timothy", "Mastny", role = "ctb", email = "tim.mastny@gmail.com")
@@ -61,8 +61,6 @@ Suggests:
     png,
     pkgdown,
     transformr
-Remotes:
-    mjskay/ggdist
 License: GPL (>= 3)
 Language: en-US
 BugReports: https://github.com/mjskay/tidybayes/issues/new
