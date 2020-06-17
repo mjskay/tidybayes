@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@
       <h1 data-toc-skip>Extracting and visualizing tidy residuals from Bayesian models</h1>
                         <h4 class="author">Matthew Kay</h4>
             
-            <h4 class="date">2020-06-14</h4>
+            <h4 class="date">2020-06-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mjskay/tidybayes/blob/master/vignettes/tidybayes-residuals.Rmd"><code>vignettes/tidybayes-residuals.Rmd</code></a></small>
       <div class="hidden name"><code>tidybayes-residuals.Rmd</code></div>
@@ -648,8 +648,14 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
 <h2 class="hasAnchor">
 <a href="#a-function-for-probability-residuals" class="anchor"></a>A function for probability residuals</h2>
 <p>Here’s a function that can calculate randomized probability residuals for you. A future version of <code>tidybayes</code> will likely supply some variant of this function, but for now, since it is experimental, I have not folded it into the main package yet. Use at your own risk:</p>
-<div class="sourceCode" id="cb51"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rlang</span>)
-<span class="no">make_probability_residuals</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">data</span>, <span class="no">prediction</span>, <span class="no">y</span>, <span class="no">y_upper</span> <span class="kw">=</span> <span class="fl">NA</span>, <span class="no">n</span> <span class="kw">=</span> <span class="fl">1</span>) {
+<div class="sourceCode" id="cb51"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rlang</span>)</pre></body></html></div>
+<pre><code>## 
+## Attaching package: 'rlang'</code></pre>
+<pre><code>## The following objects are masked from 'package:purrr':
+## 
+##     %@%, as_function, flatten, flatten_chr, flatten_dbl, flatten_int, flatten_lgl, flatten_raw, invoke,
+##     list_along, modify, prepend, splice</code></pre>
+<div class="sourceCode" id="cb54"><html><body><pre class="r"><span class="no">make_probability_residuals</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">data</span>, <span class="no">prediction</span>, <span class="no">y</span>, <span class="no">y_upper</span> <span class="kw">=</span> <span class="fl">NA</span>, <span class="no">n</span> <span class="kw">=</span> <span class="fl">1</span>) {
   <span class="no">.prediction</span> <span class="kw">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html">enquo</a></span>(<span class="no">prediction</span>)
   <span class="no">.y</span> <span class="kw">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html">enquo</a></span>(<span class="no">y</span>)
   <span class="no">.y_upper</span> <span class="kw">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html">enquo</a></span>(<span class="no">y_upper</span>)
@@ -685,13 +691,13 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
 <h2 class="hasAnchor">
 <a href="#logistic-regression" class="anchor"></a>Logistic regression</h2>
 <p>Consider a simple dataset with a single binary outcome:</p>
-<div class="sourceCode" id="cb52"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">51919</span>)
+<div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">51919</span>)
 
 <span class="no">bin_df</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">tibble</a></span>(
   <span class="kw">y</span> <span class="kw">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/rbernoulli.html">rbernoulli</a></span>(<span class="fl">100</span>, <span class="fl">.7</span>)
 )</pre></body></html></div>
 <p>A model for this might be the following:</p>
-<div class="sourceCode" id="cb53"><html><body><pre class="r"><span class="no">m_bin</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span>(
+<div class="sourceCode" id="cb56"><html><body><pre class="r"><span class="no">m_bin</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span>(
   <span class="no">y</span> ~ <span class="fl">1</span>,
   <span class="kw">data</span> <span class="kw">=</span> <span class="no">bin_df</span>,
   <span class="kw">family</span> <span class="kw">=</span> <span class="no">bernoulli</span>,
@@ -699,7 +705,7 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
   <span class="kw">file</span> <span class="kw">=</span> <span class="st">"models/tidybayes-residuals_m_bin.rds"</span>  <span class="co"># cache model (can be removed)</span>
 )</pre></body></html></div>
 <p>Again, standard residuals are hard to interpret:</p>
-<div class="sourceCode" id="cb54"><html><body><pre class="r"><span class="no">bin_df</span> <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb57"><html><body><pre class="r"><span class="no">bin_df</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/add_predicted_draws.html">add_residual_draws</a></span>(<span class="no">m_bin</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">sample</span> <span class="kw">=</span> <span class="no">.residual</span>)) +
@@ -707,7 +713,7 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq_line</a></span>()</pre></body></html></div>
 <p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-27-1.png" width="648"></p>
 <p>Randomized quantile residuals help us see that the fit is probably reasonable. In this case (just to switch it up), we’ll look at the probability residuals instead, comparing them against a uniform distribution, like so:</p>
-<div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="no">k</span> <span class="kw">=</span> <span class="fl">20</span>
+<div class="sourceCode" id="cb58"><html><body><pre class="r"><span class="no">k</span> <span class="kw">=</span> <span class="fl">20</span>
 
 <span class="no">p</span> <span class="kw">=</span> <span class="no">bin_df</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/add_predicted_draws.html">add_predicted_draws</a></span>(<span class="no">m_bin</span>) <span class="kw">%&gt;%</span>
@@ -720,7 +726,7 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
 ## Please use `quo_get_expr()` instead.
 ## This warning is displayed once per session.</code></pre>
 <pre><code>## `summarise()` regrouping output by 'y' (override with `.groups` argument)</code></pre>
-<div class="sourceCode" id="cb58"><html><body><pre class="r"><span class="fu"><a href="https://gganimate.com/reference/animate.html">animate</a></span>(<span class="no">p</span>, <span class="kw">nframes</span> <span class="kw">=</span> <span class="no">k</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">384</span>, <span class="kw">height</span> <span class="kw">=</span> <span class="fl">384</span>, <span class="kw">res</span> <span class="kw">=</span> <span class="fl">96</span>, <span class="kw">dev</span> <span class="kw">=</span> <span class="st">"png"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"cairo"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb61"><html><body><pre class="r"><span class="fu"><a href="https://gganimate.com/reference/animate.html">animate</a></span>(<span class="no">p</span>, <span class="kw">nframes</span> <span class="kw">=</span> <span class="no">k</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">384</span>, <span class="kw">height</span> <span class="kw">=</span> <span class="fl">384</span>, <span class="kw">res</span> <span class="kw">=</span> <span class="fl">96</span>, <span class="kw">dev</span> <span class="kw">=</span> <span class="st">"png"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"cairo"</span>)</pre></body></html></div>
 <p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-28-1.gif"><!-- --></p>
 </div>
   </div>

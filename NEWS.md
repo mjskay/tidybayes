@@ -1,4 +1,4 @@
-# tidybayes 2.1.0
+# tidybayes 2.1.1
 
 * Initial split of `tidybayes` into `tidybayes` and `ggdist` (#250). `ggdist` now contains all stats/geoms from
   tidybayes (except deprecated ones), all support functions for stats/geoms (such as `point_interval()`),
