@@ -1,3 +1,9 @@
+## Resubmission
+
+This is a resubmission: ggdist had not hit all platforms before the original submission, so
+one pre-check failed. ggdist appears to be available on all platforms now, so I am
+re-submitting.
+
 ## Submission comments
 This is a new submission as part of splitting tidybayes (already on CRAN) into two parts.
 The tidybayes package has grown into two related, large pieces of functionality: (1) functions
