@@ -23,8 +23,11 @@ do not.
 \item \code{\link[MCMCglmm:MCMCglmm]{MCMCglmm::MCMCglmm()}} models
 \item \code{\link[coda:mcmc]{coda::mcmc()}} and \code{\link[coda:mcmc.list]{coda::mcmc.list()}} objects, which are output by several model
 types.
-\item Any object with an implementation of \code{\link[coda:mcmc.list]{coda::as.mcmc.list()}}. For a list of those available in your
-environment, run \code{methods(as.mcmc.list)}
+\item \link[posterior:draws]{posterior::draws} objects
+\item Any object with an implementation of \code{\link[posterior:draws_df]{posterior::as_draws_df()}} or \code{\link[posterior:draws]{posterior::as_draws()}}.
+For a list of those available in your environment, run \code{methods(as_draws_df)} or \code{methods(as_draws)}
+\item Any object with an implementation of \code{\link[coda:mcmc.list]{coda::as.mcmc.list()}}.
+For a list of those available in your environment, run \code{methods(as.mcmc.list)}
 }
 
 If you install the \href{https://mjskay.github.io/tidybayes.rethinking/}{tidybayes.rethinking} package, models from

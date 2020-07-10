@@ -3,6 +3,7 @@
 \name{tidy_draws}
 \alias{tidy_draws}
 \alias{tidy_draws.default}
+\alias{tidy_draws.draws}
 \alias{tidy_draws.data.frame}
 \alias{tidy_draws.mcmc.list}
 \alias{tidy_draws.stanfit}
@@ -17,6 +18,8 @@
 tidy_draws(model, ...)
 
 \method{tidy_draws}{default}(model, ...)
+
+\method{tidy_draws}{draws}(model, ...)
 
 \method{tidy_draws}{data.frame}(model, ...)
 

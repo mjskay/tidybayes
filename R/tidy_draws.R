@@ -57,8 +57,31 @@ tidy_draws = function(model, ...) UseMethod("tidy_draws")
 
 #' @rdname tidy_draws
 #' @export
+#' @importFrom posterior as_draws_df as_draws
+#' @importFrom coda as.mcmc.list
 tidy_draws.default = function(model, ...) {
-  draws = tidy_draws(as.mcmc.list(model))
+  signature = class(model)
+  if (has_method("as_draws_df", signature)) {
+    draws = as_draws_df(model)
+  } else if (has_method("as_draws", signature)) {
+    draws = as_draws_df(as_draws(model))
+  } else if (has_method("as.mcmc.list", signature)) {
+    draws = tidy_draws(as.mcmc.list(model))
+  } else {
+    stop(
+      "Don't know how to convert an object of class ", deparse0(signature), "\n",
+      "into a tidy data frame of draws. See help(\"tidybayes-models\") for a list\n",
+      "of models supported by tidy_draws()."
+    )
+  }
+  attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
+  draws
+}
+
+#' @rdname tidy_draws
+#' @export
+tidy_draws.draws = function(model, ...) {
+  draws = as_draws_df(model)
   attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
   draws
 }

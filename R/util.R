@@ -50,6 +50,13 @@ all_names = function(x) {
   }
 }
 
+# return true if there is a method (S3 or S4) for the
+# given function and class signature
+#' @importFrom rlang `%||%`
+has_method = function(f, signature) {
+  !is.null(getS3method(f, signature, optional = TRUE) %||% getMethod(f, signature, optional = TRUE))
+}
+
 
 # deprecations and warnings -----------------------------------------------
 

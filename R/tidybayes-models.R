@@ -28,8 +28,11 @@
 #'   \item [MCMCglmm::MCMCglmm()] models
 #'   \item [coda::mcmc()] and [coda::mcmc.list()] objects, which are output by several model
 #'     types.
-#'   \item Any object with an implementation of [coda::as.mcmc.list()]. For a list of those available in your
-#'     environment, run `methods(as.mcmc.list)`
+#'   \item [posterior::draws] objects
+#'   \item Any object with an implementation of [posterior::as_draws_df()] or [posterior::as_draws()].
+#'     For a list of those available in your environment, run `methods(as_draws_df)` or `methods(as_draws)`
+#'   \item Any object with an implementation of [coda::as.mcmc.list()].
+#'     For a list of those available in your environment, run `methods(as.mcmc.list)`
 #' }
 #'
 #' If you install the [tidybayes.rethinking](https://mjskay.github.io/tidybayes.rethinking/) package, models from
