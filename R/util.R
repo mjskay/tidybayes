@@ -54,7 +54,7 @@ all_names = function(x) {
 # given function and class signature
 #' @importFrom rlang `%||%`
 has_method = function(f, signature) {
-  !is.null(getS3method(f, signature, optional = TRUE) %||% getMethod(f, signature, optional = TRUE))
+  !is.null(getS3method(f, signature, optional = TRUE) %||% methods::selectMethod(f, signature, optional = TRUE))
 }
 
 

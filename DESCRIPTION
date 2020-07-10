@@ -16,6 +16,7 @@ Description: Compose data for and extract, manipulate, and visualize posterior d
 Depends:
     R (>= 3.5.0)
 Imports:
+    methods,
     ggdist (>= 2.1.0),
     plyr,
     dplyr (>= 0.8.0),
@@ -62,6 +63,8 @@ Suggests:
     png,
     pkgdown,
     transformr
+Remotes:
+    stan-dev/posterior
 License: GPL (>= 3)
 Language: en-US
 BugReports: https://github.com/mjskay/tidybayes/issues/new
