@@ -239,6 +239,26 @@ tidy_draws.brmsfit = function(model, ...) {
 }
 
 #' @rdname tidy_draws
+#' @importFrom posterior bind_draws as_draws_df
+#' @export
+tidy_draws.CmdStanFit = function(model, ...) {
+  draws = as_draws_df(model$draws())
+
+  attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
+  draws
+}
+
+#' @rdname tidy_draws
+#' @importFrom posterior bind_draws as_draws_df
+#' @export
+tidy_draws.CmdStanMCMC = function(model, ...) {
+  draws = as_draws_df(bind_draws(model$draws(), model$sampler_diagnostics()))
+
+  attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
+  draws
+}
+
+#' @rdname tidy_draws
 #' @export
 tidy_draws.matrix = function(model, ...) {
   # assume matrix indexed by [iterations, variables]

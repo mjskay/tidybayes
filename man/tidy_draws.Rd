@@ -11,6 +11,8 @@
 \alias{tidy_draws.runjags}
 \alias{tidy_draws.jagsUI}
 \alias{tidy_draws.brmsfit}
+\alias{tidy_draws.CmdStanFit}
+\alias{tidy_draws.CmdStanMCMC}
 \alias{tidy_draws.matrix}
 \alias{tidy_draws.MCMCglmm}
 \title{Get a sample of posterior draws from a model as a tibble}
@@ -34,6 +36,10 @@ tidy_draws(model, ...)
 \method{tidy_draws}{jagsUI}(model, ...)
 
 \method{tidy_draws}{brmsfit}(model, ...)
+
+\method{tidy_draws}{CmdStanFit}(model, ...)
+
+\method{tidy_draws}{CmdStanMCMC}(model, ...)
 
 \method{tidy_draws}{matrix}(model, ...)
 

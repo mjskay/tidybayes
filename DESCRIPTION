@@ -62,9 +62,11 @@ Suggests:
     gifski,
     png,
     pkgdown,
-    transformr
+    transformr,
+    cmdstanr
 Remotes:
-    stan-dev/posterior
+    stan-dev/posterior,
+    stan-dev/cmdstanr
 License: GPL (>= 3)
 Language: en-US
 BugReports: https://github.com/mjskay/tidybayes/issues/new
