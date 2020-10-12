@@ -46,7 +46,10 @@ the comparisons to make, e.g.: \code{list(c("a", "b"), c("b", "c"))} or
 \code{"b"} and level \code{"b"} against \code{"c"}. Note that the
 unevaluated expression syntax ignores the \code{fun} argument, can include
 any other functions desired (e.g. variable transformations), and can even
-include more than two levels or other columns in \code{data}.}
+include more than two levels or other columns in \code{data}. Types (b) and
+(c) may use named lists, in which case the provided names are used
+in the output \code{variable} column instead converting the unevaluated
+expression to a string.}
 
 \item{draw_indices}{Character vector of column names in \code{data} that
 should be treated as indices when making the comparison (i.e. values of

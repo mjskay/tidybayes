@@ -146,6 +146,10 @@ test_that("custom comparisons of lists of unevaluated expressions are supported"
 
   expect_equal(compare_levels(draws, tau, by = ff, comparison = plyr::.(a + b, exp(c - a))), ref)
   expect_equal(compare_levels(draws, tau, by = ff, comparison = rlang::exprs(a + b, exp(c - a))), ref)
+  # test named comparisons
+  ref[ref$ff == "a + b",]$ff = "comp1"
+  ref[ref$ff == "exp(c - a)",]$ff = "comp2"
+  expect_equal(compare_levels(draws, tau, by = ff, comparison = rlang::exprs(comp1 = a + b, comp2 = exp(c - a))), ref)
 })
 
 test_that("comparisons of subsets of levels of factors are supported", {
