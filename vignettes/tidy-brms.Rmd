@@ -50,7 +50,7 @@ dir.create("models", showWarnings = FALSE)
 
 ## Introduction
   
-This vignette describes how to use the `tidybayes` and `ggdist` packages to extract and visualize [tidy](http://dx.doi.org/10.18637/jss.v059.i10) data frames of draws from posterior distributions of model variables, fits, and predictions from `brms::brm`. For a more general introduction to `tidybayes` and its use on general-purpose Bayesian modeling languages (like Stan and JAGS), see `vignette("tidybayes")`. 
+This vignette describes how to use the `tidybayes` and `ggdist` packages to extract and visualize [tidy](https://dx.doi.org/10.18637/jss.v059.i10) data frames of draws from posterior distributions of model variables, fits, and predictions from `brms::brm`. For a more general introduction to `tidybayes` and its use on general-purpose Bayesian modeling languages (like Stan and JAGS), see `vignette("tidybayes")`. 
 
 
 ## Setup
