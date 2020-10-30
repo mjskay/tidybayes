@@ -85,7 +85,8 @@ comparison_types = within(list(), {
 #' include more than two levels or other columns in `data`. Types (b) and
 #' (c) may use named lists, in which case the provided names are used
 #' in the output `variable` column instead converting the unevaluated
-#' expression to a string.
+#' expression to a string. You can also use [emmeans_comparison()] to generate
+#' a comparison function based on contrast methods from the `emmeans` package.
 #' @param draw_indices Character vector of column names in `data` that
 #' should be treated as indices when making the comparison (i.e. values of
 #' `variable` within each level of `by` will be compared at each
@@ -105,7 +106,8 @@ comparison_types = within(list(), {
 #' comparison of pairs of levels of `by` in `data`, and
 #' `variable` contains the result of that comparison.
 #' @author Matthew Kay
-#' @seealso [spread_draws()] and [gather_draws()].
+#' @seealso [emmeans_comparison()] to use `emmeans`-style contrast methods with
+#' [compare_levels()].
 #' @keywords manip
 #' @examples
 #'
