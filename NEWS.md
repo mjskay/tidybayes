@@ -1,3 +1,10 @@
+# tidybayes 2.3.0
+
+* Allow user-specified names for comparisons in `compare_levels()` (#272)
+* Allow contrasts from the `emmeans` package to be used with `compare_levels()`
+  via the new `emmeans_comparison()` function (#272)
+
+
 # tidybayes 2.1.1
 
 * Initial split of `tidybayes` into `tidybayes` and `ggdist` (#250). `ggdist` now contains all stats/geoms from
