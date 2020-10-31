@@ -1,40 +1,49 @@
-## Resubmission
-
-This is a resubmission: ggdist had not hit all platforms before the original submission, so
-one pre-check failed. ggdist appears to be available on all platforms now, so I am
-re-submitting.
-
 ## Submission comments
-This is a new submission as part of splitting tidybayes (already on CRAN) into two parts.
-The tidybayes package has grown into two related, large pieces of functionality: (1) functions
-for visualizing distributions and uncertainty, and (2) functions for manipulating posteriors
-from Bayesian models. Because the visualization functions (category 1) can also be applied to
-non-Bayesian models (and have become a large-ish API unto themselves), I created ggdist to
-contain all of those functions.
+This submission is primarily to update the maintainer email address from
+mjskay@umich.edu to mjskay@northwestern.edu as I have moved institutions.
+Unfortunately this can't be verified by emailing mjskay@umich.edu because
+my umich email address has already been deactivated. However, the change is
+reflected on both my Github page (https://github.com/mjskay) and my personal 
+website (http://mjskay.com) and I am happy to provide other proof if needed.
 
-This new version of tidybayes depends on ggdist for the visualization functions, so there
-is only one implementation of them across the two packages. Tidybayes now re-exports 
-the visualization functions from ggdist so that existing code that depends on tidybayes
-is not affected.
 
 ## Test environments
-* Windows 10 (local), R-release 4.0.0
-* Windows 10 (local), R-devel 2020-06-03 r78637
-* Windows (github), R-release 4.0.1
-* Windows (github), R-devel 2020-06-12 r78687
-* MacOs (github), R-release 4.0.0
-* Linux (github), R-release 4.0.1
+* Windows (winbuilder), R-devel 2020-10-29 r79387
+* Windows (winbuilder), R-release 4.0.3
+* Windows (winbuilder), R-oldrelease 3.6.3
+* MacOs (github), R-release 4.0.3
+* Linux (github), R-release 4.0.3
+
 
 ## R CMD check results
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note
+
+> checking CRAN incoming feasibility ... NOTE
+  Maintainer: 'Matthew Kay <mjskay@northwestern.edu>'
+  
+  New maintainer:
+    Matthew Kay <mjskay@northwestern.edu>
+  Old maintainer(s):
+    Matthew Kay <mjskay@umich.edu>
+
+See comment above: my email address has changed.
+
 
 ## Downstream dependencies
-There are two downstream dependencies for this package. Both 
-have as many or fewer errors with the new version of tidybayes.
+All downstream dependencies have as many or fewer errors with the
+new version of tidybayes.
+
+- bsem:
+  - on CRAN:     0 errors, 0 warnings, 3 notes
+  - new version: 0 errors, 0 warnings, 3 notes
+
+- fishflux:
+  - on CRAN:     0 errors, 0 warnings, 2 notes
+  - new version: 0 errors, 0 warnings, 2 notes
 
 - mcp:
-  - on CRAN:     1 error , 0 warnings, 0 notes
-  - new version: 1 error , 0 warnings, 0 notes
+  - on CRAN:     0 errors, 0 warnings, 0 notes
+  - new version: 0 errors, 0 warnings, 0 notes
 
 - trialr:
   - on CRAN:     0 errors, 0 warnings, 2 notes
