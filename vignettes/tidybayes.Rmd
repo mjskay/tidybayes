@@ -673,7 +673,7 @@ Combining `emmeans::emmeans` with `broom::tidy`, we can generate tidy-format sum
 ```{r}
 linear_results = m_linear %>% 
   emmeans(~ condition) %>% 
-  tidy() %>%
+  tidy(conf.int = TRUE) %>%
   mutate(model = "OLS")
 
 linear_results

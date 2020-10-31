@@ -58,6 +58,7 @@ reference:
   contents:
   - sample_draws
   - compare_levels
+  - emmeans_comparison
   - gather_variables
   - gather_pairs
   - to_broom_names

@@ -95,7 +95,7 @@ do not provide such a column." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.0</span>
       </span>
     </div>
 
@@ -167,7 +167,7 @@ functions now automatically include a <code>.draw</code> column, but can be usef
 do not provide such a column.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>combine_chains</span>(<span class='no'>data</span>, <span class='kw'>chain</span> <span class='kw'>=</span> <span class='no'>.chain</span>, <span class='kw'>iteration</span> <span class='kw'>=</span> <span class='no'>.iteration</span>, <span class='kw'>into</span> <span class='kw'>=</span> <span class='st'>".draw"</span>)</pre>
+    <pre class="usage"><span class='fu'>combine_chains</span><span class='op'>(</span><span class='va'>data</span>, chain <span class='op'>=</span> <span class='va'>.chain</span>, iteration <span class='op'>=</span> <span class='va'>.iteration</span>, into <span class='op'>=</span> <span class='st'>".draw"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -201,18 +201,22 @@ into a new column named <code>into</code>.</p></td>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans::emmeans()</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Matthew Kay</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>magrittr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>coda</span>)
-
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>line</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"coda"</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>magrittr</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>coda</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'coda' was built under R version 4.0.3</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>line</span>, package <span class='op'>=</span> <span class='st'>"coda"</span><span class='op'>)</span>
 
 <span class='co'># The `line` posterior has two chains with 200 iterations each:</span>
-<span class='no'>line</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='tidy_draws.html'>tidy_draws</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>()</div><div class='output co'>#&gt;      .chain      .iteration         .draw           alpha      
+<span class='va'>line</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tidy_draws.html'>tidy_draws</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      .chain      .iteration         .draw           alpha      
 #&gt;  Min.   :1.0   Min.   :  1.00   Min.   :  1.0   Min.   :0.858  
 #&gt;  1st Qu.:1.0   1st Qu.: 50.75   1st Qu.:100.8   1st Qu.:2.732  
 #&gt;  Median :1.5   Median :100.50   Median :200.5   Median :3.019  
@@ -227,10 +231,11 @@ into a new column named <code>into</code>.</p></td>
 #&gt;  3rd Qu.: 0.9925   3rd Qu.: 1.0752  
 #&gt;  Max.   : 1.8320   Max.   :11.2331  </div><div class='input'>
 <span class='co'># combine_chains combines the chain and iteration column into the .draw column.</span>
-<span class='no'>line</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='tidy_draws.html'>tidy_draws</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>combine_chains</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>()</div><div class='output co'>#&gt;      .chain      .iteration         .draw           alpha      
+<span class='va'>line</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tidy_draws.html'>tidy_draws</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>combine_chains</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      .chain      .iteration         .draw           alpha      
 #&gt;  Min.   :1.0   Min.   :  1.00   Min.   :  1.0   Min.   :0.858  
 #&gt;  1st Qu.:1.0   1st Qu.: 50.75   1st Qu.:100.8   1st Qu.:2.732  
 #&gt;  Median :1.5   Median :100.50   Median :200.5   Median :3.019  
@@ -260,7 +265,7 @@ into a new column named <code>into</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

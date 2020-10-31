@@ -43,12 +43,12 @@
 #'
 #'   # emmeans contrast methods return matrices. E.g. the "eff" comparison
 #'   # compares each level to the average of all levels:
-#'   emmeans:::eff.emmc(c("a","b","c","d"))
+#'   print(emmeans:::eff.emmc(c("a","b","c","d")))
 #'
 #'   # tidybayes::compare_levels() can't use a contrast matrix like this
 #'   # directly; it takes arbitrary expressions of factor levels. But
 #'   # we can use `emmeans_comparison` to generate the equivalent expressions:
-#'   emmeans_comparison("eff")(c("a","b","c","d"))
+#'   print(emmeans_comparison("eff")(c("a","b","c","d")))
 #'
 #'   # We can use the "eff" comparison type with `compare_levels()` as follows:
 #'   RankCorr %>%

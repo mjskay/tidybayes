@@ -325,7 +325,7 @@ For example, let's compare against ordinary least squares (OLS) regression:
 linear_results = 
   lm(response ~ condition, data = ABC) %>% 
   emmeans(~ condition) %>% 
-  tidy() %>%
+  tidy(conf.int = TRUE) %>%
   mutate(model = "OLS")
 linear_results
 ```
