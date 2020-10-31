@@ -53,13 +53,13 @@ library(purrr)
 library(tidyr)
 
 if (
-  require("rstanarm", quietly = TRUE) &&
+  require("brms", quietly = TRUE) &&
   require("modelr", quietly = TRUE)
 ) {
 
   theme_set(theme_light())
 
-  m_mpg = stan_glm(mpg ~ hp * cyl, data = mtcars)
+  m_mpg = brm(mpg ~ hp * cyl, data = mtcars)
 
   step = 1
   mtcars \%>\%

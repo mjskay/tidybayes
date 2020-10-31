@@ -54,6 +54,7 @@ assuming long-format (tidy) data with an equal number of values per key. Among o
 useful for producing scatter-plot matrices.
 }
 \examples{
+\donttest{
 
 library(ggplot2)
 library(dplyr)
@@ -104,6 +105,7 @@ line \%>\%
   geom_density_2d(alpha = .5) +
   facet_grid(vars(.row), vars(.col))
 
+}
 }
 \seealso{
 \code{\link[emmeans:emmeans]{emmeans::emmeans()}}

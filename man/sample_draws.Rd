@@ -31,13 +31,13 @@ library(ggplot2)
 library(dplyr)
 
 if (
-  require("rstanarm", quietly = TRUE) &&
+  require("brms", quietly = TRUE) &&
   require("modelr", quietly = TRUE)
 ) {
 
   theme_set(theme_light())
 
-  m_mpg = stan_glm(mpg ~ hp * cyl, data = mtcars,
+  m_mpg = brm(mpg ~ hp * cyl, data = mtcars,
     # 1 chain / few iterations just so example runs quickly
     # do not use in practice
     chains = 1, iter = 500)
