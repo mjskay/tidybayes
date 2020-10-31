@@ -18,6 +18,10 @@ mtcars_tbl = mtcars %>%
   set_rownames(seq_len(nrow(.))) %>%
   as_tibble()
 
+# for reliable testing, need to use only a single core (otherwise random
+# numbers do not seem to always be reproducible on brms)
+options(mc.cores = 1)
+
 
 test_that("[add_]predicted_draws throws an error on unsupported models", {
   data("RankCorr", package = "ggdist")
