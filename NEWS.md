@@ -1,4 +1,4 @@
-# tidybayes 2.3.0
+# tidybayes 2.3.1
 
 * Allow user-specified names for comparisons in `compare_levels()` (#272)
 * Allow contrasts from the `emmeans` package to be used with `compare_levels()`

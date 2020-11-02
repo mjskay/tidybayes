@@ -1,3 +1,6 @@
+## Resubmission
+This is a resubmission to fix a URL redirect to point to its new URL.
+
 ## Submission comments
 This submission is primarily to update the maintainer email address from
 mjskay@umich.edu to mjskay@northwestern.edu as I have moved institutions.
