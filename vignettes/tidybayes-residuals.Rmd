@@ -50,7 +50,7 @@ dir.create("models", showWarnings = FALSE)
 
 ## Introduction
   
-This vignette describes how to use the `tidybayes` package to extract [tidy](http://dx.doi.org/10.18637/jss.v059.i10) data frames of draws from residuals of Bayesian models, and also acts as a demo for the construction of randomized quantile residuals, a generic form of residual applicable to a wide range of models, including censored regressions and models with discrete response variables. For a more general introduction to `tidybayes`, see <code>[vignette("tidybayes")](tidybayes.html)</code>.
+This vignette describes how to use the `tidybayes` package to extract [tidy](https://dx.doi.org/10.18637/jss.v059.i10) data frames of draws from residuals of Bayesian models, and also acts as a demo for the construction of randomized quantile residuals, a generic form of residual applicable to a wide range of models, including censored regressions and models with discrete response variables. For a more general introduction to `tidybayes`, see `vignette("tidybayes")`.
 
 
 ## Setup
@@ -314,7 +314,7 @@ $$
 p^{\textrm{resid}}_i \sim \textrm{Uniform}(p^\textrm{lower}_i, p^\textrm{upper}_i)
 $$
 
-Then these residuals will be uniformly random (see [Dunn and Smyth 1996](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.362.9960&rep=rep1&type=pdf)), and we can similarly define a **randomized quantile residual** by passing the probability residuals through the Normal inverse CDF:
+Then these residuals will be uniformly random (see [Dunn and Smyth 1996](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.362.9960&rep=rep1&type=pdf)), and we can similarly define a **randomized quantile residual** by passing the probability residuals through the Normal inverse CDF:
 
 $$
 z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)

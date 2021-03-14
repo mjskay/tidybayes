@@ -82,7 +82,11 @@ comparison_types = within(list(), {
 #' `"b"` and level `"b"` against `"c"`. Note that the
 #' unevaluated expression syntax ignores the `fun` argument, can include
 #' any other functions desired (e.g. variable transformations), and can even
-#' include more than two levels or other columns in `data`.
+#' include more than two levels or other columns in `data`. Types (b) and
+#' (c) may use named lists, in which case the provided names are used
+#' in the output `variable` column instead converting the unevaluated
+#' expression to a string. You can also use [emmeans_comparison()] to generate
+#' a comparison function based on contrast methods from the `emmeans` package.
 #' @param draw_indices Character vector of column names in `data` that
 #' should be treated as indices when making the comparison (i.e. values of
 #' `variable` within each level of `by` will be compared at each
@@ -102,7 +106,8 @@ comparison_types = within(list(), {
 #' comparison of pairs of levels of `by` in `data`, and
 #' `variable` contains the result of that comparison.
 #' @author Matthew Kay
-#' @seealso [spread_draws()] and [gather_draws()].
+#' @seealso [emmeans_comparison()] to use `emmeans`-style contrast methods with
+#' [compare_levels()].
 #' @keywords manip
 #' @examples
 #'
@@ -142,6 +147,7 @@ comparison_types = within(list(), {
 #' @importFrom tidyselect one_of
 #' @importFrom tibble as_tibble
 #' @importFrom rlang sym quo_name eval_tidy quo_get_expr
+#' @importFrom purrr imap_dfr
 #' @export
 compare_levels = function(data, variable, by, fun=`-`, comparison = "default",
     draw_indices = c(".chain", ".iteration", ".draw"),
@@ -158,7 +164,6 @@ compare_levels = function(data, variable, by, fun=`-`, comparison = "default",
     do(compare_levels_(., variable, by, fun, comparison, draw_indices)) %>%
     group_by_at(union(groups_, by))
 }
-
 
 compare_levels_ = function(data, variable, by, fun, comparison, draw_indices) {
   #drop unused levels from "by" column
@@ -189,19 +194,25 @@ compare_levels_ = function(data, variable, by, fun, comparison, draw_indices) {
   else comparison_function(data[[by]])
 
   #make comparisons
-  ldply(comparison_levels, .id = NULL, function(levels.) {
+  imap_dfr(comparison_levels, .id = NULL, function(levels., by_name) {
     comparison = if (is.language(levels.)) {
       #user-supplied quoted expressions are evaluated within the data frame
+      if (is.numeric(by_name) || by_name == "") {
+        by_name = quo_name(levels.)
+      }
       data.frame(
-        by = quo_name(levels.),
+        by = by_name,
         variable = eval_tidy(levels., data_wide),
         stringsAsFactors = FALSE
       )
     }
     else {
       #otherwise, levels should be pairs of strings representing levels
+      if (is.numeric(by_name) || by_name == "") {
+        by_name = paste(levels.[[1]], fun_name, levels.[[2]])
+      }
       data.frame(
-        by = paste(levels.[[1]], fun_name, levels.[[2]]),
+        by = by_name,
         variable = fun(data_wide[[levels.[[1]]]], data_wide[[levels.[[2]]]]),
         stringsAsFactors = FALSE
       )

@@ -6,28 +6,27 @@ status](https://github.com/mjskay/tidybayes/workflows/R-CMD-check/badge.svg)](ht
 [![Coverage
 status](https://codecov.io/gh/mjskay/tidybayes/branch/master/graph/badge.svg)](https://codecov.io/github/mjskay/tidybayes?branch=master)
 [![CRAN
-status](http://www.r-pkg.org/badges/version/tidybayes)](https://cran.r-project.org/package=tidybayes)
+status](https://www.r-pkg.org/badges/version/tidybayes)](https://cran.r-project.org/package=tidybayes)
 ![Download
 count](https://cranlogs.r-pkg.org/badges/last-month/tidybayes)
 [![DOI](https://zenodo.org/badge/33396684.svg)](https://zenodo.org/badge/latestdoi/33396684)
 
 ![Preview of tidybayes plots](man/figures/preview.gif)
 
-[tidybayes](http://mjskay.github.io/tidybayes) is an R package that aims
-to make it easy to integrate popular Bayesian modeling methods into a
-tidy data + ggplot workflow. It builds on top of (and re-exports)
+[tidybayes](https://mjskay.github.io/tidybayes/) is an R package that
+aims to make it easy to integrate popular Bayesian modeling methods into
+a tidy data + ggplot workflow. It builds on top of (and re-exports)
 several functions for visualizing uncertainty from its sister package,
-[ggdist](http://mjskay.github.io/ggdist)
+[ggdist](https://mjskay.github.io/ggdist/)
 
-[Tidy](http://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
-data frames (one observation per row) are particularly convenient for
-use in a variety of R data manipulation and visualization packages.
-However, when using Bayesian modeling functions like JAGS or Stan in R,
-we often have to translate this data into a form the model understands,
-and then after running the model, translate the resulting sample (or
-predictions) into a more tidy format for use with other R functions.
-`tidybayes` aims to simplify these two common (often tedious)
-operations:
+[Tidy](https://dx.doi.org/10.18637/jss.v059.i10) data frames (one
+observation per row) are particularly convenient for use in a variety of
+R data manipulation and visualization packages. However, when using
+Bayesian modeling functions like JAGS or Stan in R, we often have to
+translate this data into a form the model understands, and then after
+running the model, translate the resulting sample (or predictions) into
+a more tidy format for use with other R functions. `tidybayes` aims to
+simplify these two common (often tedious) operations:
 
   - **Composing data** for use with the model. This often means
     translating data from a `data.frame` into a `list` , making sure
@@ -47,14 +46,14 @@ operations:
     data; e.g. `"x[1]"` might correspond to a value of `x` for the first
     level of some factor. We provide several straightforward ways to
     convert draws from a variable with indices into useful long-format
-    (“[tidy](http://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)”)
-    data frames, with automatic back-conversion of common data types
-    (factors, logicals) using the `spread_draws()` and `gather_draws()`
-    functions, including automatic recovery of factor levels
-    corresponding to variable indices. In most cases this kind of
-    long-format data is much easier to use with other data-manipulation
-    and plotting packages (e.g., `dplyr`, `tidyr`, `ggplot2`) than the
-    format provided by default from the model.
+    (“[tidy](https://dx.doi.org/10.18637/jss.v059.i10)”) data frames,
+    with automatic back-conversion of common data types (factors,
+    logicals) using the `spread_draws()` and `gather_draws()` functions,
+    including automatic recovery of factor levels corresponding to
+    variable indices. In most cases this kind of long-format data is
+    much easier to use with other data-manipulation and plotting
+    packages (e.g., `dplyr`, `tidyr`, `ggplot2`) than the format
+    provided by default from the model.
 
 `tidybayes` also provides some additional functionality for data
 manipulation and visualization tasks common to many models:
@@ -423,19 +422,19 @@ regression:
 linear_results = 
   lm(response ~ condition, data = ABC) %>% 
   emmeans(~ condition) %>% 
-  tidy() %>%
+  tidy(conf.int = TRUE) %>%
   mutate(model = "OLS")
 linear_results
 ```
 
-    ## # A tibble: 5 x 7
-    ##   condition estimate std.error    df conf.low conf.high model
-    ##   <fct>        <dbl>     <dbl> <dbl>    <dbl>     <dbl> <chr>
-    ## 1 A            0.182     0.173    45   -0.167     0.530 OLS  
-    ## 2 B            1.01      0.173    45    0.665     1.36  OLS  
-    ## 3 C            1.87      0.173    45    1.53      2.22  OLS  
-    ## 4 D            1.03      0.173    45    0.678     1.38  OLS  
-    ## 5 E           -0.935     0.173    45   -1.28     -0.586 OLS
+    ## # A tibble: 5 x 8
+    ##   condition estimate    df conf.low conf.high statistic  p.value model
+    ##   <chr>        <dbl> <dbl>    <dbl>     <dbl>     <dbl>    <dbl> <chr>
+    ## 1 A            0.182    45   -0.167     0.530      1.05 3.00e- 1 OLS  
+    ## 2 B            1.01     45    0.665     1.36       5.85 5.13e- 7 OLS  
+    ## 3 C            1.87     45    1.53      2.22      10.8  4.15e-14 OLS  
+    ## 4 D            1.03     45    0.678     1.38       5.93 3.97e- 7 OLS  
+    ## 5 E           -0.935    45   -1.28     -0.586     -5.40 2.41e- 6 OLS
 
 Using `ggdist::to_broom_names()`, we’ll convert the output from
 `median_qi` (which uses names `.lower` and `.upper`) to use names from
@@ -644,7 +643,7 @@ more explanation of how it works.
 ## Feedback, issues, and contributions
 
 I welcome feedback, suggestions, issues, and contributions\! Contact me
-at <mjskay@umich.edu>. If you have found a bug, please file it
+at <mjskay@northwestern.edu>. If you have found a bug, please file it
 [here](https://github.com/mjskay/tidybayes/issues/new) with minimal code
 to reproduce the issue. Pull requests should be filed against the
 [`dev`](https://github.com/mjskay/tidybayes/tree/dev) branch.
@@ -656,5 +655,5 @@ have encountered, but I would love to make it cover more\!
 ## Citing `tidybayes`
 
 Matthew Kay (2020). *tidybayes: Tidy Data and Geoms for Bayesian
-Models*. R package version 2.1.1, <https://mjskay.github.io/tidybayes/>.
+Models*. R package version 2.3.0, <https://mjskay.github.io/tidybayes/>.
 DOI: [10.5281/zenodo.1308151](https://doi.org/10.5281/zenodo.1308151).

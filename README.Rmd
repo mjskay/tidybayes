@@ -18,18 +18,18 @@ dir.create("README_models", showWarnings = FALSE)
 
 [![R build status](https://github.com/mjskay/tidybayes/workflows/R-CMD-check/badge.svg)](https://github.com/mjskay/tidybayes/actions)
 [![Coverage status](https://codecov.io/gh/mjskay/tidybayes/branch/master/graph/badge.svg)](https://codecov.io/github/mjskay/tidybayes?branch=master)
-[![CRAN status](http://www.r-pkg.org/badges/version/tidybayes)](https://cran.r-project.org/package=tidybayes)
+[![CRAN status](https://www.r-pkg.org/badges/version/tidybayes)](https://cran.r-project.org/package=tidybayes)
 ![Download count](https://cranlogs.r-pkg.org/badges/last-month/tidybayes)
 [![DOI](https://zenodo.org/badge/33396684.svg)](https://zenodo.org/badge/latestdoi/33396684)
 
 ![Preview of tidybayes plots](man/figures/preview.gif)
 
-[tidybayes](http://mjskay.github.io/tidybayes) is an R package that aims to make it easy to integrate popular Bayesian 
+[tidybayes](https://mjskay.github.io/tidybayes/) is an R package that aims to make it easy to integrate popular Bayesian 
 modeling methods into a tidy data + ggplot workflow. It builds on top of (and re-exports)
 several functions for visualizing uncertainty from its sister package, 
-[ggdist](http://mjskay.github.io/ggdist)
+[ggdist](https://mjskay.github.io/ggdist/)
 
-[Tidy](http://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
+[Tidy](https://dx.doi.org/10.18637/jss.v059.i10)
 data frames (one observation per row) are particularly convenient for use
 in a variety of R data manipulation and visualization packages. However,
 when using Bayesian modeling functions like JAGS or Stan in R, we often have
@@ -53,7 +53,7 @@ two common (often tedious) operations:
   data; e.g. `"x[1]"` might correspond to a value of `x` for the first level of
   some factor. We provide several straightforward ways to convert draws from a
   variable with indices into useful long-format 
-  ("[tidy](http://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)") 
+  ("[tidy](https://dx.doi.org/10.18637/jss.v059.i10)") 
   data frames, with automatic back-conversion of common data types (factors, logicals)
   using the `spread_draws()` and `gather_draws()` functions, including automatic 
   recovery of factor levels corresponding to variable indices. In most cases this
@@ -325,7 +325,7 @@ For example, let's compare against ordinary least squares (OLS) regression:
 linear_results = 
   lm(response ~ condition, data = ABC) %>% 
   emmeans(~ condition) %>% 
-  tidy() %>%
+  tidy(conf.int = TRUE) %>%
   mutate(model = "OLS")
 linear_results
 ```
@@ -484,7 +484,7 @@ See `vignette("tidybayes")` for a variety of additional examples and more explan
 
 ## Feedback, issues, and contributions
 
-I welcome feedback, suggestions, issues, and contributions! Contact me at <mjskay@umich.edu>. If you have found a bug, please file it [here](https://github.com/mjskay/tidybayes/issues/new) with minimal code to reproduce the issue. Pull requests should be filed against the [`dev`](https://github.com/mjskay/tidybayes/tree/dev) branch.
+I welcome feedback, suggestions, issues, and contributions! Contact me at <mjskay@northwestern.edu>. If you have found a bug, please file it [here](https://github.com/mjskay/tidybayes/issues/new) with minimal code to reproduce the issue. Pull requests should be filed against the [`dev`](https://github.com/mjskay/tidybayes/tree/dev) branch.
 
 `tidybayes` grew out of helper functions I wrote to make my own analysis pipelines tidier. Over time it has expanded to cover more use cases I have encountered, but I would love to make it cover more!
 

@@ -42,6 +42,7 @@ globalVariables(c(".chain", ".iteration"))
 #' @seealso [emmeans::emmeans()]
 #' @keywords manip
 #' @examples
+#' \donttest{
 #'
 #' library(ggplot2)
 #' library(dplyr)
@@ -92,6 +93,7 @@ globalVariables(c(".chain", ".iteration"))
 #'   geom_density_2d(alpha = .5) +
 #'   facet_grid(vars(.row), vars(.col))
 #'
+#' }
 #' @importFrom magrittr %>% %<>%
 #' @importFrom purrr imap_dfr map
 #' @importFrom plyr dlply

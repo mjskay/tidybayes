@@ -9,6 +9,7 @@ cdot
 composable
 conf
 configurability
+ctrl
 customizable
 cyl
 deprecation
@@ -17,6 +18,7 @@ DOI
 dotplot
 dotplots
 dplyr
+emmc
 emmeans
 equi
 et
@@ -90,6 +92,7 @@ textrm
 tibble
 tidyverse
 toc
+trt
 unevaluated
 vectorized
 VignetteEncoding

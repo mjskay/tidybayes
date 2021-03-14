@@ -53,7 +53,7 @@ library(dplyr)
 library(magrittr)
 
 if (
-  require("rstanarm", quietly = TRUE) &&
+  require("brms", quietly = TRUE) &&
   require("emmeans", quietly = TRUE)
 ) {
 
@@ -67,7 +67,7 @@ if (
       response = rnorm(n * 5, c(0,1,2,1,-1), 0.5)
     )
 
-  m = stan_glm(response ~ condition, data = ABC,
+  m = brm(response ~ condition, data = ABC,
     # 1 chain / few iterations just so example runs quickly
     # do not use in practice
     chains = 1, iter = 500)
