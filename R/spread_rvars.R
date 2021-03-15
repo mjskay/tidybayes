@@ -6,10 +6,104 @@
 
 # spread_rvars ------------------------------------------------------------
 
-#' Extract random variables from a Bayesian model into a tidy data format
+#' Extract draws from a Bayesian model into tidy data frames of random variables
 #'
 #' Extract draws from a Bayesian model for one or more variables (possibly with named
-#' dimensions) into one of two types of long-format data frames containing [posterior::rvar] objects.
+#' dimensions) into one of two types of long-format data frames of [posterior::rvar] objects.
+#'
+#' Imagine a JAGS or Stan fit named `model`. The model may contain a variable named
+#' `b[i,v]` (in the JAGS or Stan language) with dimension `i` in `1:100` and
+#' dimension `v` in `1:3`. However, the default format for draws returned from
+#' JAGS or Stan in R will not reflect this indexing structure, instead
+#' they will have multiple columns with names like `"b[1,1]"`, `"b[2,1]"`, etc.
+#'
+#' `spread_rvars` and `gather_rvars` provide a straightforward
+#' syntax to translate these columns back into properly-indexed [rvar]s in two different
+#' tidy data frame formats, optionally recovering dimension types (e.g. factor levels) as it does so.
+#'
+#' `spread_rvars` will spread names of variables in the model across the data frame as column names,
+#' whereas `gather_rvars` will gather variable names into a single column named `".variable"` and place
+#' values of variables into a column named `".value"`. To use naming schemes from other packages
+#' (such as `broom`), consider passing
+#' results through functions like [to_broom_names()] or [to_ggmcmc_names()].
+#'
+#' For example, `spread_rvars(model, a[i], b[i,v])` might return a data frame with:
+#' \itemize{
+#'    \item column `"i"`: value in `1:5`
+#'    \item column `"v"`: value in `1:10`
+#'    \item column `"a"`: [rvar] containing draws from `"a[i]"`
+#'    \item column `"b"`: [rvar] containing draws from `"b[i,v]"`
+#'  }
+#'
+#' `gather_rvars(model, a[i], b[i,v])` on the same model would return a data frame with:
+#' \itemize{
+#'    \item column `"i"`: value in `1:5`
+#'    \item column `"v"`: value in `1:10`, or `NA`
+#'      on rows where `".variable"` is `"a"`.
+#'    \item column `".variable"`: value in `c("a", "b")`.
+#'    \item column `".value"`: [rvar] containing draws from `"a[i]"` (when `".variable"` is `"a"`)
+#'      or `"b[i,v]"` (when `".variable"` is `"b"`)
+#'  }
+#'
+#' `spread_rvars` and `gather_rvars` can use type information
+#' applied to the `model` object by [recover_types()] to convert columns
+#' back into their original types. This is particularly helpful if some of the dimensions in
+#' your model were originally factors. For example, if the `v` dimension
+#' in the original data frame `data` was a factor with levels `c("a","b","c")`,
+#' then we could use `recover_types` before `spread_rvars`:
+#'
+#' \preformatted{model \%>\%
+#'  recover_types(data) %\>\%
+#'  spread_rvars(model, b[i,v])
+#' }
+#'
+#' Which would return the same data frame as above, except the `"v"` column
+#' would be a value in `c("a","b","c")` instead of `1:3`.
+#'
+#' For variables that do not share the same subscripts (or share
+#' some but not all subscripts), we can supply their specifications separately.
+#' For example, if we have a variable `d[i]` with the same `i` subscript
+#' as `b[i,v]`, and a variable `x` with no subscripts, we could do this:
+#'
+#' \preformatted{spread_rvars(model, x, d[i], b[i,v])}
+#'
+#' Which is roughly equivalent to this:
+#'
+#' \preformatted{spread_rvars(model, x) \%>\%
+#'  inner_join(spread_rvars(model, d[i])) \%>\%
+#'  inner_join(spread_rvars(model, b[i,v]))
+#' }
+#'
+#' Similarly, this:
+#'
+#' \preformatted{gather_rvars(model, x, d[i], b[i,v])}
+#'
+#' Is roughly equivalent to this:
+#'
+#' \preformatted{bind_rows(
+#'  gather_rvars(model, x),
+#'  gather_rvars(model, d[i]),
+#'  gather_rvars(model, b[i,v])
+#' )}
+#'
+#' The `c` and `cbind` functions can be used to combine multiple variable names that have
+#' the same dimensions. For example, if we have several variables with the same
+#' subscripts `i` and `v`, we could do either of these:
+#'
+#' \preformatted{spread_rvars(model, c(w, x, y, z)[i,v])}
+#' \preformatted{spread_rvars(model, cbind(w, x, y, z)[i,v])  # equivalent}
+#'
+#' Each of which is roughly equivalent to this:
+#'
+#' \preformatted{spread_rvars(model, w[i,v], x[i,v], y[i,v], z[i,v])}
+#'
+#' Besides being more compact, the `c()`-style syntax is currently also slightly
+#' faster (though that may change).
+#'
+#' Dimensions can be left nested in the resulting [rvar] objects by leaving their names
+#' blank; e.g. `spread_rvars(model, b[i,])` will place the first index (`i`) into
+#' rows of the data frame but leave the second index nested in the `b` column
+#' (see *Examples* below).
 #'
 #' @param model A supported Bayesian model fit. Tidybayes supports a variety of model objects;
 #' for a full list of supported models, see [tidybayes-models].
@@ -19,8 +113,29 @@
 #' @param seed A seed to use when subsampling draws (i.e. when `n` is not `NULL`).
 #' @return A data frame.
 #' @author Matthew Kay
-#' @seealso [spread_draws()], [recover_types()], [compose_data()].
+#' @seealso [spread_draws()], [recover_types()], [compose_data()]. See also
+#' [posterior::rvar()] and [posterior::as_draws_rvars()], the functions that power
+#' `spread_rvars` and `gather_rvars`.
 #' @keywords manip
+#' @examples
+#'
+#' library(dplyr)
+#'
+#' data(RankCorr, package = "ggdist")
+#'
+#' RankCorr %>%
+#'   spread_rvars(b[i, j])
+#'
+#' # leaving an index out nests the index in the column containing the rvar
+#' RankCorr %>%
+#'   spread_rvars(b[i, ])
+#'
+#' RankCorr %>%
+#'   spread_rvars(b[i, j], tau[i], u_tau[i])
+#'
+#' # gather_rvars places variables and values in a longer format data frame
+#' RankCorr %>%
+#'   gather_rvars(b[i, j], tau[i], typical_r)
 #'
 #' @importFrom purrr reduce
 #' @importFrom rlang enquos
@@ -30,7 +145,8 @@ spread_rvars = function(model, ..., n = NULL, seed = NULL) {
   draws = sample_draws_from_rvars_(model, n, seed)
 
   list_of_rvar_tibbles = lapply(enquos(...), function(variable_spec) {
-    spread_rvars_(draws, variable_spec)
+    spec = parse_variable_spec(variable_spec)
+    spread_rvars_(draws, spec)
   })
 
   out = reduce(list_of_rvar_tibbles, function(tibble1, tibble2) {
@@ -44,8 +160,7 @@ spread_rvars = function(model, ..., n = NULL, seed = NULL) {
 }
 
 
-spread_rvars_ = function(draws, variable_spec) {
-  spec = parse_variable_spec(variable_spec)
+spread_rvars_ = function(draws, spec) {
   variable_names = spec[[1]]
   dimension_names = spec[[2]]
   wide_dimension_name = spec[[3]]

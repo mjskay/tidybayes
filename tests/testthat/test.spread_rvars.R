@@ -4,7 +4,6 @@
 ###############################################################################
 
 library(dplyr)
-library(tidyr)
 library(posterior)
 
 context("spread_rvars")
@@ -26,7 +25,7 @@ j_labels = c("A", "B", "C", "D")
 RankCorr_ij = recover_types(RankCorr_s, list(i = factor(i_labels), j = factor(j_labels)))
 
 
-# tests for spread_draws ===================================================
+# tests for spread_rvars ===================================================
 
 test_that("spread_rvars correctly rejects missing variables", {
   data("RankCorr", package = "ggdist")
@@ -59,6 +58,8 @@ test_that("spread_rvars works on two variables with no dimensions and multiple c
   )
 
   expect_equal(spread_rvars(line, alpha, beta), ref)
+  expect_equal(spread_rvars(line, c(alpha, beta)), ref)
+  expect_equal(spread_rvars(line, alpha[], beta[]), ref)
 })
 
 
@@ -89,7 +90,7 @@ test_that("spread_rvars works on a variable with one index left wide", {
 })
 
 
-test_that("spread_draws works on a variable with one named wide index", {
+test_that("spread_rvars works on a variable with one named wide index", {
   tau = t(RankCorr_s$tau)
   dimnames(tau) = list(NULL, c("a","b","c"))
 

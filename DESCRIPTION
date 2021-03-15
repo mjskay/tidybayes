@@ -106,6 +106,7 @@ Collate:
     "gather_draws.R"
     "gather_emmeans_draws.R"
     "gather_pairs.R"
+    "gather_rvars.R"
     "gather_variables.R"
     "get_variables.R"
     "global_variables.R"

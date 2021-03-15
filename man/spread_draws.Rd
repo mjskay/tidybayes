@@ -33,7 +33,7 @@ Extract draws from a Bayesian model for one or more variables (possibly with nam
 dimensions) into one of two types of long-format data frames.
 }
 \details{
-Imagine a JAGS or Stan fit named \code{fit}. The model may contain a variable named
+Imagine a JAGS or Stan fit named \code{model}. The model may contain a variable named
 \code{b[i,v]} (in the JAGS or Stan language) with dimension \code{i} in \code{1:100} and
 dimension \code{v} in \code{1:3}. However, the default format for draws returned from
 JAGS or Stan in R will not reflect this indexing structure, instead
@@ -52,7 +52,7 @@ gather variables into a single column named \code{".variable"} and place values 
 column named \code{".value"}. To use naming schemes from other packages (such as \code{broom}), consider passing
 results through functions like \code{\link[=to_broom_names]{to_broom_names()}} or \code{\link[=to_ggmcmc_names]{to_ggmcmc_names()}}.
 
-For example, \code{spread_draws(fit, a[i], b[i,v])} might return a grouped
+For example, \code{spread_draws(model, a[i], b[i,v])} might return a grouped
 data frame (grouped by \code{i} and \code{v}), with:
 \itemize{
 \item column \code{".chain"}: the chain number. \code{NA} if not applicable to the model
@@ -67,7 +67,7 @@ guaranteed to be meaningful.
 \item column \code{"b"}: value of \code{"b[i,v]"} for draw \code{".draw"}
 }
 
-\code{gather_draws(fit, a[i], b[i,v])} on the same fit would return a grouped
+\code{gather_draws(model, a[i], b[i,v])} on the same model would return a grouped
 data frame (grouped by \code{i} and \code{v}), with:
 \itemize{
 \item column \code{".chain"}: the chain number
@@ -82,15 +82,15 @@ or \code{"b[i,v]"} (when \code{".variable"} is \code{"b"}) for draw \code{".draw
 }
 
 \code{spread_draws} and \code{gather_draws} can use type information
-applied to the \code{fit} object by \code{\link[=recover_types]{recover_types()}} to convert columns
+applied to the \code{model} object by \code{\link[=recover_types]{recover_types()}} to convert columns
 back into their original types. This is particularly helpful if some of the dimensions in
 your model were originally factors. For example, if the \code{v} dimension
 in the original data frame \code{data} was a factor with levels \code{c("a","b","c")},
 then we could use \code{recover_types} before \code{spread_draws}:
 
-\preformatted{fit \%>\%
+\preformatted{model \%>\%
  recover_types(data) %\>\%
- spread_draws(fit, b[i,v])
+ spread_draws(model, b[i,v])
 }
 
 Which would return the same data frame as above, except the \code{"v"} column
@@ -101,44 +101,44 @@ some but not all subscripts), we can supply their specifications separately.
 For example, if we have a variable \code{d[i]} with the same \code{i} subscript
 as \code{b[i,v]}, and a variable \code{x} with no subscripts, we could do this:
 
-\preformatted{spread_draws(fit, x, d[i], b[i,v])}
+\preformatted{spread_draws(model, x, d[i], b[i,v])}
 
 Which is roughly equivalent to this:
 
-\preformatted{spread_draws(fit, x) \%>\%
- inner_join(spread_draws(fit, d[i])) \%>\%
- inner_join(spread_draws(fit, b[i,v])) \%>\%
+\preformatted{spread_draws(model, x) \%>\%
+ inner_join(spread_draws(model, d[i])) \%>\%
+ inner_join(spread_draws(model, b[i,v])) \%>\%
  group_by(i,v)
 }
 
 Similarly, this:
 
-\preformatted{gather_draws(fit, x, d[i], b[i,v])}
+\preformatted{gather_draws(model, x, d[i], b[i,v])}
 
 Is roughly equivalent to this:
 
 \preformatted{bind_rows(
- gather_draws(fit, x),
- gather_draws(fit, d[i]),
- gather_draws(fit, b[i,v])
+ gather_draws(model, x),
+ gather_draws(model, d[i]),
+ gather_draws(model, b[i,v])
 )}
 
 The \code{c} and \code{cbind} functions can be used to combine multiple variable names that have
 the same dimensions. For example, if we have several variables with the same
 subscripts \code{i} and \code{v}, we could do either of these:
 
-\preformatted{spread_draws(fit, c(w, x, y, z)[i,v])}
-\preformatted{spread_draws(fit, cbind(w, x, y, z)[i,v])  # equivalent}
+\preformatted{spread_draws(model, c(w, x, y, z)[i,v])}
+\preformatted{spread_draws(model, cbind(w, x, y, z)[i,v])  # equivalent}
 
 Each of which is roughly equivalent to this:
 
-\preformatted{spread_draws(fit, w[i,v], x[i,v], y[i,v], z[i,v])}
+\preformatted{spread_draws(model, w[i,v], x[i,v], y[i,v], z[i,v])}
 
 Besides being more compact, the \code{c()}-style syntax is currently also
 faster (though that may change).
 
 Dimensions can be omitted from the resulting data frame by leaving their names
-blank; e.g. \code{spread_draws(fit, b[,v])} will omit the first dimension of
+blank; e.g. \code{spread_draws(model, b[,v])} will omit the first dimension of
 \code{b} from the output. This is useful if a dimension is known to contain all
 the same value in a given model.
 
@@ -146,7 +146,7 @@ The shorthand \code{..} can be used to specify one column that should be put
 into a wide format and whose names will be the base variable name, plus a dot
 ("."), plus the value of the dimension at \code{..}. For example:
 
-\code{spread_draws(fit, b[i,..])} would return a grouped data frame
+\code{spread_draws(model, b[i,..])} would return a grouped data frame
 (grouped by \code{i}), with:
 \itemize{
 \item column \code{".chain"}: the chain number
@@ -161,16 +161,16 @@ into a wide format and whose names will be the base variable name, plus a dot
 An optional clause in the form \verb{| wide_dimension} can also be used to put
 the data frame into a wide format based on \code{wide_dimension}. For example, this:
 
-\preformatted{spread_draws(fit, b[i,v] | v)}
+\preformatted{spread_draws(model, b[i,v] | v)}
 
 is roughly equivalent to this:
 
-\preformatted{spread_draws(fit, b[i,v]) \%>\% spread(v,b)}
+\preformatted{spread_draws(model, b[i,v]) \%>\% spread(v,b)}
 
 The main difference between using the \code{|} syntax instead of the
 \code{..} syntax is that the \code{|} syntax respects prototypes applied to
 dimensions with \code{\link[=recover_types]{recover_types()}}, and thus can be used to get
-columns with nicer names. For example:\preformatted{fit \%>\% recover_types(data) \%>\% spread_draws(b[i,v] | v)
+columns with nicer names. For example:\preformatted{model \%>\% recover_types(data) \%>\% spread_draws(b[i,v] | v)
 }
 
 would return a grouped data frame
@@ -189,7 +189,7 @@ The shorthand \code{.} can be used to specify columns that should be nested
 into vectors, matrices, or n-dimensional arrays (depending on how many dimensions
 are specified with \code{.}).
 
-For example, \code{spread_draws(fit, a[.], b[.,.])} might return a
+For example, \code{spread_draws(model, a[.], b[.,.])} might return a
 data frame, with:
 \itemize{
 \item column \code{".chain"}: the chain number.
@@ -204,7 +204,7 @@ missing entries given the value \code{NA}.
 
 Finally, variable names can be regular expressions by setting \code{regex = TRUE}; e.g.:
 
-\preformatted{spread_draws(fit, `b_.*`[i], regex = TRUE)}
+\preformatted{spread_draws(model, `b_.*`[i], regex = TRUE)}
 
 Would return a tidy data frame with variables starting with \code{b_} and having one dimension.
 }

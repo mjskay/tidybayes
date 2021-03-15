@@ -15,7 +15,7 @@ globalVariables(c(".."))
 #' Extract draws from a Bayesian model for one or more variables (possibly with named
 #' dimensions) into one of two types of long-format data frames.
 #'
-#' Imagine a JAGS or Stan fit named `fit`. The model may contain a variable named
+#' Imagine a JAGS or Stan fit named `model`. The model may contain a variable named
 #' `b[i,v]` (in the JAGS or Stan language) with dimension `i` in `1:100` and
 #' dimension `v` in `1:3`. However, the default format for draws returned from
 #' JAGS or Stan in R will not reflect this indexing structure, instead
@@ -34,7 +34,7 @@ globalVariables(c(".."))
 #' column named `".value"`. To use naming schemes from other packages (such as `broom`), consider passing
 #' results through functions like [to_broom_names()] or [to_ggmcmc_names()].
 #'
-#' For example, `spread_draws(fit, a[i], b[i,v])` might return a grouped
+#' For example, `spread_draws(model, a[i], b[i,v])` might return a grouped
 #' data frame (grouped by `i` and `v`), with:
 #' \itemize{
 #'    \item column `".chain"`: the chain number. `NA` if not applicable to the model
@@ -49,7 +49,7 @@ globalVariables(c(".."))
 #'    \item column `"b"`: value of `"b[i,v]"` for draw `".draw"`
 #'  }
 #'
-#' `gather_draws(fit, a[i], b[i,v])` on the same fit would return a grouped
+#' `gather_draws(model, a[i], b[i,v])` on the same model would return a grouped
 #' data frame (grouped by `i` and `v`), with:
 #' \itemize{
 #'    \item column `".chain"`: the chain number
@@ -64,15 +64,15 @@ globalVariables(c(".."))
 #'  }
 #'
 #' `spread_draws` and `gather_draws` can use type information
-#' applied to the `fit` object by [recover_types()] to convert columns
+#' applied to the `model` object by [recover_types()] to convert columns
 #' back into their original types. This is particularly helpful if some of the dimensions in
 #' your model were originally factors. For example, if the `v` dimension
 #' in the original data frame `data` was a factor with levels `c("a","b","c")`,
 #' then we could use `recover_types` before `spread_draws`:
 #'
-#' \preformatted{fit \%>\%
+#' \preformatted{model \%>\%
 #'  recover_types(data) %\>\%
-#'  spread_draws(fit, b[i,v])
+#'  spread_draws(model, b[i,v])
 #' }
 #'
 #' Which would return the same data frame as above, except the `"v"` column
@@ -83,26 +83,26 @@ globalVariables(c(".."))
 #' For example, if we have a variable `d[i]` with the same `i` subscript
 #' as `b[i,v]`, and a variable `x` with no subscripts, we could do this:
 #'
-#' \preformatted{spread_draws(fit, x, d[i], b[i,v])}
+#' \preformatted{spread_draws(model, x, d[i], b[i,v])}
 #'
 #' Which is roughly equivalent to this:
 #'
-#' \preformatted{spread_draws(fit, x) \%>\%
-#'  inner_join(spread_draws(fit, d[i])) \%>\%
-#'  inner_join(spread_draws(fit, b[i,v])) \%>\%
+#' \preformatted{spread_draws(model, x) \%>\%
+#'  inner_join(spread_draws(model, d[i])) \%>\%
+#'  inner_join(spread_draws(model, b[i,v])) \%>\%
 #'  group_by(i,v)
 #' }
 #'
 #' Similarly, this:
 #'
-#' \preformatted{gather_draws(fit, x, d[i], b[i,v])}
+#' \preformatted{gather_draws(model, x, d[i], b[i,v])}
 #'
 #' Is roughly equivalent to this:
 #'
 #' \preformatted{bind_rows(
-#'  gather_draws(fit, x),
-#'  gather_draws(fit, d[i]),
-#'  gather_draws(fit, b[i,v])
+#'  gather_draws(model, x),
+#'  gather_draws(model, d[i]),
+#'  gather_draws(model, b[i,v])
 #' )}
 #'
 #'
@@ -110,18 +110,18 @@ globalVariables(c(".."))
 #' the same dimensions. For example, if we have several variables with the same
 #' subscripts `i` and `v`, we could do either of these:
 #'
-#' \preformatted{spread_draws(fit, c(w, x, y, z)[i,v])}
-#' \preformatted{spread_draws(fit, cbind(w, x, y, z)[i,v])  # equivalent}
+#' \preformatted{spread_draws(model, c(w, x, y, z)[i,v])}
+#' \preformatted{spread_draws(model, cbind(w, x, y, z)[i,v])  # equivalent}
 #'
 #' Each of which is roughly equivalent to this:
 #'
-#' \preformatted{spread_draws(fit, w[i,v], x[i,v], y[i,v], z[i,v])}
+#' \preformatted{spread_draws(model, w[i,v], x[i,v], y[i,v], z[i,v])}
 #'
 #' Besides being more compact, the `c()`-style syntax is currently also
 #' faster (though that may change).
 #'
 #' Dimensions can be omitted from the resulting data frame by leaving their names
-#' blank; e.g. `spread_draws(fit, b[,v])` will omit the first dimension of
+#' blank; e.g. `spread_draws(model, b[,v])` will omit the first dimension of
 #' `b` from the output. This is useful if a dimension is known to contain all
 #' the same value in a given model.
 #'
@@ -129,7 +129,7 @@ globalVariables(c(".."))
 #' into a wide format and whose names will be the base variable name, plus a dot
 #' ("."), plus the value of the dimension at `..`. For example:
 #'
-#' `spread_draws(fit, b[i,..])` would return a grouped data frame
+#' `spread_draws(model, b[i,..])` would return a grouped data frame
 #' (grouped by `i`), with:
 #' \itemize{
 #'  \item column `".chain"`: the chain number
@@ -144,11 +144,11 @@ globalVariables(c(".."))
 #' An optional clause in the form `| wide_dimension` can also be used to put
 #' the data frame into a wide format based on `wide_dimension`. For example, this:
 #'
-#' \preformatted{spread_draws(fit, b[i,v] | v)}
+#' \preformatted{spread_draws(model, b[i,v] | v)}
 #'
 #' is roughly equivalent to this:
 #'
-#' \preformatted{spread_draws(fit, b[i,v]) \%>\% spread(v,b)}
+#' \preformatted{spread_draws(model, b[i,v]) \%>\% spread(v,b)}
 #'
 #' The main difference between using the `|` syntax instead of the
 #' `..` syntax is that the `|` syntax respects prototypes applied to
@@ -156,7 +156,7 @@ globalVariables(c(".."))
 #' columns with nicer names. For example:
 #'
 #' ```
-#' fit %>% recover_types(data) %>% spread_draws(b[i,v] | v)
+#' model %>% recover_types(data) %>% spread_draws(b[i,v] | v)
 #' ```
 #'
 #' would return a grouped data frame
@@ -175,7 +175,7 @@ globalVariables(c(".."))
 #' into vectors, matrices, or n-dimensional arrays (depending on how many dimensions
 #' are specified with `.`).
 #'
-#' For example, `spread_draws(fit, a[.], b[.,.])` might return a
+#' For example, `spread_draws(model, a[.], b[.,.])` might return a
 #' data frame, with:
 #' \itemize{
 #'    \item column `".chain"`: the chain number.
@@ -190,7 +190,7 @@ globalVariables(c(".."))
 #'
 #' Finally, variable names can be regular expressions by setting `regex = TRUE`; e.g.:
 #'
-#' \preformatted{spread_draws(fit, `b_.*`[i], regex = TRUE)}
+#' \preformatted{spread_draws(model, `b_.*`[i], regex = TRUE)}
 #'
 #' Would return a tidy data frame with variables starting with `b_` and having one dimension.
 #'
