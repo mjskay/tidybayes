@@ -231,7 +231,7 @@ RankCorr \%>\%
 
 }
 \seealso{
-\code{\link[=recover_types]{recover_types()}}, \code{\link[=compose_data]{compose_data()}}.
+\code{\link[=spread_rvars]{spread_rvars()}}, \code{\link[=recover_types]{recover_types()}}, \code{\link[=compose_data]{compose_data()}}.
 }
 \author{
 Matthew Kay

@@ -205,7 +205,7 @@ globalVariables(c(".."))
 #' @param seed A seed to use when subsampling draws (i.e. when `n` is not `NULL`).
 #' @return A data frame.
 #' @author Matthew Kay
-#' @seealso [recover_types()], [compose_data()].
+#' @seealso [spread_rvars()], [recover_types()], [compose_data()].
 #' @keywords manip
 #' @examples
 #'

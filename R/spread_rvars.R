@@ -51,11 +51,13 @@ spread_rvars_ = function(draws, variable_spec) {
   wide_dimension_name = spec[[3]]
 
   if (!is.null(wide_dimension_name)) {
-    # TODO: implement
-    stop("spread_rvars does not currently support wide dimensions (`|` syntax).")
+    stop(
+      "spread_rvars does not currently support wide dimensions (`|` syntax).\n",
+      "Try leaving the index you would like to be wide blank instead."
+    )
   }
 
-  #for specs like `x`, replace with equivalent of `x[]`
+  #for specs like `x`, treat as if user had input `x[]` (which is equivalent)
   if (length(dimension_names) == 0) dimension_names = ""
 
   #ensure equal dimensions in all variables
