@@ -63,7 +63,7 @@ Suggests:
     cmdstanr
 Remotes:
     mjskay/ggdist,
-    stan-dev/posterior,
+    stan-dev/posterior@rv-like,
     stan-dev/cmdstanr
 License: GPL (>= 3)
 Language: en-US
@@ -117,6 +117,7 @@ Collate:
     "residual_draws.R"
     "sample_draws.R"
     "spread_draws.R"
+    "spread_rvars.R"
     "tidy_draws.R"
     "tidybayes-models.R"
     "ungather_draws.R"

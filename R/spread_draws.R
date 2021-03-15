@@ -270,14 +270,8 @@ spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
   long_draws = spread_draws_long_(draws, variable_names, dimension_names, regex = regex, sep = sep)
 
   #convert variable and/or dimensions back into usable data types
-  constructors = attr(draws, "tidybayes_constructors")
-  if (is.null(constructors)) constructors = list()
-  for (column_name in c(variable_names, dimension_names)) {
-    if (column_name %in% names(constructors)) {
-      #we have a data type constructor for this dimension, convert it
-      long_draws[[column_name]] = constructors[[column_name]](long_draws[[column_name]])
-    }
-  }
+  #that were set on the model using recover_types
+  long_draws = convert_cols_to_types_from_model(long_draws, c(variable_names, dimension_names), draws)
 
   #spread a column into wide format if requested (only if one variable, because
   #we can't spread multiple keys simultaneously for the same value)
@@ -668,4 +662,19 @@ parse_variable_spec = function(variable_spec) {
 
   spec_data_mask = new_data_mask(spec_env)
   eval_tidy(variable_spec, spec_data_mask)
+}
+
+# convert the specified columns in the given data frame according to
+# the type constructors provided in the given model
+convert_cols_to_types_from_model = function(df, columns, model) {
+  constructors = attr(model, "tidybayes_constructors")
+  if (!is.null(constructors)) {
+    for (column_name in columns) {
+      if (column_name %in% names(constructors)) {
+        #we have a data type constructor for this dimension, convert it
+        df[[column_name]] = constructors[[column_name]](df[[column_name]])
+      }
+    }
+  }
+  df
 }

@@ -62,9 +62,9 @@ tidy_draws = function(model, ...) UseMethod("tidy_draws")
 tidy_draws.default = function(model, ...) {
   signature = class(model)
   if (has_method("as_draws_df", signature)) {
-    draws = as_draws_df(model)
+    draws = as_tibble(as_draws_df(model))
   } else if (has_method("as_draws", signature)) {
-    draws = as_draws_df(as_draws(model))
+    draws = as_tibble(as_draws_df(as_draws(model)))
   } else if (has_method("as.mcmc.list", signature)) {
     draws = tidy_draws(as.mcmc.list(model))
   } else {
@@ -81,7 +81,7 @@ tidy_draws.default = function(model, ...) {
 #' @rdname tidy_draws
 #' @export
 tidy_draws.draws = function(model, ...) {
-  draws = as_draws_df(model)
+  draws = as_tibble(as_draws_df(model))
   attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
   draws
 }
@@ -242,7 +242,7 @@ tidy_draws.brmsfit = function(model, ...) {
 #' @importFrom posterior bind_draws as_draws_df
 #' @export
 tidy_draws.CmdStanFit = function(model, ...) {
-  draws = as_draws_df(model$draws())
+  draws = as_tibble(as_draws_df(model$draws()))
 
   attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
   draws
@@ -252,7 +252,7 @@ tidy_draws.CmdStanFit = function(model, ...) {
 #' @importFrom posterior bind_draws as_draws_df
 #' @export
 tidy_draws.CmdStanMCMC = function(model, ...) {
-  draws = as_draws_df(bind_draws(model$draws(), model$sampler_diagnostics()))
+  draws = as_tibble(as_draws_df(bind_draws(model$draws(), model$sampler_diagnostics())))
 
   attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
   draws

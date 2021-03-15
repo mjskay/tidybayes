@@ -87,10 +87,10 @@ add_draws_list = function(data, draws, value = ".value") {
     data = as_tibble(data)
   }
 
-  bind_cols(data, draws_list(draws, value = value))
+  bind_cols(data, draws_list_(draws, value = value))
 }
 
-draws_list = function(draws, value = ".value") {
+draws_list_ = function(draws, value = ".value") {
   .value = as.name(value)
 
   if (length(dim(draws)) != 2) {
