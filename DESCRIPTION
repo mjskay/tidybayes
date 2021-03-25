@@ -119,6 +119,7 @@ Collate:
     "sample_draws.R"
     "spread_draws.R"
     "spread_rvars.R"
+    "summarise_draws.R"
     "tidy_draws.R"
     "tidybayes-models.R"
     "ungather_draws.R"
