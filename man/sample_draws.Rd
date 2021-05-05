@@ -4,14 +4,16 @@
 \alias{sample_draws}
 \title{Sample draws from a tidy-format data frame of draws}
 \usage{
-sample_draws(data, n, draw = ".draw")
+sample_draws(data, n, draw = ".draw", seed = NULL)
 }
 \arguments{
 \item{data}{Data frame to sample from}
 
-\item{n}{The number of draws to select}
+\item{n}{The number of draws to select; if not specified it returns all draws.}
 
-\item{draw}{The name of the column indexing the draws}
+\item{draw}{The name of the column indexing the draws; default \code{".draw"}.}
+
+\item{seed}{A seed to use when subsampling draws; default \code{"NULL"} as if no seed had been set.}
 }
 \description{
 Given a tidy-format data frame of draws with a column indexing each draw, subsample the data frame to a given size

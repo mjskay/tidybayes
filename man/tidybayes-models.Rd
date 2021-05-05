@@ -17,7 +17,7 @@ do not.
 \item \link[rstan:stan]{rstan} models
 \item \code{\link[brms:brm]{brms::brm()}} models
 \item \link[rstanarm:rstanarm-package]{rstanarm} models
-\item \code{\link[runjags:runjags]{runjags::runjags()}} models
+\item \code{\link[runjags:runjags-package]{runjags::runjags()}} models
 \item \code{\link[rjags:jags.model]{rjags::jags.model()}} models, if sampled using \code{\link[rjags:coda.samples]{rjags::coda.samples()}}
 \item \code{\link[jagsUI:jags]{jagsUI::jags()}} models
 \item \code{\link[MCMCglmm:MCMCglmm]{MCMCglmm::MCMCglmm()}} models
