@@ -4,7 +4,6 @@
 ###############################################################################
 
 library(dplyr)
-library(forcats)
 
 context("gather_pairs")
 

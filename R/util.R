@@ -156,3 +156,23 @@ discard_ = function(.x, .f, ...) {
   i = map_lgl_(.x, .f, ...)
   .x[is.na(i) | !i]
 }
+
+fct_inorder_ = function(x) {
+  if (is.character(x)) {
+    x = factor(x)
+  } else if (!is.factor(x)) {
+    stop0("`x` must be a factor (or character vector).")
+  }
+  level_i = as.integer(x)[!duplicated(x)]
+  level_i = level_i[!is.na(level_i)]
+  factor(x, levels(x)[level_i], ordered = is.ordered(x))
+}
+
+fct_rev_ = function(x) {
+  if (is.character(x)) {
+    x = factor(x)
+  } else if (!is.factor(x)) {
+    stop0("`x` must be a factor (or character vector).")
+  }
+  factor(x, levels = rev(levels(x)), ordered = is.ordered(x))
+}
