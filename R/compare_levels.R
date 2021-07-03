@@ -142,7 +142,6 @@ comparison_types = within(list(), {
 #'   facet_grid(cols = vars(i))
 #'
 #' @importFrom tidyselect vars_pull
-#' @importFrom plyr ldply
 #' @importFrom tidyr spread_
 #' @importFrom tidyselect one_of
 #' @importFrom tibble as_tibble

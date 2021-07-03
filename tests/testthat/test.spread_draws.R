@@ -87,7 +87,7 @@ test_that("spread_draws works on two variables with no dimensions and multiple c
 
 
 test_that("spread_draws works on a variable with one unnamed index", {
-  ref = plyr::ldply(1:3, function(i) {
+  ref = bind_rows(lapply(1:3, function(i) {
     data.frame(
       i = i,
       tau = RankCorr_s[, paste0("tau[", i, "]")],
@@ -95,14 +95,14 @@ test_that("spread_draws works on a variable with one unnamed index", {
       .iteration = seq_len(nrow(RankCorr_s)),
       .draw = seq_len(nrow(RankCorr_s))
     )
-  }) %>%
+  })) %>%
     group_by(i)
 
   expect_equal(spread_draws(RankCorr_s, tau[i]) %>% arrange(i), ref)
 })
 
 test_that("spread_draws works on a variable with one named index", {
-  ref = plyr::ldply(1:3, function(i) {
+  ref = bind_rows(lapply(1:3, function(i) {
     data.frame(
       i = factor(i_labels[i]),
       tau = RankCorr_i[, paste0("tau[", i, "]")],
@@ -110,7 +110,7 @@ test_that("spread_draws works on a variable with one named index", {
       .iteration = seq_len(nrow(RankCorr_i)),
       .draw = seq_len(nrow(RankCorr_i))
     )
-  }) %>%
+  })) %>%
     group_by(i)
 
   expect_equal(spread_draws(RankCorr_i, tau[i]) %>% arrange(i), ref)
@@ -151,8 +151,8 @@ test_that("spread_draws works on a variable with one named wide index", {
 
 
 test_that("spread_draws works on a variable with two named dimensions", {
-  ref = plyr::ldply(1:4, function(j) {
-    plyr::ldply(1:3, function(i) {
+  ref = bind_rows(lapply(1:4, function(j) {
+    bind_rows(lapply(1:3, function(i) {
       data.frame(
         i = factor(i_labels[i]),
         j = factor(j_labels[j]),
@@ -161,8 +161,8 @@ test_that("spread_draws works on a variable with two named dimensions", {
         .iteration = seq_len(nrow(RankCorr_ij)),
         .draw = seq_len(nrow(RankCorr_ij))
       )
-    })
-  }) %>%
+    }))
+  })) %>%
     group_by(i, j)
 
   expect_equal(spread_draws(RankCorr_ij, b[i, j]) %>% arrange(j, i), ref)
@@ -170,8 +170,8 @@ test_that("spread_draws works on a variable with two named dimensions", {
 
 
 test_that("spread_draws works on a variable with two named dimensions, one that is wide", {
-  ref = plyr::ldply(1:4, function(j) {
-    plyr::ldply(1:3, function(i) {
+  ref = bind_rows(lapply(1:4, function(j) {
+    bind_rows(lapply(1:3, function(i) {
       data.frame(
         i = factor(i_labels[i]),
         .chain = as.integer(1),
@@ -180,8 +180,8 @@ test_that("spread_draws works on a variable with two named dimensions, one that 
         j = factor(j_labels[j]),
         b = RankCorr_ij[, paste0("b[", i, ",", j, "]")]
       )
-    })
-  }) %>%
+    }))
+  })) %>%
     spread(j, b)
 
   # grouping attributes are too finicky on this one for an exact comparison
@@ -189,8 +189,8 @@ test_that("spread_draws works on a variable with two named dimensions, one that 
 })
 
 test_that("spread_draws works on a variable with one named index and one wide anonymous index", {
-  ref = plyr::ldply(1:4, function(j) {
-    plyr::ldply(1:3, function(i) {
+  ref = bind_rows(lapply(1:4, function(j) {
+    bind_rows(lapply(1:3, function(i) {
       data.frame(
         i = factor(i_labels[i]),
         .chain = as.integer(1),
@@ -199,8 +199,8 @@ test_that("spread_draws works on a variable with one named index and one wide an
         j = factor(paste0("b.", j)),
         b = RankCorr_i[, paste0("b[", i, ",", j, "]")]
       )
-    })
-  }) %>%
+    }))
+  })) %>%
     spread(j, b)
 
   # grouping attributes are too finicky on this one for an exact comparison

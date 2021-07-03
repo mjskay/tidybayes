@@ -15,7 +15,7 @@ get_draws = function() {
   #observations of tau grouped by the factor ff (with levels ff_labels)
   data(RankCorr, package = "ggdist")
   rank_corr = RankCorr[[1]]
-  plyr::ldply(1:3, function(i) {
+  bind_rows(lapply(1:3, function(i) {
     data.frame(
       .chain = as.integer(1),
       .iteration = seq_len(nrow(rank_corr)),
@@ -23,18 +23,18 @@ get_draws = function() {
       ff = ff_labels[i],
       tau = as.vector(rank_corr[, paste0("tau[", i, "]")])
     )
-  })
+  }))
 }
 
 test_that("pairwise level comparison works", {
   draws = get_draws()
 
   draws_wide = spread(draws, ff, tau)
-  ref = plyr::ldply(combn(levels(factor(draws$ff)), 2, simplify = FALSE), function(levels.) {
+  ref = bind_rows(lapply(combn(levels(factor(draws$ff)), 2, simplify = FALSE), function(levels.) {
     draws_wide$ff = paste(levels.[[2]], "-", levels.[[1]])
     draws_wide$tau = draws_wide[[levels.[[2]]]] - draws_wide[[levels.[[1]]]]
     draws_wide
-  }) %>%
+  })) %>%
     select(-one_of(ff_labels)) %>%
     group_by(ff)
 
@@ -48,11 +48,11 @@ test_that("ordered level comparison works", {
   draws = get_draws()
 
   draws_wide = spread(draws, ff, tau)
-  ref = plyr::ldply(plyr::llply(2:3, function(i) c(ff_labels[[i]], ff_labels[[i - 1]])), function(levels.) {
+  ref = bind_rows(lapply(lapply(2:3, function(i) c(ff_labels[[i]], ff_labels[[i - 1]])), function(levels.) {
     draws_wide$ff = paste(levels.[[1]], "-", levels.[[2]])
     draws_wide$tau = draws_wide[[levels.[[1]]]] - draws_wide[[levels.[[2]]]]
     draws_wide
-  }) %>%
+  })) %>%
     select(-one_of(ff_labels)) %>%
     group_by(ff)
 
@@ -64,11 +64,11 @@ test_that("control level comparison works", {
   draws = get_draws()
 
   draws_wide = spread(draws, ff, tau)
-  ref = plyr::ldply(plyr::llply(2:3, function(i) c(ff_labels[[i]], ff_labels[[1]])), function(levels.) {
+  ref = bind_rows(lapply(lapply(2:3, function(i) c(ff_labels[[i]], ff_labels[[1]])), function(levels.) {
     draws_wide$ff = paste(levels.[[1]], "-", levels.[[2]])
     draws_wide$tau = draws_wide[[levels.[[1]]]] - draws_wide[[levels.[[2]]]]
     draws_wide
-  }) %>%
+  })) %>%
     select(-one_of(ff_labels)) %>%
     group_by(ff)
 
@@ -91,11 +91,11 @@ test_that("named functions are supported and named with their own name", {
   draws = get_draws()
 
   draws_wide = spread(draws, ff, tau)
-  ref = plyr::ldply(plyr::llply(2:3, function(i) c(ff_labels[[i]], ff_labels[[1]])), function(levels.) {
+  ref = bind_rows(lapply(lapply(2:3, function(i) c(ff_labels[[i]], ff_labels[[1]])), function(levels.) {
     draws_wide$ff = paste(levels.[[1]], "+", levels.[[2]])
     draws_wide$tau = draws_wide[[levels.[[1]]]] + draws_wide[[levels.[[2]]]]
     draws_wide
-  }) %>%
+  })) %>%
     select(-one_of(ff_labels)) %>%
     group_by(ff)
 
@@ -106,11 +106,11 @@ test_that("anonymous functions are supported and named with `:`", {
   draws = get_draws()
 
   draws_wide = spread(draws, ff, tau)
-  ref = plyr::ldply(plyr::llply(2:3, function(i) c(ff_labels[[i]], ff_labels[[1]])), function(levels.) {
+  ref = bind_rows(lapply(lapply(2:3, function(i) c(ff_labels[[i]], ff_labels[[1]])), function(levels.) {
     draws_wide$ff = paste(levels.[[1]], ":", levels.[[2]])
     draws_wide$tau = draws_wide[[levels.[[1]]]] + draws_wide[[levels.[[2]]]]
     draws_wide
-  }) %>%
+  })) %>%
     select(-one_of(ff_labels)) %>%
     group_by(ff)
 
@@ -121,11 +121,11 @@ test_that("custom comparisons of lists of character vectors are supported", {
   draws = get_draws()
 
   draws_wide = spread(draws, ff, tau)
-  ref = plyr::ldply(list(c("a", "b"), c("a", "c")), function(levels.) {
+  ref = bind_rows(lapply(list(c("a", "b"), c("a", "c")), function(levels.) {
     draws_wide$ff = paste(levels.[[1]], "-", levels.[[2]])
     draws_wide$tau = draws_wide[[levels.[[1]]]] - draws_wide[[levels.[[2]]]]
     draws_wide
-  }) %>%
+  })) %>%
     select(-one_of(ff_labels)) %>%
     group_by(ff)
 
@@ -136,15 +136,15 @@ test_that("custom comparisons of lists of unevaluated expressions are supported"
   draws = get_draws()
 
   draws_wide = spread(draws, ff, tau)
-  ref = plyr::ldply(plyr::.(a + b, exp(c - a)), function(levels.) {
+  ref = bind_rows(lapply(list(quote(a + b), quote(exp(c - a))), function(levels.) {
     draws_wide$ff = deparse0(levels.)
     draws_wide$tau = eval(levels., draws_wide)
     draws_wide
-  }) %>%
+  })) %>%
     select(-one_of(ff_labels)) %>%
     group_by(ff)
 
-  expect_equal(compare_levels(draws, tau, by = ff, comparison = plyr::.(a + b, exp(c - a))), ref)
+  expect_equal(compare_levels(draws, tau, by = ff, comparison = list(quote(a + b), quote(exp(c - a)))), ref)
   expect_equal(compare_levels(draws, tau, by = ff, comparison = rlang::exprs(a + b, exp(c - a))), ref)
   # test named comparisons
   ref[ref$ff == "a + b",]$ff = "comp1"
@@ -157,11 +157,11 @@ test_that("comparisons of subsets of levels of factors are supported", {
     filter(ff %in% c("a", "c"))
 
   draws_wide = spread(draws, ff, tau)
-  ref = plyr::ldply(combn(levels(factor(draws$ff)), 2, simplify = FALSE), function(levels.) {
+  ref = bind_rows(lapply(combn(levels(factor(draws$ff)), 2, simplify = FALSE), function(levels.) {
     draws_wide$ff = paste(levels.[[2]], "-", levels.[[1]])
     draws_wide$tau = draws_wide[[levels.[[2]]]] - draws_wide[[levels.[[1]]]]
     draws_wide
-  }) %>%
+  })) %>%
     select(-one_of(c("a", "c"))) %>%
     group_by(ff)
 
@@ -186,14 +186,14 @@ test_that("compare_levels respects groups of input data frame", {
     filter(i %in% 1:3, j %in% 1:3) %>%
     group_by(i, j)
 
-  ref = plyr::ddply(draws, "i", function (d) {
+  ref = bind_rows(lapply(split(draws, draws[["i"]]), function (d) {
     draws_wide = spread(d, j, b)
-    plyr::ldply(combn(levels(factor(d$j)), 2, simplify = FALSE), function(levels.) {
+    bind_rows(lapply(combn(levels(factor(d$j)), 2, simplify = FALSE), function(levels.) {
       draws_wide$j = paste(levels.[[2]], "-", levels.[[1]])
       draws_wide$b = draws_wide[[levels.[[2]]]] - draws_wide[[levels.[[1]]]]
       draws_wide
-    })
-  }) %>%
+    }))
+  })) %>%
     select(-one_of(c("1", "2", "3"))) %>%
     group_by(i, j)
 

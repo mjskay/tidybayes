@@ -455,7 +455,7 @@ geom_intervalh = function(
   ggdist:::layer_geom_slabinterval(
     data = data,
     mapping = mapping,
-    default_mapping = aes(xmin = .lower, xmax = .upper, color = forcats::fct_rev(ordered(.width))),
+    default_mapping = aes(xmin = .lower, xmax = .upper, color = fct_rev_(ordered(.width))),
     stat = stat,
     geom = GeomIntervalh,
     position = position,
@@ -473,7 +473,6 @@ geom_intervalh = function(
 #' @rdname tidybayes-deprecated
 #' @format NULL
 #' @usage NULL
-#' @importFrom plyr defaults
 #' @export
 GeomIntervalh = ggproto("GeomIntervalh", ggdist::GeomSlabinterval,
   default_aes = defaults(aes(

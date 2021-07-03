@@ -50,6 +50,11 @@ all_names = function(x) {
   }
 }
 
+# set missing values from x to provided default values
+defaults = function(x, defaults) {
+  c(x, defaults[setdiff(names(defaults), names(x))])
+}
+
 # return true if there is a method (S3 or S4) for the
 # given function and class signature
 #' @importFrom rlang `%||%`

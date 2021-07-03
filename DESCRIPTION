@@ -18,7 +18,6 @@ Depends:
 Imports:
     methods,
     ggdist (>= 2.4.1.9001),
-    plyr,
     dplyr (>= 0.8.0),
     tidyr (>= 1.0.0),
     ggplot2 (>= 3.3.5),

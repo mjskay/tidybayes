@@ -77,7 +77,6 @@
 #'
 #' # Deprecated; see examples for density_bins
 #'
-#' @importFrom plyr ldply
 #' @importFrom stats median
 #' @import dplyr
 #' @export
@@ -102,7 +101,7 @@ predict_curve = function(data, formula, summary = median, ...) {
   eval(bquote(
     do(data, {
       #for every group defined in data ...
-      ldply(seq_len(nrow(varied_predictors)), function(r) {
+      map_dfr_(seq_len(nrow(varied_predictors)), function(r) {
         #and for every prediction point on the curve
         #defined by the values in (...)
         predictor_row = as.list(varied_predictors[r, , drop = FALSE]) # nolint

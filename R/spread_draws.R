@@ -475,8 +475,10 @@ nest_dimensions_ = function(long_draws, dimension_names, nested_dimension_names)
       # array is not ragged, so combining should be easy...
       if (is.character(indices) || is.factor(indices)) {
         # indices are strings, so update the names before we combine
-        long_draws[[value_name]] = map2_(long_draws[[value_name]], long_draws[[dimension_name]],
-          ~ set_names(.x, as.character(.y)))
+        long_draws[[value_name]] = map2_(
+          long_draws[[value_name]], long_draws[[dimension_name]],
+          function(x, y) set_names(x, as.character(y))
+        )
       } else if (!identical(indices, seq_along(indices))) {
         if (min(indices) < 1 || !is_integerish(indices)) {
           # indices are not an integer sequence >= 1, convert to strings
