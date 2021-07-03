@@ -8,8 +8,8 @@ library(dplyr)
 context("stat_dist_")
 
 test_that("distribution eye plots work with the args aesthetic", {
-  skip_if_not_installed("vdiffr")
-  skip_if_not_installed("svglite")
+  skip_if_no_vdiffr()
+
 
   p = tribble(
     ~dist, ~args,

@@ -16,8 +16,8 @@ RankCorr_u_tau = RankCorr_s %>%
   filter(i %in% 1:3)
 
 test_that("horizontal grouped intervals work", {
-  skip_if_not_installed("vdiffr")
-  skip_if_not_installed("svglite")
+  skip_if_no_vdiffr()
+
 
   expect_warning(vdiffr::expect_doppelganger("grouped intervals (h)",
     RankCorr_u_tau %>%

@@ -9,8 +9,8 @@ library(tidyr)
 context("stat_eye")
 
 test_that("one-parameter eye plots work", {
-  skip_if_not_installed("vdiffr")
-  skip_if_not_installed("svglite")
+  skip_if_no_vdiffr()
+
 
   set.seed(123)
   df = data.frame(x = rnorm(1000), y = 1)
@@ -40,8 +40,8 @@ test_that("one-parameter eye plots work", {
 
 
 test_that("two-parameter eye plots work", {
-  skip_if_not_installed("vdiffr")
-  skip_if_not_installed("svglite")
+  skip_if_no_vdiffr()
+
 
   set.seed(123)
   df = data.frame(x = rnorm(1000), y = "a", y_int = 1) %>%
