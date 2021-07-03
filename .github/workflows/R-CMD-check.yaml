@@ -87,6 +87,6 @@ jobs:
           path: check
 
       - name: Test coverage
-        if: matrix.config.r == 'release' && runner.os == 'Windows' && matrix.config.suffix == 'quick'
+        if: matrix.config.r == 'release' && runner.os == 'Linux' && matrix.config.suffix == 'quick'
         run: covr::codecov()
         shell: Rscript {0}
