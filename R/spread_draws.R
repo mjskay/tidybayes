@@ -229,7 +229,6 @@ globalVariables(c(".."))
 #'   median_qi()
 #'
 #' @importFrom rlang enquos
-#' @importFrom purrr reduce
 #' @importFrom dplyr inner_join group_by_at
 #' @rdname spread_draws
 #' @export
@@ -245,11 +244,11 @@ spread_draws = function(model, ..., regex = FALSE, sep = "[, ]", n = NULL, seed 
   #first data frame in a join is retained), so we'll have to recreate
   #the full set of groups from all the data frames after we join them
   groups_ = tidysamples %>%
-    map(group_vars) %>%
-    reduce(union)
+    lapply(group_vars) %>%
+    reduce_(union)
 
   tidysamples %>%
-    reduce(function(tidysample1, tidysample2) {
+    reduce_(function(tidysample1, tidysample2) {
       by_ = intersect(names(tidysample1), names(tidysample2))
       inner_join(tidysample1, tidysample2, by = by_)
     }) %>%
@@ -468,7 +467,7 @@ nest_dimensions_ = function(long_draws, dimension_names, nested_dimension_names)
 
     if (ragged) {
       # this is ragged, so first we'll combine all the valid indices of this dimension together
-      indices = reduce(first_draw_indices, union)
+      indices = Reduce(union, first_draw_indices)
     } else {
       # this is not ragged, so we can just use the first value of indices
       indices = first_draw_indices[[1]]
@@ -476,7 +475,7 @@ nest_dimensions_ = function(long_draws, dimension_names, nested_dimension_names)
       # array is not ragged, so combining should be easy...
       if (is.character(indices) || is.factor(indices)) {
         # indices are strings, so update the names before we combine
-        long_draws[[value_name]] = map2(long_draws[[value_name]], long_draws[[dimension_name]],
+        long_draws[[value_name]] = map2_(long_draws[[value_name]], long_draws[[dimension_name]],
           ~ set_names(.x, as.character(.y)))
       } else if (!identical(indices, seq_along(indices))) {
         if (min(indices) < 1 || !is_integerish(indices)) {
@@ -505,7 +504,7 @@ nest_dimensions_ = function(long_draws, dimension_names, nested_dimension_names)
 
       #then we'll re-index each value
       long_draws[[value_name]] =
-        map2(long_draws[[dimension_name]], long_draws[[value_name]], function(indices, old_value) {
+        map2_(long_draws[[dimension_name]], long_draws[[value_name]], function(indices, old_value) {
           new_value = template_list
           if (is_character_index) {
             indices = as.character(indices)
@@ -522,9 +521,9 @@ nest_dimensions_ = function(long_draws, dimension_names, nested_dimension_names)
     # that the first dimension creates a vector (not a Nx1 array), which is what we want if
     # there is only one dimension.
     if (i == 1) {
-      long_draws[[value_name]] = map(long_draws[[value_name]], unlist, recursive = FALSE)
+      long_draws[[value_name]] = lapply(long_draws[[value_name]], unlist, recursive = FALSE)
     } else {
-      long_draws[[value_name]] = map(long_draws[[value_name]], abind0)
+      long_draws[[value_name]] = lapply(long_draws[[value_name]], abind0)
     }
 
     long_draws[[dimension_name]] = NULL
@@ -611,18 +610,17 @@ abind0 = function(vectors) {
 # 1. A vector of variable names
 # 2. A vector of dimension names (or NULL if none)
 # 3. The name of the wide dimension (or NULL if none)
-#' @importFrom purrr reduce map map2
 #' @importFrom rlang set_names new_data_mask quo_get_expr
 parse_variable_spec = function(variable_spec) {
   names = all_names(quo_get_expr(variable_spec))
   #specs for each bare variable name in the spec expression
   names_spec = names %>%
     set_names() %>%
-    map(function(name) list(name, NULL, NULL))
+    lapply(function(name) list(name, NULL, NULL))
 
 
   c_function = function(...) {
-    reduce(list(...), function(spec1, spec2) map2(spec1, spec2, base::c))
+    Reduce(function(spec1, spec2) map2_(spec1, spec2, base::c), list(...))
   }
 
   spec_env = as.environment(c(

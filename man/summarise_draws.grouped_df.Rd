@@ -13,12 +13,11 @@ has the structure of a \code{posterior::draws_df()} object: \code{".chain"}, \co
 \code{".draw"} columns, with the remaining (non-grouping) columns being draws
 from variables.}
 
-\item{...}{Name-value pairs of summary functions.
-The name will be the name of the variable in the result unless
-the function returns a named vector in which case the latter names
-are used. Functions can be passed in all formats supported by
-\link[rlang:as_function]{as_function()}. See the 'Examples' section below
-for examples.}
+\item{...}{Name-value pairs of summary or \link[posterior:diagnostics]{diagnostic}
+functions. The provided names will be used as the names of the columns in
+the result \emph{unless} the function returns a named vector, in which case the
+latter names are used. The functions can be specified in any format
+supported by \link[rlang:as_function]{as_function()}. See \strong{Examples}.}
 }
 \value{
 A data frame (actually, a \link[tibble:tibble]{tibble}) with all grouping

@@ -23,7 +23,6 @@ Imports:
     tidyr (>= 1.0.0),
     ggplot2 (>= 3.3.5),
     coda,
-    purrr (>= 0.2.3),
     rlang (>= 0.3.0),
     forcats,
     arrayhelpers,
@@ -34,6 +33,7 @@ Imports:
 Suggests:
     knitr,
     testthat,
+    purrr (>= 0.2.3),
     vdiffr (>= 1.0.0),
     svglite,
     rstan (>= 2.17.0),

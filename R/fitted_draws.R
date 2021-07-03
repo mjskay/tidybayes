@@ -93,7 +93,6 @@ fitted_draws.stanreg = function(model, newdata, value = ".value", ..., n = NULL,
 
 #' @rdname add_predicted_draws
 #' @importFrom rlang is_true is_false is_empty
-#' @importFrom purrr map
 #' @export
 fitted_draws.brmsfit = function(model, newdata, value = ".value", ..., n = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = FALSE, scale = c("response", "linear")

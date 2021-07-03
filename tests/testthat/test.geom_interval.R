@@ -4,7 +4,6 @@
 ###############################################################################
 
 library(dplyr)
-library(purrr)
 library(tidyr)
 
 context("geom_interval")

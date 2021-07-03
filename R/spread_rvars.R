@@ -137,7 +137,6 @@
 #' RankCorr %>%
 #'   gather_rvars(b[i, j], tau[i], typical_r)
 #'
-#' @importFrom purrr reduce
 #' @importFrom rlang enquos
 #' @importFrom dplyr inner_join
 #' @export
@@ -149,7 +148,7 @@ spread_rvars = function(model, ..., n = NULL, seed = NULL) {
     spread_rvars_(draws, spec)
   })
 
-  out = reduce(list_of_rvar_tibbles, function(tibble1, tibble2) {
+  out = reduce_(list_of_rvar_tibbles, function(tibble1, tibble2) {
     by_ = intersect(names(tibble1), names(tibble2))
     inner_join(tibble1, tibble2, by = by_)
   })

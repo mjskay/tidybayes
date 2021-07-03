@@ -147,7 +147,6 @@ comparison_types = within(list(), {
 #' @importFrom tidyselect one_of
 #' @importFrom tibble as_tibble
 #' @importFrom rlang sym quo_name eval_tidy quo_get_expr
-#' @importFrom purrr imap_dfr
 #' @export
 compare_levels = function(data, variable, by, fun=`-`, comparison = "default",
     draw_indices = c(".chain", ".iteration", ".draw"),
@@ -194,7 +193,7 @@ compare_levels_ = function(data, variable, by, fun, comparison, draw_indices) {
   else comparison_function(data[[by]])
 
   #make comparisons
-  imap_dfr(comparison_levels, .id = NULL, function(levels., by_name) {
+  imap_dfr_(comparison_levels, function(levels., by_name) {
     comparison = if (is.language(levels.)) {
       #user-supplied quoted expressions are evaluated within the data frame
       if (is.numeric(by_name) || by_name == "") {

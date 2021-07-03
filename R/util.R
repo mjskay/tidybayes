@@ -54,10 +54,14 @@ all_names = function(x) {
 # given function and class signature
 #' @importFrom rlang `%||%`
 has_method = function(f, signature) {
-  !is.null(
-    utils::getS3method(f, signature, optional = TRUE) %||%
-    methods::selectMethod(f, signature, optional = TRUE)
-  )
+  # check for S3 methods
+  for (class in signature) {
+    if (!is.null(utils::getS3method(f, class, optional = TRUE))) {
+      return(TRUE)
+    }
+  }
+  # No S3 => check for S4 methods
+  !is.null(methods::selectMethod(f, signature, optional = TRUE))
 }
 
 
@@ -116,4 +120,34 @@ stop_on_non_generic_arg_ = function(parent_dot_args, method_type, ..., which = -
       call. = FALSE
     )
   }
+}
+
+# workarounds -------------------------------------------------------------
+
+# workarounds / replacements for common patterns
+
+map_dfr_ = function(data, fun, ...) {
+  bind_rows(lapply(data, fun, ...))
+}
+
+imap_dfr_ = function(.x, .f, ...) {
+  .names = names(.x) %||% seq_along(.x)
+  bind_rows(mapply(.f, .x, .names, MoreArgs = list(...), SIMPLIFY = FALSE))
+}
+
+map_lgl_ = function(X, FUN, ...) {
+  vapply(X, FUN, FUN.VALUE = logical(1), ...)
+}
+
+map2_ = function(X, Y, FUN) {
+  mapply(FUN, X, Y, USE.NAMES = FALSE, SIMPLIFY = FALSE)
+}
+
+reduce_ = function(.x, .f, .init, ...) {
+  Reduce(function(x, y) .f(x, y, ...), .x, init = .init)
+}
+
+discard_ = function(.x, .f, ...) {
+  i = map_lgl_(.x, .f, ...)
+  .x[is.na(i) | !i]
 }

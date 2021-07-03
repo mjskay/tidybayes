@@ -21,8 +21,8 @@ gather_draws = function(model, ..., regex = FALSE, sep = "[, ]", n = NULL, seed 
   #the grouping information is not always retained, so we'll have to recreate
   #the full set of groups from all the data frames after we bind them
   groups_ = tidysamples %>%
-    map(group_vars) %>%
-    reduce(union)
+    lapply(group_vars) %>%
+    reduce_(union)
 
   bind_rows(tidysamples) %>%
     group_by_at(groups_)

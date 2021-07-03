@@ -4,7 +4,6 @@
 ###############################################################################
 
 library(magrittr)
-library(purrr)
 
 context("x_at_y")
 
@@ -34,7 +33,7 @@ test_that("x_at_y works on a nested design with missing levels", {
 
 test_that("x_at_y works even if the data frame is not sorted by y", {
   df = get_nested_data()
-  rev_df = map_dfc(df, rev)
+  rev_df = bind_cols(lapply(df, rev))
 
   expect_equal(df %$% x_at_y(site, plot), rev_df %$% x_at_y(site, plot))
 })

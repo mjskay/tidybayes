@@ -95,7 +95,6 @@ globalVariables(c(".chain", ".iteration"))
 #'
 #' }
 #' @importFrom magrittr %>% %<>%
-#' @importFrom purrr imap_dfr map
 #' @importFrom plyr dlply
 #' @importFrom dplyr rename group_by_at ungroup group_vars
 #' @export
@@ -136,9 +135,9 @@ gather_pairs = function(data, key, value, row = ".row", col = ".col", x = ".x", 
 
 gather_pairs_ = function(data, triangle_test, row, col, x, y) {
   row_data = dlply(data, row, function(d) d)
-  col_data = map(row_data, . %>% select(!!as.name(col) := !!as.name(row), !!as.name(x) := !!as.name(y)))
-  imap_dfr(row_data, function(row_df, row) {
-    imap_dfr(col_data, function(col_df, col) {
+  col_data = lapply(row_data, . %>% select(!!as.name(col) := !!as.name(row), !!as.name(x) := !!as.name(y)))
+  imap_dfr_(row_data, function(row_df, row) {
+    imap_dfr_(col_data, function(col_df, col) {
       if (triangle_test(row, col)) {
         cbind(row_df, col_df)
       }

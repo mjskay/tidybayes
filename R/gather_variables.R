@@ -78,7 +78,6 @@
 #'
 #' }
 #' @importFrom magrittr %>%
-#' @importFrom purrr map
 #' @importFrom tidyr gather
 #' @importFrom dplyr group_vars
 #' @export
@@ -95,7 +94,7 @@ gather_variables = function(data, exclude = c(".chain", ".iteration", ".draw", "
   # so we can exclude them from the gather()
   #  -> e.g. list(~ -.chain, ~ -.iteration, ~ -.draw, ~ -i)
   columns_excluded_from_gather = special_columns %>%
-    map(~ quo(-!!as.name(.)))
+    lapply(function(x) quo(-!!as.name(x)))
 
   data %>%
     gather(".variable", ".value", !!!columns_excluded_from_gather) %>%

@@ -49,8 +49,6 @@ the now-deprecated \code{\link[=predict_curve]{predict_curve()}}.
 
 library(ggplot2)
 library(dplyr)
-library(purrr)
-library(tidyr)
 
 if (
   require("brms", quietly = TRUE) &&
@@ -66,8 +64,7 @@ if (
     group_by(cyl) \%>\%
     data_grid(hp = seq_range(hp, by = step)) \%>\%
     add_predicted_draws(m_mpg) \%>\%
-    summarise(densities = list(density_bins(.prediction))) \%>\%
-    unnest(densities) \%>\%
+    summarise(density_bins(.prediction), .groups = "drop") \%>\%
     ggplot() +
     geom_rect(aes(
       xmin = hp - step/2, ymin = lower, ymax = upper, xmax = hp + step/2,

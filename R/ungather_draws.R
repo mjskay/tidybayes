@@ -22,10 +22,10 @@ ungather_draws = function(
   }
 
   result =
-    map(variable_specs, function(variable_spec) {
+    lapply(variable_specs, function(variable_spec) {
       ungather_draws_(data, variable_spec, variable = variable, value = value, draw_indices = draw_indices)
     }) %>%
-    reduce(inner_join, by = draw_indices) %>%
+    reduce_(inner_join, by = draw_indices) %>%
     as_tibble()
 
   if (drop_indices) {

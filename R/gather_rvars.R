@@ -7,7 +7,6 @@
 # gather_rvars ------------------------------------------------------------
 
 #' @rdname spread_rvars
-#' @importFrom purrr reduce
 #' @importFrom rlang enquos
 #' @importFrom dplyr inner_join
 #' @export

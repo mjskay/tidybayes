@@ -58,7 +58,6 @@
 #'     median_qi()
 #' }
 #'
-#' @importFrom purrr reduce map2
 #' @export
 emmeans_comparison = function(method, ...) {
   if (is.function(method)) {
@@ -74,9 +73,12 @@ emmeans_comparison = function(method, ...) {
     comp_matrix = comp_fun(as.character(unique(var)), ...)
     var_names = rownames(comp_matrix)
     lapply(comp_matrix, function(coefs) {
-      reduce(map2(coefs, var_names, function(coef, var_name) {
-        call("*", coef, as.name(var_name))
-      }), ~ call("+", .x, .y))
+      Reduce(
+        function(x, y) call("+", x, y),
+        map2_(coefs, var_names, function(coef, var_name) {
+          call("*", coef, as.name(var_name))
+        })
+      )
     })
   }
 }

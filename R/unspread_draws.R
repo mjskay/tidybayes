@@ -56,7 +56,6 @@ globalVariables(c("..dimension_values"))
 #'   bayesplot::mcmc_areas()
 #'
 #' @importFrom rlang enquos
-#' @importFrom purrr map reduce
 #' @importFrom dplyr inner_join ungroup select distinct mutate
 #' @importFrom tidyr spread_ unite
 #' @importFrom magrittr %<>% %>%
@@ -64,10 +63,10 @@ globalVariables(c("..dimension_values"))
 #' @export
 unspread_draws = function(data, ..., draw_indices = c(".chain", ".iteration", ".draw"), drop_indices = FALSE) {
   result =
-    map(enquos(...), function(variable_spec) {
+    lapply(enquos(...), function(variable_spec) {
       unspread_draws_(data, variable_spec, draw_indices = draw_indices)
     }) %>%
-    reduce(inner_join, by = draw_indices) %>%
+    reduce_(inner_join, by = draw_indices) %>%
     as_tibble()
 
   if (drop_indices) {
@@ -106,12 +105,12 @@ unspread_draws_ = function(data, variable_spec, draw_indices = c(".chain", ".ite
     unite(..dimension_values, !!!dimension_names, sep = ",") %>%
     distinct()
 
-  map(variable_names, function(variable_name) {
+  lapply(variable_names, function(variable_name) {
     data_distinct %>%
       select(!!c(draw_indices, variable_name, "..dimension_values")) %>%
       mutate(..variable = paste0(variable_name, "[", ..dimension_values, "]")) %>%
       select(-..dimension_values) %>%
       spread_("..variable", variable_name)
   }) %>%
-    reduce(inner_join, by = draw_indices)
+    reduce_(inner_join, by = draw_indices)
 }

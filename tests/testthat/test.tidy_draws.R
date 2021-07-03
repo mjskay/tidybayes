@@ -5,7 +5,6 @@
 
 library(tibble)
 library(dplyr)
-library(purrr)
 library(magrittr)
 library(coda)
 
@@ -18,7 +17,7 @@ test_that("tidy_draws works with brms", {
   skip_if_not_installed("brms")
 
   # we use a model with random effects here because they include parameters with multiple dimensions
-  m_ranef = readRDS("../models/models.brms.m_ranef.rds")
+  m_ranef = readRDS(test_path("../models/models.brms.m_ranef.rds"))
 
   draws_tidy =
     brms::posterior_samples(m_ranef, add_chain = TRUE) %>%
@@ -30,7 +29,7 @@ test_that("tidy_draws works with brms", {
     ) %>%
     as_tibble() %>%
     select(.chain, .iteration, .draw, everything()) %>%
-    bind_cols(map_dfr(rstan::get_sampler_params(m_ranef$fit, inc_warmup = FALSE), as_tibble))
+    bind_cols(bind_rows(lapply(rstan::get_sampler_params(m_ranef$fit, inc_warmup = FALSE), as_tibble)))
 
   expect_equal(tidy_draws(m_ranef), draws_tidy)
 })
@@ -41,7 +40,7 @@ test_that("tidy_draws works with rstanarm", {
   skip_if_not_installed("rstanarm")
 
   # we use a model with random effects here because they include parameters with multiple dimensions
-  m_ranef = readRDS("../models/models.rstanarm.m_ranef.rds")
+  m_ranef = readRDS(test_path("../models/models.rstanarm.m_ranef.rds"))
 
   chain_1 = as_tibble(as.array(m_ranef)[,1,]) %>%
     add_column(.chain = 1L, .iteration = 1L:nrow(.), .draw = 1L:nrow(.), .before = 1)
@@ -49,7 +48,7 @@ test_that("tidy_draws works with rstanarm", {
     add_column(.chain = 2L, .iteration = 1L:nrow(.), .draw = (nrow(.) + 1L):(2L * nrow(.)), .before = 1)
   draws_tidy =
     bind_rows(chain_1, chain_2) %>%
-    bind_cols(map_dfr(rstan::get_sampler_params(m_ranef$stanfit, inc_warmup = FALSE), as_tibble))
+    bind_cols(bind_rows(lapply(rstan::get_sampler_params(m_ranef$stanfit, inc_warmup = FALSE), as_tibble)))
 
   expect_equal(tidy_draws(m_ranef), draws_tidy)
 })
@@ -61,7 +60,7 @@ test_that("tidy_draws works with rstan", {
   skip_if_not_installed("rstan")
 
   # we use a model with random effects here because they include parameters with multiple dimensions
-  m_ABC = readRDS("../models/models.rstan.m_ABC.rds")
+  m_ABC = readRDS(test_path("../models/models.rstan.m_ABC.rds"))
 
   chain_1 = as_tibble(as.array(m_ABC)[,1,]) %>%
     add_column(.chain = 1L, .iteration = 1L:nrow(.), .draw = 1L:nrow(.), .before = 1)
@@ -69,7 +68,7 @@ test_that("tidy_draws works with rstan", {
     add_column(.chain = 2L, .iteration = 1L:nrow(.), .draw = (nrow(.) + 1L):(2L * nrow(.)), .before = 1)
   draws_tidy =
     bind_rows(chain_1, chain_2)  %>%
-    bind_cols(map_dfr(rstan::get_sampler_params(m_ABC, inc_warmup = FALSE), as_tibble))
+    bind_cols(bind_rows(lapply(rstan::get_sampler_params(m_ABC, inc_warmup = FALSE), as_tibble)))
 
   expect_equal(tidy_draws(m_ABC), draws_tidy)
 })
