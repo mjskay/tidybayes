@@ -1,7 +1,7 @@
 Package: tidybayes
 Title: Tidy Data and 'Geoms' for Bayesian Models
-Version: 2.3.1.9000
-Date: 2020-10-30
+Version: 2.4.1.9001
+Date: 2021-07-03
 Authors@R: c(
         person("Matthew", "Kay", role = c("aut", "cre"), email = "mjskay@northwestern.edu"),
         person("Timothy", "Mastny", role = "ctb", email = "tim.mastny@gmail.com")
