@@ -78,7 +78,7 @@
 #' # Deprecated; see examples for density_bins
 #'
 #' @importFrom stats median
-#' @import dplyr
+#' @importFrom dplyr do
 #' @export
 predict_curve = function(data, formula, summary = median, ...) {
   .Deprecated("density_bins", package = "tidybayes",

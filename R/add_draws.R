@@ -70,7 +70,7 @@ globalVariables(".draw")
 #' }
 #' @importFrom magrittr %>%
 #' @importFrom tidyr unnest_legacy
-#' @importFrom dplyr bind_cols
+#' @importFrom dplyr bind_cols group_by
 #' @importFrom tibble tibble is_tibble
 #' @importFrom rlang sym
 #' @export

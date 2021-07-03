@@ -255,7 +255,7 @@ spread_draws = function(model, ..., regex = FALSE, sep = "[, ]", n = NULL, seed 
     group_by_at(groups_)
 }
 
-#' @import dplyr
+#' @importFrom dplyr mutate group_by_at
 #' @importFrom tidyr spread_
 #' @importFrom rlang has_name
 spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
@@ -306,7 +306,7 @@ spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
 ## variable_names: a character vector of names of variables
 ## dimension_names: a character vector of dimension names
 #' @importFrom tidyr spread_ separate gather_
-#' @import dplyr
+#' @importFrom dplyr summarise_all group_by_at
 spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FALSE, sep = "[, ]") {
   if (!regex) {
     variable_names = escape_regex(variable_names)
@@ -426,6 +426,7 @@ spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FA
 ## long_draws: long draws in the internal long draws format from spread_draws_long_
 ## dimension_names: dimensions not used for nesting
 ## nested_dimension_names: dimensions to be nested
+#' @importFrom dplyr filter
 nest_dimensions_ = function(long_draws, dimension_names, nested_dimension_names) {
   ragged = FALSE
   value_name = ".value"
