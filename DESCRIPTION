@@ -17,11 +17,11 @@ Depends:
     R (>= 3.5.0)
 Imports:
     methods,
-    ggdist (>= 2.3.0.9000),
+    ggdist (>= 2.4.1.9001),
     plyr,
     dplyr (>= 0.8.0),
     tidyr (>= 1.0.0),
-    ggplot2 (>= 3.3.0),
+    ggplot2 (>= 3.3.5),
     coda,
     purrr (>= 0.2.3),
     rlang (>= 0.3.0),
@@ -34,7 +34,7 @@ Imports:
 Suggests:
     knitr,
     testthat,
-    vdiffr (>= 0.3.0),
+    vdiffr (>= 1.0.0),
     svglite,
     rstan (>= 2.17.0),
     runjags,
@@ -63,7 +63,7 @@ Suggests:
     cmdstanr
 Remotes:
     mjskay/ggdist,
-    stan-dev/posterior@rv-like,
+    stan-dev/posterior,
     stan-dev/cmdstanr
 License: GPL (>= 3)
 Language: en-US
