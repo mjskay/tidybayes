@@ -6,7 +6,7 @@
 library(dplyr)
 library(tidyr)
 
-context("gather_draws")
+
 
 
 test_that("regular expressions for parameter names work on non-indexed parameters", {

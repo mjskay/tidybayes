@@ -3,7 +3,7 @@
 # Author: mjskay
 ###############################################################################
 
-context("util")
+
 
 
 test_that("combine_chains_for_deprecated_ works properly", {

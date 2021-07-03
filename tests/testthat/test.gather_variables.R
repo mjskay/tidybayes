@@ -6,7 +6,7 @@
 library(dplyr)
 library(tidyr)
 
-context("gather_variables")
+
 
 
 test_that("gather_variables works on the results of tidy_draws", {

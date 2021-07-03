@@ -6,7 +6,7 @@
 library(dplyr)
 library(tidyr)
 
-context("combine_chains")
+
 
 
 test_that("combine_chains works on a simple example", {

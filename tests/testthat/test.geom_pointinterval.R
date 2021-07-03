@@ -6,7 +6,7 @@
 library(dplyr)
 library(tidyr)
 
-context("geom_pointinterval")
+
 
 # use a subset of RankCorr so tests are faster
 data(RankCorr, package = "ggdist")

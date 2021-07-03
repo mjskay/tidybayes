@@ -6,7 +6,7 @@
 library(dplyr)
 library(tidyr)
 
-context("point_interval")
+
 
 
 test_that("point_interval works on vectors", {

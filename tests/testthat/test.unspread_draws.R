@@ -6,7 +6,7 @@
 library(dplyr)
 library(tidyr)
 
-context("unspread_draws")
+
 
 
 test_that("unspread_draws works on a simple parameter with no dimensions", {

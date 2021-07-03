@@ -3,7 +3,7 @@
 # Author: mjskay
 ###############################################################################
 
-context("as_constructor")
+
 
 
 test_that("factor prototypes convert correctly", {

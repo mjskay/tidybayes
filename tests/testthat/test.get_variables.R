@@ -5,7 +5,7 @@
 
 library(dplyr)
 
-context("get_variables")
+
 
 
 test_that("mcmc variable extraction works", {

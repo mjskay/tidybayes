@@ -6,7 +6,7 @@
 library(dplyr)
 library(tidyr)
 
-context("ungather_draws")
+
 
 
 test_that("ungather_draws raises an error when not provided with anything to ungather", {

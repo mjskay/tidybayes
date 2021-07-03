@@ -6,7 +6,7 @@
 library(dplyr)
 library(posterior)
 
-context("spread_rvars")
+
 
 
 #set up datasets

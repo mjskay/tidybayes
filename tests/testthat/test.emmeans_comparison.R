@@ -3,7 +3,7 @@
 # Author: mjskay
 ###############################################################################
 
-context("emmeans_comparison")
+
 
 
 test_that("basic conversion of emmeans contrasts works", {

@@ -8,7 +8,7 @@ library(dplyr)
 library(magrittr)
 library(coda)
 
-context("tidy_draws")
+
 
 
 

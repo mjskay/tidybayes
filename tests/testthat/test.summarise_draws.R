@@ -6,7 +6,7 @@
 library(posterior)
 library(dplyr)
 
-context("summarise_draws")
+
 
 
 test_that("summarise_draws.grouped_df works", {

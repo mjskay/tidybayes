@@ -5,7 +5,7 @@
 
 library(dplyr)
 
-context("geom_dotsinterval")
+
 
 test_that("vanilla dots geoms and stats work", {
   skip_if_no_vdiffr()

@@ -6,7 +6,7 @@
 library(dplyr)
 library(posterior)
 
-context("gather_rvars")
+
 
 
 #set up datasets
