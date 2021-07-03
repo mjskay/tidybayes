@@ -4,10 +4,10 @@
 \alias{summarise_draws.grouped_df}
 \title{Summaries of draws in \code{grouped_df} objects}
 \usage{
-\method{summarise_draws}{grouped_df}(x, ...)
+\method{summarise_draws}{grouped_df}(.x, ...)
 }
 \arguments{
-\item{x}{A grouped data frame (\code{dplyr::grouped_df} object) such as returned by
+\item{.x}{A grouped data frame (\code{dplyr::grouped_df} object) such as returned by
 \code{dplyr::group_by()} where the data frame in each group (ignoring grouping columns)
 has the structure of a \code{posterior::draws_df()} object: \code{".chain"}, \code{".iteration"}, and
 \code{".draw"} columns, with the remaining (non-grouping) columns being draws
@@ -21,7 +21,7 @@ supported by \link[rlang:as_function]{as_function()}. See \strong{Examples}.}
 }
 \value{
 A data frame (actually, a \link[tibble:tibble]{tibble}) with all grouping
-columns from \code{x}, a \code{"variable"} column containing variable names from \code{x},
+columns from \code{.x}, a \code{"variable"} column containing variable names from \code{.x},
 and the remaining columns containing summary statistics and diagnostics.
 }
 \description{
@@ -37,7 +37,7 @@ While \code{posterior::summarise_draws()} can operate on tidy data frames of
 draws in the \code{posterior::draws_df()} format, that format does not support
 grouping columns. This provides an implementation of \code{summarise_draws()}
 that does support grouped data tables, essentially applying
-\code{posterior::summarise_draws()} to every sub-table of \code{x} implied by the
+\code{posterior::summarise_draws()} to every sub-table of \code{.x} implied by the
 groups defined on the data frame.
 
 See \code{posterior::summarise_draws()} for

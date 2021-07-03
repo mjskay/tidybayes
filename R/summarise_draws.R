@@ -20,7 +20,7 @@ posterior::summarise_draws
 #' draws in the `posterior::draws_df()` format, that format does not support
 #' grouping columns. This provides an implementation of `summarise_draws()`
 #' that does support grouped data tables, essentially applying
-#' `posterior::summarise_draws()` to every sub-table of `x` implied by the
+#' `posterior::summarise_draws()` to every sub-table of `.x` implied by the
 #' groups defined on the data frame.
 #'
 #' See `posterior::summarise_draws()` for
@@ -31,14 +31,14 @@ posterior::summarise_draws
 #' multiple uncertainty levels).
 #'
 #' @inheritParams posterior::summarise_draws
-#' @param x A grouped data frame (`dplyr::grouped_df` object) such as returned by
+#' @param .x A grouped data frame (`dplyr::grouped_df` object) such as returned by
 #' `dplyr::group_by()` where the data frame in each group (ignoring grouping columns)
 #' has the structure of a `posterior::draws_df()` object: `".chain"`, `".iteration"`, and
 #' `".draw"` columns, with the remaining (non-grouping) columns being draws
 #' from variables.
 #'
 #' @return A data frame (actually, a [tibble][tibble::tibble]) with all grouping
-#' columns from `x`, a `"variable"` column containing variable names from `x`,
+#' columns from `.x`, a `"variable"` column containing variable names from `.x`,
 #' and the remaining columns containing summary statistics and diagnostics.
 #' @author Matthew Kay
 #' @seealso [posterior::summarise_draws()], [point_interval()]
@@ -69,8 +69,8 @@ posterior::summarise_draws
 #' @importFrom posterior as_draws_df
 #' @importFrom dplyr group_modify
 #' @export
-summarise_draws.grouped_df = function(x, ...) {
-  group_modify(x, function(x, keys) {
-    summarise_draws(as_draws_df(x), ...)
+summarise_draws.grouped_df = function(.x, ...) {
+  group_modify(.x, function(.x, keys) {
+    summarise_draws(as_draws_df(.x), ...)
   })
 }
