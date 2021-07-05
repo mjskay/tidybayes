@@ -1,0 +1,1027 @@
+---
+title: "Using tidybayes with the posterior package"
+author: "Matthew Kay"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    df_print: kable
+params:
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+vignette: >
+  %\VignetteIndexEntry{Using tidybayes with the posterior package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+<style type="text/css">
+.kable-table table {
+  margin-left: 0;
+}
+img {
+  border: none;
+}
+</style>
+
+```{r chunk_options, include=FALSE}
+# if (requireNamespace("pkgdown", quietly = TRUE) && pkgdown::in_pkgdown()) {
+tiny_width = small_width = med_width = 6.75
+tiny_height = small_height = med_height = 4.5
+large_width = 8; large_height = 5.25
+# } else {
+#   tiny_width = 3; tiny_height = 2.5
+#   small_width = 4.5; small_height = 3
+#   med_width = 5; med_height = 3.5
+#   large_width = 7; large_height = 4.5
+# }
+
+knitr::opts_chunk$set(
+  fig.width = small_width,
+  fig.height = small_height,
+  eval = if (isTRUE(exists("params"))) params$EVAL else FALSE
+)
+if (capabilities("cairo") && Sys.info()[['sysname']] != "Darwin") {
+  knitr::opts_chunk$set(
+    dev.args = list(png = list(type = "cairo"))
+  )
+}
+dir.create("models", showWarnings = FALSE)
+```
+
+## Introduction
+  
+This vignette describes how to use the `tidybayes` and `ggdist` packages along with the `posterior` package
+(and particularly the `posterior::rvar()` datatype) to extract and visualize [tidy](https://dx.doi.org/10.18637/jss.v059.i10)
+data frames of `rvar`s from posterior distributions of model variables, fits, and predictions.
+
+This workflow is a "long-data-frame-of-rvars" workflow, which is bit different from the "long-data-frame-of-draws" workflow
+described in `vignette("tidybayes")` or `vignette("tidy-brms")`. The `rvar` based approach may be particularly useful on
+larger models, as it is more memory efficient.
+
+## Setup
+  
+The following libraries are required to run this vignette:
+  
+```{r setup, message = FALSE, warning = FALSE}
+library(magrittr)
+library(dplyr)
+library(purrr)
+library(forcats)
+library(tidyr)
+library(modelr)
+library(ggdist)
+library(tidybayes)
+library(ggplot2)
+library(cowplot)
+library(rstan)
+library(brms)
+library(ggrepel)
+library(RColorBrewer)
+library(gganimate)
+library(posterior)
+library(distributional)
+
+theme_set(theme_tidybayes() + panel_border())
+```
+
+These options help Stan run faster:
+
+```{r, eval=FALSE}
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+```
+
+```{r hidden_options, include=FALSE}
+# While the previous code chunk is the actual recommended approach,
+# CRAN vignette building policy limits us to 2 cores, so we use at most
+# 2 to build this vignette (but show the previous chunk to
+# the reader as a best pratice example)
+rstan_options(auto_write = TRUE)
+options(mc.cores = min(2, parallel::detectCores()))
+
+options(width = 120)
+```
+
+
+## Example dataset
+
+To demonstrate `tidybayes`, we will use a simple dataset with 10 observations from 5 conditions each:
+
+```{r}
+set.seed(5)
+n = 10
+n_condition = 5
+ABC =
+  tibble(
+    condition = rep(c("A","B","C","D","E"), n),
+    response = rnorm(n * 5, c(0,1,2,1,-1), 0.5)
+  )
+```
+
+A snapshot of the data looks like this:
+
+```{r}
+head(ABC, 10)
+```
+
+This is a typical tidy format data frame: one observation per row. Graphically:
+
+```{r fig.width = tiny_width, fig.height = tiny_height}
+ABC %>%
+  ggplot(aes(y = condition, x = response)) +
+  geom_point()
+```
+
+## Model
+
+Let's fit a hierarchical model with shrinkage towards a global mean:
+
+```{r m_brm, cache = TRUE}
+m = brm(
+  response ~ (1|condition), 
+  data = ABC, 
+  prior = c(
+    prior(normal(0, 1), class = Intercept),
+    prior(student_t(3, 0, 1), class = sd),
+    prior(student_t(3, 0, 1), class = sigma)
+  ),
+  control = list(adapt_delta = .99),
+  
+  file = "models/tidy-brms_m.rds" # cache model (can be removed)  
+)
+```
+
+The format returned by `tidybayes::tidy_draws()` is compatible with the `posterior::draws_df()` format, so
+`posterior::summarise_draws()` supports it. Thus, we can use `posterior::summarise_draws()` to get a quick
+look at draws from the model:
+
+```{r}
+summarise_draws(tidy_draws(m))
+```
+
+
+## Extracting draws from a fit in tidy-format using `spread_rvars`
+
+Now that we have our results, the fun begins: getting the variables out in a tidy format! First, we'll use the `get_variables()` function to get a list of raw model variable names so that we know what variables we can extract from the model:
+
+```{r}
+get_variables(m)
+```
+
+Here, `b_Intercept` is the global mean, and the `r_condition[]` variables are offsets from that mean for each condition. Given these variables:
+
+- `r_condition[A,Intercept]`
+- `r_condition[B,Intercept]`
+- `r_condition[C,Intercept]`
+- `r_condition[D,Intercept]`
+- `r_condition[E,Intercept]`
+
+We might want a data frame where each row is a random variable (`rvar`) representing all draws from `r_condition[A,Intercept]`, `r_condition[B,Intercept]`, `...[C,...]`, `...[D,...]`, or `...[E,...]`. That would allow us to easily compute quantities grouped by condition, or generate plots by condition using ggplot, or even merge draws with the original data to plot data and posteriors simultaneously.
+
+We can do this using the `spread_rvars()` function. It includes a simple specification format that we can use to extract variables and their indices into tidy-format data frames. This function is analogous to `spread_draws()` from the tidy-data-frames-of-draws workflow described in `vignette("tidy-brms")`.
+
+### Gathering variable indices into a separate column in a tidy format data frame
+
+Given a variable in the model like this:
+
+`r_condition[D,Intercept]`
+
+We can provide `spread_rvars()` with a column specification like this:
+
+`r_condition[condition,term]`
+
+Where `condition` corresponds to `D` and `term` corresponds to `Intercept`. There is nothing too magical about what `spread_rvars()` does with this specification: under the hood, it splits the variable indices by commas and spaces (you can split by other characters by changing the `sep` argument). It lets you assign columns to the resulting indices in order. So `r_condition[D,Intercept]` has indices `D` and `Intercept`, and `spread_rvars()` lets us extract these indices as columns in the resulting tidy data frame of draws from `r_condition`:
+
+```{r}
+m %>%
+  spread_rvars(r_condition[condition,term])
+```
+
+The `r_condition` column above is a `posterior::rvar()` datatype, which is an array-like datatype representing draws from a random variable:
+
+```{r}
+m %>%
+  spread_rvars(r_condition[condition,term]) %>%
+  pull(r_condition)
+```
+
+In this case, for each of the 5 elements of this `rvar` vector, we have 1000 draws from each of 4 chains in the model. For more on the `rvar` datatype, see `vignette("rvar", package = "posterior")`.
+
+We can choose whatever names we want for the index columns; e.g.: 
+
+```{r}
+m %>%
+  spread_rvars(r_condition[c,t])
+```
+
+But the more descriptive and less cryptic names from the previous example are probably preferable.
+
+If we leave off the name for an index, it is left "nested" in the column. For example, we
+could nest the `term` since it only has one value `"Intercept"` anyway: 
+
+```{r}
+m %>%
+  spread_rvars(r_condition[condition,])
+```
+
+Or we could nest the `condition`, though this is probably not that useful practically:
+
+```{r}
+m %>%
+  spread_rvars(r_condition[,term])
+```
+
+
+## Point summaries and intervals
+
+### With simple model variables
+
+`tidybayes` provides a family of functions for generating point summaries and intervals from draws in a tidy format. These functions follow the naming scheme `[median|mean|mode]_[qi|hdi]`, for example, `median_qi()`, `mean_qi()`, `mode_hdi()`, and so on. The first name (before the `_`) indicates the type of point summary, and the second name indicates the type of interval. `qi` yields a quantile interval (a.k.a. equi-tailed interval, central interval, or percentile interval) and `hdi` yields a highest (posterior) density interval. Custom point summary or interval functions can also be applied using the `point_interval()` function.
+
+For example, we might extract the draws corresponding to posterior distributions of the overall mean and standard deviation of observations:
+
+```{r}
+m %>%
+  spread_rvars(b_Intercept, sigma)
+```
+
+Like with `r_condition[condition,term]`, this gives us a tidy data frame. If we want the median and 95% quantile interval of the variables, we can apply `median_qi()`:
+
+```{r}
+m %>%
+  spread_rvars(b_Intercept, sigma) %>%
+  median_qi(b_Intercept, sigma)
+```
+
+We can specify the columns we want to get medians and intervals from, as above, or if we omit the list of columns, `median_qi()` will use every column that is not a grouping column. Thus in the above example, `b_Intercept` and `sigma` are redundant arguments to `median_qi()` because they are also the only columns we gathered from the model. So we can simplify this to:
+
+```{r}
+m %>%
+  spread_rvars(b_Intercept, sigma) %>%
+  median_qi()
+```
+
+If you would rather have a long-format list, use `gather_rvars()` instead:
+
+```{r}
+m %>%
+  gather_rvars(b_Intercept, sigma)
+```
+
+We could also use `median_qi()` here:
+
+```{r}
+m %>%
+  gather_rvars(b_Intercept, sigma) %>%
+  median_qi(.value)
+```
+
+### With indexed model variables
+
+When we have a model variable with one or more indices, such as `r_condition`, we can apply `median_qi()` (or other functions in the `point_interval()` family) as we did before:
+
+```{r}
+m %>%
+  spread_rvars(r_condition[condition,]) %>%
+  median_qi(r_condition)
+```
+
+**Note for existing users of `spread_draws()`**: you may notice that `spread_rvars()` requires us to be a bit more
+explicit in passing column names to `median_qi()`. This is because `spread_rvars()` does not return pre-grouped
+data frames, unlike `spread_draws()` --- since every row would always be its own group in the output from `spread_rvars()`,
+returning a pre-grouped data frame would be redundant.
+
+You can also use `posterior::summarise_draws()` on an `rvar` column to generate summaries
+with convergence diagnostics. That function returns a data frame, which can be passed
+directly into the `dplyr::mutate()` function:
+
+```{r}
+m %>%
+  spread_rvars(r_condition[condition,]) %>%
+  mutate(summarise_draws(r_condition))
+```
+
+
+## Combining variables with different indices in a single tidy format data frame
+
+`spread_rvars()` and `gather_rvars()` support extracting variables that have different indices into the same data frame. Indices with the same name are automatically matched up, and values are duplicated as necessary to produce one row for every combination of levels of all indices. For example, we might want to calculate the mean within each condition (call this `condition_mean`). In this model, that mean is the intercept (`b_Intercept`) plus the effect for a given condition (`r_condition`). 
+
+We can gather draws from `b_Intercept` and `r_condition` together in a single data frame:
+
+```{r}
+m %>% 
+  spread_rvars(b_Intercept, r_condition[condition,])
+```
+
+Within each draw, `b_Intercept` is repeated as necessary to correspond to every index of `r_condition`. Thus, the `mutate` function from dplyr can be used to find their sum, `condition_mean` (which is the mean for each condition):
+
+```{r}
+m %>%
+  spread_rvars(`b_Intercept`, r_condition[condition,Intercept]) %>%
+  mutate(condition_mean = b_Intercept + r_condition)
+```
+
+
+## Plotting point summaries and intervals
+
+Plotting point summaries and intervals is straightforward using `ggdist::stat_dist_pointinterval()`, which will produce visualizations with 66% and 95% intervals by default:
+
+```{r fig.width = small_width, fig.height = tiny_height}
+m %>%
+  spread_rvars(b_Intercept, r_condition[condition,]) %>%
+  mutate(condition_mean = b_Intercept + r_condition) %>%
+  ggplot(aes(y = condition, dist = condition_mean)) +
+  stat_dist_pointinterval()
+```
+
+You can use any number of intervals you want by passing the interval sizes to
+the `.width` parameter; for example, 50%, 80%, and 95% intervals:
+
+```{r fig.width = small_width, fig.height = tiny_height}
+m %>%
+  spread_rvars(b_Intercept, r_condition[condition,]) %>%
+  mutate(condition_mean = b_Intercept + r_condition) %>%
+  ggplot(aes(y = condition, dist = condition_mean)) +
+  stat_dist_pointinterval(.width = c(.50, .80, .95)) +
+  # three intervals gets a bit ridiculous and is not really recommended;
+  # we can adjust the size scale to make them easier to see:
+  scale_size_continuous(range = c(1,10))
+```
+
+`median_qi()` and its sister functions can also produce an arbitrary number of probability intervals by setting the `.width =` argument:
+
+```{r}
+m %>%
+  spread_rvars(b_Intercept, r_condition[condition,]) %>%
+  median_qi(condition_mean = b_Intercept + r_condition, .width = c(.95, .8, .5))
+```
+
+The results are in a tidy format: one row per group and uncertainty interval width (`.width`). This facilitates plotting, and is essentially what `ggdist::stat_dist_pointinterval()` is doing for you under the hood above. For example, assigning `-.width` to the `size` aesthetic will show all intervals, making thicker lines correspond to smaller intervals. 
+
+While using `stat_dist_pointinterval()` is usually easier, if you wish to manually construct the above plot by using `median_qi()` first, the `ggdist::geom_pointinterval()` geom automatically sets the `size` aesthetic appropriately based on the `.width` column in the data to produce plots of points with multiple probability levels:
+
+```{r fig.width = small_width, fig.height = tiny_height}
+m %>%
+  spread_rvars(b_Intercept, r_condition[condition,]) %>%
+  median_qi(condition_mean = b_Intercept + r_condition, .width = c(.95, .66)) %>%
+  ggplot(aes(y = condition, x = condition_mean, xmin = .lower, xmax = .upper)) +
+  geom_pointinterval() 
+```
+
+
+## Intervals with densities
+
+To see the density along with the intervals, we can use `ggdist::stat__dist_eye()` ("eye plots", which combine intervals with violin plots), or `ggdist::stat_dist_halfeye()` (interval + density plots):
+
+```{r fig.width = small_width, fig.height = tiny_height}
+m %>%
+  spread_rvars(b_Intercept, r_condition[condition,]) %>%
+  mutate(condition_mean = b_Intercept + r_condition) %>%
+  ggplot(aes(y = condition, dist = condition_mean)) +
+  stat_dist_halfeye()
+```
+
+Or say you want to annotate portions of the densities in color; the `fill` aesthetic can vary within a slab in all geoms and stats in the `ggdist::geom_slabinterval()` family, including `ggdist::stat_dist_halfeye()`. For example, if you want to annotate a domain-specific region of practical equivalence (ROPE), you could do something like this:
+
+```{r fig.width = small_width, fig.height = tiny_height}
+m %>%
+  spread_rvars(b_Intercept, r_condition[condition,]) %>%
+  mutate(condition_mean = b_Intercept + r_condition) %>%
+  ggplot(aes(y = condition, dist = condition_mean, fill = stat(abs(x) < .8))) +
+  stat_dist_halfeye() +
+  geom_vline(xintercept = c(-.8, .8), linetype = "dashed") +
+  scale_fill_manual(values = c("gray80", "skyblue"))
+```
+
+
+## Other visualizations of distributions: `stat_dist_slabinterval`
+
+There are a variety of additional stats for visualizing distributions in the `ggdist::stat_dist_slabinterval()` family of stats and geoms:
+
+<img src="slabinterval_family.png" width="700" alt="The slabinterval family of geoms and stats" />
+
+See `vignette("slabinterval", package = "ggdist")` for an overview. All geoms that start with `stat_dist_...` support the use of `rvar` columns in the `dist` aesthetic.
+
+## Posterior fits
+
+Rather than calculating conditional means manually as in the previous example, we could use `add_epred_draws()`, which is analogous to `brms::posterior_epred()`, giving posterior draws from posterior distributions of the mean of the response (i.e. the distribution of the expected value of the posterior predictive). We can combine it with `modelr::data_grid()` to first generate a grid describing the fits we want, then populate that grid with `rvar`s representing draws from the posterior:
+
+```{r}
+ABC %>%
+  data_grid(condition) %>%
+  add_epred_rvars(m)
+```
+
+We can use `stat_dist_pointinterval()` as before to plot the conditional means:
+
+```{r fig.width = tiny_width, fig.height = tiny_height}
+ABC %>%
+  data_grid(condition) %>%
+  add_epred_rvars(m) %>%
+  ggplot(aes(dist = .epred, y = condition)) +
+  stat_dist_pointinterval()
+```
+
+
+## Quantile dotplots
+
+Intervals are nice if the alpha level happens to line up with whatever decision you are trying to make, but getting a shape of the posterior is better (hence eye plots, above). On the other hand, making inferences from density plots is imprecise (estimating the area of one shape as a proportion of another is a hard perceptual task). Reasoning about probability in frequency formats is easier, motivating [quantile dotplots](https://github.com/mjskay/when-ish-is-my-bus/blob/master/quantile-dotplots.md) ([Kay et al. 2016](https://doi.org/10.1145/2858036.2858558), [Fernandes et al. 2018](https://doi.org/10.1145/3173574.3173718)), which also allow precise estimation of arbitrary intervals (down to the dot resolution of the plot, 100 in the example below). 
+
+Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `ggdist::stat_dist_dots()` and `ggdist::stat_dist_dotsinterval()` are the variants designed for use on `rvar`s:
+
+```{r fig.width = med_width, fig.height = med_height}
+ABC %>%
+  data_grid(condition) %>%
+  add_epred_rvars(m) %>%
+  ggplot(aes(dist = .epred, y = condition)) +
+  stat_dist_dotsinterval(quantiles = 100)
+```
+
+The idea is to get away from thinking about the posterior as indicating one canonical point or interval, but instead to represent it as (say) 100 approximately equally likely points.
+
+
+## Posterior predictions
+
+Where `add_epred_rvars()` is analogous to `brms::posterior_epred()`, `add_predicted_rvars()` is analogous to `brms::posterior_predict()`, giving draws from the posterior predictive distribution.
+
+Here is an example of posterior predictive distributions plotted using `ggdist::stat_dist_slab()`:
+
+```{r fig.width = small_width, fig.height = tiny_height}
+ABC %>%
+  data_grid(condition) %>%
+  add_predicted_rvars(m) %>%
+  ggplot(aes(dist = .prediction, y = condition)) +
+  stat_dist_slab() 
+```
+
+We could also use `ggdist::stat_dist_interval()` to plot predictive bands alongside the data:
+
+```{r fig.width = small_width, fig.height = tiny_height}
+ABC %>%
+  data_grid(condition) %>%
+  add_predicted_rvars(m) %>%
+  ggplot(aes(y = condition)) +
+  stat_dist_interval(aes(dist = .prediction), .width = c(.50, .80, .95, .99)) +
+  geom_point(aes(x = response), data = ABC) +
+  scale_color_brewer()
+```
+
+The `add_XXX_rvars()` functions can be chained together to add posterior predictions
+and the distribution of the mean of the posterior predictive (`epred`) to the 
+same data frame. This makes it easy to plot both together alongside the data:
+
+```{r fig.width = small_width, fig.height = small_height}
+ABC %>%
+  data_grid(condition) %>%
+  add_epred_rvars(m) %>%
+  add_predicted_rvars(m) %>%
+  ggplot(aes(y = condition)) +
+  stat_dist_interval(aes(dist = .prediction)) +
+  stat_dist_pointinterval(aes(dist = .epred), position = position_nudge(y = -0.3)) +
+  geom_point(aes(x = response), data = ABC) +
+  scale_color_brewer()
+```
+
+## Posterior predictions, Kruschke-style
+
+The above approach to posterior predictions integrates over the parameter uncertainty to give a single posterior predictive distribution. Another approach, often used by John Kruschke in his book [Doing Bayesian Data Analysis](https://sites.google.com/site/doingbayesiandataanalysis/), is to attempt to show both the predictive uncertainty and the parameter uncertainty simultaneously by showing several possible predictive distributions implied by the posterior.
+
+We can do this pretty easily by asking for the distributional parameters for a given prediction implied by the posterior. We'll do it explicitly here by setting `dpar = c("mu", "sigma")` in `add_epred_draws()`. Rather than specifying the parameters explicitly, you can also just set `dpar = TRUE` to get draws from all distributional parameters in a model, and this will work for any response distribution supported by `brms::brm()`:
+
+```{r}
+ABC %>%
+  data_grid(condition) %>%
+  add_epred_rvars(m, dpar = c("mu", "sigma"))
+```
+
+At this point, we will need to use the "long-data-frame-of-draws" format more typical of the standard
+tidybayes workflow. What we want to do is select a small number of draws from the joint distribution of
+`mu` and `sigma` to plot predictive densities from. We will use `unnest_rvars()` to "unnest" all the `rvar`s
+in the above output into a long-format data frame, sample 30 of the draws using `sample_draws()`, and then use 
+`ggdist::stat_dist_slab()` to visualize each predictive distribution implied by the values of `mu` and `sigma`:
+
+```{r fig.width = small_width, fig.height = small_height}
+ABC %>%
+  data_grid(condition) %>%
+  add_epred_rvars(m, dpar = c("mu", "sigma")) %>%
+  unnest_rvars() %>%
+  sample_draws(30) %>%
+  ggplot(aes(y = condition)) +
+  stat_dist_slab(
+    aes(dist = dist_normal(mu, sigma)), 
+    color = "gray65", alpha = 1/10, fill = NA
+  ) +
+  geom_point(aes(x = response), data = ABC, shape = 21, fill = "#9ECAE1", size = 2)
+```
+
+For a more detailed description of these charts (and some useful variations on them), see [Solomon Kurz's excellent blog post on the topic](https://solomonkurz.netlify.app/post/make-rotated-gaussians-kruschke-style/).
+
+We could even combine the Kruschke-style plots of predictive distributions with half-eyes showing the posterior means:
+
+```{r fig.width = small_width, fig.height = small_height}
+ABC %>%
+  data_grid(condition) %>%
+  add_epred_rvars(m, dpar = c("mu", "sigma")) %>%
+  ggplot(aes(x = condition)) +
+  stat_dist_slab(
+    aes(dist = dist_normal(mu, sigma)), 
+    color = "gray65", alpha = 1/10, fill = NA,
+    data = . %>% unnest_rvars() %>% sample_draws(30), scale = .5
+  ) +
+  stat_dist_halfeye(aes(dist = .epred), side = "left", scale = .5) +
+  geom_point(aes(y = response), data = ABC, shape = 21, fill = "#9ECAE1", size = 2, position = position_nudge(x = -.2))
+```
+
+The use of `unnest_rvars()` after `add_epred_rvars()` is essentially equivalent to
+just using the `_draws()` instead of `_rvars()` form of the prediction functions 
+(e.g. `add_epred_draws()`), which may be faster and/or more convenient depending
+on what other data manipulation you need to do.
+
+## Fit/prediction curves
+
+To demonstrate drawing fit curves with uncertainty, let's fit a slightly naive model to part of the `mtcars` dataset:
+
+```{r m_mpg_brm, results = "hide", message = FALSE, warning = FALSE, cache = TRUE}
+m_mpg = brm(
+  mpg ~ hp * cyl, 
+  data = mtcars, 
+  
+  file = "models/tidy-brms_m_mpg.rds"  # cache model (can be removed)
+)
+```
+
+We can draw fit curves with probability bands:
+
+```{r fig.width = med_width, fig.height = small_height}
+mtcars %>%
+  group_by(cyl) %>%
+  data_grid(hp = seq_range(hp, n = 51)) %>%
+  add_epred_rvars(m_mpg) %>%
+  ggplot(aes(x = hp, color = ordered(cyl))) +
+  stat_dist_lineribbon(aes(dist = .epred)) +
+  geom_point(aes(y = mpg), data = mtcars) +
+  scale_fill_brewer(palette = "Greys") +
+  scale_color_brewer(palette = "Set2")
+```
+
+Or we can sample a reasonable number of fit lines (say 100) and overplot them:
+
+```{r fig.width = med_width, fig.height = small_height}
+mtcars %>%
+  group_by(cyl) %>%
+  data_grid(hp = seq_range(hp, n = 101)) %>%
+  # this shows the use of n to subsample within add_epred_draws()
+  # ONLY do this IF you are planning to make spaghetti plots, etc.
+  # NEVER subsample to a small sample to plot intervals, densities, etc.
+  add_epred_rvars(m_mpg, n = 100) %>%
+  unnest_rvars() %>%
+  ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
+  geom_line(aes(y = .epred, group = paste(cyl, .draw)), alpha = .1) +
+  geom_point(data = mtcars) +
+  scale_color_brewer(palette = "Dark2")
+```
+
+Or we can create animated [hypothetical outcome plots (HOPs)](https://mucollective.northwestern.edu/project/hops-trends) of fit lines:
+
+```{r}
+set.seed(123456)
+ndraws = 50
+
+p = mtcars %>%
+  group_by(cyl) %>%
+  data_grid(hp = seq_range(hp, n = 101)) %>%
+  add_epred_rvars(m_mpg, n = ndraws) %>%
+  unnest_rvars() %>%
+  ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
+  geom_line(aes(y = .epred, group = paste(cyl, .draw))) +
+  geom_point(data = mtcars) +
+  scale_color_brewer(palette = "Dark2") +
+  transition_states(.draw, 0, 1) +
+  shadow_mark(future = TRUE, color = "gray50", alpha = 1/20)
+
+animate(p, nframes = ndraws, fps = 2.5, width = 432, height = 288, res = 96, dev = "png", type = "cairo")
+```
+
+Or, for posterior predictions (instead of fits), we can go back to probability bands:
+
+```{r fig.width = med_width, fig.height = small_height}
+mtcars %>%
+  group_by(cyl) %>%
+  data_grid(hp = seq_range(hp, n = 101)) %>%
+  add_predicted_rvars(m_mpg) %>%
+  ggplot(aes(x = hp, color = ordered(cyl), fill = ordered(cyl))) +
+  stat_dist_lineribbon(aes(dist = .prediction), .width = c(.95, .80, .50), alpha = 1/4) +
+  geom_point(aes(y = mpg), data = mtcars) +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Dark2")
+```
+
+This gets difficult to judge by group, so probably better to facet into multiple plots. Fortunately, since we are using ggplot, that functionality is built in:
+
+```{r fig.width = med_width, fig.height = small_height}
+mtcars %>%
+  group_by(cyl) %>%
+  data_grid(hp = seq_range(hp, n = 101)) %>%
+  add_predicted_rvars(m_mpg) %>%
+  ggplot(aes(x = hp)) +
+  stat_dist_lineribbon(aes(dist = .prediction), .width = c(.99, .95, .8, .5), color = brewer.pal(5, "Blues")[[5]]) +
+  geom_point(aes(y = mpg), data = mtcars) +
+  scale_fill_brewer() +
+  facet_grid(. ~ cyl, space = "free_x", scales = "free_x")
+```
+
+### Extracting distributional regression parameters
+
+`brms::brm()` also allows us to set up submodels for parameters of the response distribution *other than* the location (e.g., mean). For example, we can allow a variance parameter, such as the standard deviation, to also be some function of the predictors.
+
+This approach can be helpful in cases of non-constant variance (also called _heteroskedasticity_ by folks who like obfuscation via Latin). E.g., imagine two groups, each with different mean response _and variance_:
+
+```{r fig.width = tiny_width, fig.height = tiny_height}
+set.seed(1234)
+AB = tibble(
+  group = rep(c("a", "b"), each = 20),
+  response = rnorm(40, mean = rep(c(1, 5), each = 20), sd = rep(c(1, 3), each = 20))
+)
+
+AB %>%
+  ggplot(aes(x = response, y = group)) +
+  geom_point()
+```
+
+Here is a model that lets the mean _and standard deviation_ of `response` be dependent on `group`:
+
+```{r m_ab_brm, cache = TRUE}
+m_ab = brm(
+  bf(
+    response ~ group,
+    sigma ~ group
+  ),
+  data = AB,
+  
+  file = "models/tidy-brms_m_ab.rds"  # cache model (can be removed)
+)
+```
+
+We can plot the posterior distribution of the mean `response` alongside posterior predictive intervals and the data:
+
+```{r fig.width = small_width, fig.height = tiny_height}
+AB %>%
+  data_grid(group) %>%
+  add_epred_rvars(m_ab) %>%
+  add_predicted_rvars(m_ab) %>%
+  ggplot(aes(y = group)) +
+  stat_dist_halfeye(aes(dist = .epred), scale = 0.6, position = position_nudge(y = 0.175)) +
+  stat_dist_interval(aes(dist = .prediction)) +
+  geom_point(aes(x = response), data = AB) +
+  scale_color_brewer()
+```
+
+This shows posteriors of the mean of each group (black intervals and the density plots) and posterior predictive intervals (blue).
+
+The predictive intervals in group `b` are larger than in group `a` because the model fits a different standard deviation for each group. We can see how the corresponding distributional parameter, `sigma`, changes by extracting it using the `dpar` argument to `add_epred_rvars()`:
+
+```{r fig.width = small_width, fig.height = tiny_height}
+AB %>%
+  data_grid(group) %>%
+  add_epred_rvars(m_ab, dpar = TRUE) %>%
+  ggplot(aes(dist = sigma, y = group)) +
+  stat_dist_halfeye() +
+  geom_vline(xintercept = 0, linetype = "dashed")
+```
+
+By setting `dpar = TRUE`, all distributional parameters are added as additional columns in the result of `add_epred_rvars()`; if you only want a specific parameter, you can specify it (or a list of just the parameters you want). In the above model, `dpar = TRUE` is equivalent to `dpar = list("mu", "sigma")`.
+
+
+## Comparing levels of a factor
+
+If we wish compare the means from each condition, `compare_levels()` facilitates comparisons of the value of some variable across levels of a factor. By default it computes all pairwise differences. 
+
+Let's demonstrate `compare_levels()` with `ggdist::stat_halfeye()`:
+
+```{r fig.width = small_width, fig.height = small_height}
+m %>%
+  spread_rvars(r_condition[condition,]) %>%
+  compare_levels(r_condition, by = condition) %>%
+  ggplot(aes(y = condition, dist = r_condition)) +
+  stat_dist_halfeye()
+```
+
+If you prefer "caterpillar" plots, ordered by something like the mean of the difference, you can reorder the factor before plotting:
+
+```{r fig.width = small_width, fig.height = small_height}
+m %>%
+  spread_rvars(r_condition[condition,]) %>%
+  compare_levels(r_condition, by = condition) %>%
+  ungroup() %>%
+  mutate(condition = reorder(condition, r_condition)) %>%
+  ggplot(aes(y = condition, dist = r_condition)) +
+  stat_dist_halfeye() +
+  geom_vline(xintercept = 0, linetype = "dashed") 
+```
+
+## Ordinal models
+
+## TODO: fix
+The `brms::fitted.brmsfit()` function for ordinal and multinomial regression models in brms returns multiple variables for each draw: one for each outcome category (in contrast to `rstanarm::stan_polr()` models, which return draws from the latent linear predictor). The philosophy of `tidybayes` is to tidy whatever format is output by a model, so in keeping with that philosophy, when applied to ordinal and multinomial `brms` models, `add_fitted_draws()` adds an additional column called `.category` and a separate row containing the variable for each category is output for every draw and predictor. 
+
+### Ordinal model with continuous predictor
+
+We'll fit a model using the `mtcars` dataset that predicts the number of cylinders in a car given the car's mileage (in miles per gallon). While this is a little backwards causality-wise (presumably the number of cylinders causes the mileage, if anything), that does not mean this is not a fine prediction task (I could probably tell someone who knows something about cars the MPG of a car and they could do reasonably well at guessing the number of cylinders in the engine).
+
+Before we fit the model, let's clean the dataset by making the `cyl` column an ordered factor (by default it is just a number):
+
+```{r}
+mtcars_clean = mtcars %>%
+  mutate(cyl = ordered(cyl))
+
+head(mtcars_clean)
+```
+
+Then we'll fit an ordinal regression model:
+
+```{r m_cyl_brm, cache = TRUE}
+m_cyl = brm(
+  cyl ~ mpg, 
+  data = mtcars_clean, 
+  family = cumulative,
+  seed = 58393,
+  
+  file = "models/tidy-brms_m_cyl.rds"  # cache model (can be removed)
+)
+```
+
+`add_epred_rvars()` will now return a matrix instead of a vector for the `.epred` column, where the nested columns of `.epred` are the probability that the response is in that category. For example, here is the fit for two values of `mpg` in the dataset:
+
+```{r}
+tibble(mpg = c(21,22)) %>%
+  add_epred_rvars(m_cyl)
+```
+
+This format can be useful in some cases, but for our immediate purposes it would be better to have the
+prediction for each category be on a separate row. We can use the `columns_to` parameter of `add_epred_rvars()`
+to move the nested columns into rows. This will also add a `.row` column indexing which row of the input
+data frame each prediction came from:
+
+```{r}
+tibble(mpg = c(21,22)) %>%
+  add_epred_rvars(m_cyl, columns_to = "cyl_pred")
+```
+
+Note how the `cyl_pred` variable does not retain the original factor level names. This appears to be due to a bug in brms. As a workaround, we can recover the original factor labels and assign the result to a `cyl` column:
+
+```{r}
+tibble(mpg = c(21,22)) %>%
+  add_epred_rvars(m_cyl, columns_to = "cyl") %>%
+  mutate(cyl = levels(mtcars_clean$cyl)[factor(cyl)])
+```
+
+
+We could plot fit lines for fitted probabilities against the dataset:
+
+```{r fig.width = med_width, fig.height = med_height}
+data_plot = mtcars_clean %>%
+  ggplot(aes(x = mpg, y = cyl, color = cyl)) +
+  geom_point() +
+  scale_color_brewer(palette = "Dark2", name = "cyl")
+
+fit_plot = mtcars_clean %>%
+  data_grid(mpg = seq_range(mpg, n = 101)) %>%
+  add_epred_rvars(m_cyl, epred = "P(cyl | mpg)", columns_to = "cyl") %>%
+  # recover original factor labels
+  mutate(cyl = levels(mtcars_clean$cyl)[factor(cyl)]) %>%
+  ggplot(aes(x = mpg, color = cyl)) +
+  stat_dist_lineribbon(aes(dist = `P(cyl | mpg)`, fill = cyl), alpha = 1/5) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(y = "P(cyl | mpg)")
+
+plot_grid(ncol = 1, align = "v",
+  data_plot,
+  fit_plot
+)
+```
+
+The above display does not let you see the correlation between `P(cyl|mpg)` for different values of `cyl` at a particular value of `mpg`. For example, in the portion of the posterior where `P(cyl = 6|mpg = 20)` is high, `P(cyl = 4|mpg = 20)` and `P(cyl = 8|mpg = 20)` must be low (since these must add up to 1). 
+
+One way to see this correlation might be to employ [hypothetical outcome plots (HOPs)](https://doi.org/10.1371/journal.pone.0142444) just for the fit line, "detaching" it from the ribbon (another alternative would be to use HOPs on top of line ensembles, as demonstrated earlier in this document). By employing animation, you can see how the lines move in tandem or opposition to each other, revealing some patterns in how they are correlated:
+
+
+```{r}
+ndraws = 50
+
+p = mtcars_clean %>%
+  data_grid(mpg = seq_range(mpg, n = 101)) %>%
+  add_epred_rvars(m_cyl, epred = "P(cyl | mpg)", columns_to = "cyl") %>%
+  # recover original factor labels
+  mutate(cyl = levels(mtcars_clean$cyl)[factor(cyl)]) %>%
+  ggplot(aes(x = mpg, color = cyl)) +
+  stat_dist_lineribbon(aes(dist = `P(cyl | mpg)`, fill = cyl), alpha = 1/5, color = NA) +
+  # we use sample_draws to subsample at the level of geom_line (rather than for the full dataset
+  # as in previous HOPs examples) because we need the full set of draws for stat_lineribbon above
+  geom_line(
+    aes(y = `P(cyl | mpg)`, group = paste(.draw, cyl)), size = 1, 
+    data = . %>% unnest_rvars() %>% sample_draws(ndraws)
+  ) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  transition_manual(.draw)
+
+animate(p, nframes = ndraws, fps = 2.5, width = 576, height = 192, res = 96, dev = "png", type = "cairo")
+```
+
+Notice how the lines move together, and how they move up or down together or in opposition. We could take a slice through these lines at an x position in the above chart (say, `mpg = 20`) and look at the correlation between them using a scatterplot matrix:
+
+```{r fig.width = med_width, fig.height = med_height}
+tibble(mpg = 20) %>%
+  add_epred_rvars(m_cyl, epred = "P(cyl | mpg = 20)", columns_to = "cyl") %>%
+  mutate(cyl = levels(mtcars_clean$cyl)[factor(cyl)]) %>%
+  # to draw the scatterplots we need to go back to long-data-frame-of-draws format
+  unnest_rvars() %>%
+  select(.draw, cyl, `P(cyl | mpg = 20)`) %>%
+  gather_pairs(cyl, `P(cyl | mpg = 20)`, triangle = "both") %>%
+  filter(.row != .col) %>%
+  ggplot(aes(.x, .y)) +
+  geom_point(alpha = 1/50) +
+  facet_grid(.row ~ .col) +
+  ylab("P(cyl = row | mpg = 20)") +
+  xlab("P(cyl = col | mpg = 20)")
+```
+
+While talking about the mean for an ordinal distribution often does not make sense, in this particular case one could argue that the expected number of cylinders for a car given its miles per gallon is a meaningful quantity. We could plot the posterior distribution for the average number of cylinders for a car given a particular miles per gallon as follows:
+
+$$
+\textrm{E}[\textrm{cyl}|\textrm{mpg}=m] = \sum_{c \in \{4,6,8\}} c\cdot \textrm{P}(\textrm{cyl}=c|\textrm{mpg}=m)
+$$
+
+Given the matrix form of the output of `add_epred_rvars()` (i.e. when we do not use `columns_to`), this
+quantity is just the dot product of `P(cyl|mpg)` with `c(4,6,8)`. Since the `rvar` format supports
+math operations, including matrix multiplication (as the `%**%` operator), we can transform the prediction
+column into an expectation easily. Here is an example on two rows:
+
+```{r}
+tibble(mpg = c(21,22)) %>%
+  # note we are *not* using `columns_to` anymore
+  add_epred_rvars(m_cyl, epred = "P(cyl | mpg)") %>%
+  mutate(cyl = `P(cyl | mpg)` %**% rbind(4,6,8))
+```
+
+Altogether, followed by `unnest_rvars()` so we can create spaghetti plots:
+
+```{r fig.width = med_width, fig.height = med_height}
+label_data_function = . %>% 
+  ungroup() %>%
+  filter(mpg == quantile(mpg, .47)) %>%
+  summarise_if(is.numeric, mean)
+
+data_plot_with_mean = mtcars_clean %>%
+  data_grid(mpg = seq_range(mpg, n = 101)) %>%
+  # NOTE: use of n = 100 here subsets draws for the creation of spaghetti plots;
+  # DOT NOT do this if you are making other chart types like intervals or densities
+  add_epred_rvars(m_cyl, epred = "P(cyl | mpg)", n = 100) %>%
+  # calculate expected cylinder value
+  mutate(cyl = `P(cyl | mpg)` %**% rbind(4,6,8)) %>%
+  # transform in long-data-frame-of-draws format for making spaghetti plots
+  unnest_rvars() %>%
+  ggplot(aes(x = mpg, y = cyl)) +
+  geom_line(aes(group = .draw), alpha = 5/100) +
+  geom_point(aes(y = as.numeric(as.character(cyl)), fill = cyl), data = mtcars_clean, shape = 21, size = 2) +
+  geom_text(aes(x = mpg + 4), label = "E[cyl | mpg]", data = label_data_function, hjust = 0) +
+  geom_segment(aes(yend = cyl, xend = mpg + 3.9), data = label_data_function) +
+  scale_fill_brewer(palette = "Set2", name = "cyl")
+
+plot_grid(ncol = 1, align = "v",
+  data_plot_with_mean,
+  fit_plot
+)
+```
+
+## TODO: stopped here
+
+Now let's do some posterior predictive checking: do posterior predictions look like the data? For this, we'll make new predictions at the same values of `mpg` as were present in the original dataset (gray circles) and plot these with the observed data (colored circles):
+
+```{r fig.width = large_width, fig.height = med_height}
+mtcars_clean %>%
+  # we use `select` instead of `data_grid` here because we want to make posterior predictions
+  # for exactly the same set of observations we have in the original data
+  select(mpg) %>%
+  add_predicted_draws(m_cyl, seed = 1234) %>%
+  # recover original factor labels
+  mutate(cyl = levels(mtcars_clean$cyl)[.prediction]) %>%
+  ggplot(aes(x = mpg, y = cyl)) +
+  geom_count(color = "gray75") +
+  geom_point(aes(fill = cyl), data = mtcars_clean, shape = 21, size = 2) +
+  scale_fill_brewer(palette = "Dark2") +
+  geom_label_repel(
+    data = . %>% ungroup() %>% filter(cyl == "8") %>% filter(mpg == max(mpg)) %>% dplyr::slice(1),
+    label = "posterior predictions", xlim = c(26, NA), ylim = c(NA, 2.8), point.padding = 0.3,
+    label.size = NA, color = "gray50", segment.color = "gray75"
+  ) +
+  geom_label_repel(
+    data = mtcars_clean %>% filter(cyl == "6") %>% filter(mpg == max(mpg)) %>% dplyr::slice(1),
+    label = "observed data", xlim = c(26, NA), ylim = c(2.2, NA), point.padding = 0.2,
+    label.size = NA, segment.color = "gray35"
+  )
+```
+
+This looks pretty good. Let's check using another typical posterior predictive checking plot: many simulated distributions of the response (`cyl`) against the observed distribution of the response. For a continuous response variable this is usually done with a density plot; here, we'll plot the number of posterior predictions in each bin as a line plot, since the response variable is discrete:
+
+```{r fig.width = med_width, fig.height = med_height}
+mtcars_clean %>%
+  select(mpg) %>%
+  add_predicted_draws(m_cyl, n = 100, seed = 12345) %>%
+  # recover original factor labels
+  mutate(cyl = levels(mtcars_clean$cyl)[.prediction]) %>%
+  ggplot(aes(x = cyl)) +
+  stat_count(aes(group = NA), geom = "line", data = mtcars_clean, color = "red", size = 3, alpha = .5) +
+  stat_count(aes(group = .draw), geom = "line", position = "identity", alpha = .05) +
+  geom_label(data = data.frame(cyl = "4"), y = 9.5, label = "posterior\npredictions",
+    hjust = 1, color = "gray50", lineheight = 1, label.size = NA) +
+  geom_label(data = data.frame(cyl = "8"), y = 14, label = "observed\ndata",
+    hjust = 0, color = "red", lineheight = 1, label.size = NA)
+```
+
+This also looks good.
+
+Another way to look at these posterior predictions might be as a scatterplot matrix. `gather_pairs()` makes it easy to generate long-format data frames suitable for creating custom scatterplot matrices (or really, arbitrary matrix-style small multiples plots) in ggplot using `ggplot2::facet_grid()`:
+
+```{r fig.width = med_width, fig.height = med_height}
+set.seed(12345)
+
+mtcars_clean %>%
+  select(mpg) %>%
+  add_predicted_draws(m_cyl) %>%
+  # recover original factor labels. Must ungroup first so that the
+  # factor is created in the same way in all groups; this is a workaround
+  # because brms no longer returns labelled predictions (hopefully that
+  # is fixed then this will no longer be necessary)
+  ungroup() %>%
+  mutate(cyl = factor(levels(mtcars_clean$cyl)[.prediction])) %>%
+  # need .drop = FALSE to ensure 0 counts are not dropped
+  group_by(.draw, .drop = FALSE) %>%
+  count(cyl) %>%
+  gather_pairs(cyl, n) %>%
+  ggplot(aes(.x, .y)) +
+  geom_count(color = "gray75") +
+  geom_point(data = mtcars_clean %>% count(cyl) %>% gather_pairs(cyl, n), color = "red") +
+  facet_grid(vars(.row), vars(.col)) +
+  xlab("Number of observations with cyl = col") +
+  ylab("Number of observations with cyl = row") 
+```
+
+### Ordinal model with categorical predictor
+
+Here's an ordinal model with a categorical predictor:
+
+```{r m_esoph_brm, cache = TRUE}
+data(esoph)
+m_esoph_brm = brm(
+  tobgp ~ agegp, 
+  data = esoph, 
+  family = cumulative(),
+
+  file = "models/tidy-brms_m_esoph_brm.rds"  
+)
+```
+
+Then we can plot predicted probabilities for each outcome category within each level of the predictor:
+
+```{r fig.width = med_width, fig.height = med_height}
+esoph %>%
+  data_grid(agegp) %>%
+  add_fitted_draws(m_esoph_brm, dpar = TRUE) %>%
+  mutate(tobgp = levels(esoph$tobgp)[.category]) %>%
+  ggplot(aes(x = agegp, y = .value, color = tobgp)) +
+  stat_pointinterval(position = position_dodge(width = .4)) +
+  scale_size_continuous(guide = FALSE) +
+  scale_color_manual(values = brewer.pal(6, "Blues")[-c(1,2)])
+```
+
+It is hard to see the changes in categories in the above plot; let's try something that gives a better gist of the distribution within each year:
+
+```{r fig.width = large_width, fig.height = large_height/2}
+esoph_plot = esoph %>%
+  data_grid(agegp) %>%
+  add_fitted_draws(m_esoph_brm) %>%
+  mutate(tobgp = levels(esoph$tobgp)[.category]) %>%
+  ggplot(aes(x = .value, y = tobgp)) +
+  coord_cartesian(expand = FALSE) +
+  facet_grid(. ~ agegp, switch = "x") +
+  theme_classic() +
+  theme(strip.background = element_blank(), strip.placement = "outside") +
+  ggtitle("P(tobacco consumption category | age group)") +
+  xlab("age group")
+
+esoph_plot +
+  stat_summary(fun = median, geom = "bar", fill = "gray75", width = 1, color = "white") +
+  stat_pointinterval()
+```
+
+The bars in this case might present a false sense of precision, so we could also try CCDF barplots instead:
+
+```{r fig.width = large_width, fig.height = large_height/2}
+esoph_plot +
+  stat_ccdfinterval() +
+  expand_limits(x = 0) #ensure bars go to 0
+```
+
+This output should be very similar to the output from the corresponding `m_esoph_rs` model in `vignette("tidy-rstanarm")` (modulo different priors), though brms does more of the work for us to produce it than `rstanarm` does.

@@ -256,7 +256,14 @@ spread_rvars_ = function(draws, spec) {
 # sample draws from a draws_rvars
 #' @importFrom posterior as_draws_rvars resample_draws
 sample_draws_from_rvars_ = function(model, n = NULL, seed = NULL) {
-  draws = as_draws_rvars(model)
+  signature = class(model)
+  if (has_method("as_draws_rvars", signature)) {
+    draws = as_draws_rvars(model)
+  } else if (has_method("as_draws", signature)) {
+    draws = as_draws_rvars(as_draws(model))
+  } else {
+    draws = as_draws_rvars(tidy_draws(model))
+  }
 
   if (!is.null(n)) {
     if (!is.null(seed)) set.seed(seed)

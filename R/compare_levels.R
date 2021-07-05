@@ -163,6 +163,8 @@ compare_levels = function(data, variable, by, fun=`-`, comparison = "default",
     group_by_at(union(groups_, by))
 }
 
+#' @importFrom tidyr pivot_wider
+#' @importFrom tidyselect all_of
 compare_levels_ = function(data, variable, by, fun, comparison, draw_indices) {
   #drop unused levels from "by" column
   data[[by]] = factor(data[[by]])
@@ -172,7 +174,7 @@ compare_levels_ = function(data, variable, by, fun, comparison, draw_indices) {
   data = data[, union(draw_indices, c(variable, by))]
 
   #get wide version of data that we can use to generate comparisons easily
-  data_wide = spread_(data, by, variable)
+  data_wide = pivot_wider(data, names_from = all_of(by), values_from = all_of(variable))
 
   # determine a pretty function name
   fun_name = if (is.name(quo_get_expr(fun))) quo_name(fun) else ":"

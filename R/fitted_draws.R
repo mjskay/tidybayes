@@ -108,27 +108,7 @@ fitted_draws.brmsfit = function(model, newdata, value = ".value", ..., n = NULL,
   )
 
   # get the names of distributional regression parameters to include
-  dpars = if (is_true(dpar)) {
-    names(brms::brmsterms(model$formula)$dpar)
-  } else if (is_false(dpar)) {
-    NULL
-  } else {
-    dpar
-  }
-  if (is_empty(dpars)) {
-    # the above conditions might return an empty vector, which does not play well with the code below
-    # (if there are no dpars, it is expected that dpars is NULL)
-    dpars = NULL
-  }
-
-  # missing names default to the same name used for the parameter in the model
-  if (is.null(names(dpars))) {
-    names(dpars) = dpars
-  } else {
-    missing_names = is.na(names(dpars)) | names(dpars) == ""
-    names(dpars)[missing_names] = dpars[missing_names]
-  }
-
+  dpars = get_brms_dpars(model, dpar)
 
   # get the draws for the primary parameter first so we can stick the other values onto it
   draws = fitted_predicted_draws_brmsfit_(
@@ -177,4 +157,31 @@ fitted_draws.brmsfit = function(model, newdata, value = ".value", ..., n = NULL,
   } else {
     draws
   }
+}
+
+#' Given a brms model and a dpar argument for linpred_draws()/etc, return a list of dpars
+#' @noRd
+get_brms_dpars = function(model, dpar) {
+  dpars = if (is_true(dpar)) {
+    union(names(brms::brmsterms(model$formula)$dpar), model$family$dpars)
+  } else if (is_false(dpar)) {
+    NULL
+  } else {
+    dpar
+  }
+  if (is_empty(dpars)) {
+    # the above conditions might return an empty vector, which does not play well with the code below
+    # (if there are no dpars, it is expected that dpars is NULL)
+    dpars = NULL
+  }
+
+  # missing names default to the same name used for the parameter in the model
+  if (is.null(names(dpars))) {
+    names(dpars) = dpars
+  } else {
+    missing_names = is.na(names(dpars)) | names(dpars) == ""
+    names(dpars)[missing_names] = dpars[missing_names]
+  }
+
+  dpars
 }

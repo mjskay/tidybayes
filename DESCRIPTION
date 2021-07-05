@@ -28,6 +28,7 @@ Imports:
     tibble,
     magrittr,
     posterior,
+    withr,
     vctrs
 Suggests:
     knitr,
@@ -101,6 +102,7 @@ Collate:
     "compose_data.R"
     "density_bins.R"
     "emmeans_comparison.R"
+    "epred_rvars.R"
     "fitted_draws.R"
     "flip_aes.R"
     "gather_draws.R"
@@ -115,6 +117,7 @@ Collate:
     "point_interval.R"
     "predict_curve.R"
     "predicted_draws.R"
+    "predicted_rvars.R"
     "recover_types.R"
     "residual_draws.R"
     "sample_draws.R"

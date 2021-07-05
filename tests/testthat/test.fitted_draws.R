@@ -348,6 +348,11 @@ test_that("[add_]fitted_draws allows extraction of dpar on brms models with ordi
     gather(.row, mu) %$%
     mu
 
+  fits$disc = fitted(m_cyl_mpg, mtcars_tbl, summary = FALSE, dpar = "disc", scale = "linear") %>%
+    as.data.frame() %>%
+    gather(.row, disc) %$%
+    disc
+
   ref = mtcars_tbl %>%
     mutate(.row = rownames(.)) %>%
     inner_join(fits, by = ".row") %>%
@@ -355,6 +360,7 @@ test_that("[add_]fitted_draws allows extraction of dpar on brms models with ordi
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
 
   expect_equal(fitted_draws(m_cyl_mpg, mtcars_tbl, scale = "linear", dpar = TRUE), ref)
+  ref$disc = NULL
   expect_equal(add_fitted_draws(mtcars_tbl, m_cyl_mpg, scale = "linear", dpar = "mu"), ref)
 })
 
@@ -369,9 +375,13 @@ test_that("[add_]fitted_draws allows extraction of dpar on brms models with cate
   mu_fits = fitted(m_cyl_mpg, mtcars_tbl, summary = FALSE, scale = "response", dpar = "mu") %>%
     array2df(list(.draw = NA, .row = NA), label.x = "mu")
 
+  disc_fits = fitted(m_cyl_mpg, mtcars_tbl, summary = FALSE, scale = "response", dpar = "disc") %>%
+    array2df(list(.draw = NA, .row = NA), label.x = "disc")
+
   ref = mtcars_tbl %>% mutate(.row = as.integer(rownames(.))) %>%
     inner_join(fits, by = ".row") %>%
     left_join(mu_fits, by = c(".row", ".draw")) %>%
+    left_join(disc_fits, by = c(".row", ".draw")) %>%
     mutate(
       .chain = NA_integer_,
       .iteration = NA_integer_,
@@ -383,6 +393,7 @@ test_that("[add_]fitted_draws allows extraction of dpar on brms models with cate
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row, .category)
 
   expect_equal(fitted_draws(m_cyl_mpg, mtcars_tbl, scale = "response", dpar = TRUE), ref)
+  ref$disc = NULL
   expect_equal(add_fitted_draws(mtcars_tbl, m_cyl_mpg, scale = "response", dpar = "mu"), ref)
 })
 
