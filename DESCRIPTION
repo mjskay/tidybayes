@@ -42,6 +42,7 @@ Suggests:
     rjags,
     jagsUI,
     rstanarm (>= 2.19.2),
+    rstantools,
     emmeans,
     broom (>= 0.4.3),
     dotwhisker,

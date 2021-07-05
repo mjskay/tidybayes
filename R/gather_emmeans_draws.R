@@ -119,6 +119,7 @@ gather_emmeans_draws.default = function(object, value = ".value", ...) {
     group_by_at(setdiff(names(.), c(".chain", ".iteration", ".draw", value)))
 }
 
+#' @importFrom dplyr mutate_if
 #' @rdname gather_emmeans_draws
 #' @export
 gather_emmeans_draws.emm_list = function(object, value = ".value", grid = ".grid", ...) {

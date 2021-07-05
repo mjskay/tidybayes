@@ -196,6 +196,7 @@ predicted_draws.brmsfit = function(model, newdata, prediction = ".prediction", .
 }
 
 
+#' @importFrom dplyr n
 #' @importFrom arrayhelpers array2df ndim
 fitted_predicted_draws_brmsfit_ = function(f_fitted_predicted, model, newdata, output_name, category, ...,
   seed = NULL, is_brms = TRUE, summary = NULL #summary is ignored, we change it ourselves

@@ -214,6 +214,7 @@ processing pipelines that start either with a data frame or a model.
 
 library(ggplot2)
 library(dplyr)
+library(posterior)
 
 if (
   require("rstanarm", quietly = TRUE) &&

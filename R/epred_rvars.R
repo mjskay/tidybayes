@@ -37,8 +37,8 @@ epred_rvars.default = function(model, newdata, epred = ".epred", ..., n = NULL, 
     }
   }
 
-  out = as_tibble(newdata)
-  out[[epred]] = rvar(do.call(posterior_epred, args))
+  out = if (is_tibble(newdata)) newdata else as_tibble(newdata)
+  out[[epred]] = rvar(do.call(rstantools::posterior_epred, args))
   rvar_pred_columns_to(out, epred, columns_to)
 }
 
@@ -57,8 +57,8 @@ epred_rvars.stanreg = function(model, newdata, epred = ".epred", ..., n = NULL, 
     set.seed(seed)
   }
 
-  out = as_tibble(newdata)
-  out[[epred]] = rvar(posterior_epred(model, newdata = newdata, ..., re.form = re_formula, draws = n))
+  out = if (is_tibble(newdata)) newdata else as_tibble(newdata)
+  out[[epred]] = rvar(rstantools::posterior_epred(model, newdata = newdata, ..., re.form = re_formula, draws = n))
   rvar_pred_columns_to(out, epred, columns_to)
 }
 
@@ -82,15 +82,15 @@ epred_rvars.brmsfit = function(model, newdata, epred = ".epred", ..., n = NULL, 
   seed = seed %||% sample.int(.Machine$integer.max, 1)
 
   # get the rvars for the primary parameter
-  out = as_tibble(newdata)
-  out[[epred]] = withr::with_seed(seed, rvar(brms::posterior_epred(
+  out = if (is_tibble(newdata)) newdata else as_tibble(newdata)
+  out[[epred]] = withr::with_seed(seed, rvar(rstantools::posterior_epred(
     model, newdata, ..., re_formula = re_formula, dpar = NULL, nsamples = n
   )))
 
   # get rvars for the dpars
   for (i in seq_along(dpars)) {
     varname = names(dpars)[[i]]
-    out[[varname]] = withr::with_seed(seed, rvar(brms::posterior_epred(
+    out[[varname]] = withr::with_seed(seed, rvar(rstantools::posterior_epred(
       model, newdata, ..., re_formula = re_formula, dpar = dpars[[i]], nsamples = n
     )))
   }
@@ -108,6 +108,7 @@ epred_rvars.brmsfit = function(model, newdata, epred = ".epred", ..., n = NULL, 
 #' @param varname (string) name of an rvar column in pred containing predictions
 #' @param columns_to (string) name of a column to move columns of pred[[var]] into
 #' @noRd
+#' @importFrom tidyselect any_of
 rvar_pred_columns_to = function(pred, varname, columns_to) {
   var = pred[[varname]]
   ncol_ = NCOL(var)

@@ -80,6 +80,7 @@
 #'
 #' library(ggplot2)
 #' library(dplyr)
+#' library(posterior)
 #'
 #' if (
 #'   require("rstanarm", quietly = TRUE) &&
@@ -121,6 +122,7 @@
 #'     scale_fill_brewer(palette = "Set2")
 #' }
 #' }
+#' @importFrom posterior rvar
 #' @export
 add_predicted_rvars = function(newdata, model, prediction = ".prediction", ..., n = NULL, seed = NULL, re_formula = NULL, columns_to = NULL) {
   predicted_rvars(model, newdata, prediction, ..., n = n, seed = seed, re_formula = re_formula, columns_to = columns_to)
@@ -148,8 +150,8 @@ predicted_rvars.default = function(model, newdata, prediction = ".prediction", .
     }
   }
 
-  out = as_tibble(newdata)
-  out[[prediction]] = rvar(do.call(posterior_predict, args))
+  out = if (is_tibble(newdata)) newdata else as_tibble(newdata)
+  out[[prediction]] = rvar(do.call(rstantools::posterior_predict, args))
   rvar_pred_columns_to(out, prediction, columns_to)
 }
 
@@ -164,8 +166,8 @@ predicted_rvars.stanreg = function(model, newdata, prediction = ".prediction", .
     names(enquos(...)), "[add_]predicted_rvars", re_formula = "re.form", n = "draws"
   )
 
-  out = as_tibble(newdata)
-  out[[prediction]] = rvar(posterior_predict(model, newdata = newdata, ..., re.form = re_formula, draws = n, seed = seed))
+  out = if (is_tibble(newdata)) newdata else as_tibble(newdata)
+  out[[prediction]] = rvar(rstantools::posterior_predict(model, newdata = newdata, ..., re.form = re_formula, draws = n, seed = seed))
   rvar_pred_columns_to(out, prediction, columns_to)
 }
 
@@ -184,7 +186,7 @@ predicted_rvars.brmsfit = function(model, newdata, prediction = ".prediction", .
     set.seed(seed)
   }
 
-  out = as_tibble(newdata)
-  out[[prediction]] = rvar(posterior_predict(model, newdata = newdata, ..., re.form = re_formula, nsamples = n))
+  out = if (is_tibble(newdata)) newdata else as_tibble(newdata)
+  out[[prediction]] = rvar(rstantools::posterior_predict(model, newdata = newdata, ..., re.form = re_formula, nsamples = n))
   rvar_pred_columns_to(out, prediction, columns_to)
 }

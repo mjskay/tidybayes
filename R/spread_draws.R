@@ -426,7 +426,7 @@ spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FA
 ## long_draws: long draws in the internal long draws format from spread_draws_long_
 ## dimension_names: dimensions not used for nesting
 ## nested_dimension_names: dimensions to be nested
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter summarise_at
 nest_dimensions_ = function(long_draws, dimension_names, nested_dimension_names) {
   ragged = FALSE
   value_name = ".value"
