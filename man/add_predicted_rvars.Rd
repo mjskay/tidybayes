@@ -192,7 +192,7 @@ the expectation of the posterior predictive, the posterior predictive, or the re
 the data frame.
 }
 \details{
-\code{add_linpred_rvars()} adds \code{\link{rvars}} containing draws from (possibly transformed) posterior \strong{linear}
+\code{add_linpred_rvars()} adds \code{\link{rvar}}s containing draws from (possibly transformed) posterior \strong{linear}
 predictors (or "link-level" predictors) to the data.
 It corresponds to \code{\link[rstanarm:posterior_linpred.stanreg]{rstanarm::posterior_linpred()}} or \code{\link[brms:posterior_linpred.brmsfit]{brms::posterior_linpred()}}.
 

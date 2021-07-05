@@ -12,7 +12,7 @@
 #' the expectation of the posterior predictive, the posterior predictive, or the residuals of a model to
 #' the data frame.
 #'
-#' `add_linpred_rvars()` adds [`rvars`] containing draws from (possibly transformed) posterior **linear**
+#' `add_linpred_rvars()` adds [`rvar`]s containing draws from (possibly transformed) posterior **linear**
 #' predictors (or "link-level" predictors) to the data.
 #' It corresponds to [rstanarm::posterior_linpred()] or [brms::posterior_linpred()].
 #'

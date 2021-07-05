@@ -7,6 +7,7 @@ suppressWarnings(suppressMessages({
   library(dplyr)
   library(tidyr)
   library(magrittr)
+  library(posterior)
 }))
 
 
