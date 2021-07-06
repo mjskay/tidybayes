@@ -5,7 +5,6 @@ date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
-    df_print: kable
 params:
   EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 vignette: >
@@ -99,7 +98,7 @@ options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
 options(mc.cores = min(2, parallel::detectCores()))
 
-options(width = 120)
+options(width = 100)
 ```
 
 
@@ -529,7 +528,11 @@ ABC %>%
     data = . %>% unnest_rvars() %>% sample_draws(30), scale = .5
   ) +
   stat_dist_halfeye(aes(dist = .epred), side = "left", scale = .5) +
-  geom_point(aes(y = response), data = ABC, shape = 21, fill = "#9ECAE1", size = 2, position = position_nudge(x = -.2))
+  geom_point(
+    aes(y = response), 
+    data = ABC, shape = 21, fill = "#9ECAE1", size = 2, 
+    position = position_nudge(x = -.2)
+  )
 ```
 
 The use of `unnest_rvars()` after `add_epred_rvars()` is essentially equivalent to
@@ -570,7 +573,7 @@ Or we can sample a reasonable number of fit lines (say 100) and overplot them:
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
-  # this shows the use of n to subsample within add_epred_draws()
+  # NOTE: this shows the use of n to subsample within add_epred_draws()
   # ONLY do this IF you are planning to make spaghetti plots, etc.
   # NEVER subsample to a small sample to plot intervals, densities, etc.
   add_epred_rvars(m_mpg, n = 100) %>%
@@ -624,7 +627,11 @@ mtcars %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
   add_predicted_rvars(m_mpg) %>%
   ggplot(aes(x = hp)) +
-  stat_dist_lineribbon(aes(dist = .prediction), .width = c(.99, .95, .8, .5), color = brewer.pal(5, "Blues")[[5]]) +
+  stat_dist_lineribbon(
+    aes(dist = .prediction), 
+    .width = c(.99, .95, .8, .5), 
+    color = brewer.pal(5, "Blues")[[5]]
+  ) +
   geom_point(aes(y = mpg), data = mtcars) +
   scale_fill_brewer() +
   facet_grid(. ~ cyl, space = "free_x", scales = "free_x")
@@ -721,8 +728,7 @@ m %>%
 
 ## Ordinal models
 
-## TODO: fix
-The `brms::fitted.brmsfit()` function for ordinal and multinomial regression models in brms returns multiple variables for each draw: one for each outcome category (in contrast to `rstanarm::stan_polr()` models, which return draws from the latent linear predictor). The philosophy of `tidybayes` is to tidy whatever format is output by a model, so in keeping with that philosophy, when applied to ordinal and multinomial `brms` models, `add_fitted_draws()` adds an additional column called `.category` and a separate row containing the variable for each category is output for every draw and predictor. 
+The `brms::posterior_epred()` function for ordinal and multinomial regression models in brms returns multidimensional variables for each draw, where an additional dimension to the result contains outcome categories. The philosophy of `tidybayes` is to tidy whatever format is output by a model, so in keeping with that philosophy, when applied to ordinal and multinomial `brms` models, `add_epred_draws()` outputs a nested `.epred` variable that has additional columns for each level of the response variable.
 
 ### Ordinal model with continuous predictor
 
@@ -819,7 +825,7 @@ p = mtcars_clean %>%
   # we use sample_draws to subsample at the level of geom_line (rather than for the full dataset
   # as in previous HOPs examples) because we need the full set of draws for stat_lineribbon above
   geom_line(
-    aes(y = `P(cyl | mpg)`, group = paste(.draw, cyl)), size = 1, 
+    aes(y = `P(cyl | mpg)`, group = paste(.draw, cyl)), size = 1,
     data = . %>% unnest_rvars() %>% sample_draws(ndraws)
   ) +
   scale_color_brewer(palette = "Dark2") +
@@ -837,6 +843,7 @@ tibble(mpg = 20) %>%
   mutate(cyl = levels(mtcars_clean$cyl)[factor(cyl)]) %>%
   # to draw the scatterplots we need to go back to long-data-frame-of-draws format
   unnest_rvars() %>%
+  ungroup() %>%
   select(.draw, cyl, `P(cyl | mpg = 20)`) %>%
   gather_pairs(cyl, `P(cyl | mpg = 20)`, triangle = "both") %>%
   filter(.row != .col) %>%
@@ -862,7 +869,7 @@ column into an expectation easily. Here is an example on two rows:
 tibble(mpg = c(21,22)) %>%
   # note we are *not* using `columns_to` anymore
   add_epred_rvars(m_cyl, epred = "P(cyl | mpg)") %>%
-  mutate(cyl = `P(cyl | mpg)` %**% rbind(4,6,8))
+  mutate(cyl = `P(cyl | mpg)` %**% c(4,6,8))
 ```
 
 Altogether, followed by `unnest_rvars()` so we can create spaghetti plots:
@@ -879,7 +886,7 @@ data_plot_with_mean = mtcars_clean %>%
   # DOT NOT do this if you are making other chart types like intervals or densities
   add_epred_rvars(m_cyl, epred = "P(cyl | mpg)", n = 100) %>%
   # calculate expected cylinder value
-  mutate(cyl = `P(cyl | mpg)` %**% rbind(4,6,8)) %>%
+  mutate(cyl = `P(cyl | mpg)` %**% c(4,6,8)) %>%
   # transform in long-data-frame-of-draws format for making spaghetti plots
   unnest_rvars() %>%
   ggplot(aes(x = mpg, y = cyl)) +
@@ -895,78 +902,82 @@ plot_grid(ncol = 1, align = "v",
 )
 ```
 
-## TODO: stopped here
+Now let's add on a plot of the latent linear predictor against the thresholds used
+to determine the probabilities for each category. We can use `posterior::as_draws_rvars()`
+to get parameters from the model as `rvar` objects:
 
-Now let's do some posterior predictive checking: do posterior predictions look like the data? For this, we'll make new predictions at the same values of `mpg` as were present in the original dataset (gray circles) and plot these with the observed data (colored circles):
+```{r}
+draws_cyl = m_cyl %>%
+  tidy_draws() %>%
+  as_draws_rvars()
 
-```{r fig.width = large_width, fig.height = med_height}
-mtcars_clean %>%
-  # we use `select` instead of `data_grid` here because we want to make posterior predictions
-  # for exactly the same set of observations we have in the original data
-  select(mpg) %>%
-  add_predicted_draws(m_cyl, seed = 1234) %>%
-  # recover original factor labels
-  mutate(cyl = levels(mtcars_clean$cyl)[.prediction]) %>%
-  ggplot(aes(x = mpg, y = cyl)) +
-  geom_count(color = "gray75") +
-  geom_point(aes(fill = cyl), data = mtcars_clean, shape = 21, size = 2) +
-  scale_fill_brewer(palette = "Dark2") +
-  geom_label_repel(
-    data = . %>% ungroup() %>% filter(cyl == "8") %>% filter(mpg == max(mpg)) %>% dplyr::slice(1),
-    label = "posterior predictions", xlim = c(26, NA), ylim = c(NA, 2.8), point.padding = 0.3,
-    label.size = NA, color = "gray50", segment.color = "gray75"
+draws_cyl
+```
+
+We're really interested in the `b_Intercept` parameter, which represents thresholds
+on the latent linear predictor:
+
+```{r}
+beta = draws_cyl$b_Intercept
+beta
+```
+
+We can use `add_linpred_rvars()` analogously to `add_epred_rvars()` to 
+get the latent linear predictor. We'll combine this with the thresholds in `beta`,
+subtracting `beta[1]` from the linear predictor and from the `beta[2]`
+as these values are all highly correlated (thus would be hard to visualize with
+uncertainty in a meaningful way without looking at their differences). We'll
+also demonstrate the use of `.width = ppoints(XXX)` where `XXX` is a number
+like `30` or `50`, which combined with a low `alpha` value produces gradient-like
+lineribbons:
+
+```{r, fig.width = med_width, fig.height = med_width}
+beta_2_color = brewer.pal(n = 3, name = "Dark2")[[3]]
+beta_1_color = brewer.pal(n = 3, name = "Dark2")[[1]]
+
+thresholds_plot = mtcars_clean %>%
+  data_grid(mpg = seq_range(mpg, n = 101)) %>%
+  add_linpred_rvars(m_cyl) %>%
+  ggplot(aes(x = mpg)) +
+  stat_dist_lineribbon(
+    aes(dist = beta[2] - beta[1]),
+    color = beta_2_color, fill = beta_2_color, 
+    alpha = 1/30, .width = ppoints(30),
+    size = 1, linetype = "21"
   ) +
-  geom_label_repel(
-    data = mtcars_clean %>% filter(cyl == "6") %>% filter(mpg == max(mpg)) %>% dplyr::slice(1),
-    label = "observed data", xlim = c(26, NA), ylim = c(2.2, NA), point.padding = 0.2,
-    label.size = NA, segment.color = "gray35"
-  )
+  geom_line(aes(y = 0), size = 1, color = beta_1_color, linetype = "21") +
+  stat_dist_lineribbon(
+    aes(dist = .linpred - beta[1]),
+    fill = "black", color = "black",
+    alpha = 1/30, .width = ppoints(30)
+  ) +
+  labs(y = expression("linear predictor" - beta[1])) + 
+  annotate("label",
+    label = "beta[1]", parse = TRUE,
+    x = max(mtcars_clean$mpg), y = 0, hjust = 0.8,
+    color = beta_1_color
+  ) +
+  annotate("label",
+    label = "beta[2] - beta[1]", parse = TRUE,
+    x = max(mtcars_clean$mpg), y = median(beta[2] - beta[1]), hjust = 0.9,
+    color = beta_2_color
+  ) +
+  coord_cartesian(ylim = c(-10, 10))
+
+plot_grid(ncol = 1, align = "v", axis = "lr",
+  data_plot_with_mean,
+  fit_plot,
+  thresholds_plot
+)
 ```
 
-This looks pretty good. Let's check using another typical posterior predictive checking plot: many simulated distributions of the response (`cyl`) against the observed distribution of the response. For a continuous response variable this is usually done with a density plot; here, we'll plot the number of posterior predictions in each bin as a line plot, since the response variable is discrete:
+Note how when the linear predictor intersects the line for `beta[1]` categories
+1 and 2 are equally likely, and when it intersects the line for `beta[2]`
+categories 2 and 3 are equally likely.
 
-```{r fig.width = med_width, fig.height = med_height}
-mtcars_clean %>%
-  select(mpg) %>%
-  add_predicted_draws(m_cyl, n = 100, seed = 12345) %>%
-  # recover original factor labels
-  mutate(cyl = levels(mtcars_clean$cyl)[.prediction]) %>%
-  ggplot(aes(x = cyl)) +
-  stat_count(aes(group = NA), geom = "line", data = mtcars_clean, color = "red", size = 3, alpha = .5) +
-  stat_count(aes(group = .draw), geom = "line", position = "identity", alpha = .05) +
-  geom_label(data = data.frame(cyl = "4"), y = 9.5, label = "posterior\npredictions",
-    hjust = 1, color = "gray50", lineheight = 1, label.size = NA) +
-  geom_label(data = data.frame(cyl = "8"), y = 14, label = "observed\ndata",
-    hjust = 0, color = "red", lineheight = 1, label.size = NA)
-```
-
-This also looks good.
-
-Another way to look at these posterior predictions might be as a scatterplot matrix. `gather_pairs()` makes it easy to generate long-format data frames suitable for creating custom scatterplot matrices (or really, arbitrary matrix-style small multiples plots) in ggplot using `ggplot2::facet_grid()`:
-
-```{r fig.width = med_width, fig.height = med_height}
-set.seed(12345)
-
-mtcars_clean %>%
-  select(mpg) %>%
-  add_predicted_draws(m_cyl) %>%
-  # recover original factor labels. Must ungroup first so that the
-  # factor is created in the same way in all groups; this is a workaround
-  # because brms no longer returns labelled predictions (hopefully that
-  # is fixed then this will no longer be necessary)
-  ungroup() %>%
-  mutate(cyl = factor(levels(mtcars_clean$cyl)[.prediction])) %>%
-  # need .drop = FALSE to ensure 0 counts are not dropped
-  group_by(.draw, .drop = FALSE) %>%
-  count(cyl) %>%
-  gather_pairs(cyl, n) %>%
-  ggplot(aes(.x, .y)) +
-  geom_count(color = "gray75") +
-  geom_point(data = mtcars_clean %>% count(cyl) %>% gather_pairs(cyl, n), color = "red") +
-  facet_grid(vars(.row), vars(.col)) +
-  xlab("Number of observations with cyl = col") +
-  ylab("Number of observations with cyl = row") 
-```
+For more examples with this model using the long-data-frame-of-draws workflow
+(which can be easier for certain tasks), see the corresponding section of
+`vignette("tidy-brms")`.
 
 ### Ordinal model with categorical predictor
 
@@ -988,11 +999,11 @@ Then we can plot predicted probabilities for each outcome category within each l
 ```{r fig.width = med_width, fig.height = med_height}
 esoph %>%
   data_grid(agegp) %>%
-  add_fitted_draws(m_esoph_brm, dpar = TRUE) %>%
-  mutate(tobgp = levels(esoph$tobgp)[.category]) %>%
-  ggplot(aes(x = agegp, y = .value, color = tobgp)) +
-  stat_pointinterval(position = position_dodge(width = .4)) +
-  scale_size_continuous(guide = FALSE) +
+  add_epred_rvars(m_esoph_brm, columns_to = "tobgp") %>%
+  mutate(tobgp = levels(esoph$tobgp)[factor(tobgp)]) %>%
+  ggplot(aes(x = agegp, color = tobgp)) +
+  stat_dist_pointinterval(aes(dist = .epred), position = position_dodge(width = .4)) +
+  scale_size_continuous(guide = "none") +
   scale_color_manual(values = brewer.pal(6, "Blues")[-c(1,2)])
 ```
 
@@ -1001,9 +1012,9 @@ It is hard to see the changes in categories in the above plot; let's try somethi
 ```{r fig.width = large_width, fig.height = large_height/2}
 esoph_plot = esoph %>%
   data_grid(agegp) %>%
-  add_fitted_draws(m_esoph_brm) %>%
-  mutate(tobgp = levels(esoph$tobgp)[.category]) %>%
-  ggplot(aes(x = .value, y = tobgp)) +
+  add_epred_rvars(m_esoph_brm, columns_to = "tobgp") %>%
+  mutate(tobgp = levels(esoph$tobgp)[factor(tobgp)]) %>%
+  ggplot(aes(y = tobgp)) +
   coord_cartesian(expand = FALSE) +
   facet_grid(. ~ agegp, switch = "x") +
   theme_classic() +
@@ -1012,15 +1023,15 @@ esoph_plot = esoph %>%
   xlab("age group")
 
 esoph_plot +
-  stat_summary(fun = median, geom = "bar", fill = "gray75", width = 1, color = "white") +
-  stat_pointinterval()
+  geom_col(aes(x = median(.epred)), fill = "gray75", width = 1, color = "white") +
+  stat_dist_pointinterval(aes(dist = .epred))
 ```
 
 The bars in this case might present a false sense of precision, so we could also try CCDF barplots instead:
 
 ```{r fig.width = large_width, fig.height = large_height/2}
 esoph_plot +
-  stat_ccdfinterval() +
+  stat_dist_ccdfinterval(aes(dist = .epred)) +
   expand_limits(x = 0) #ensure bars go to 0
 ```
 
