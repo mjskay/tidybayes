@@ -12,17 +12,17 @@
 #' the expectation of the posterior predictive, the posterior predictive, or the residuals of a model to
 #' the data frame.
 #'
-#' `add_linpred_rvars()` adds [`rvar`]s containing draws from (possibly transformed) posterior **linear**
-#' predictors (or "link-level" predictors) to the data.
-#' It corresponds to [rstanarm::posterior_linpred()] or [brms::posterior_linpred()].
-#'
 #' `add_epred_rvars()` adds draws from **expectation** of the posterior predictive distribution to
 #' the data.
 #' It corresponds to [rstanarm::posterior_epred()] or [brms::posterior_epred()].
 #'
-#' `add_predicted_rvars()` adds draws from posterior predictive to
+#' `add_predicted_rvars()` adds draws from posterior predictive distribution to
 #' the data.
 #' It corresponds to [rstanarm::posterior_predict()] or [brms::posterior_predict()].
+#'
+#' `add_linpred_rvars()` adds [`rvar`]s containing draws from (possibly transformed) posterior **linear**
+#' predictors (or "link-level" predictors) to the data.
+#' It corresponds to [rstanarm::posterior_linpred()] or [brms::posterior_linpred()].
 #'
 #' The corresponding functions without `add_` as a prefix are alternate spellings
 #' with the opposite order of the first two arguments: e.g. `add_predicted_rvars()`
@@ -37,10 +37,9 @@
 #' predictions, thus more generic Bayesian modeling interfaces like `runjags` and `rstan` are not directly
 #' supported for these functions (only wrappers around those languages that provide predictions, like `rstanarm`
 #' and `brm`, are supported here).
-#' @param value The name of the output column for `add_linpred_rvars()`; default `".value"`.
 #' @param epred The name of the output column for `add_epred_rvars()`; default `".epred"`.
 #' @param prediction The name of the output column for `add_predicted_rvars()`; default `".prediction"`.
-#' @param residual The name of the output column for `add_residual_rvars()`; default `".residual"`.
+#' @param linpred The name of the output column for `add_linpred_rvars()`; default `".linpred"`.
 #' @param ... Additional arguments passed to the underlying prediction method for the type of
 #' model given.
 #' @param n The number of draws per prediction / fit to return, or `NULL` to return all draws.
@@ -66,9 +65,6 @@
 #' In this case, a `.row` column will also be added to the result indicating which rows of the output
 #' correspond to the same row in `newdata`.
 #' See `vignette("tidy-posterior")` for examples of dealing with output ordinal models.
-#' @param scale Either `"response"` or `"linear"`. If `"response"`, results are returned
-#' on the scale of the response variable. If `"linear"`, fitted values are returned on the scale of
-#' the linear predictor.
 #' @return A data frame (actually, a [tibble][tibble::tibble]) equal to the input `newdata` with
 #' additional columns added containing [`rvar`]s representing the requested predictions or fits.
 #' @author Matthew Kay
@@ -131,6 +127,7 @@
 #' }
 #' }
 #' @importFrom posterior rvar
+#' @name add_predicted_rvars
 #' @export
 add_predicted_rvars = function(newdata, model, prediction = ".prediction", ..., n = NULL, seed = NULL, re_formula = NULL, columns_to = NULL) {
   predicted_rvars(model, newdata, prediction, ..., n = n, seed = seed, re_formula = re_formula, columns_to = columns_to)
