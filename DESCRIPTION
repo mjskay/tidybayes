@@ -113,6 +113,7 @@ Collate:
     "gather_variables.R"
     "get_variables.R"
     "global_variables.R"
+    "linpred_rvars.R"
     "nest_rvars.R"
     "onAttach.R"
     "point_interval.R"

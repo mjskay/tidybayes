@@ -109,7 +109,7 @@ fitted_draws.brmsfit = function(model, newdata, value = ".value", ..., n = NULL,
   )
 
   # get the names of distributional regression parameters to include
-  dpars = get_brms_dpars(model, dpar)
+  dpars = get_model_dpars(model, dpar)
 
   # get the draws for the primary parameter first so we can stick the other values onto it
   draws = fitted_predicted_draws_brmsfit_(
@@ -160,9 +160,16 @@ fitted_draws.brmsfit = function(model, newdata, value = ".value", ..., n = NULL,
   }
 }
 
+
+
+# helpers for creating fits/predictions -----------------------------------
+
 #' Given a brms model and a dpar argument for linpred_draws()/etc, return a list of dpars
 #' @noRd
-get_brms_dpars = function(model, dpar) {
+get_model_dpars = function(model, dpar) {
+  # only brms models support dpars at the moment
+  if (!inherits(model, "brmsfit")) return(NULL)
+
   dpars = if (is_true(dpar)) {
     union(names(brms::brmsterms(model$formula)$dpar), model$family$dpars)
   } else if (is_false(dpar)) {

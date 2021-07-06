@@ -110,7 +110,8 @@ if(require("rstan", quietly = TRUE)) {
   # will be an integer:
   m \%>\%
     spread_draws(condition_mean[condition]) \%>\%
-    median_qi()
+    median_qi() \%>\%
+    print()
 
   # If we apply recover_types() first, subsequent calls to other tidybayes functions will
   # automatically back-convert factors so that they are labeled with their original levels

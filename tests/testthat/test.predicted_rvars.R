@@ -32,6 +32,11 @@ test_that("[add_]predicted_rvars and basic arguments works on a simple rstanarm 
 
   expect_equal(predicted_rvars(m_hp_wt, mtcars_tbl, n = 100, seed = 123), ref)
   expect_equal(add_predicted_rvars(mtcars_tbl, m_hp_wt, n = 100, seed = 123), ref)
+
+  #predicted_rvars.default should work fine here so long as we don't subset
+  ref_all = mtcars_tbl %>%
+    mutate(.prediction = rvar(rstantools::posterior_predict(m_hp_wt, mtcars_tbl, seed = 123)))
+  expect_equal(predicted_rvars.default(m_hp_wt, mtcars_tbl, seed = 123), ref_all)
 })
 
 

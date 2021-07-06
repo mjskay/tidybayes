@@ -4,7 +4,7 @@
 ###############################################################################
 
 
-# [add_]predicted_rvars ---------------------------------------------------
+# predicted_rvars / add_predicted_rvars ---------------------------------------
 
 #' Add rvars for the linear predictor, posterior expectation, posterior predictive, or residuals of a model to a data frame
 #'
@@ -83,24 +83,30 @@
 #' library(posterior)
 #'
 #' if (
-#'   require("rstanarm", quietly = TRUE) &&
+#'   require("brms", quietly = TRUE) &&
 #'   require("modelr", quietly = TRUE)
 #' ) {
 #'
 #'   theme_set(theme_light())
 #'
-#'   m_mpg = stan_glm(mpg ~ hp * cyl, data = mtcars,
+#'   m_mpg = brm(mpg ~ hp * cyl, data = mtcars, family = lognormal(),
 #'     # 1 chain / few iterations just so example runs quickly
 #'     # do not use in practice
 #'     chains = 1, iter = 500)
 #'
-#'   # look at mean predictions for some cars
+#'   # Look at mean predictions for some cars (epred) and compare to
+#'   # the exponeniated mu parameter of the lognormal distribution (linpred).
+#'   # Notice how they are NOT the same. This is because exp(mu) for a
+#'   # lognormal distribution is equal to its median, not its mean.
 #'   mtcars %>%
 #'     select(hp, cyl, mpg) %>%
-#'     add_epred_rvars(m_mpg)
+#'     add_epred_rvars(m_mpg) %>%
+#'     add_linpred_rvars(m_mpg, linpred = "mu") %>%
+#'     mutate(expmu = exp(mu), .epred - expmu) %>%
+#'     print()
 #'
-#'   # plot intervals around conditional means
-#'   mtcars %>%
+#'   # plot intervals around conditional means (epred_rvars)
+#'   print(mtcars %>%
 #'     group_by(cyl) %>%
 #'     data_grid(hp = seq_range(hp, n = 101)) %>%
 #'     add_epred_rvars(m_mpg) %>%
@@ -109,9 +115,10 @@
 #'     geom_point(aes(y = mpg), data = mtcars) +
 #'     scale_color_brewer(palette = "Dark2") +
 #'     scale_fill_brewer(palette = "Set2")
+#'   )
 #'
-#'   # plot posterior predictive intervals
-#'   mtcars %>%
+#'   # plot posterior predictive intervals (predicted_rvars)
+#'   print(mtcars %>%
 #'     group_by(cyl) %>%
 #'     data_grid(hp = seq_range(hp, n = 101)) %>%
 #'     add_predicted_rvars(m_mpg) %>%
@@ -120,6 +127,7 @@
 #'     geom_point(aes(y = mpg), data = mtcars) +
 #'     scale_color_brewer(palette = "Dark2") +
 #'     scale_fill_brewer(palette = "Set2")
+#'   )
 #' }
 #' }
 #' @importFrom posterior rvar
@@ -137,22 +145,15 @@ predicted_rvars = function(model, newdata, prediction = ".prediction", ..., n = 
 #' @rdname add_predicted_rvars
 #' @export
 predicted_rvars.default = function(model, newdata, prediction = ".prediction", ..., n = NULL, seed = NULL, re_formula = NULL, columns_to = NULL) {
-  args = list(
-    quote(model),
-    quote(newdata)
+  pred_rvars_default_(
+    .f = rstantools::posterior_predict,
+    model = model, newdata = newdata, .value = prediction,
+    ...,
+    n = n, seed = seed, re_formula = re_formula,
+    dpar = NULL, # posterior_predict does not support dpar
+    columns_to = columns_to
   )
-  # only set these if they aren't default (NULL) in case the underlying function
-  # does not actually support that parameter
-  for (arg in c("n", "seed", "re_formula", "dpar")) {
-    arg_value = get(arg, inherits = FALSE)
-    if (!is.null(arg_value)) {
-      args[[arg]] = arg_value
-    }
-  }
 
-  out = if (is_tibble(newdata)) newdata else as_tibble(newdata)
-  out[[prediction]] = rvar(do.call(rstantools::posterior_predict, args))
-  rvar_pred_columns_to(out, prediction, columns_to)
 }
 
 #' @rdname add_predicted_rvars
@@ -166,9 +167,12 @@ predicted_rvars.stanreg = function(model, newdata, prediction = ".prediction", .
     names(enquos(...)), "[add_]predicted_rvars", re_formula = "re.form", n = "draws"
   )
 
-  out = if (is_tibble(newdata)) newdata else as_tibble(newdata)
-  out[[prediction]] = rvar(rstantools::posterior_predict(model, newdata = newdata, ..., re.form = re_formula, draws = n, seed = seed))
-  rvar_pred_columns_to(out, prediction, columns_to)
+  pred_rvars_(
+    rstantools::posterior_predict, model, newdata, .value = prediction, ...,
+    draws = n, seed = seed, re.form = re_formula,
+    dpar = NULL, # posterior_predict does not support dpar
+    columns_to = columns_to
+  )
 }
 
 #' @rdname add_predicted_rvars
@@ -182,11 +186,113 @@ predicted_rvars.brmsfit = function(model, newdata, prediction = ".prediction", .
     names(enquos(...)), "[add_]predicted_rvars", n = "nsamples"
   )
 
-  if (!is.null(seed)) {
-    set.seed(seed)
+  pred_rvars_(
+    rstantools::posterior_predict, model, newdata, .value = prediction, ...,
+    nsamples = n, seed = seed, re_formula = re_formula,
+    dpar = NULL, # posterior_predict does not support dpar
+    columns_to = columns_to
+  )
+}
+
+
+
+# helpers for rvar prediction functions ---------------------------------------
+
+#' epred_rvars.default, predicted_rvars.default, etc
+#' @noRd
+pred_rvars_default_ = function(
+  .f,
+  model, newdata, .value = ".value", ...,
+  n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+) {
+  args = list(
+    .f = quote(.f),
+    model = quote(model),
+    newdata = quote(newdata),
+    .value = .value,
+    ...,
+    seed = seed,
+    columns_to = columns_to
+  )
+  # only set these if they aren't default (NULL) in case the underlying function
+  # does not actually support that parameter
+  for (arg in c("n", "re_formula", "dpar")) {
+    arg_value = get(arg, inherits = FALSE)
+    if (!is.null(arg_value)) {
+      args[[arg]] = arg_value
+    }
   }
 
+  do.call(pred_rvars_, args)
+}
+
+
+#' add rvars of predictions from `model` to `newdata`. Handles dpars (if present)
+#' and ensures that the same seed is set if multiple calls to the prediction
+#' function need to be made, so that subsampling is consistent.
+#' @param .f a prediction function like `posterior_predict`, `posterior_epred`, etc
+#' @param model a model
+#' @param newdata a data frame representing a prediction grid
+#' @param .value name of the output column
+#' @param seed seed to set
+#' @param dpar dpars from the model to include
+#' @param columns_to name of column to move columns from the prediction output into
+#' @noRd
+pred_rvars_ = function(
+  .f,
+  model, newdata, .value = ".value", ...,
+  seed = NULL, dpar = NULL, columns_to = NULL
+) {
+  # get the names of distributional regression parameters to include
+  dpars = get_model_dpars(model, dpar)
+
+  # determine a seed we can use so that it is the same for each call to
+  # to the prediction fuction for the dpars
+  seed = seed %||% sample.int(.Machine$integer.max, 1)
+
+  # get the rvars for the primary parameter
   out = if (is_tibble(newdata)) newdata else as_tibble(newdata)
-  out[[prediction]] = rvar(rstantools::posterior_predict(model, newdata = newdata, ..., re.form = re_formula, nsamples = n))
-  rvar_pred_columns_to(out, prediction, columns_to)
+  out[[.value]] = withr::with_seed(seed, rvar(.f(
+    object = model, newdata = newdata, ...
+  )))
+
+  # get rvars for the dpars
+  for (i in seq_along(dpars)) {
+    varname = names(dpars)[[i]]
+    out[[varname]] = withr::with_seed(seed, rvar(.f(
+      object = model, newdata = newdata, ..., dpar = dpars[[i]]
+    )))
+  }
+
+  rvar_pred_columns_to(out, .value, columns_to)
+}
+
+#' If the result of a prediction for one of the add_XXX_rvars has columns and
+#' columns_to is set, turn it into columns
+#' @param pred data frame of predictions
+#' @param varname (string) name of an rvar column in pred containing predictions
+#' @param columns_to (string) name of a column to move columns of pred[[var]] into
+#' @noRd
+#' @importFrom tidyselect any_of
+rvar_pred_columns_to = function(pred, varname, columns_to) {
+  var = pred[[varname]]
+  ncol_ = NCOL(var)
+  if (is.null(columns_to) || ncol_ <= 1) return(pred)
+
+  # first, repeat the other vars in the data frame for as many columns
+  # as there are in the prediction variable
+  nrow_ = NROW(pred)
+  pred[[".row"]] = seq_len(nrow_)
+  pred = vctrs::vec_rep(select(pred, -any_of(varname)), ncol_)
+
+  # then, add a variable with column values
+  colnames_ = colnames(var) %||% seq_len(ncol_)
+  pred[[columns_to]] = rep(colnames_, each = nrow_)
+
+  # then, flatten the first two dimensions of the prediction variable
+  dims = dim(var)
+  dim(var) = c(prod(dims[c(1,2)]), dims[-c(1:2)])
+  pred[[varname]] = var
+
+  pred
 }

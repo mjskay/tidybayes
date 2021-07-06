@@ -34,6 +34,9 @@ test_that("[add_]epred_rvars works on a simple rstanarm model", {
   expect_equal(add_epred_rvars(mtcars_tbl, m_hp_wt), ref)
   expect_equal(add_epred_rvars(mtcars_tbl, m_hp_wt, epred = "foo"), rename(ref, foo = .epred))
 
+  #epred_rvars.default should work fine here
+  expect_equal(epred_rvars.default(m_hp_wt, mtcars_tbl), ref)
+
   #subsetting to test the `n` argument
   set.seed(1234)
   draw_subset = sample.int(ndraws(ref$.epred), 10)
@@ -69,6 +72,9 @@ test_that("[add_]epred_rvars works on brms models without dpar", {
   expect_equal(add_epred_rvars(mtcars_tbl, m_hp), ref)
   expect_equal(add_epred_rvars(mtcars_tbl, m_hp, dpar = FALSE), ref)
   expect_equal(add_epred_rvars(mtcars_tbl, m_hp, dpar = FALSE, epred = "foo"), rename(ref, foo = .epred))
+
+  #epred_rvars.default should work fine here
+  expect_equal(epred_rvars.default(m_hp, mtcars_tbl), ref)
 
   #subsetting to test the `n` argument
   set.seed(1234)

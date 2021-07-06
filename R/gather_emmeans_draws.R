@@ -70,7 +70,8 @@
 #'   m %>%
 #'     emmeans(~ condition) %>%
 #'     gather_emmeans_draws() %>%
-#'     median_qi()
+#'     median_qi() %>%
+#'     print()
 #'
 #'   # or we could get pairwise differences:
 #'   m %>%
