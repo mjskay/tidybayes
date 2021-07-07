@@ -202,3 +202,65 @@ test_that("compare_levels respects groups of input data frame", {
   expect_equal(result, ref)
   expect_equal(group_vars(result), group_vars(ref))
 })
+
+# compare_levels on rvars -------------------------------------------------
+
+test_that("pairwise level comparison works on rvars", {
+  rvar_df = tibble(
+    ff = c("a","b","c"),
+    tau = as_draws_rvars(RankCorr)$tau
+  )
+
+  ref = tibble(
+    ff = c("b - a", "c - a", "c - b"),
+    tau = with(rvar_df, c(tau[2] - tau[1], tau[3] - tau[1], tau[3] - tau[2]))
+  ) %>%
+    group_by(ff)
+
+  expect_equal(compare_levels(rvar_df, tau, by = ff, comparison = pairwise), ref)
+})
+
+test_that("ordered level comparison works on rvars", {
+  rvar_df = tibble(
+    ff = c("a","b","c"),
+    tau = as_draws_rvars(RankCorr)$tau
+  )
+
+  ref = tibble(
+    ff = c("b - a", "c - b"),
+    tau = with(rvar_df, c(tau[2] - tau[1], tau[3] - tau[2]))
+  ) %>%
+    group_by(ff)
+
+  expect_equal(compare_levels(rvar_df, tau, by = ff, comparison = ordered), ref)
+})
+
+test_that("named functions are supported on rvars", {
+  rvar_df = tibble(
+    ff = c("a","b","c"),
+    tau = as_draws_rvars(RankCorr)$tau
+  )
+
+  ref = tibble(
+    ff = c("b + a", "c + a"),
+    tau = with(rvar_df, c(tau[2] + tau[1], tau[3] + tau[1]))
+  ) %>%
+    group_by(ff)
+
+  expect_equal(compare_levels(rvar_df, tau, by = ff, fun = `+`, comparison = control), ref)
+})
+
+test_that("custom comparisons of lists of unevaluated expressions are supported on rvars", {
+  rvar_df = tibble(
+    ff = c("a","b","c"),
+    tau = as_draws_rvars(RankCorr)$tau
+  )
+
+  ref = tibble(
+    ff = c("a + b", "exp(c - a)"),
+    tau = with(rvar_df, c(tau[1] + tau[2], exp(tau[3] - tau[1])))
+  ) %>%
+    group_by(ff)
+
+  expect_equal(compare_levels(rvar_df, tau, by = ff, comparison = list(quote(a + b), quote(exp(c - a)))), ref)
+})

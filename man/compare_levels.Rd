@@ -24,7 +24,8 @@ group will be ignored, as it is not possible to make comparisons both
 within some variable and across it simultaneously).}
 
 \item{variable}{Bare (unquoted) name of a column in data representing the
-variable to compare across levels.}
+variable to compare across levels. Can be a numeric variable (as in
+long-data-frame-of-draws format) or a \code{\link[posterior:rvar]{posterior::rvar}}.}
 
 \item{by}{Bare (unquoted) name of a column in data that is a
 \code{factor} or \code{ordered}. The value of \code{variable} will be

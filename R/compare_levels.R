@@ -63,7 +63,8 @@ comparison_types = within(list(), {
 #' group will be ignored, as it is not possible to make comparisons both
 #' within some variable and across it simultaneously).
 #' @param variable Bare (unquoted) name of a column in data representing the
-#' variable to compare across levels.
+#' variable to compare across levels. Can be a numeric variable (as in
+#' long-data-frame-of-draws format) or a [`posterior::rvar`].
 #' @param by Bare (unquoted) name of a column in data that is a
 #' `factor` or `ordered`. The value of `variable` will be
 #' compared across pairs of levels of this `factor`.
