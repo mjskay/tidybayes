@@ -30,6 +30,8 @@
 #'
 #' @examples
 #'
+#' library(dplyr)
+#'
 #' data(RankCorr, package = "ggdist")
 #'
 #' # here's a data frame with some rvars
