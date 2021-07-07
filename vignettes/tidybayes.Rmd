@@ -316,6 +316,17 @@ m %>%
 
 When given only a single column, `median_qi` will use the names `.lower` and `.upper` for the lower and upper ends of the intervals.
 
+`tidybayes` also provides an implementation of `posterior::summarise_draws()` for
+grouped data frames (`tidybayes::summaries_draws.grouped_df()`), which you can
+use to quickly get convergence diagnostics:
+
+```{r}
+m %>%
+  spread_draws(condition_mean[condition]) %>%
+  summarise_draws()
+```
+
+
 ## Plotting points and intervals
 
 ### Using `geom_pointinterval`

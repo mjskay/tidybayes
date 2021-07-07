@@ -73,6 +73,7 @@ library(brms)
 library(ggrepel)
 library(RColorBrewer)
 library(gganimate)
+library(posterior)
 
 theme_set(theme_tidybayes() + panel_border())
 ```
@@ -267,6 +268,16 @@ m %>%
   spread_draws(r_condition[condition,]) %>%
   group_by(condition) %>%   # this line not necessary (done by spread_draws)
   median_qi(r_condition)      # b is not necessary (it is the only non-group column)
+```
+
+`tidybayes` also provides an implementation of `posterior::summarise_draws()` for
+grouped data frames (`tidybayes::summaries_draws.grouped_df()`), which you can
+use to quickly get convergence diagnostics:
+
+```{r}
+m %>%
+  spread_draws(r_condition[condition,]) %>%
+  summarise_draws()
 ```
 
 ## Combining variables with different indices in a single tidy format data frame

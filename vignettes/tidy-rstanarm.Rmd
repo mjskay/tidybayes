@@ -276,6 +276,16 @@ m %>%
   median_qi(b)                # b is not necessary (it is the only non-group column)
 ```
 
+`tidybayes` also provides an implementation of `posterior::summarise_draws()` for
+grouped data frames (`tidybayes::summaries_draws.grouped_df()`), which you can
+use to quickly get convergence diagnostics:
+
+```{r}
+m %>%
+  spread_draws(b[,group]) %>%
+  summarise_draws()
+```
+
 ## Combining variables with different indices in a single tidy format data frame
 
 `spread_draws()` and `gather_draws()` support extracting variables that have different indices into the same data frame. Indices with the same name are automatically matched up, and values are duplicated as necessary to produce one row per all combination of levels of all indices. For example, we might want to calculate the mean within each condition (call this `condition_mean`). In this model, that mean is the intercept (`(Intercept)`) plus the effect for a given condition (`b`). 
