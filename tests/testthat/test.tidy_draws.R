@@ -209,3 +209,12 @@ test_that("tidy_draws fails on existing data frames with incorrect column types"
 
   expect_error(tidy_draws(tidy_rc), "The `\\.draw` column in the input data frame has more than one row per draw")
 })
+
+# posterior::draws --------------------------------------------------------
+
+test_that("tidy_draws works on a draws object", {
+  d = posterior::example_draws()
+
+  expect_equal(tidy_draws(d), as_tibble(posterior::as_draws_df(d)))
+})
+
