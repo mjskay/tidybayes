@@ -62,11 +62,8 @@ larger models, as it is more memory efficient.
 The following libraries are required to run this vignette:
   
 ```{r setup, message = FALSE, warning = FALSE}
-library(magrittr)
 library(dplyr)
 library(purrr)
-library(forcats)
-library(tidyr)
 library(modelr)
 library(ggdist)
 library(tidybayes)
@@ -768,22 +765,16 @@ tibble(mpg = c(21,22)) %>%
 
 This format can be useful in some cases, but for our immediate purposes it would be better to have the
 prediction for each category be on a separate row. We can use the `columns_to` parameter of `add_epred_rvars()`
-to move the nested columns into rows. This will also add a `.row` column indexing which row of the input
-data frame each prediction came from:
+to move the nested column headers into values of a column (here `"cyl"`). This will also add a `.row` column
+indexing which row of the input data frame each prediction came from:
 
 ```{r}
 tibble(mpg = c(21,22)) %>%
-  add_epred_rvars(m_cyl, columns_to = "cyl_pred")
+  add_epred_rvars(m_cyl, columns_to = "cyl")
 ```
 
-Note how the `cyl_pred` variable does not retain the original factor level names. This appears to be due to a bug in brms. As a workaround, we can recover the original factor labels and assign the result to a `cyl` column:
-
-```{r}
-tibble(mpg = c(21,22)) %>%
-  add_epred_rvars(m_cyl, columns_to = "cyl") %>%
-  mutate(cyl = levels(mtcars_clean$cyl)[factor(cyl)])
-```
-
+Note: for the `cyl` variable to retain its original factor level names you
+must be using `brms` greater than or equal to version 2.15.9.
 
 We could plot fit lines for fitted probabilities against the dataset:
 
@@ -796,8 +787,6 @@ data_plot = mtcars_clean %>%
 fit_plot = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
   add_epred_rvars(m_cyl, epred = "P(cyl | mpg)", columns_to = "cyl") %>%
-  # recover original factor labels
-  mutate(cyl = levels(mtcars_clean$cyl)[factor(cyl)]) %>%
   ggplot(aes(x = mpg, color = cyl)) +
   stat_dist_lineribbon(aes(dist = `P(cyl | mpg)`, fill = cyl), alpha = 1/5) +
   scale_color_brewer(palette = "Dark2") +
@@ -821,8 +810,6 @@ ndraws = 50
 p = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
   add_epred_rvars(m_cyl, epred = "P(cyl | mpg)", columns_to = "cyl") %>%
-  # recover original factor labels
-  mutate(cyl = levels(mtcars_clean$cyl)[factor(cyl)]) %>%
   ggplot(aes(x = mpg, color = cyl)) +
   stat_dist_lineribbon(aes(dist = `P(cyl | mpg)`, fill = cyl), alpha = 1/5, color = NA) +
   # we use sample_draws to subsample at the level of geom_line (rather than for the full dataset
@@ -843,7 +830,6 @@ Notice how the lines move together, and how they move up or down together or in 
 ```{r fig.width = med_width, fig.height = med_height}
 tibble(mpg = 20) %>%
   add_epred_rvars(m_cyl, epred = "P(cyl | mpg = 20)", columns_to = "cyl") %>%
-  mutate(cyl = levels(mtcars_clean$cyl)[factor(cyl)]) %>%
   # to draw the scatterplots we need to go back to long-data-frame-of-draws format
   unnest_rvars() %>%
   ungroup() %>%
@@ -927,10 +913,10 @@ beta
 
 We can use `add_linpred_rvars()` analogously to `add_epred_rvars()` to 
 get the latent linear predictor. We'll combine this with the thresholds in `beta`,
-subtracting `beta[1]` from the linear predictor and from the `beta[2]`
-as these values are all highly correlated (thus would be hard to visualize with
+subtracting `beta[1]` from the linear predictor and from the other threshold, `beta[2]`,
+as these values are all highly correlated (thus are hard to visualize with
 uncertainty in a meaningful way without looking at their differences). We'll
-also demonstrate the use of `.width = ppoints(XXX)` where `XXX` is a number
+also demonstrate the use of `.width = ppoints(XXX)` on a lineribbon where `XXX` is a number
 like `30` or `50`, which combined with a low `alpha` value produces gradient-like
 lineribbons:
 
@@ -1003,7 +989,6 @@ Then we can plot predicted probabilities for each outcome category within each l
 esoph %>%
   data_grid(agegp) %>%
   add_epred_rvars(m_esoph_brm, columns_to = "tobgp") %>%
-  mutate(tobgp = levels(esoph$tobgp)[factor(tobgp)]) %>%
   ggplot(aes(x = agegp, color = tobgp)) +
   stat_dist_pointinterval(aes(dist = .epred), position = position_dodge(width = .4)) +
   scale_size_continuous(guide = "none") +
@@ -1016,7 +1001,6 @@ It is hard to see the changes in categories in the above plot; let's try somethi
 esoph_plot = esoph %>%
   data_grid(agegp) %>%
   add_epred_rvars(m_esoph_brm, columns_to = "tobgp") %>%
-  mutate(tobgp = levels(esoph$tobgp)[factor(tobgp)]) %>%
   ggplot(aes(y = tobgp)) +
   coord_cartesian(expand = FALSE) +
   facet_grid(. ~ agegp, switch = "x") +
@@ -1026,7 +1010,7 @@ esoph_plot = esoph %>%
   xlab("age group")
 
 esoph_plot +
-  geom_col(aes(x = median(.epred)), fill = "gray75", width = 1, color = "white") +
+  geom_col(aes(x = median(.epred)), fill = "gray65", width = 1, color = "white") +
   stat_dist_pointinterval(aes(dist = .epred))
 ```
 

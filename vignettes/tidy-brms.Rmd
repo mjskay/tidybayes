@@ -720,8 +720,8 @@ tibble(mpg = 21) %>%
   median_qi(.epred)
 ```
 
-Note: for the `.category` variable to reatin the original factor level names you
-must be using `brms` greater than version 2.15.
+Note: for the `.category` variable to retain its original factor level names you
+must be using `brms` greater than or equal to version 2.15.9.
 
 We could plot fit lines for predicted probabilities against the dataset:
 

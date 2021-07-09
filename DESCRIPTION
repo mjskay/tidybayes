@@ -50,7 +50,7 @@ Suggests:
     MCMCglmm,
     bayesplot,
     modelr,
-    brms (>= 2.13.0),
+    brms (>= 2.15.9),
     cowplot,
     covr,
     gdtools,
@@ -62,8 +62,7 @@ Suggests:
     gifski,
     png,
     pkgdown,
-    transformr,
-    cmdstanr
+    transformr
 Remotes:
     mjskay/ggdist,
     stan-dev/posterior
