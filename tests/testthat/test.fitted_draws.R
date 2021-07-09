@@ -37,21 +37,24 @@ test_that("[add_]fitted_draws works on a simple rstanarm model", {
   skip_if_not_installed("rstanarm")
   m_hp_wt = readRDS(test_path("../models/models.rstanarm.m_hp_wt.rds"))
 
-  fits = rstanarm::posterior_linpred(m_hp_wt, newdata = mtcars_tbl) %>%
-    as.data.frame() %>%
-    mutate(
-      .chain = NA_integer_,
-      .iteration = NA_integer_,
-      .draw = seq_len(n())
-    ) %>%
-    gather(.row, .value, -.chain, -.iteration, -.draw) %>%
-    as_tibble()
+  make_ref = function(draws = NULL) {
+    fits = rstanarm::posterior_linpred(m_hp_wt, newdata = mtcars_tbl, draws = draws) %>%
+      as.data.frame() %>%
+      mutate(
+        .chain = NA_integer_,
+        .iteration = NA_integer_,
+        .draw = seq_len(n())
+      ) %>%
+      gather(.row, .value, -.chain, -.iteration, -.draw) %>%
+      as_tibble()
 
-  ref = mtcars_tbl %>%
-    mutate(.row = rownames(.)) %>%
-    inner_join(fits, by = ".row") %>%
-    mutate(.row = as.integer(.row)) %>%
-    group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
+    mtcars_tbl %>%
+      mutate(.row = rownames(.)) %>%
+      inner_join(fits, by = ".row") %>%
+      mutate(.row = as.integer(.row)) %>%
+      group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
+  }
+  ref = make_ref()
 
   expect_equal(fitted_draws(m_hp_wt, mtcars_tbl), ref)
   expect_equal(add_fitted_draws(mtcars_tbl, m_hp_wt), ref)
@@ -61,9 +64,7 @@ test_that("[add_]fitted_draws works on a simple rstanarm model", {
 
   #subsetting to test the `n` argument
   set.seed(1234)
-  draw_subset = sample(unique(ref$.draw), 10)
-  filtered_ref = ref %>%
-    filter(.draw %in% draw_subset)
+  filtered_ref = make_ref(draws = 10)
 
   expect_equal(fitted_draws(m_hp_wt, mtcars_tbl, n = 10, seed = 1234), filtered_ref)
   expect_equal(add_fitted_draws(mtcars_tbl, m_hp_wt, n = 10, seed = 1234), filtered_ref)
@@ -98,22 +99,25 @@ test_that("[add_]fitted_draws works on brms models without dpar", {
   skip_if_not_installed("brms")
   m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
 
-  fits = fitted(m_hp, mtcars_tbl, summary = FALSE) %>%
-    as.data.frame() %>%
-    set_names(seq_len(ncol(.))) %>%
-    mutate(
-      .chain = NA_integer_,
-      .iteration = NA_integer_,
-      .draw = seq_len(n())
-    ) %>%
-    gather(.row, .value, -.chain, -.iteration, -.draw) %>%
-    as_tibble()
+  make_ref = function(nsamples = NULL) {
+    fits = fitted(m_hp, mtcars_tbl, summary = FALSE, nsamples = nsamples) %>%
+      as.data.frame() %>%
+      set_names(seq_len(ncol(.))) %>%
+      mutate(
+        .chain = NA_integer_,
+        .iteration = NA_integer_,
+        .draw = seq_len(n())
+      ) %>%
+      gather(.row, .value, -.chain, -.iteration, -.draw) %>%
+      as_tibble()
 
-  ref = mtcars_tbl %>%
-    mutate(.row = rownames(.)) %>%
-    inner_join(fits, by = ".row") %>%
-    mutate(.row = as.integer(.row)) %>%
-    group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
+    mtcars_tbl %>%
+      mutate(.row = rownames(.)) %>%
+      inner_join(fits, by = ".row") %>%
+      mutate(.row = as.integer(.row)) %>%
+      group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
+  }
+  ref = make_ref()
 
   expect_equal(fitted_draws(m_hp, mtcars_tbl), ref)
   expect_equal(add_fitted_draws(mtcars_tbl, m_hp), ref)
@@ -122,9 +126,7 @@ test_that("[add_]fitted_draws works on brms models without dpar", {
 
   #subsetting to test the `n` argument
   set.seed(1234)
-  draw_subset = sample(unique(ref$.draw), 10)
-  filtered_ref = ref %>%
-    filter(.draw %in% draw_subset)
+  filtered_ref = make_ref(nsamples = 10)
 
   expect_equal(add_fitted_draws(mtcars_tbl, m_hp, n = 10, seed = 1234), filtered_ref)
 })
@@ -134,32 +136,38 @@ test_that("[add_]fitted_draws works on brms models with dpar", {
   skip_if_not_installed("brms")
   m_hp_sigma = readRDS(test_path("../models/models.brms.m_hp_sigma.rds"))
 
-  fits = fitted(m_hp_sigma, mtcars_tbl, summary = FALSE) %>%
-    as.data.frame() %>%
-    set_names(seq_len(ncol(.))) %>%
-    mutate(
-      .chain = NA_integer_,
-      .iteration = NA_integer_,
-      .draw = seq_len(n())
-    ) %>%
-    gather(.row, .value, -.chain, -.iteration, -.draw) %>%
-    as_tibble()
+  make_ref = function(seed = 1234, nsamples = NULL) {
+    set.seed(seed)
+    fits = fitted(m_hp_sigma, mtcars_tbl, summary = FALSE, nsamples = nsamples) %>%
+      as.data.frame() %>%
+      set_names(seq_len(ncol(.))) %>%
+      mutate(
+        .chain = NA_integer_,
+        .iteration = NA_integer_,
+        .draw = seq_len(n())
+      ) %>%
+      gather(.row, .value, -.chain, -.iteration, -.draw) %>%
+      as_tibble()
 
-  fits$mu = fitted(m_hp_sigma, mtcars_tbl, summary = FALSE, dpar = "mu") %>%
-    as.data.frame() %>%
-    gather(.row, mu) %$%
-    mu
+    set.seed(seed)
+    fits$mu = fitted(m_hp_sigma, mtcars_tbl, summary = FALSE, nsamples = nsamples, dpar = "mu") %>%
+      as.data.frame() %>%
+      gather(.row, mu) %$%
+      mu
 
-  fits$sigma = fitted(m_hp_sigma, mtcars_tbl, summary = FALSE, dpar = "sigma") %>%
-    as.data.frame() %>%
-    gather(.row, sigma) %$%
-    sigma
+    set.seed(seed)
+    fits$sigma = fitted(m_hp_sigma, mtcars_tbl, summary = FALSE, nsamples = nsamples, dpar = "sigma") %>%
+      as.data.frame() %>%
+      gather(.row, sigma) %$%
+      sigma
 
-  ref = mtcars_tbl %>%
-    mutate(.row = rownames(.)) %>%
-    inner_join(fits, by = ".row") %>%
-    mutate(.row = as.integer(.row)) %>%
-    group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
+    mtcars_tbl %>%
+      mutate(.row = rownames(.)) %>%
+      inner_join(fits, by = ".row") %>%
+      mutate(.row = as.integer(.row)) %>%
+      group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
+  }
+  ref = make_ref()
 
   expect_equal(fitted_draws(m_hp_sigma, mtcars_tbl, dpar = TRUE), ref)
   expect_equal(add_fitted_draws(mtcars_tbl, m_hp_sigma, dpar = TRUE), ref)
@@ -171,10 +179,7 @@ test_that("[add_]fitted_draws works on brms models with dpar", {
 
 
   #subsetting to test the `n` argument
-  set.seed(1234)
-  draw_subset = sample(unique(ref$.draw), 10)
-  filtered_ref = ref %>%
-    filter(.draw %in% draw_subset)
+  filtered_ref = make_ref(seed = 1234, nsamples = 10)
 
   expect_equal(add_fitted_draws(mtcars_tbl, m_hp_sigma, n = 10, seed = 1234, dpar = TRUE), filtered_ref)
 })
@@ -252,19 +257,22 @@ test_that("[add_]fitted_draws works on brms models with ordinal outcomes (respon
   skip_if_not_installed("brms")
   m_cyl_mpg = readRDS(test_path("../models/models.brms.m_cyl_mpg.rds"))
 
-  fits = fitted(m_cyl_mpg, mtcars_tbl, summary = FALSE) %>%
-    array2df(list(.draw = NA, .row = NA, .category = TRUE), label.x = ".value") %>%
-    mutate(
-      .chain = NA_integer_,
-      .iteration = NA_integer_,
-      .row = as.integer(.row),
-      .draw = as.integer(.draw)
-    )
+  make_ref = function(nsamples = NULL) {
+    fits = fitted(m_cyl_mpg, mtcars_tbl, summary = FALSE, nsamples = nsamples) %>%
+      array2df(list(.draw = NA, .row = NA, .category = TRUE), label.x = ".value") %>%
+      mutate(
+        .chain = NA_integer_,
+        .iteration = NA_integer_,
+        .row = as.integer(.row),
+        .draw = as.integer(.draw)
+      )
 
-  ref = inner_join(mtcars_tbl %>%
-    mutate(.row = as.integer(rownames(.))), fits, by = ".row") %>%
-    select(mpg:.row, .chain, .iteration, .draw, .category, .value) %>%
-    group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row, .category)
+    inner_join(mtcars_tbl %>%
+      mutate(.row = as.integer(rownames(.))), fits, by = ".row") %>%
+      select(mpg:.row, .chain, .iteration, .draw, .category, .value) %>%
+      group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row, .category)
+  }
+  ref = make_ref()
 
   expect_equal(fitted_draws(m_cyl_mpg, mtcars_tbl), ref)
   expect_equal(add_fitted_draws(mtcars_tbl, m_cyl_mpg), ref)
@@ -272,9 +280,7 @@ test_that("[add_]fitted_draws works on brms models with ordinal outcomes (respon
 
   #subsetting to test the `n` argument
   set.seed(1234)
-  draw_subset = sample(unique(ref$.draw), 10)
-  filtered_ref = ref %>%
-    filter(.draw %in% draw_subset)
+  filtered_ref = make_ref(nsamples = 10)
 
   expect_equal(add_fitted_draws(mtcars_tbl, m_cyl_mpg, n = 10, seed = 1234), filtered_ref)
 

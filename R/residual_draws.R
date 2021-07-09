@@ -51,10 +51,10 @@ residual_draws.brmsfit = function(
     names(enquos(...)), "[add_]residual_draws", n = "nsamples"
   )
 
-  set.seed(seed)
-  fitted_predicted_draws_brmsfit_(
+  pred_draws_(
     residuals, ...,
     object = object, newdata = newdata, output_name = residual,
-    nsamples = n, re_formula = re_formula, category = category
+    seed = seed, nsamples = n, re_formula = re_formula, category = category,
+    summary = FALSE
   )
 }

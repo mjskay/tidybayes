@@ -4,7 +4,7 @@
 ###############################################################################
 
 
-# [add_]predicted_draws ---------------------------------------------------
+# predicted_draws / add_predicted_draws ---------------------------------------------------
 
 #' Add draws from the posterior fit, predictions, or residuals of a model to a data frame
 #'
@@ -129,6 +129,7 @@
 #'   )
 #' }
 #' }
+#' @name add_predicted_draws
 #' @importFrom magrittr %>%
 #' @importFrom tidyr gather
 #' @importFrom dplyr mutate sample_n ungroup group_by
@@ -188,10 +189,10 @@ predicted_draws.stanreg = function(
     names(enquos(...)), "[add_]predicted_draws", n = "draws", re_formula = "re.form"
   )
 
-  fitted_predicted_draws_brmsfit_(
-    rstanarm::posterior_predict, ...,
+  pred_draws_(
+    rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = prediction,
-    draws = n, seed = seed, re.form = re_formula, category = category, is_brms = FALSE
+    draws = n, seed = seed, re.form = re_formula, category = category
   )
 }
 
@@ -209,20 +210,96 @@ predicted_draws.brmsfit = function(
     names(enquos(...)), "[add_]predicted_draws", n = "nsamples"
   )
 
-  fitted_predicted_draws_brmsfit_(
-    predict, ...,
+  pred_draws_(
+    rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = prediction,
     nsamples = n, seed = seed, re_formula = re_formula, category = category
   )
 }
 
 
+# helpers for creating fits/predictions -----------------------------------
+
+#' add draws of predictions from `object` to `newdata`. Handles dpars (if present)
+#' and ensures that the same seed is set if multiple calls to the prediction
+#' function need to be made, so that subsampling is consistent.
+#' @param .f a prediction function like `posterior_predict`, `posterior_epred`, etc
+#' @param object a model
+#' @param newdata a data frame representing a prediction grid
+#' @param output_name name of the output column
+#' @param seed seed to set
+#' @param dpar dpars from the model to include
+#' @param columns_to name of column to move columns from the prediction output into
+#' @noRd
+pred_draws_ = function(
+  .f, ...,
+  object, newdata, output_name, category,
+  seed = NULL, dpar = NULL
+) {
+  # get the names of distributional regression parameters to include
+  dpars = get_model_dpars(object, dpar)
+
+  # determine a seed we can use so that it is the same for each call to
+  # to the prediction function for the dpars
+  seed = seed %||% sample.int(.Machine$integer.max, 1)
+
+  # get the draws for the primary parameter first so we can stick the other values onto it
+  draws = withr::with_seed(seed, pred_draws_one_var_(
+    .f, ...,
+    object = object, newdata = newdata, output_name = output_name,
+    category = category
+  ))
+
+  # stick draws from dpars onto primary parameter
+  for (i in seq_along(dpars)) {
+    varname = names(dpars)[[i]]
+    dpar_fitted_draws = withr::with_seed(seed, pred_draws_one_var_(
+      .f, ...,
+      object = object, newdata = newdata, output_name = ".value",
+      category = category, dpar = dpars[[i]]
+    ))
+
+    if (nrow(dpar_fitted_draws) == nrow(draws)) {
+      draws[[varname]] = dpar_fitted_draws[[".value"]]
+    } else {
+      # in some models (such as ordinal models) the tidy draws from the dpars can have a different number
+      # of rows than the linear predictor does if the linear predictor is on the response scale and the dpars are not.
+      # In this case, we have to do a join to line things up (and in particular, a left join so that
+      # rows from the linear predictor data frame are not dropped).
+      join_cols = names(draws) %>%
+        intersect(c(".row", ".draw", category)) %>%
+        intersect(names(dpar_fitted_draws))
+
+      dpar_fitted_draws %<>%
+        ungroup() %>%
+        select_at(c(join_cols, ".value")) %>%
+        rename(!!varname := ".value")
+
+      draws %<>% left_join(dpar_fitted_draws, by = join_cols)
+
+      # stop(
+      #   'Different number of rows in fitted draws for dpar "', dpars[[i]], '" and the linear predictor. This\n',
+      #   'can happen in ordinal and categorical models when scale = "response". Try scale = "linear" instead.'
+      # )
+    }
+  }
+
+  draws
+}
+
+#' add draws of predictions from `object` to `newdata` for just one column of
+#' predictions (the default prediction from `.f` or one dpar)
+#' @param .f a prediction function like `posterior_predict`, `posterior_epred`, etc
+#' @param object a model
+#' @param newdata a data frame representing a prediction grid
+#' @param output_name name of the output column
+#' @param category name of column to move columns from the prediction output into
+#' @noRd
 #' @importFrom dplyr n
 #' @importFrom arrayhelpers array2df ndim
-fitted_predicted_draws_brmsfit_ = function(
-  f_fitted_predicted, ...,
-  object, newdata, output_name, category,
-  seed = NULL, is_brms = TRUE, summary = NULL #summary is ignored, we change it ourselves
+pred_draws_one_var_ = function(
+  .f, ...,
+  object, newdata, output_name, category
 ) {
   newdata %<>% ungroup()
 
@@ -231,13 +308,7 @@ fitted_predicted_draws_brmsfit_ = function(
     .row = NA
   )
 
-  if (!is.null(seed)) set.seed(seed)
-  fits_preds = if (is_brms) {
-    # only brms has/needs the summary argument
-    f_fitted_predicted(object = object, newdata = newdata, summary = FALSE, ...)
-  } else {
-    f_fitted_predicted(object = object, newdata = newdata, ...)
-  }
+  fits_preds = .f(object = object, newdata = newdata, ...)
 
   groups = union(colnames(newdata), ".row")
 
@@ -292,4 +363,34 @@ fitted_predicted_draws_brmsfit_ = function(
     inner_join(fits_preds_df, by = ".row") %>%
     select(-!!sym(output_name), !!sym(output_name)) %>%
     group_by_at(groups)
+}
+
+#' Given a brms model and a dpar argument for linpred_draws()/etc, return a list of dpars
+#' @noRd
+get_model_dpars = function(object, dpar) {
+  # only brms models support dpars at the moment
+  if (!inherits(object, "brmsfit")) return(NULL)
+
+  dpars = if (is_true(dpar)) {
+    union(names(brms::brmsterms(object$formula)$dpar), object$family$dpars)
+  } else if (is_false(dpar)) {
+    NULL
+  } else {
+    dpar
+  }
+  if (is_empty(dpars)) {
+    # the above conditions might return an empty vector, which does not play well with the code below
+    # (if there are no dpars, it is expected that dpars is NULL)
+    dpars = NULL
+  }
+
+  # missing names default to the same name used for the parameter in the model
+  if (is.null(names(dpars))) {
+    names(dpars) = dpars
+  } else {
+    missing_names = is.na(names(dpars)) | names(dpars) == ""
+    names(dpars)[missing_names] = dpars[missing_names]
+  }
+
+  dpars
 }

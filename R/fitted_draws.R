@@ -4,7 +4,7 @@
 ###############################################################################
 
 
-# [add_]fitted_draws / linpred_draws aliases -------------------------------------------------
+# fitted_draws / linpred_draws aliases -------------------------------------------------
 
 #' @rdname add_predicted_draws
 #' @export
@@ -87,7 +87,7 @@ fitted_draws.stanreg = function(
   value = ".value", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = FALSE, scale = c("response", "linear")
 ) {
-  transform = match.arg(scale) == "response"
+  transform = match.arg(scale) == "response" # TODO drop and just pass throgh transform
 
   if (!requireNamespace("rstanarm", quietly = TRUE)) {
     stop("The `rstanarm` package is needed for `fitted_draws` to support `stanreg` objects.", call. = FALSE) # nocov
@@ -97,19 +97,11 @@ fitted_draws.stanreg = function(
     names(enquos(...)), "[add_]fitted_draws", re_formula = "re.form", scale = "transform"
   )
 
-  draws = fitted_predicted_draws_brmsfit_(
-    rstanarm::posterior_linpred, ...,
+  pred_draws_(
+    rstanarm::posterior_linpred, ..., # TODO: switch to epred
     object = object, newdata = newdata, output_name = value,
-    seed = seed, category = category, re.form = re_formula, transform = transform, is_brms = FALSE
+    draws = n, seed = seed, category = category, re.form = re_formula, transform = transform
   )
-  # posterior_linpred, unlike posterior_predict, does not have a "draws" argument for some reason
-  if (!is.null(n)) {
-    if (!is.null(seed)) set.seed(seed)
-    draw_subset = sample(unique(draws$.draw), n)
-    draws[draws[[".draw"]] %in% draw_subset,]
-  } else {
-    draws
-  }
 }
 
 #' @rdname add_predicted_draws
@@ -121,7 +113,7 @@ fitted_draws.brmsfit = function(
   value = ".value", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = FALSE, scale = c("response", "linear")
 ) {
-  scale = match.arg(scale)
+  scale = match.arg(scale) # TODO: remove
 
   if (!requireNamespace("brms", quietly = TRUE)) {
     stop("The `brms` package is needed for `fitted_draws` to support `brmsfit` objects.", call. = FALSE) # nocov
@@ -131,90 +123,10 @@ fitted_draws.brmsfit = function(
     names(enquos(...)), "[add_]fitted_draws", n = "nsamples", dpar = "dpars"
   )
 
-  # get the names of distributional regression parameters to include
-  dpars = get_model_dpars(object, dpar)
-
-  # get the draws for the primary parameter first so we can stick the other values onto it
-  draws = fitted_predicted_draws_brmsfit_(
+  pred_draws_(
     fitted, ...,
     object = object, newdata = newdata, output_name = value,
-    category = category, re_formula = re_formula, dpar = NULL, scale = scale
+    nsamples = n, seed = seed, re_formula = re_formula, category = category, dpar = dpar, scale = scale,
+    summary = FALSE # TODO: switch to epred vs linpred, drop scale and remove?
   )
-
-
-  for (i in seq_along(dpars)) {
-    varname = names(dpars)[[i]]
-    dpar_fitted_draws = fitted_predicted_draws_brmsfit_(
-      fitted, ...,
-      object = object, newdata = newdata, output_name = ".value",
-      category = category, re_formula = re_formula, dpar = dpars[[i]], scale = scale
-    )
-
-    if (nrow(dpar_fitted_draws) == nrow(draws)) {
-      draws[[varname]] = dpar_fitted_draws[[".value"]]
-    } else {
-      # in some models (such as ordinal models) the tidy draws from the dpars can have a different number
-      # of rows than the linear predictor does if the linear predictor is on the response scale and the dpars are not.
-      # In this case, we have to do a join to line things up (and in particular, a left join so that
-      # rows from the linear predictor data frame are not dropped).
-      join_cols = names(draws) %>%
-        intersect(c(".row", ".draw", category)) %>%
-        intersect(names(dpar_fitted_draws))
-
-      dpar_fitted_draws %<>%
-        ungroup() %>%
-        select_at(c(join_cols, ".value")) %>%
-        rename(!!varname := ".value")
-
-      draws %<>% left_join(dpar_fitted_draws, by = join_cols)
-
-      # stop(
-      #   'Different number of rows in fitted draws for dpar "', dpars[[i]], '" and the linear predictor. This\n',
-      #   'can happen in ordinal and categorical models when scale = "response". Try scale = "linear" instead.'
-      # )
-    }
-  }
-
-  # posterior_linpred, unlike posterior_predict, does not have a "draws" argument for some reason
-  if (!is.null(n)) {
-    if (!is.null(seed)) set.seed(seed)
-    draw_subset = sample(unique(draws$.draw), n)
-    draws[draws[[".draw"]] %in% draw_subset,]
-  } else {
-    draws
-  }
-}
-
-
-
-# helpers for creating fits/predictions -----------------------------------
-
-#' Given a brms model and a dpar argument for linpred_draws()/etc, return a list of dpars
-#' @noRd
-get_model_dpars = function(object, dpar) {
-  # only brms models support dpars at the moment
-  if (!inherits(object, "brmsfit")) return(NULL)
-
-  dpars = if (is_true(dpar)) {
-    union(names(brms::brmsterms(object$formula)$dpar), object$family$dpars)
-  } else if (is_false(dpar)) {
-    NULL
-  } else {
-    dpar
-  }
-  if (is_empty(dpars)) {
-    # the above conditions might return an empty vector, which does not play well with the code below
-    # (if there are no dpars, it is expected that dpars is NULL)
-    dpars = NULL
-  }
-
-  # missing names default to the same name used for the parameter in the model
-  if (is.null(names(dpars))) {
-    names(dpars) = dpars
-  } else {
-    missing_names = is.na(names(dpars)) | names(dpars) == ""
-    names(dpars)[missing_names] = dpars[missing_names]
-  }
-
-  dpars
 }

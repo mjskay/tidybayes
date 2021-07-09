@@ -243,7 +243,7 @@ pred_rvars_default_ = function(
 }
 
 
-#' add rvars of predictions from `model` to `newdata`. Handles dpars (if present)
+#' add rvars of predictions from `object` to `newdata`. Handles dpars (if present)
 #' and ensures that the same seed is set if multiple calls to the prediction
 #' function need to be made, so that subsampling is consistent.
 #' @param .f a prediction function like `posterior_predict`, `posterior_epred`, etc
@@ -263,7 +263,7 @@ pred_rvars_ = function(
   dpars = get_model_dpars(object, dpar)
 
   # determine a seed we can use so that it is the same for each call to
-  # to the prediction fuction for the dpars
+  # to the prediction function for the dpars
   seed = seed %||% sample.int(.Machine$integer.max, 1)
 
   # get the rvars for the primary parameter
