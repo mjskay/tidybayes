@@ -8,13 +8,22 @@
 
 #' @rdname add_predicted_rvars
 #' @export
-add_linpred_rvars = function(newdata, model, linpred = ".linpred", ..., n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL) {
-  linpred_rvars(model, newdata = newdata, linpred = linpred, ..., n = n, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to)
+add_linpred_rvars = function(
+  newdata, object, ...,
+  linpred = ".linpred", n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+) {
+  linpred_rvars(
+    object = object, newdata = newdata, ...,
+    linpred = linpred, n = n, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
+  )
 }
 
 #' @rdname add_predicted_rvars
 #' @export
-linpred_rvars = function(model, newdata, linpred = ".linpred", ..., n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL) {
+linpred_rvars = function(
+  object, newdata, ...,
+  linpred = ".linpred", n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+) {
   UseMethod("linpred_rvars")
 }
 
@@ -23,18 +32,23 @@ linpred_rvars = function(model, newdata, linpred = ".linpred", ..., n = NULL, se
 
 #' @rdname add_predicted_rvars
 #' @export
-linpred_rvars.default = function(model, newdata, linpred = ".linpred", ..., n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL) {
+linpred_rvars.default = function(
+  object, newdata, ...,
+  linpred = ".linpred", n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+) {
   pred_rvars_default_(
-    .f = rstantools::posterior_linpred,
-    model = model, newdata = newdata, .value = linpred,
-    ...,
+    .f = rstantools::posterior_linpred, ...,
+    object = object, newdata = newdata, output_name = linpred,
     n = n, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
   )
 }
 
 #' @rdname add_predicted_rvars
 #' @export
-linpred_rvars.stanreg = function(model, newdata, linpred = ".linpred", ..., n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL) {
+linpred_rvars.stanreg = function(
+  object, newdata, ...,
+  linpred = ".linpred", n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+) {
   if (!requireNamespace("rstanarm", quietly = TRUE)) {
     stop("The `rstanarm` package is needed for `linpred_rvars` to support `stanreg` objects.", call. = FALSE) # nocov
   }
@@ -44,7 +58,8 @@ linpred_rvars.stanreg = function(model, newdata, linpred = ".linpred", ..., n = 
   )
 
   pred_rvars_(
-    rstantools::posterior_linpred, model, newdata, .value = linpred, ...,
+    rstantools::posterior_linpred, ...,
+    object = object, newdata = newdata, output_name = linpred,
     draws = n, seed = seed, re.form = re_formula,
     dpar = NULL, # rstanarm does not support dpar
     columns_to = columns_to
@@ -54,7 +69,10 @@ linpred_rvars.stanreg = function(model, newdata, linpred = ".linpred", ..., n = 
 #' @rdname add_predicted_rvars
 #' @importFrom rlang is_true is_false is_empty
 #' @export
-linpred_rvars.brmsfit = function(model, newdata, linpred = ".linpred", ..., n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL) {
+linpred_rvars.brmsfit = function(
+  object, newdata, ...,
+  linpred = ".linpred", n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+) {
   if (!requireNamespace("brms", quietly = TRUE)) {
     stop("The `brms` package is needed for `linpred_rvars` to support `brmsfit` objects.", call. = FALSE) # nocov
   }
@@ -64,7 +82,8 @@ linpred_rvars.brmsfit = function(model, newdata, linpred = ".linpred", ..., n = 
   )
 
   pred_rvars_(
-    rstantools::posterior_linpred, model, newdata, .value = linpred, ...,
+    rstantools::posterior_linpred, ...,
+    object = object, newdata = newdata, output_name = linpred,
     nsamples = n, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
   )
 }

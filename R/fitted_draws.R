@@ -8,16 +8,23 @@
 
 #' @rdname add_predicted_draws
 #' @export
-add_fitted_draws = function(newdata, model, value = ".value", ..., n = NULL, seed = NULL, re_formula = NULL,
+add_fitted_draws = function(
+  newdata, object, ...,
+  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = FALSE, scale = c("response", "linear")
 ) {
-  fitted_draws(model, newdata, value, ..., n = n, seed = seed, re_formula = re_formula,
-    category = category, dpar = dpar, scale = scale)
+  fitted_draws(
+    object = object, newdata = newdata, ...,
+    value = value, n = n, seed = seed, re_formula = re_formula,
+    category = category, dpar = dpar, scale = scale
+  )
 }
 
 #' @rdname add_predicted_draws
 #' @export
-fitted_draws = function(model, newdata, value = ".value", ..., n = NULL, seed = NULL, re_formula = NULL,
+fitted_draws = function(
+  object, newdata, ...,
+  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = FALSE, scale = c("response", "linear")
 ) {
   UseMethod("fitted_draws")
@@ -25,28 +32,38 @@ fitted_draws = function(model, newdata, value = ".value", ..., n = NULL, seed = 
 
 #' @rdname add_predicted_draws
 #' @export
-add_linpred_draws = function(newdata, model, value = ".value", ..., n = NULL, seed = NULL, re_formula = NULL,
+add_linpred_draws = function(
+  newdata, object, ...,
+  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = FALSE, scale = c("response", "linear")
 ) {
-  fitted_draws(model, newdata, value, ..., n = n, seed = seed, re_formula = re_formula,
-    category = category, dpar = dpar, scale = scale)
+  fitted_draws(
+    object = object, newdata = newdata, ...,
+    value = value, n = n, seed = seed, re_formula = re_formula,
+    category = category, dpar = dpar, scale = scale
+  )
 }
 
 #' @rdname add_predicted_draws
 #' @export
-linpred_draws = function(model, newdata, value = ".value", ..., n = NULL, seed = NULL, re_formula = NULL,
+linpred_draws = function(
+  object, newdata, ...,
+  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = FALSE, scale = c("response", "linear")
 ) {
-  fitted_draws(model, newdata, value, ..., n = n, seed = seed, re_formula = re_formula,
-    category = category, dpar = dpar, scale = scale)
+  fitted_draws(
+    object = object, newdata = newdata, ...,
+    value = value, n = n, seed = seed, re_formula = re_formula,
+    category = category, dpar = dpar, scale = scale
+  )
 }
 
 # fitted_draws generics -------------------------------------------------
 
 #' @rdname add_predicted_draws
 #' @export
-fitted_draws.default = function(model, newdata, ...) {
-  model_class = class(model)
+fitted_draws.default = function(object, newdata, ...) {
+  model_class = class(object)
 
   if (model_class %in% c("ulam", "quap", "map", "map2stan")) {
     stop(
@@ -65,7 +82,9 @@ fitted_draws.default = function(model, newdata, ...) {
 
 #' @rdname add_predicted_draws
 #' @export
-fitted_draws.stanreg = function(model, newdata, value = ".value", ..., n = NULL, seed = NULL, re_formula = NULL,
+fitted_draws.stanreg = function(
+  object, newdata, ...,
+  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = FALSE, scale = c("response", "linear")
 ) {
   transform = match.arg(scale) == "response"
@@ -78,7 +97,9 @@ fitted_draws.stanreg = function(model, newdata, value = ".value", ..., n = NULL,
     names(enquos(...)), "[add_]fitted_draws", re_formula = "re.form", scale = "transform"
   )
 
-  draws = fitted_predicted_draws_brmsfit_(rstanarm::posterior_linpred, model, newdata, output_name = value, ...,
+  draws = fitted_predicted_draws_brmsfit_(
+    rstanarm::posterior_linpred, ...,
+    object = object, newdata = newdata, output_name = value,
     seed = seed, category = category, re.form = re_formula, transform = transform, is_brms = FALSE
   )
   # posterior_linpred, unlike posterior_predict, does not have a "draws" argument for some reason
@@ -95,7 +116,9 @@ fitted_draws.stanreg = function(model, newdata, value = ".value", ..., n = NULL,
 #' @importFrom rlang is_true is_false is_empty
 #' @importFrom dplyr select_at
 #' @export
-fitted_draws.brmsfit = function(model, newdata, value = ".value", ..., n = NULL, seed = NULL, re_formula = NULL,
+fitted_draws.brmsfit = function(
+  object, newdata, ...,
+  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = FALSE, scale = c("response", "linear")
 ) {
   scale = match.arg(scale)
@@ -109,11 +132,12 @@ fitted_draws.brmsfit = function(model, newdata, value = ".value", ..., n = NULL,
   )
 
   # get the names of distributional regression parameters to include
-  dpars = get_model_dpars(model, dpar)
+  dpars = get_model_dpars(object, dpar)
 
   # get the draws for the primary parameter first so we can stick the other values onto it
   draws = fitted_predicted_draws_brmsfit_(
-    fitted, model, newdata, output_name = value, ...,
+    fitted, ...,
+    object = object, newdata = newdata, output_name = value,
     category = category, re_formula = re_formula, dpar = NULL, scale = scale
   )
 
@@ -121,7 +145,8 @@ fitted_draws.brmsfit = function(model, newdata, value = ".value", ..., n = NULL,
   for (i in seq_along(dpars)) {
     varname = names(dpars)[[i]]
     dpar_fitted_draws = fitted_predicted_draws_brmsfit_(
-      fitted, model, newdata, output_name = ".value", ...,
+      fitted, ...,
+      object = object, newdata = newdata, output_name = ".value",
       category = category, re_formula = re_formula, dpar = dpars[[i]], scale = scale
     )
 
@@ -166,12 +191,12 @@ fitted_draws.brmsfit = function(model, newdata, value = ".value", ..., n = NULL,
 
 #' Given a brms model and a dpar argument for linpred_draws()/etc, return a list of dpars
 #' @noRd
-get_model_dpars = function(model, dpar) {
+get_model_dpars = function(object, dpar) {
   # only brms models support dpars at the moment
-  if (!inherits(model, "brmsfit")) return(NULL)
+  if (!inherits(object, "brmsfit")) return(NULL)
 
   dpars = if (is_true(dpar)) {
-    union(names(brms::brmsterms(model$formula)$dpar), model$family$dpars)
+    union(names(brms::brmsterms(object$formula)$dpar), object$family$dpars)
   } else if (is_false(dpar)) {
     NULL
   } else {

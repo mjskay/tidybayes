@@ -21,9 +21,9 @@
 \usage{
 add_epred_rvars(
   newdata,
-  model,
-  epred = ".epred",
+  object,
   ...,
+  epred = ".epred",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -32,10 +32,10 @@ add_epred_rvars(
 )
 
 epred_rvars(
-  model,
+  object,
   newdata,
-  epred = ".epred",
   ...,
+  epred = ".epred",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -44,10 +44,10 @@ epred_rvars(
 )
 
 \method{epred_rvars}{default}(
-  model,
+  object,
   newdata,
-  epred = ".epred",
   ...,
+  epred = ".epred",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -56,10 +56,10 @@ epred_rvars(
 )
 
 \method{epred_rvars}{stanreg}(
-  model,
+  object,
   newdata,
-  epred = ".epred",
   ...,
+  epred = ".epred",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -68,10 +68,10 @@ epred_rvars(
 )
 
 \method{epred_rvars}{brmsfit}(
-  model,
+  object,
   newdata,
-  epred = ".epred",
   ...,
+  epred = ".epred",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -81,9 +81,9 @@ epred_rvars(
 
 add_linpred_rvars(
   newdata,
-  model,
-  linpred = ".linpred",
+  object,
   ...,
+  linpred = ".linpred",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -92,10 +92,10 @@ add_linpred_rvars(
 )
 
 linpred_rvars(
-  model,
+  object,
   newdata,
-  linpred = ".linpred",
   ...,
+  linpred = ".linpred",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -104,10 +104,10 @@ linpred_rvars(
 )
 
 \method{linpred_rvars}{default}(
-  model,
+  object,
   newdata,
-  linpred = ".linpred",
   ...,
+  linpred = ".linpred",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -116,10 +116,10 @@ linpred_rvars(
 )
 
 \method{linpred_rvars}{stanreg}(
-  model,
+  object,
   newdata,
-  linpred = ".linpred",
   ...,
+  linpred = ".linpred",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -128,10 +128,10 @@ linpred_rvars(
 )
 
 \method{linpred_rvars}{brmsfit}(
-  model,
+  object,
   newdata,
-  linpred = ".linpred",
   ...,
+  linpred = ".linpred",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -141,9 +141,9 @@ linpred_rvars(
 
 add_predicted_rvars(
   newdata,
-  model,
-  prediction = ".prediction",
+  object,
   ...,
+  prediction = ".prediction",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -151,10 +151,10 @@ add_predicted_rvars(
 )
 
 predicted_rvars(
-  model,
+  object,
   newdata,
-  prediction = ".prediction",
   ...,
+  prediction = ".prediction",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -162,10 +162,10 @@ predicted_rvars(
 )
 
 \method{predicted_rvars}{default}(
-  model,
+  object,
   newdata,
-  prediction = ".prediction",
   ...,
+  prediction = ".prediction",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -173,10 +173,10 @@ predicted_rvars(
 )
 
 \method{predicted_rvars}{stanreg}(
-  model,
+  object,
   newdata,
-  prediction = ".prediction",
   ...,
+  prediction = ".prediction",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -184,10 +184,10 @@ predicted_rvars(
 )
 
 \method{predicted_rvars}{brmsfit}(
-  model,
+  object,
   newdata,
-  prediction = ".prediction",
   ...,
+  prediction = ".prediction",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -197,7 +197,7 @@ predicted_rvars(
 \arguments{
 \item{newdata}{Data frame to generate predictions from.}
 
-\item{model}{A supported Bayesian model fit that can provide fits and predictions. Supported models
+\item{object}{A supported Bayesian model fit that can provide fits and predictions. Supported models
 are listed in the second section of \link{tidybayes-models}: \emph{Models Supporting Prediction}. While other
 functions in this package (like \code{\link[=spread_rvars]{spread_rvars()}}) support a wider range of models, to work with
 \code{add_fitted_rvars()} and \code{add_predicted_rvars()} a model must provide an interface for generating
@@ -205,10 +205,10 @@ predictions, thus more generic Bayesian modeling interfaces like \code{runjags} 
 supported for these functions (only wrappers around those languages that provide predictions, like \code{rstanarm}
 and \code{brm}, are supported here).}
 
-\item{epred}{The name of the output column for \code{add_epred_rvars()}; default \code{".epred"}.}
-
 \item{...}{Additional arguments passed to the underlying prediction method for the type of
 model given.}
+
+\item{epred}{The name of the output column for \code{add_epred_rvars()}; default \code{".epred"}.}
 
 \item{n}{The number of draws per prediction / fit to return, or \code{NULL} to return all draws.}
 

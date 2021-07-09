@@ -34,7 +34,7 @@
 #'
 #' @param newdata Data frame to generate predictions from. If omitted, most model types will
 #' generate predictions from the data used to fit the model.
-#' @param model A supported Bayesian model fit that can provide fits and predictions. Supported models
+#' @param object A supported Bayesian model fit that can provide fits and predictions. Supported models
 #' are listed in the second section of [tidybayes-models]: *Models Supporting Prediction*. While other
 #' functions in this package (like [spread_draws()]) support a wider range of models, to work with
 #' `add_fitted_draws` and `add_predicted_draws` a model must provide an interface for generating
@@ -135,20 +135,29 @@
 #' @importFrom stats fitted predict
 #' @importFrom rlang is_integerish
 #' @export
-add_predicted_draws = function(newdata, model, prediction = ".prediction", ..., n = NULL, seed = NULL, re_formula = NULL, category = ".category") {
-  predicted_draws(model, newdata, prediction, ..., n = n, seed = seed, re_formula = re_formula, category = category)
+add_predicted_draws = function(
+  newdata, object, ...,
+  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, category = ".category"
+) {
+  predicted_draws(
+    object = object, newdata = newdata, ...,
+    prediction = prediction, n = n, seed = seed, re_formula = re_formula, category = category
+  )
 }
 
 #' @rdname add_predicted_draws
 #' @export
-predicted_draws = function(model, newdata, prediction = ".prediction", ..., n = NULL, seed = NULL, re_formula = NULL, category = ".category") {
+predicted_draws = function(
+  object, newdata, ...,
+  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, category = ".category"
+) {
   UseMethod("predicted_draws")
 }
 
 #' @rdname add_predicted_draws
 #' @export
-predicted_draws.default = function(model, newdata, ...) {
-  model_class = class(model)
+predicted_draws.default = function(object, newdata, ...) {
+  model_class = class(object)
 
   if (model_class %in% c("ulam", "quap", "map", "map2stan")) {
     stop(
@@ -167,7 +176,10 @@ predicted_draws.default = function(model, newdata, ...) {
 
 #' @rdname add_predicted_draws
 #' @export
-predicted_draws.stanreg = function(model, newdata, prediction = ".prediction", ..., n = NULL, seed = NULL, re_formula = NULL, category = ".category") {
+predicted_draws.stanreg = function(
+  object, newdata, ...,
+  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, category = ".category"
+) {
   if (!requireNamespace("rstanarm", quietly = TRUE)) {
     stop("The `rstanarm` package is needed for `predicted_draws` to support `stanreg` objects.", call. = FALSE) # nocov
   }
@@ -176,14 +188,19 @@ predicted_draws.stanreg = function(model, newdata, prediction = ".prediction", .
     names(enquos(...)), "[add_]predicted_draws", n = "draws", re_formula = "re.form"
   )
 
-  fitted_predicted_draws_brmsfit_(rstanarm::posterior_predict, model, newdata, output_name = prediction, ...,
+  fitted_predicted_draws_brmsfit_(
+    rstanarm::posterior_predict, ...,
+    object = object, newdata = newdata, output_name = prediction,
     draws = n, seed = seed, re.form = re_formula, category = category, is_brms = FALSE
   )
 }
 
 #' @rdname add_predicted_draws
 #' @export
-predicted_draws.brmsfit = function(model, newdata, prediction = ".prediction", ..., n = NULL, seed = NULL, re_formula = NULL, category = ".category") {
+predicted_draws.brmsfit = function(
+  object, newdata, ...,
+  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, category = ".category"
+) {
   if (!requireNamespace("brms", quietly = TRUE)) {
     stop("The `brms` package is needed for `predicted_draws` to support `brmsfit` objects.", call. = FALSE) # nocov
   }
@@ -192,7 +209,9 @@ predicted_draws.brmsfit = function(model, newdata, prediction = ".prediction", .
     names(enquos(...)), "[add_]predicted_draws", n = "nsamples"
   )
 
-  fitted_predicted_draws_brmsfit_(predict, model, newdata, output_name = prediction, ...,
+  fitted_predicted_draws_brmsfit_(
+    predict, ...,
+    object = object, newdata = newdata, output_name = prediction,
     nsamples = n, seed = seed, re_formula = re_formula, category = category
   )
 }
@@ -200,7 +219,9 @@ predicted_draws.brmsfit = function(model, newdata, prediction = ".prediction", .
 
 #' @importFrom dplyr n
 #' @importFrom arrayhelpers array2df ndim
-fitted_predicted_draws_brmsfit_ = function(f_fitted_predicted, model, newdata, output_name, category, ...,
+fitted_predicted_draws_brmsfit_ = function(
+  f_fitted_predicted, ...,
+  object, newdata, output_name, category,
   seed = NULL, is_brms = TRUE, summary = NULL #summary is ignored, we change it ourselves
 ) {
   newdata %<>% ungroup()
@@ -213,9 +234,9 @@ fitted_predicted_draws_brmsfit_ = function(f_fitted_predicted, model, newdata, o
   if (!is.null(seed)) set.seed(seed)
   fits_preds = if (is_brms) {
     # only brms has/needs the summary argument
-    f_fitted_predicted(model, newdata = newdata, summary = FALSE, ...)
+    f_fitted_predicted(object = object, newdata = newdata, summary = FALSE, ...)
   } else {
-    f_fitted_predicted(model, newdata = newdata, ...)
+    f_fitted_predicted(object = object, newdata = newdata, ...)
   }
 
   groups = union(colnames(newdata), ".row")

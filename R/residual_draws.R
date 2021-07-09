@@ -8,16 +8,23 @@
 
 #' @rdname add_predicted_draws
 #' @export
-add_residual_draws = function(newdata, model, residual = ".residual", ..., n = NULL, seed = NULL, re_formula = NULL,
+add_residual_draws = function(
+  newdata, object, ...,
+  residual = ".residual", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category"
 ) {
-  residual_draws(model, newdata, residual, ..., n = n, seed = seed, re_formula = re_formula,
-    category = category)
+  residual_draws(
+    object = object, newdata = newdata, ...,
+    residual = residual, n = n, seed = seed, re_formula = re_formula,
+    category = category
+  )
 }
 
 #' @rdname add_predicted_draws
 #' @export
-residual_draws = function(model, newdata, residual = ".residual", ..., n = NULL, seed = NULL, re_formula = NULL,
+residual_draws = function(
+  object, newdata, ...,
+  residual = ".residual", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category"
 ) {
   UseMethod("residual_draws")
@@ -25,13 +32,15 @@ residual_draws = function(model, newdata, residual = ".residual", ..., n = NULL,
 
 #' @rdname add_predicted_draws
 #' @export
-residual_draws.default = function(model, newdata, ...) {
-  stop(paste0("Models of type ", deparse0(class(model)), " are not currently supported by `residual_draws`"))
+residual_draws.default = function(object, newdata, ...) {
+  stop(paste0("Models of type ", deparse0(class(object)), " are not currently supported by `residual_draws`"))
 }
 
 #' @rdname add_predicted_draws
 #' @export
-residual_draws.brmsfit = function(model, newdata, residual = ".residual", ..., n = NULL, seed = NULL, re_formula = NULL,
+residual_draws.brmsfit = function(
+  object, newdata, ...,
+  residual = ".residual", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category"
 ) {
   if (!requireNamespace("brms", quietly = TRUE)) {
@@ -44,7 +53,8 @@ residual_draws.brmsfit = function(model, newdata, residual = ".residual", ..., n
 
   set.seed(seed)
   fitted_predicted_draws_brmsfit_(
-    residuals, model, newdata, output_name = residual, ...,
+    residuals, ...,
+    object = object, newdata = newdata, output_name = residual,
     nsamples = n, re_formula = re_formula, category = category
   )
 }

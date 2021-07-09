@@ -198,7 +198,7 @@ test_that("[add_]predicted_draws throws an error when nsamples is called instead
     "`nsamples.*.`n`.*.See the documentation for additional details."
   )
   expect_error(
-    m_hp %>% add_predicted_draws(newdata = mtcars_tbl, nsamples = 100),
+    mtcars_tbl %>% add_predicted_draws(m_hp, nsamples = 100),
     "`nsamples.*.`n`.*.See the documentation for additional details."
   )
 })
@@ -208,11 +208,11 @@ test_that("[add_]predicted_draws throws an error when draws is called instead of
   m_hp_wt = readRDS(test_path("../models/models.rstanarm.m_hp_wt.rds"))
 
   expect_error(
-    m_hp_wt %>% predicted_draws(newdata = mtcars_tbl, draws = 100),
+    m_hp_wt %>% predicted_draws(mtcars_tbl, draws = 100),
     "`draws.*.`n`.*.See the documentation for additional details."
   )
   expect_error(
-    m_hp_wt %>% add_predicted_draws(newdata = mtcars_tbl, draws = 100),
+    mtcars_tbl %>% add_predicted_draws(m_hp_wt, draws = 100),
     "`draws.*.`n`.*.See the documentation for additional details."
   )
 })
@@ -222,11 +222,11 @@ test_that("[add_]predicted_draws throws an error when re.form is called instead 
   m_hp_wt = readRDS(test_path("../models/models.rstanarm.m_hp_wt.rds"))
 
   expect_error(
-    m_hp_wt %>% predicted_draws(newdata = mtcars_tbl, re.form = NULL),
+    m_hp_wt %>% predicted_draws(mtcars_tbl, re.form = NULL),
     "`re.form.*.`re_formula`.*.See the documentation for additional details."
   )
   expect_error(
-    m_hp_wt %>% add_predicted_draws(newdata = mtcars_tbl, re.form = NULL),
+    mtcars_tbl %>% add_predicted_draws(m_hp_wt, re.form = NULL),
     "`re.form.*.`re_formula`.*.See the documentation for additional details."
   )
 })

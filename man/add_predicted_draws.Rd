@@ -22,9 +22,9 @@
 \usage{
 add_fitted_draws(
   newdata,
-  model,
-  value = ".value",
+  object,
   ...,
+  value = ".value",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -34,10 +34,10 @@ add_fitted_draws(
 )
 
 fitted_draws(
-  model,
+  object,
   newdata,
-  value = ".value",
   ...,
+  value = ".value",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -48,9 +48,9 @@ fitted_draws(
 
 add_linpred_draws(
   newdata,
-  model,
-  value = ".value",
+  object,
   ...,
+  value = ".value",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -60,10 +60,10 @@ add_linpred_draws(
 )
 
 linpred_draws(
-  model,
+  object,
   newdata,
-  value = ".value",
   ...,
+  value = ".value",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -72,13 +72,13 @@ linpred_draws(
   scale = c("response", "linear")
 )
 
-\method{fitted_draws}{default}(model, newdata, ...)
+\method{fitted_draws}{default}(object, newdata, ...)
 
 \method{fitted_draws}{stanreg}(
-  model,
+  object,
   newdata,
-  value = ".value",
   ...,
+  value = ".value",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -88,10 +88,10 @@ linpred_draws(
 )
 
 \method{fitted_draws}{brmsfit}(
-  model,
+  object,
   newdata,
-  value = ".value",
   ...,
+  value = ".value",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -102,9 +102,9 @@ linpred_draws(
 
 add_predicted_draws(
   newdata,
-  model,
-  prediction = ".prediction",
+  object,
   ...,
+  prediction = ".prediction",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -112,23 +112,23 @@ add_predicted_draws(
 )
 
 predicted_draws(
-  model,
+  object,
   newdata,
-  prediction = ".prediction",
   ...,
+  prediction = ".prediction",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category"
 )
 
-\method{predicted_draws}{default}(model, newdata, ...)
+\method{predicted_draws}{default}(object, newdata, ...)
 
 \method{predicted_draws}{stanreg}(
-  model,
+  object,
   newdata,
-  prediction = ".prediction",
   ...,
+  prediction = ".prediction",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -136,10 +136,10 @@ predicted_draws(
 )
 
 \method{predicted_draws}{brmsfit}(
-  model,
+  object,
   newdata,
-  prediction = ".prediction",
   ...,
+  prediction = ".prediction",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -148,9 +148,9 @@ predicted_draws(
 
 add_residual_draws(
   newdata,
-  model,
-  residual = ".residual",
+  object,
   ...,
+  residual = ".residual",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -158,23 +158,23 @@ add_residual_draws(
 )
 
 residual_draws(
-  model,
+  object,
   newdata,
-  residual = ".residual",
   ...,
+  residual = ".residual",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category"
 )
 
-\method{residual_draws}{default}(model, newdata, ...)
+\method{residual_draws}{default}(object, newdata, ...)
 
 \method{residual_draws}{brmsfit}(
-  model,
+  object,
   newdata,
-  residual = ".residual",
   ...,
+  residual = ".residual",
   n = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -185,7 +185,7 @@ residual_draws(
 \item{newdata}{Data frame to generate predictions from. If omitted, most model types will
 generate predictions from the data used to fit the model.}
 
-\item{model}{A supported Bayesian model fit that can provide fits and predictions. Supported models
+\item{object}{A supported Bayesian model fit that can provide fits and predictions. Supported models
 are listed in the second section of \link{tidybayes-models}: \emph{Models Supporting Prediction}. While other
 functions in this package (like \code{\link[=spread_draws]{spread_draws()}}) support a wider range of models, to work with
 \code{add_fitted_draws} and \code{add_predicted_draws} a model must provide an interface for generating
@@ -193,10 +193,10 @@ predictions, thus more generic Bayesian modeling interfaces like \code{runjags} 
 supported for these functions (only wrappers around those languages that provide predictions, like \code{rstanarm}
 and \code{brm}, are supported here).}
 
-\item{value}{The name of the output column for \code{fitted_draws}; default \code{".value"}.}
-
 \item{...}{Additional arguments passed to the underlying prediction method for the type of
 model given.}
+
+\item{value}{The name of the output column for \code{fitted_draws}; default \code{".value"}.}
 
 \item{n}{The number of draws per prediction / fit to return, or \code{NULL} to return all draws.}
 

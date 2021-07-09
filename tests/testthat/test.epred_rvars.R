@@ -209,11 +209,11 @@ test_that("[add_]epred_rvars throws an error when nsamples is called instead of 
   m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
 
   expect_error(
-    m_hp %>% epred_rvars(newdata = mtcars_tbl, nsamples = 100),
+    m_hp %>% epred_rvars(mtcars_tbl, nsamples = 100),
     "`nsamples.*.`n`.*.See the documentation for additional details."
   )
   expect_error(
-    m_hp %>% add_epred_rvars(newdata = mtcars_tbl, nsamples = 100),
+    mtcars_tbl %>% add_epred_rvars(m_hp, nsamples = 100),
     "`nsamples.*.`n`.*.See the documentation for additional details."
   )
 })
@@ -224,11 +224,11 @@ test_that("[add_]epred_rvars throws an error when re.form is called instead of r
   m_hp_wt = readRDS(test_path("../models/models.rstanarm.m_hp_wt.rds"))
 
   expect_error(
-    m_hp_wt %>% epred_rvars(newdata = mtcars_tbl, re.form = NULL),
+    m_hp_wt %>% epred_rvars(mtcars_tbl, re.form = NULL),
     "`re.form.*.`re_formula`.*.See the documentation for additional details."
   )
   expect_error(
-    m_hp_wt %>% add_epred_rvars(newdata = mtcars_tbl, re.form = NULL),
+    mtcars_tbl %>% add_epred_rvars(m_hp_wt, re.form = NULL),
     "`re.form.*.`re_formula`.*.See the documentation for additional details."
   )
 })
