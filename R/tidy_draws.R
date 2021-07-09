@@ -167,11 +167,8 @@ tidy_draws.stanfit = function(model, ...) {
     stop("The `rstan` package is needed for `tidy_draws` to support `stanfit` objects.", call. = FALSE) # nocov
   }
 
-  parameter_draws = tidy_draws(rstan::As.mcmc.list(model), ...)
-
-  diagnostics_draws = map_dfr_(rstan::get_sampler_params(model, inc_warmup = FALSE), as.data.frame)
-
-  draws = bind_cols(parameter_draws, diagnostics_draws)
+  draws = tidy_draws(rstan::As.mcmc.list(model), ...)
+  draws = add_rstan_sampler_param_draws(draws, model)
 
   attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
   draws
@@ -188,14 +185,31 @@ tidy_draws.stanreg = function(model, ...) {
   sample_matrix = as.array(model) #[iteration, chain, variable]
   n_chain = dim(sample_matrix)[[2]]
   mcmc_list = as.mcmc.list(lapply(seq_len(n_chain), function(chain) as.mcmc(sample_matrix[, chain, ]))) # nolint
-  parameter_draws = tidy_draws(mcmc_list, ...)
-
-  diagnostics_draws = map_dfr_(rstan::get_sampler_params(model$stanfit, inc_warmup = FALSE), as.data.frame)
-
-  draws = bind_cols(parameter_draws, diagnostics_draws)
+  draws = tidy_draws(mcmc_list, ...)
+  draws = add_rstan_sampler_param_draws(draws, model$stanfit)
 
   attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
   draws
+}
+
+#' Helper to add sampler params from an rstan model to a tidy data frame of draws
+#' so long as sampler params are actually present
+#' @noRd
+add_rstan_sampler_param_draws = function(draws, model, inc_warmup = FALSE) {
+  # this is ugly but I can't find a better way to determine this
+  sampler_params = tryCatch({
+    rstan::get_sampler_params(model, inc_warmup = inc_warmup)
+  }, error = function(e) {
+    list()
+  })
+
+  sampler_param_draws = map_dfr_(sampler_params, as.data.frame, optional = TRUE)
+
+  if (length(sampler_param_draws) > 0) {
+    bind_cols(draws, sampler_param_draws)
+  } else {
+    draws
+  }
 }
 
 #' @rdname tidy_draws
@@ -227,11 +241,8 @@ tidy_draws.brmsfit = function(model, ...) {
     stop("The `brms` package is needed for `tidy_draws` to support `brmsfit` objects.", call. = FALSE) # nocov
   }
 
-  parameter_draws = tidy_draws(brms::as.mcmc(model), ...)
-
-  diagnostics_draws = map_dfr_(rstan::get_sampler_params(model$fit, inc_warmup = FALSE), as.data.frame)
-
-  draws = bind_cols(parameter_draws, diagnostics_draws)
+  draws = tidy_draws(brms::as.mcmc(model), ...)
+  draws = add_rstan_sampler_param_draws(draws, model$fit)
 
   attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
   draws

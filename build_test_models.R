@@ -250,3 +250,17 @@ rstan.m_ABC = stan(model_code = "
   save_warmup = FALSE, save_dso = FALSE
 )
 saveRDS(strip_stan_model(rstan.m_ABC), "tests/models/models.rstan.m_ABC.rds", compress = "xz")
+
+
+# A model with only generated quantities
+set.seed(782021)
+gqs_model = stan_model(model_code = "
+  parameters {
+    real y;
+  }
+  generated quantities {
+    real y_rep = normal_rng(y, 1);
+  }
+")
+rstan.m_gqs = gqs(gqs_model, draws = matrix(rnorm(100), dimnames = list(NULL, "y")))
+saveRDS(strip_stan_model(rstan.m_gqs), "tests/models/models.rstan.m_gqs.rds", compress = "xz")

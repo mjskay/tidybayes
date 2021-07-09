@@ -54,7 +54,6 @@ test_that("tidy_draws works with rstanarm", {
 })
 
 
-
 # rstan -------------------------------------------------------------------
 test_that("tidy_draws works with rstan", {
   skip_if_not_installed("rstan")
@@ -71,6 +70,18 @@ test_that("tidy_draws works with rstan", {
     bind_cols(bind_rows(lapply(rstan::get_sampler_params(m_ABC, inc_warmup = FALSE), as_tibble)))
 
   expect_equal(tidy_draws(m_ABC), draws_tidy)
+})
+
+test_that("tidy_draws works with rstan without sampler params", {
+  skip_if_not_installed("rstan")
+
+  m_gqs = readRDS(test_path("../models/models.rstan.m_gqs.rds"))
+
+  draws_tidy =
+    tibble(y_rep = as.vector(as.array(m_gqs))) %>%
+    add_column(.chain = 1L, .iteration = 1L:nrow(.), .draw = 1L:nrow(.), .before = 1)
+
+  expect_equal(tidy_draws(m_gqs), draws_tidy)
 })
 
 
