@@ -15,6 +15,7 @@ do not.
 
 \itemize{
 \item \link[rstan:stan]{rstan} models
+\item \href{https://mc-stan.org/cmdstanr/}{CmdStanR} models
 \item \code{\link[brms:brm]{brms::brm()}} models
 \item \link[rstanarm:rstanarm-package]{rstanarm} models
 \item \code{\link[runjags:runjags-package]{runjags::runjags()}} models

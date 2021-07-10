@@ -65,8 +65,7 @@ Suggests:
     cmdstanr
 Remotes:
     mjskay/ggdist,
-    stan-dev/posterior,
-    stan-dev/cmdstanr
+    stan-dev/posterior
 License: GPL (>= 3)
 Language: en-US
 BugReports: https://github.com/mjskay/tidybayes/issues/new

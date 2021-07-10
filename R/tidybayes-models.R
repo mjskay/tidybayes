@@ -20,6 +20,7 @@
 #'
 #' \itemize{
 #'   \item [rstan][rstan::stan] models
+#'   \item [CmdStanR](https://mc-stan.org/cmdstanr/) models
 #'   \item [brms::brm()] models
 #'   \item [rstanarm][rstanarm::rstanarm-package] models
 #'   \item [runjags::runjags()] models
