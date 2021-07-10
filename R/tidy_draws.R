@@ -196,7 +196,8 @@ tidy_draws.stanreg = function(model, ...) {
 #' so long as sampler params are actually present
 #' @noRd
 add_rstan_sampler_param_draws = function(draws, model, inc_warmup = FALSE) {
-  # this is ugly but I can't find a better way to determine this
+  # TODO: this is ugly but I can't find a better way to determine if a model
+  # type supports sampler params or not
   sampler_params = tryCatch({
     rstan::get_sampler_params(model, inc_warmup = inc_warmup)
   }, error = function(e) {
@@ -249,7 +250,7 @@ tidy_draws.brmsfit = function(model, ...) {
 }
 
 #' @rdname tidy_draws
-#' @importFrom posterior bind_draws as_draws_df
+#' @importFrom posterior as_draws_df
 #' @export
 tidy_draws.CmdStanFit = function(model, ...) {
   draws = as_tibble(as_draws_df(model$draws()))

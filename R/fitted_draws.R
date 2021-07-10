@@ -11,7 +11,7 @@
 add_fitted_draws = function(
   newdata, object, ...,
   value = ".value", n = NULL, seed = NULL, re_formula = NULL,
-  category = ".category", dpar = FALSE, scale = c("response", "linear")
+  category = ".category", dpar = NULL, scale = c("response", "linear")
 ) {
   fitted_draws(
     object = object, newdata = newdata, ...,
@@ -25,7 +25,7 @@ add_fitted_draws = function(
 fitted_draws = function(
   object, newdata, ...,
   value = ".value", n = NULL, seed = NULL, re_formula = NULL,
-  category = ".category", dpar = FALSE, scale = c("response", "linear")
+  category = ".category", dpar = NULL, scale = c("response", "linear")
 ) {
   UseMethod("fitted_draws")
 }
@@ -35,7 +35,7 @@ fitted_draws = function(
 add_linpred_draws = function(
   newdata, object, ...,
   value = ".value", n = NULL, seed = NULL, re_formula = NULL,
-  category = ".category", dpar = FALSE, scale = c("response", "linear")
+  category = ".category", dpar = NULL, scale = c("response", "linear")
 ) {
   fitted_draws(
     object = object, newdata = newdata, ...,
@@ -49,7 +49,7 @@ add_linpred_draws = function(
 linpred_draws = function(
   object, newdata, ...,
   value = ".value", n = NULL, seed = NULL, re_formula = NULL,
-  category = ".category", dpar = FALSE, scale = c("response", "linear")
+  category = ".category", dpar = NULL, scale = c("response", "linear")
 ) {
   fitted_draws(
     object = object, newdata = newdata, ...,
@@ -85,7 +85,7 @@ fitted_draws.default = function(object, newdata, ...) {
 fitted_draws.stanreg = function(
   object, newdata, ...,
   value = ".value", n = NULL, seed = NULL, re_formula = NULL,
-  category = ".category", dpar = FALSE, scale = c("response", "linear")
+  category = ".category", dpar = NULL, scale = c("response", "linear")
 ) {
   transform = match.arg(scale) == "response" # TODO drop and just pass throgh transform
 
@@ -111,7 +111,7 @@ fitted_draws.stanreg = function(
 fitted_draws.brmsfit = function(
   object, newdata, ...,
   value = ".value", n = NULL, seed = NULL, re_formula = NULL,
-  category = ".category", dpar = FALSE, scale = c("response", "linear")
+  category = ".category", dpar = NULL, scale = c("response", "linear")
 ) {
   scale = match.arg(scale) # TODO: remove
 

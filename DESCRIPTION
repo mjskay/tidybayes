@@ -102,6 +102,7 @@ Collate:
     "compose_data.R"
     "density_bins.R"
     "emmeans_comparison.R"
+    "epred_draws.R"
     "epred_rvars.R"
     "fitted_draws.R"
     "flip_aes.R"
