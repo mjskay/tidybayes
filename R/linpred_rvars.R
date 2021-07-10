@@ -49,10 +49,6 @@ linpred_rvars.stanreg = function(
   object, newdata, ...,
   linpred = ".linpred", n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
 ) {
-  if (!requireNamespace("rstanarm", quietly = TRUE)) {
-    stop("The `rstanarm` package is needed for `linpred_rvars` to support `stanreg` objects.", call. = FALSE) # nocov
-  }
-
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]linpred_rvars", re_formula = "re.form", n = "draws"
   )
@@ -73,10 +69,6 @@ linpred_rvars.brmsfit = function(
   object, newdata, ...,
   linpred = ".linpred", n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
 ) {
-  if (!requireNamespace("brms", quietly = TRUE)) {
-    stop("The `brms` package is needed for `linpred_rvars` to support `brmsfit` objects.", call. = FALSE) # nocov
-  }
-
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]linpred_rvars", n = "nsamples"
   )

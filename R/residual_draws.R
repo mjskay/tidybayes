@@ -43,10 +43,6 @@ residual_draws.brmsfit = function(
   residual = ".residual", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category"
 ) {
-  if (!requireNamespace("brms", quietly = TRUE)) {
-    stop("The `brms` package is needed for `residual_draws` to support `brmsfit` objects.", call. = FALSE) # nocov
-  }
-
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]residual_draws", n = "nsamples"
   )

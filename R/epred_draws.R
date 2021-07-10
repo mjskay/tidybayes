@@ -60,10 +60,6 @@ epred_draws.stanreg = function(
   epred = ".epred", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL
 ) {
-  if (!requireNamespace("rstanarm", quietly = TRUE)) {
-    stop("The `rstanarm` package is needed for `epred_draws` to support `stanreg` objects.", call. = FALSE) # nocov
-  }
-
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]epred_draws", re_formula = "re.form"
   )
@@ -84,10 +80,6 @@ epred_draws.brmsfit = function(
   epred = ".epred", n = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL
 ) {
-  if (!requireNamespace("brms", quietly = TRUE)) {
-    stop("The `brms` package is needed for `epred_draws` to support `brmsfit` objects.", call. = FALSE) # nocov
-  }
-
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]epred_draws", n = "nsamples"
   )

@@ -163,10 +163,6 @@ tidy_draws.mcmc.list = function(model, ...) {
 #' @rdname tidy_draws
 #' @export
 tidy_draws.stanfit = function(model, ...) {
-  if (!requireNamespace("rstan", quietly = TRUE)) {
-    stop("The `rstan` package is needed for `tidy_draws` to support `stanfit` objects.", call. = FALSE) # nocov
-  }
-
   draws = tidy_draws(rstan::As.mcmc.list(model), ...)
   draws = add_rstan_sampler_param_draws(draws, model)
 
@@ -177,9 +173,6 @@ tidy_draws.stanfit = function(model, ...) {
 #' @rdname tidy_draws
 #' @export
 tidy_draws.stanreg = function(model, ...) {
-  if (!requireNamespace("rstanarm", quietly = TRUE)) {
-    stop("The `rstanarm` package is needed for `tidy_draws` to support `stanreg` objects.", call. = FALSE) # nocov
-  }
   #stanreg objects have more info provided for variable names than the underlying stanfit,
   #so we dont' just do tidy_draws(model$stanfit)
   sample_matrix = as.array(model) #[iteration, chain, variable]
@@ -216,9 +209,6 @@ add_rstan_sampler_param_draws = function(draws, model, inc_warmup = FALSE) {
 #' @rdname tidy_draws
 #' @export
 tidy_draws.runjags = function(model, ...) {
-  if (!requireNamespace("runjags", quietly = TRUE)) {
-    stop("The `runjags` package is needed for `tidy_draws` to support `runjags` objects.", call. = FALSE) # nocov
-  }
   draws = tidy_draws(as.mcmc.list(model), ...)
   attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
   draws
@@ -227,9 +217,6 @@ tidy_draws.runjags = function(model, ...) {
 #' @rdname tidy_draws
 #' @export
 tidy_draws.jagsUI = function(model, ...) {
-  if (!requireNamespace("jagsUI", quietly = TRUE)) {
-    stop("The `jagsUI` package is needed for `tidy_draws` to support `jagsUI` objects.", call. = FALSE) # nocov
-  }
   draws = tidy_draws(as.mcmc.list(model$samples), ...)
   attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
   draws
@@ -238,10 +225,6 @@ tidy_draws.jagsUI = function(model, ...) {
 #' @rdname tidy_draws
 #' @export
 tidy_draws.brmsfit = function(model, ...) {
-  if (!requireNamespace("brms", quietly = TRUE)) {
-    stop("The `brms` package is needed for `tidy_draws` to support `brmsfit` objects.", call. = FALSE) # nocov
-  }
-
   draws = tidy_draws(brms::as.mcmc(model), ...)
   draws = add_rstan_sampler_param_draws(draws, model$fit)
 

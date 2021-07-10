@@ -181,10 +181,6 @@ predicted_draws.stanreg = function(
   object, newdata, ...,
   prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, category = ".category"
 ) {
-  if (!requireNamespace("rstanarm", quietly = TRUE)) {
-    stop("The `rstanarm` package is needed for `predicted_draws` to support `stanreg` objects.", call. = FALSE) # nocov
-  }
-
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]predicted_draws", n = "draws", re_formula = "re.form"
   )
@@ -202,10 +198,6 @@ predicted_draws.brmsfit = function(
   object, newdata, ...,
   prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, category = ".category"
 ) {
-  if (!requireNamespace("brms", quietly = TRUE)) {
-    stop("The `brms` package is needed for `predicted_draws` to support `brmsfit` objects.", call. = FALSE) # nocov
-  }
-
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]predicted_draws", n = "nsamples"
   )

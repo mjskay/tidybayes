@@ -64,7 +64,7 @@ emmeans_comparison = function(method, ...) {
     comp_fun = method
   } else {
     if (!requireNamespace("emmeans", quietly = TRUE)) {
-      stop("The `emmeans` package is needed for `emmeans_comparison` to support emmeans contrast methods.", call. = FALSE) # nocov
+      stop0("The `emmeans` package is needed for `emmeans_comparison` to support emmeans contrast methods.") # nocov
     }
     comp_fun = utils::getFromNamespace(paste0(method, ".emmc"), "emmeans")
   }

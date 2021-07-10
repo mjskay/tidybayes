@@ -89,10 +89,6 @@ fitted_draws.stanreg = function(
 ) {
   transform = match.arg(scale) == "response" # TODO drop and just pass throgh transform
 
-  if (!requireNamespace("rstanarm", quietly = TRUE)) {
-    stop("The `rstanarm` package is needed for `fitted_draws` to support `stanreg` objects.", call. = FALSE) # nocov
-  }
-
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]fitted_draws", re_formula = "re.form", scale = "transform"
   )
@@ -115,12 +111,8 @@ fitted_draws.brmsfit = function(
 ) {
   scale = match.arg(scale) # TODO: remove
 
-  if (!requireNamespace("brms", quietly = TRUE)) {
-    stop("The `brms` package is needed for `fitted_draws` to support `brmsfit` objects.", call. = FALSE) # nocov
-  }
-
   stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]fitted_draws", n = "nsamples", dpar = "dpars"
+    names(enquos(...)), "[add_]fitted_draws", n = "nsamples"
   )
 
   pred_draws_(
