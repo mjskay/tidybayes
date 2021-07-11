@@ -671,7 +671,6 @@ m %>%
 If you prefer "caterpillar" plots, ordered by something like the mean of the difference, you can reorder the factor before plotting:
 
 ```{r fig.width = small_width, fig.height = small_height}
-#N.B. the syntax for compare_levels is experimental and may change
 m %>%
   spread_draws(r_condition[condition,]) %>%
   compare_levels(r_condition, by = condition) %>%

@@ -248,7 +248,7 @@ We have compiled and loaded this model into the variable `ABC_stan`. Rather than
 So we can skip right to modeling:
 
 ```{r abc_sampling}
-m = sampling(ABC_stan, data = compose_data(ABC), control = list(adapt_delta=0.99))
+m = sampling(ABC_stan, data = compose_data(ABC), control = list(adapt_delta = 0.99))
 ```
 
 ### Getting tidy draws from the model: `spread_draws`

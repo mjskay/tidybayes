@@ -214,13 +214,13 @@ compose_data(ABC)
 This makes it easy to skip right to running the model without munging the data yourself:
 
 ```{r}
-m = sampling(ABC_stan, data = compose_data(ABC), control = list(adapt_delta=0.99))
+m = sampling(ABC_stan, data = compose_data(ABC), control = list(adapt_delta = 0.99))
 ```
 
 The results look like this:
 
 ```{r}
-print(m, pars = c("overall_mean", "condition_mean_sd", "condition_mean", "response_sd"))
+m
 ```
 
 

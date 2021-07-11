@@ -28,7 +28,7 @@ running the model, translate the resulting sample (or predictions) into
 a more tidy format for use with other R functions. `tidybayes` aims to
 simplify these two common (often tedious) operations:
 
-  - **Composing data** for use with the model. This often means
+-   **Composing data** for use with the model. This often means
     translating data from a `data.frame` into a `list` , making sure
     `factors` are encoded as numerical data, adding variables to store
     the length of indices, etc. This package helps automate these
@@ -38,36 +38,37 @@ simplify these two common (often tedious) operations:
     types into a format the model understands by providing your own
     implementation of the generic `as_data_list()`.
 
-  - **Extracting tidy draws** from the model. This often means
+-   **Extracting tidy draws** from the model. This often means
     extracting indices from parameters with names like `"b[1,1]"`,
-    `"b[1,2]"` into separate columns of a data frame, like `i =
-    c(1,1,..)` and `j = c(1,2,...)`. More tediously, sometimes these
-    indices actually correspond to levels of a factor in the original
-    data; e.g. `"x[1]"` might correspond to a value of `x` for the first
-    level of some factor. We provide several straightforward ways to
-    convert draws from a variable with indices into useful long-format
-    (“[tidy](https://dx.doi.org/10.18637/jss.v059.i10)”) data frames,
-    with automatic back-conversion of common data types (factors,
-    logicals) using the `spread_draws()` and `gather_draws()` functions,
-    including automatic recovery of factor levels corresponding to
-    variable indices. In most cases this kind of long-format data is
-    much easier to use with other data-manipulation and plotting
-    packages (e.g., `dplyr`, `tidyr`, `ggplot2`) than the format
-    provided by default from the model.
+    `"b[1,2]"` into separate columns of a data frame, like
+    `i = c(1,1,..)` and `j = c(1,2,...)`. More tediously, sometimes
+    these indices actually correspond to levels of a factor in the
+    original data; e.g. `"x[1]"` might correspond to a value of `x` for
+    the first level of some factor. We provide several straightforward
+    ways to convert draws from a variable with indices into useful
+    long-format (“[tidy](https://dx.doi.org/10.18637/jss.v059.i10)”)
+    data frames, with automatic back-conversion of common data types
+    (factors, logicals) using the `spread_draws()` and `gather_draws()`
+    functions, including automatic recovery of factor levels
+    corresponding to variable indices. In most cases this kind of
+    long-format data is much easier to use with other data-manipulation
+    and plotting packages (e.g., `dplyr`, `tidyr`, `ggplot2`) than the
+    format provided by default from the model.
 
 `tidybayes` also provides some additional functionality for data
 manipulation and visualization tasks common to many models:
 
-  - **Extracting tidy fits and predictions** from models. For models
+-   **Extracting tidy fits and predictions** from models. For models
     like those provided by `rstanarm` and `brms`, `tidybayes` provides a
-    tidy analog of the `fitted` and `predict` functions, called
-    `add_fitted_draws()` and `add_predicted_draws()`. These functions
+    tidy analog of the `posterior_epred()`, `posterior_predict()`, and
+    `posterior_linpred()` functions, called `add_epred_draws()`,
+    `add_predicted_draws()`, and `add_linpred_draws()`. These functions
     are modeled after the `modelr::add_predictions()` function, and turn
     a grid of predictions into a long-format data frame of draws from
     either the fits or predictions from a model. These functions make it
     straightforward to generate arbitrary fit lines from a model.
 
-  - **Summarizing posterior distributions** from models. `tidybayes`
+-   **Summarizing posterior distributions** from models. `tidybayes`
     re-exports the `ggdist::point_interval()` family of functions
     (`median_qi()`, `mean_qi()`, `mode_hdi()`, etc), which are methods
     for generating point summaries and intervals that are designed with
@@ -76,7 +77,7 @@ manipulation and visualization tasks common to many models:
     draws, they *return* tidy data frames, and they **respect data frame
     groups**. These functions
 
-  - **Visualizing priors and posteriors**. The focus on tidy data makes
+-   **Visualizing priors and posteriors**. The focus on tidy data makes
     the output from tidybayes easy to visualize using `ggplot`. While
     existing `geom`s (like `ggdist::geom_pointrange()` and
     `ggdist::geom_linerange()`) can give useful output, the output from
@@ -96,14 +97,14 @@ manipulation and visualization tasks common to many models:
     easily construct quantile dotplots of posteriors (see example in
     this document). For convenience, `tidybayes` re-exports the `ggdist`
     stats and geoms.
-    
+
     ![The slabinterval family of geoms and
     stats](man/figures/slabinterval_family.png)
-    
+
     See `vignette("slabinterval", package = "ggdist")` for more
     information.
 
-  - **Comparing a variable across levels of a factor**, which often
+-   **Comparing a variable across levels of a factor**, which often
     means first generating pairs of levels of a factor (according to
     some desired set of comparisons) and then computing a function over
     the value of the comparison variable for those pairs of levels.
@@ -114,18 +115,18 @@ manipulation and visualization tasks common to many models:
 Finally, `tidybayes` aims to fit into common workflows through
 **compatibility with other packages**:
 
-  - Drop-in functions to translate tidy column names used by `tidybayes`
+-   Drop-in functions to translate tidy column names used by `tidybayes`
     to/from names used by other common packages and functions, including
     column names used by `ggmcmc::ggs` (via `to_ggmcmc_names` and
     `from_ggmcmc_names`) and column names used by `broom::tidy` (via
     `to_broom_names` and `from_broom_names`), which makes comparison
     with results of other models straightforward.
 
-  - The `unspread_draws` and `ungather_draws` functions invert
+-   The `unspread_draws` and `ungather_draws` functions invert
     `spread_draws` and `gather_draws`, aiding compatibility with other
     Bayesian plotting packages (notably `bayesplot`).
 
-  - The `gather_emmeans_draws` function turns the output from
+-   The `gather_emmeans_draws` function turns the output from
     `emmeans::emmeans` (formerly `lsmeans`) into long-format data frames
     (when applied to supported model types, like `MCMCglmm` and
     `rstanarm` models).
@@ -135,12 +136,14 @@ Finally, `tidybayes` aims to fit into common workflows through
 `tidybayes` aims to support a variety of models with a uniform
 interface. Currently supported models include
 [rstan](https://cran.r-project.org/package=rstan),
+[cmdstanr](https://mc-stan.org/cmdstanr/),
 [brms](https://cran.r-project.org/package=brms),
 [rstanarm](https://cran.r-project.org/package=rstanarm),
 [runjags](https://cran.r-project.org/package=runjags),
 [rjags](https://cran.r-project.org/package=rjags),
 [jagsUI](https://cran.r-project.org/package=jagsUI), [coda::mcmc and
 coda::mcmc.list](https://cran.r-project.org/package=coda),
+[posterior::draws](https://mc-stan.org/posterior/),
 [MCMCglmm](https://cran.r-project.org/package=MCMCglmm), and anything
 with its own `as.mcmc.list` implementation. If you install the
 [tidybayes.rethinking](https://mjskay.github.io/tidybayes.rethinking/)
@@ -251,16 +254,16 @@ Rather than munge the data into a format Stan likes ourselves, we will
 use the `tidybayes::compose_data()` function, which takes our `ABC` data
 frame and automatically generates a list of the following elements:
 
-  - `n`: number of observations in the data frame
-  - `n_condition`: number of levels of the condition factor
-  - `condition`: a vector of integers indicating the condition of each
+-   `n`: number of observations in the data frame
+-   `n_condition`: number of levels of the condition factor
+-   `condition`: a vector of integers indicating the condition of each
     observation
-  - `response`: a vector of observations
+-   `response`: a vector of observations
 
 So we can skip right to modeling:
 
 ``` r
-m = sampling(ABC_stan, data = compose_data(ABC), control = list(adapt_delta=0.99))
+m = sampling(ABC_stan, data = compose_data(ABC), control = list(adapt_delta = 0.99))
 ```
 
 ### Getting tidy draws from the model: `spread_draws`
@@ -308,13 +311,13 @@ m %>%
 
 The condition numbers are automatically turned back into text (“A”, “B”,
 “C”, …) and split into their own column. A long-format data frame is
-returned with a row for every draw \(\times\) every combination of
-indices across all variables given to `spread_draws`; for example,
-because `response_sd` here is not indexed by `condition`, within the
-same draw it has the same value for each row corresponding to a
-different `condition` (some other formats supported by `tidybayes` are
-discussed in `vignette("tidybayes")`; in particular, the format returned
-by `gather_draws`).
+returned with a row for every draw × every combination of indices across
+all variables given to `spread_draws`; for example, because
+`response_sd` here is not indexed by `condition`, within the same draw
+it has the same value for each row corresponding to a different
+`condition` (some other formats supported by `tidybayes` are discussed
+in `vignette("tidybayes")`; in particular, the format returned by
+`gather_draws`).
 
 ### Plotting posteriors as eye plots: `stat_eye()`
 
@@ -427,14 +430,14 @@ linear_results =
 linear_results
 ```
 
-    ## # A tibble: 5 x 8
-    ##   condition estimate    df conf.low conf.high statistic  p.value model
-    ##   <chr>        <dbl> <dbl>    <dbl>     <dbl>     <dbl>    <dbl> <chr>
-    ## 1 A            0.182    45   -0.167     0.530      1.05 3.00e- 1 OLS  
-    ## 2 B            1.01     45    0.665     1.36       5.85 5.13e- 7 OLS  
-    ## 3 C            1.87     45    1.53      2.22      10.8  4.15e-14 OLS  
-    ## 4 D            1.03     45    0.678     1.38       5.93 3.97e- 7 OLS  
-    ## 5 E           -0.935    45   -1.28     -0.586     -5.40 2.41e- 6 OLS
+    ## # A tibble: 5 x 9
+    ##   condition estimate std.error    df conf.low conf.high statistic  p.value model
+    ##   <chr>        <dbl>     <dbl> <dbl>    <dbl>     <dbl>     <dbl>    <dbl> <chr>
+    ## 1 A            0.182     0.173    45   -0.167     0.530      1.05 3.00e- 1 OLS  
+    ## 2 B            1.01      0.173    45    0.665     1.36       5.85 5.13e- 7 OLS  
+    ## 3 C            1.87      0.173    45    1.53      2.22      10.8  4.15e-14 OLS  
+    ## 4 D            1.03      0.173    45    0.678     1.38       5.93 3.97e- 7 OLS  
+    ## 5 E           -0.935     0.173    45   -1.28     -0.586     -5.40 2.41e- 6 OLS
 
 Using `ggdist::to_broom_names()`, we’ll convert the output from
 `median_qi` (which uses names `.lower` and `.upper`) to use names from
@@ -517,9 +520,10 @@ posterior predictive intervals (blue); and the data.
 ### Fit curves
 
 For models that support it (like `rstanarm` and `brms` models), We can
-also use the `add_fitted_draws` or `add_predicted_draws` functions to
-generate posterior fits or predictions. Combined with the functions from
-the `modelr` package, this makes it easy to generate fit curves.
+also use the `add_epred_draws()` or `add_predicted_draws()` functions to
+generate distributions of posterior means or predictions. Combined with
+the functions from the `modelr` package, this makes it easy to generate
+fit curves.
 
 Let’s fit a slightly naive model to miles per gallon versus horsepower
 in the `mtcars` dataset:
@@ -550,9 +554,9 @@ mtcars %>%
 
 ![](man/figures/README/pp_bands-1.png)<!-- -->
 
-`ggdist::stat_lineribbon(aes(y = .prediction), .width = c(.99, .95, .8,
-.5))` is one of several shortcut geoms that simplify common combinations
-of `tidybayes` functions and `ggplot` geoms. It is roughly equivalent to
+`ggdist::stat_lineribbon(aes(y = .prediction), .width = c(.99, .95, .8, .5))`
+is one of several shortcut geoms that simplify common combinations of
+`tidybayes` functions and `ggplot` geoms. It is roughly equivalent to
 the following:
 
 ``` r
@@ -599,16 +603,19 @@ mtcars %>%
 ![](man/figures/README/pp_bands_facet-1.png)<!-- -->
 
 Or, if you would like overplotted posterior fit lines, you can instead
-use `tidybayes::add_fitted_draws()` to get draws from fit lines (instead
-of predictions), select some reasonable number of them (say `n = 100`),
-and then plot them:
+use `tidybayes::add_epred_draws()` to get draws from conditional means
+(expectations of the posterior predictive, thus `epred`), select some
+reasonable number of them (say `ndraws = 100`), and then plot them:
 
 ``` r
 mtcars %>%
   data_grid(hp = seq_range(hp, n = 200), am) %>%
-  add_fitted_draws(m_mpg_am, n = 100) %>%         # sample 100 fits from the posterior
+  # NOTE: this shows the use of ndraws to subsample within add_epred_draws()
+  # ONLY do this IF you are planning to make spaghetti plots, etc.
+  # NEVER subsample to a small sample to plot intervals, densities, etc.
+  add_epred_draws(m_mpg_am, ndraws = 100) %>%   # sample 100 means from the posterior
   ggplot(aes(x = hp, y = mpg)) +
-  geom_line(aes(y = .value, group = .draw), alpha = 1/20, color = "#08519C") +
+  geom_line(aes(y = .epred, group = .draw), alpha = 1/20, color = "#08519C") +
   geom_point(data = mtcars) +
   facet_wrap(~ am)
 ```
@@ -624,9 +631,12 @@ ndraws = 50
 
 p = mtcars %>%
   data_grid(hp = seq_range(hp, n = 50), am) %>%
-  add_fitted_draws(m_mpg_am, n = ndraws) %>%
+  # NOTE: this shows the use of ndraws to subsample within add_epred_draws()
+  # ONLY do this IF you are planning to make spaghetti plots, etc.
+  # NEVER subsample to a small sample to plot intervals, densities, etc.
+  add_epred_draws(m_mpg_am, ndraws = ndraws) %>%
   ggplot(aes(x = hp, y = mpg)) +
-  geom_line(aes(y = .value, group = .draw), color = "#08519C") +
+  geom_line(aes(y = .epred, group = .draw), color = "#08519C") +
   geom_point(data = mtcars) +
   facet_wrap(~ am, labeller = label_both) +
   transition_states(.draw, 0, 1) +
@@ -642,7 +652,7 @@ more explanation of how it works.
 
 ## Feedback, issues, and contributions
 
-I welcome feedback, suggestions, issues, and contributions\! Contact me
+I welcome feedback, suggestions, issues, and contributions! Contact me
 at <mjskay@northwestern.edu>. If you have found a bug, please file it
 [here](https://github.com/mjskay/tidybayes/issues/new) with minimal code
 to reproduce the issue. Pull requests should be filed against the
@@ -650,10 +660,11 @@ to reproduce the issue. Pull requests should be filed against the
 
 `tidybayes` grew out of helper functions I wrote to make my own analysis
 pipelines tidier. Over time it has expanded to cover more use cases I
-have encountered, but I would love to make it cover more\!
+have encountered, but I would love to make it cover more!
 
 ## Citing `tidybayes`
 
-Matthew Kay (2020). *tidybayes: Tidy Data and Geoms for Bayesian
-Models*. R package version 2.3.0, <https://mjskay.github.io/tidybayes/>.
-DOI: [10.5281/zenodo.1308151](https://doi.org/10.5281/zenodo.1308151).
+Matthew Kay (2021). *tidybayes: Tidy Data and Geoms for Bayesian
+Models*. R package version 2.4.1.9001,
+<https://mjskay.github.io/tidybayes/>. DOI:
+[10.5281/zenodo.1308151](https://doi.org/10.5281/zenodo.1308151).

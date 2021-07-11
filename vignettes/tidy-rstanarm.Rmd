@@ -699,7 +699,7 @@ esoph_plot = esoph %>%
   xlab("age group")
 
 esoph_plot +
-  stat_summary(fun = median, geom = "bar", fill = "gray75", width = 1, color = "white") +
+  stat_summary(fun = median, geom = "bar", fill = "gray65", width = 1, color = "white") +
   stat_pointinterval()
 ```
 

@@ -185,7 +185,7 @@ m_ideal = brm(
 )
 ```
 
-This looks like this:
+The results look like this:
 
 ```{r}
 m_ideal
@@ -237,7 +237,8 @@ cens_df %>%
   add_predicted_draws(m_ideal) %>%
   summarise(
     p_residual = mean(.prediction < y_star),
-    z_residual = qnorm(p_residual)
+    z_residual = qnorm(p_residual),
+    .groups = "drop_last"
   ) %>%
   ggplot(aes(sample = z_residual)) +
   geom_qq() +
@@ -329,7 +330,8 @@ cens_df %>%
     p_lower = mean(.prediction < y_lower),
     p_upper = mean(.prediction < y_upper),
     p_residual = runif(1, p_lower, p_upper),
-    z_residual = qnorm(p_residual)
+    z_residual = qnorm(p_residual),
+    .groups = "drop_last"
   ) %>%
   ggplot(aes(x = .row, y = z_residual)) +
   geom_point()
@@ -344,7 +346,8 @@ cens_df %>%
     p_lower = mean(.prediction < y_lower),
     p_upper = mean(.prediction < y_upper),
     p_residual = runif(1, p_lower, p_upper),
-    z_residual = qnorm(p_residual)
+    z_residual = qnorm(p_residual),
+    .groups = "drop_last"
   ) %>%
   ggplot(aes(sample = z_residual)) +
   geom_qq() +
@@ -362,7 +365,8 @@ p = cens_df %>%
     p_lower = mean(.prediction < y_lower),
     p_upper = mean(.prediction < y_upper),
     p_residual = list(runif(k, p_lower, p_upper)),
-    residual_draw = list(1:k)
+    residual_draw = list(1:k),
+    .groups = "drop_last"
   ) %>%
   unnest(c(p_residual, residual_draw)) %>%
   mutate(z_residual = qnorm(p_residual)) %>%
@@ -464,7 +468,8 @@ cens_df_t %>%
     p_lower = mean(.prediction < y_lower),
     p_upper = mean(.prediction < y_upper),
     p_residual = runif(1, p_lower, p_upper),
-    z_residual = qnorm(p_residual)
+    z_residual = qnorm(p_residual),
+    .groups = "drop_last"
   ) %>%
   ggplot(aes(sample = z_residual)) +
   geom_qq() +
@@ -513,7 +518,8 @@ p = cens_df_t %>%
     p_lower = mean(.prediction < y_lower),
     p_upper = mean(.prediction < y_upper),
     p_residual = list(runif(k, p_lower, p_upper)),
-    residual_draw = list(1:k)
+    residual_draw = list(1:k),
+    .groups = "drop_last"
   ) %>%
   unnest(c(p_residual, residual_draw)) %>%
   mutate(z_residual = qnorm(p_residual)) %>%
@@ -597,7 +603,8 @@ cens_df_o %>%
     p_lower = mean(.prediction < y_factor),
     p_upper = mean(.prediction <= y_factor),
     p_residual = runif(1, p_lower, p_upper),
-    z_residual = qnorm(p_residual)
+    z_residual = qnorm(p_residual),
+    .groups = "drop_last"
   ) %>%
   ggplot(aes(x = .row, y = z_residual)) +
   geom_point()
@@ -615,7 +622,8 @@ p = cens_df_o %>%
     p_lower = mean(.prediction < y_factor),
     p_upper = mean(.prediction <= y_factor),
     p_residual = list(runif(k, p_lower, p_upper)),
-    residual_draw = list(1:k)
+    residual_draw = list(1:k),
+    .groups = "drop_last"
   ) %>%
   unnest(c(p_residual, residual_draw)) %>%
   mutate(z_residual = qnorm(p_residual)) %>%
@@ -648,13 +656,15 @@ make_probability_residuals = function(data, prediction, y, y_upper = NA, n = 1) 
     #no y_upper provided, use y as y_upper
     data = summarise(data,
       .p_lower = mean(!!.prediction < !!.y),
-      .p_upper = mean(!!.prediction <= !!.y)
+      .p_upper = mean(!!.prediction <= !!.y),
+      .groups = "drop_last"
     )
   } else {
     #y_upper should be a vector, and if an entry in it is NA, use the entry from y
     data = summarise(data,
       .p_lower = mean(!!.prediction < !!.y),
-      .p_upper = mean(!!.prediction <= ifelse(is.na(!!.y_upper), !!.y, !!.y_upper))
+      .p_upper = mean(!!.prediction <= ifelse(is.na(!!.y_upper), !!.y, !!.y_upper)),
+      .groups = "drop_last"
     )
   }
   
