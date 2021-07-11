@@ -44,7 +44,18 @@ test_that("spread_rvars works on a simple variable with no dimensions", {
     typical_r = RankCorr_s$typical_r
   )
 
-  expect_equivalent(spread_rvars(RankCorr_s, typical_r), ref)
+  expect_equal(spread_rvars(RankCorr_s, typical_r), ref)
+
+  # subsetting
+  set.seed(1234)
+  RankCorr_draws = as_draws(RankCorr_s)
+  RankCorr_subsample = RankCorr_draws %>%
+    weight_draws(rep(1, ndraws(RankCorr_draws))) %>%
+    resample_draws(ndraws = 5)
+  subsample_ref = tibble(
+    typical_r = RankCorr_subsample$typical_r
+  )
+  expect_equal(spread_rvars(RankCorr_s, typical_r, ndraws = 5, seed = 1234), subsample_ref)
 })
 
 

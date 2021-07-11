@@ -253,7 +253,7 @@ spread_rvars_ = function(draws, spec) {
 # helpers -----------------------------------------------------------------
 
 # sample draws from a draws_rvars
-#' @importFrom posterior as_draws_rvars resample_draws
+#' @importFrom posterior as_draws as_draws_rvars resample_draws weights ndraws merge_chains
 sample_draws_from_rvars_ = function(model, ndraws = NULL, seed = NULL) {
   signature = class(model)
   if (has_method("as_draws_rvars", signature)) {
@@ -265,9 +265,14 @@ sample_draws_from_rvars_ = function(model, ndraws = NULL, seed = NULL) {
   }
 
   if (!is.null(ndraws)) {
-    # TODO
     if (!is.null(seed)) set.seed(seed)
-    draws = resample_draws(draws, ndraws = ndraws)
+    # if there are multiple chains merge them here so resample_draws does
+    # not give a message about merging chains
+    if (nchains(draws) > 1) draws = merge_chains(draws)
+    # if draws has no weights we must provide them or resample_draws returns
+    # an error (weights are normalized by resample_draws so we don't have to)
+    weights = weights(draws) %||% rep(1, ndraws(draws))
+    draws = resample_draws(draws, ndraws = ndraws, weights = weights)
   }
 
   draws
