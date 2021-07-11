@@ -18,9 +18,9 @@
 #' each group.
 #'
 #' @param data Data frame to sample from
-#' @param n The number of draws to select; if not specified it returns all draws.
+#' @template param-ndraws
+#' @template param-seed
 #' @param draw The name of the column indexing the draws; default `".draw"`.
-#' @param seed A seed to use when subsampling draws; default `"NULL"` as if no seed had been set.
 #' @author Matthew Kay
 #' @keywords manip
 #' @examples
@@ -56,14 +56,14 @@
 #' }
 #' @importFrom dplyr filter
 #' @export
-sample_draws = function(data, n, draw = ".draw", seed = NULL) {
+sample_draws = function(data, ndraws, draw = ".draw", seed = NULL) {
   .draw = as.name(draw)
 
   draw_full = data[[draw]]
 
   if (!is.null(seed)) set.seed(seed)
 
-  draw_sample = sample(unique(draw_full), n)
+  draw_sample = sample(unique(draw_full), ndraws)
 
   filter(data, !!.draw %in% !!draw_sample)
 }

@@ -30,8 +30,7 @@
 #' you to pass already-tidy-format data frames into other tidybayes functions, like
 #' [spread_draws()] or [gather_draws()].
 #'
-#' @param model A supported Bayesian model fit object. See [tidybayes-models()] for a list of supported
-#' models.
+#' @template param-model
 #' @param ... Further arguments passed to other methods (mostly unused).
 #' @return A data frame (actually, a [tibble][tibble::tibble]) with a `.chain` column,
 #' `.iteration` column, `.draw` column, and one column for every variable in `model`.

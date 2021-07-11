@@ -32,35 +32,15 @@
 #' Given equal choice between the two, the spellings prefixed with `add_`
 #' are preferred.
 #'
-#' @param newdata Data frame to generate predictions from.
-#' @param object A supported Bayesian model fit that can provide fits and predictions. Supported models
-#' are listed in the second section of [tidybayes-models]: *Models Supporting Prediction*. While other
-#' functions in this package (like [spread_rvars()]) support a wider range of models, to work with
-#' `add_epred_rvars()` and `add_predicted_rvars()` a model must provide an interface for generating
-#' predictions, thus more generic Bayesian modeling interfaces like `runjags` and `rstan` are not directly
-#' supported for these functions (only wrappers around those languages that provide predictions, like `rstanarm`
-#' and `brm`, are supported here).
-#' @param epred The name of the output column for `add_epred_rvars()`; default `".epred"`.
-#' @param prediction The name of the output column for `add_predicted_rvars()`; default `".prediction"`.
-#' @param linpred The name of the output column for `add_linpred_rvars()`; default `".linpred"`.
-#' @param ... Additional arguments passed to the underlying prediction method for the type of
-#' model given.
-#' @param ndraws The number of draws per prediction / fit to return, or `NULL` to return all draws.
-#'   Supported by `brms` and \pkg{rstanarm} models, but may not be supported by other model types.
-#' @param seed A seed to use when subsampling draws (i.e. when `ndraws` is not `NULL`).
-#' @param re_formula formula containing group-level effects to be considered in the prediction.
-#' If `NULL` (default), include all group-level effects; if `NA`, include no group-level effects.
-#' Some model types (such as [brms::brmsfit] and [rstanarm::stanreg-objects]) allow
-#' marginalizing over grouping factors by specifying new levels of a factor in `newdata`. In the case of
-#' [brms::brm()], you must also pass `allow_new_levels = TRUE` here to include new levels (see
-#' [brms::posterior_predict()]).
-#' @param dpar For `add_epred_rvars()`: Should distributional regression
-#' parameters be included in the output? Valid only for models that support distributional regression parameters,
-#' such as submodels for variance parameters (as in `brms::brm()`). If `TRUE`, distributional regression
-#' parameters are included in the output as additional columns named after each parameter
-#' (alternative names can be provided using a list or named vector, e.g. `c(sigma.hat = "sigma")`
-#' would output the `"sigma"` parameter from a model as a column named `"sigma.hat"`).
-#' If `NULL` or `FALSE` (the default), distributional regression parameters are not included.
+#' @templateVar pred_type rvars
+#' @template param-pred-newdata
+#' @template param-pred-object
+#' @template param-pred-value
+#' @template param-pred-dots
+#' @template param-ndraws
+#' @template param-seed
+#' @template param-pred-re_formula
+#' @template param-pred-dpar
 #' @param columns_to For *some* models, such as ordinal, multinomial, and multivariate models (notably, [brms::brm()] models but
 #' *not* [rstanarm::stan_polr()] models), the column of predictions in the resulting data frame may include nested columns.
 #' For example, for ordinal/multinomial models, these columns correspond to different categories of the response variable.
@@ -101,7 +81,7 @@
 #'   mtcars %>%
 #'     select(hp, cyl, mpg) %>%
 #'     add_epred_rvars(m_mpg) %>%
-#'     add_linpred_rvars(m_mpg, linpred = "mu") %>%
+#'     add_linpred_rvars(m_mpg, value = "mu") %>%
 #'     mutate(expmu = exp(mu), .epred - expmu) %>%
 #'     print()
 #'
@@ -135,11 +115,11 @@
 #' @export
 add_predicted_rvars = function(
   newdata, object, ...,
-  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
+  value = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
 ) {
   predicted_rvars(
     object = object, newdata = newdata, ...,
-    prediction = prediction, ndraws = ndraws, seed = seed, re_formula = re_formula, columns_to = columns_to
+    value = value, ndraws = ndraws, seed = seed, re_formula = re_formula, columns_to = columns_to
   )
 }
 
@@ -147,7 +127,7 @@ add_predicted_rvars = function(
 #' @export
 predicted_rvars = function(
   object, newdata, ...,
-  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
+  value = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
 ) {
   UseMethod("predicted_rvars")
 }
@@ -156,12 +136,12 @@ predicted_rvars = function(
 #' @export
 predicted_rvars.default = function(
   object, newdata, ...,
-  prediction = ".prediction", seed = NULL, columns_to = NULL
+  value = ".prediction", seed = NULL, columns_to = NULL
 ) {
   pred_rvars_default_(
     .name = "predicted_rvars",
     .f = rstantools::posterior_predict, ...,
-    object = object, newdata = newdata, output_name = prediction,
+    object = object, newdata = newdata, output_name = value,
     seed = seed, columns_to = columns_to
   )
 }
@@ -170,7 +150,7 @@ predicted_rvars.default = function(
 #' @export
 predicted_rvars.stanreg = function(
   object, newdata, ...,
-  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
+  value = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
 ) {
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]predicted_rvars", re_formula = "re.form", ndraws = "draws"
@@ -178,7 +158,7 @@ predicted_rvars.stanreg = function(
 
   pred_rvars_(
     .f = rstantools::posterior_predict, ...,
-    object = object, newdata = newdata, output_name = prediction,
+    object = object, newdata = newdata, output_name = value,
     draws = ndraws, seed = seed, re.form = re_formula,
     dpar = NULL, # posterior_predict does not support dpar
     columns_to = columns_to
@@ -189,7 +169,7 @@ predicted_rvars.stanreg = function(
 #' @export
 predicted_rvars.brmsfit = function(
   object, newdata, ...,
-  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
+  value = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
 ) {
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]predicted_rvars", ndraws = "nsamples"
@@ -197,7 +177,7 @@ predicted_rvars.brmsfit = function(
 
   pred_rvars_(
     .f = rstantools::posterior_predict, ...,
-    object = object, newdata = newdata, output_name = prediction,
+    object = object, newdata = newdata, output_name = value,
     nsamples = ndraws, seed = seed, re_formula = re_formula,
     dpar = NULL, # posterior_predict does not support dpar
     columns_to = columns_to

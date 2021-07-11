@@ -10,11 +10,11 @@
 #' @export
 add_epred_rvars = function(
   newdata, object, ...,
-  epred = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+  value = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
 ) {
   epred_rvars(
     object = object, newdata = newdata, ...,
-    epred = epred, ndraws = ndraws, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
+    value = value, ndraws = ndraws, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
   )
 }
 
@@ -22,7 +22,7 @@ add_epred_rvars = function(
 #' @export
 epred_rvars = function(
   object, newdata, ...,
-  epred = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+  value = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
 ) {
   UseMethod("epred_rvars")
 }
@@ -34,12 +34,12 @@ epred_rvars = function(
 #' @export
 epred_rvars.default = function(
   object, newdata, ...,
-  epred = ".epred", seed = NULL, dpar = NULL, columns_to = NULL
+  value = ".epred", seed = NULL, dpar = NULL, columns_to = NULL
 ) {
   pred_rvars_default_(
     .name = "epred_rvars",
     .f = rstantools::posterior_epred, ...,
-    object = object, newdata = newdata, output_name = epred,
+    object = object, newdata = newdata, output_name = value,
     seed = seed, dpar = dpar, columns_to = columns_to
   )
 }
@@ -48,7 +48,7 @@ epred_rvars.default = function(
 #' @export
 epred_rvars.stanreg = function(
   object, newdata, ...,
-  epred = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+  value = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
 ) {
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]epred_rvars", re_formula = "re.form", ndraws = "draws"
@@ -56,7 +56,7 @@ epred_rvars.stanreg = function(
 
   pred_rvars_(
     .f = rstantools::posterior_epred, ...,
-    object = object, newdata = newdata, output_name = epred,
+    object = object, newdata = newdata, output_name = value,
     draws = ndraws, seed = seed, re.form = re_formula,
     dpar = NULL, # rstanarm does not support dpar
     columns_to = columns_to
@@ -68,7 +68,7 @@ epred_rvars.stanreg = function(
 #' @export
 epred_rvars.brmsfit = function(
   object, newdata, ...,
-  epred = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+  value = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
 ) {
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]epred_rvars", ndraws = "nsamples"
@@ -76,7 +76,7 @@ epred_rvars.brmsfit = function(
 
   pred_rvars_(
     .f = rstantools::posterior_epred, ...,
-    object = object, newdata = newdata, output_name = epred,
+    object = object, newdata = newdata, output_name = value,
     nsamples = ndraws, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
   )
 }

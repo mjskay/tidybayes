@@ -10,7 +10,7 @@
 #' @export
 add_linpred_draws = function(
   newdata, object, ...,
-  linpred = ".linpred", ndraws = NULL, seed = NULL, re_formula = NULL,
+  value = ".linpred", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL,
   # deprecated arguments
   n
@@ -18,7 +18,7 @@ add_linpred_draws = function(
   ndraws = .Deprecated_argument_alias(ndraws, n)
   linpred_draws(
     object = object, newdata = newdata, ...,
-    linpred = linpred, ndraws = ndraws, seed = seed, re_formula = re_formula,
+    value = value, ndraws = ndraws, seed = seed, re_formula = re_formula,
     category = category, dpar = dpar
   )
 }
@@ -27,12 +27,11 @@ add_linpred_draws = function(
 #' @export
 linpred_draws = function(
   object, newdata, ...,
-  linpred = ".linpred", ndraws = NULL, seed = NULL, re_formula = NULL,
+  value = ".linpred", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL,
   # deprecated arguments
-  n, value, scale
+  n, scale
 ) {
-  linpred = .Deprecated_argument_alias(linpred, value)
   ndraws = .Deprecated_argument_alias(ndraws, n)
   # we need to update the argument list as well when there are deprecated
   # arguments, otherwise partial matching might assign `n` to `newdata`
@@ -42,14 +41,14 @@ linpred_draws = function(
     transform = scale == "response"
     linpred_draws(
       object = object, newdata = newdata, ...,
-      linpred = linpred, ndraws = ndraws, seed = seed, re_formula = re_formula,
+      value = value, ndraws = ndraws, seed = seed, re_formula = re_formula,
       category = category, dpar = dpar,
       transform = transform
     )
-  } else if (!missing(n) || !missing(value)) {
+  } else if (!missing(n)) {
     linpred_draws(
       object = object, newdata = newdata, ...,
-      linpred = linpred, ndraws = ndraws, seed = seed, re_formula = re_formula,
+      value = value, ndraws = ndraws, seed = seed, re_formula = re_formula,
       category = category, dpar = dpar
     )
   } else {
@@ -64,12 +63,12 @@ linpred_draws = function(
 #' @export
 linpred_draws.default = function(
   object, newdata, ...,
-  linpred = ".linpred", seed = NULL, category = NULL
+  value = ".linpred", seed = NULL, category = NULL
 ) {
   pred_draws_default_(
     .name = "linpred_draws",
     .f = rstantools::posterior_linpred, ...,
-    object = object, newdata = newdata, output_name = linpred,
+    object = object, newdata = newdata, output_name = value,
     seed = seed, category = category
   )
 }
@@ -78,7 +77,7 @@ linpred_draws.default = function(
 #' @export
 linpred_draws.stanreg = function(
   object, newdata, ...,
-  linpred = ".linpred", ndraws = NULL, seed = NULL, re_formula = NULL,
+  value = ".linpred", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL
 ) {
   stop_on_non_generic_arg_(
@@ -87,7 +86,7 @@ linpred_draws.stanreg = function(
 
   pred_draws_(
     .f = rstantools::posterior_linpred, ...,
-    object = object, newdata = newdata, output_name = linpred,
+    object = object, newdata = newdata, output_name = value,
     draws = ndraws, seed = seed, category = category, re.form = re_formula
   )
 }
@@ -98,7 +97,7 @@ linpred_draws.stanreg = function(
 #' @export
 linpred_draws.brmsfit = function(
   object, newdata, ...,
-  linpred = ".linpred", ndraws = NULL, seed = NULL, re_formula = NULL,
+  value = ".linpred", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL
 ) {
   stop_on_non_generic_arg_(
@@ -107,7 +106,7 @@ linpred_draws.brmsfit = function(
 
   pred_draws_(
     .f = rstantools::posterior_linpred, ...,
-    object = object, newdata = newdata, output_name = linpred,
+    object = object, newdata = newdata, output_name = value,
     nsamples = ndraws, seed = seed, re_formula = re_formula, category = category, dpar = dpar
   )
 }

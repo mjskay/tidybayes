@@ -463,7 +463,7 @@ ABC %>%
 ```
 
 The `add_XXX_rvars()` functions can be chained together to add posterior predictions
-and the distribution of the mean of the posterior predictive (`epred`) to the 
+(`predicted_rvars`) and the distribution of the mean of the posterior predictive (`epred_rvars`) to the 
 same data frame. This makes it easy to plot both together alongside the data:
 
 ```{r fig.width = small_width, fig.height = small_height}
@@ -786,7 +786,7 @@ data_plot = mtcars_clean %>%
 
 fit_plot = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
-  add_epred_rvars(m_cyl, epred = "P(cyl | mpg)", columns_to = "cyl") %>%
+  add_epred_rvars(m_cyl, value = "P(cyl | mpg)", columns_to = "cyl") %>%
   ggplot(aes(x = mpg, color = cyl)) +
   stat_dist_lineribbon(aes(dist = `P(cyl | mpg)`, fill = cyl), alpha = 1/5) +
   scale_color_brewer(palette = "Dark2") +
@@ -809,7 +809,7 @@ ndraws = 50
 
 p = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
-  add_epred_rvars(m_cyl, epred = "P(cyl | mpg)", columns_to = "cyl") %>%
+  add_epred_rvars(m_cyl, value = "P(cyl | mpg)", columns_to = "cyl") %>%
   ggplot(aes(x = mpg, color = cyl)) +
   stat_dist_lineribbon(aes(dist = `P(cyl | mpg)`, fill = cyl), alpha = 1/5, color = NA) +
   # we use sample_draws to subsample at the level of geom_line (rather than for the full dataset
@@ -829,7 +829,7 @@ Notice how the lines move together, and how they move up or down together or in 
 
 ```{r fig.width = med_width, fig.height = med_height}
 tibble(mpg = 20) %>%
-  add_epred_rvars(m_cyl, epred = "P(cyl | mpg = 20)", columns_to = "cyl") %>%
+  add_epred_rvars(m_cyl, value = "P(cyl | mpg = 20)", columns_to = "cyl") %>%
   # to draw the scatterplots we need to go back to long-data-frame-of-draws format
   unnest_rvars() %>%
   ungroup() %>%
@@ -857,7 +857,7 @@ column into an expectation easily. Here is an example on two rows:
 ```{r}
 tibble(mpg = c(21,22)) %>%
   # note we are *not* using `columns_to` anymore
-  add_epred_rvars(m_cyl, epred = "P(cyl | mpg)") %>%
+  add_epred_rvars(m_cyl, value = "P(cyl | mpg)") %>%
   mutate(cyl = `P(cyl | mpg)` %**% c(4,6,8))
 ```
 
@@ -873,7 +873,7 @@ data_plot_with_mean = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
   # NOTE: use of ndraws = 100 here subsets draws for the creation of spaghetti plots;
   # DOT NOT do this if you are making other chart types like intervals or densities
-  add_epred_rvars(m_cyl, epred = "P(cyl | mpg)", ndraws = 100) %>%
+  add_epred_rvars(m_cyl, value = "P(cyl | mpg)", ndraws = 100) %>%
   # calculate expected cylinder value
   mutate(cyl = `P(cyl | mpg)` %**% c(4,6,8)) %>%
   # transform in long-data-frame-of-draws format for making spaghetti plots

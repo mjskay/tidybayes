@@ -32,7 +32,7 @@ test_that("[add_]epred_rvars works on a simple rstanarm model", {
 
   expect_equal(epred_rvars(m_hp_wt, mtcars_tbl), ref)
   expect_equal(add_epred_rvars(mtcars_tbl, m_hp_wt), ref)
-  expect_equal(add_epred_rvars(mtcars_tbl, m_hp_wt, epred = "foo"), rename(ref, foo = .epred))
+  expect_equal(add_epred_rvars(mtcars_tbl, m_hp_wt, value = "foo"), rename(ref, foo = .epred))
 
   #epred_rvars.default should work fine here
   expect_equal(epred_rvars.default(m_hp_wt, mtcars_tbl), ref)
@@ -71,7 +71,7 @@ test_that("[add_]epred_rvars works on brms models without dpar", {
   expect_equal(epred_rvars(m_hp, mtcars_tbl), ref)
   expect_equal(add_epred_rvars(mtcars_tbl, m_hp), ref)
   expect_equal(add_epred_rvars(mtcars_tbl, m_hp, dpar = FALSE), ref)
-  expect_equal(add_epred_rvars(mtcars_tbl, m_hp, dpar = FALSE, epred = "foo"), rename(ref, foo = .epred))
+  expect_equal(add_epred_rvars(mtcars_tbl, m_hp, dpar = FALSE, value = "foo"), rename(ref, foo = .epred))
 
   #epred_rvars.default should work fine here
   expect_equal(epred_rvars.default(m_hp, mtcars_tbl), ref)

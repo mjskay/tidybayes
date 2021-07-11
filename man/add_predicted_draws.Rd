@@ -27,7 +27,7 @@ add_epred_draws(
   newdata,
   object,
   ...,
-  epred = ".epred",
+  value = ".epred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -39,7 +39,7 @@ epred_draws(
   object,
   newdata,
   ...,
-  epred = ".epred",
+  value = ".epred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -51,7 +51,7 @@ epred_draws(
   object,
   newdata,
   ...,
-  epred = ".epred",
+  value = ".epred",
   seed = NULL,
   category = NULL
 )
@@ -60,7 +60,7 @@ epred_draws(
   object,
   newdata,
   ...,
-  epred = ".epred",
+  value = ".epred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -72,7 +72,7 @@ epred_draws(
   object,
   newdata,
   ...,
-  epred = ".epred",
+  value = ".epred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -84,7 +84,7 @@ add_linpred_draws(
   newdata,
   object,
   ...,
-  linpred = ".linpred",
+  value = ".linpred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -97,14 +97,13 @@ linpred_draws(
   object,
   newdata,
   ...,
-  linpred = ".linpred",
+  value = ".linpred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
   dpar = NULL,
   n,
-  value,
   scale
 )
 
@@ -112,7 +111,7 @@ linpred_draws(
   object,
   newdata,
   ...,
-  linpred = ".linpred",
+  value = ".linpred",
   seed = NULL,
   category = NULL
 )
@@ -121,7 +120,7 @@ linpred_draws(
   object,
   newdata,
   ...,
-  linpred = ".linpred",
+  value = ".linpred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -133,7 +132,7 @@ linpred_draws(
   object,
   newdata,
   ...,
-  linpred = ".linpred",
+  value = ".linpred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -145,7 +144,7 @@ add_predicted_draws(
   newdata,
   object,
   ...,
-  prediction = ".prediction",
+  value = ".prediction",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -157,19 +156,20 @@ predicted_draws(
   object,
   newdata,
   ...,
-  prediction = ".prediction",
+  value = ".prediction",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
-  n
+  n,
+  prediction
 )
 
 \method{predicted_draws}{default}(
   object,
   newdata,
   ...,
-  prediction = ".prediction",
+  value = ".prediction",
   seed = NULL,
   category = ".category"
 )
@@ -178,7 +178,7 @@ predicted_draws(
   object,
   newdata,
   ...,
-  prediction = ".prediction",
+  value = ".prediction",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -189,7 +189,7 @@ predicted_draws(
   object,
   newdata,
   ...,
-  prediction = ".prediction",
+  value = ".prediction",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -200,7 +200,7 @@ add_residual_draws(
   newdata,
   object,
   ...,
-  residual = ".residual",
+  value = ".residual",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -212,12 +212,13 @@ residual_draws(
   object,
   newdata,
   ...,
-  residual = ".residual",
+  value = ".residual",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
-  n
+  n,
+  residual
 )
 
 \method{residual_draws}{default}(object, newdata, ...)
@@ -226,7 +227,7 @@ residual_draws(
   object,
   newdata,
   ...,
-  residual = ".residual",
+  value = ".residual",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -234,8 +235,7 @@ residual_draws(
 )
 }
 \arguments{
-\item{newdata}{Data frame to generate predictions from. If omitted, most model types will
-generate predictions from the data used to fit the model.}
+\item{newdata}{Data frame to generate predictions from.}
 
 \item{object}{A supported Bayesian model fit that can provide fits and predictions. Supported models
 are listed in the second section of \link{tidybayes-models}: \emph{Models Supporting Prediction}. While other
@@ -248,9 +248,15 @@ and \code{brm}, are supported here).}
 \item{...}{Additional arguments passed to the underlying prediction method for the type of
 model given.}
 
-\item{epred}{The name of the output column for \code{epred_draws}; default \code{".epred"}.}
+\item{value}{The name of the output column:
+\itemize{
+\item for \verb{[add_]epred_draws()}, defaults to \code{".epred"}.
+\item for \verb{[add_]predicted_draws()}, defaults to \code{".prediction"}.
+\item for \verb{[add_]linpred_draws()}, defaults to \code{".linpred"}.
+\item for \verb{[add_]residual_draws()}, defaults to \code{".residual"}
+}}
 
-\item{ndraws}{The number of draws per prediction / fit to return, or \code{NULL} to return all draws.}
+\item{ndraws}{The number of draws to return, or \code{NULL} to return all draws.}
 
 \item{seed}{A seed to use when subsampling draws (i.e. when \code{ndraws} is not \code{NULL}).}
 
@@ -259,7 +265,7 @@ If \code{NULL} (default), include all group-level effects; if \code{NA}, include
 Some model types (such as \link[brms:brmsfit-class]{brms::brmsfit} and \link[rstanarm:stanreg-objects]{rstanarm::stanreg-objects}) allow
 marginalizing over grouping factors by specifying new levels of a factor in \code{newdata}. In the case of
 \code{\link[brms:brm]{brms::brm()}}, you must also pass \code{allow_new_levels = TRUE} here to include new levels (see
-\code{\link[brms:predict.brmsfit]{brms::predict.brmsfit()}}).}
+\code{\link[brms:posterior_predict.brmsfit]{brms::posterior_predict()}}).}
 
 \item{category}{For \emph{some} ordinal, multinomial, and multivariate models (notably, \code{\link[brms:brm]{brms::brm()}} models but
 \emph{not} \code{\link[rstanarm:stan_polr]{rstanarm::stan_polr()}} models), multiple sets of rows will be returned per input row for
@@ -274,28 +280,21 @@ the output from different modeling functions differs on this point.
 See \code{vignette("tidy-brms")} and \code{vignette("tidy-rstanarm")} for examples of dealing with output
 from ordinal models using both approaches.}
 
-\item{dpar}{For \code{epred_draws()}, \code{add_epred_draws()}, \code{linpred_draws()}, and \code{add_linpred_draws()}:
-Should distributional regression
+\item{dpar}{For \code{add_epred_draws()} and \code{add_linpred_draws()}: Should distributional regression
 parameters be included in the output? Valid only for models that support distributional regression parameters,
-such as submodels for variance parameters (as in \code{brm}). If \code{TRUE}, distributional regression
+such as submodels for variance parameters (as in \code{brms::brm()}). If \code{TRUE}, distributional regression
 parameters are included in the output as additional columns named after each parameter
 (alternative names can be provided using a list or named vector, e.g. \code{c(sigma.hat = "sigma")}
 would output the \code{"sigma"} parameter from a model as a column named \code{"sigma.hat"}).
-If \code{FALSE} (the default), distributional regression parameters are not included.}
-
-\item{linpred}{The name of the output column for \code{linpred_draws}; default \code{".linpred"}.}
+If \code{NULL} or \code{FALSE} (the default), distributional regression parameters are not included.}
 
 \item{n}{(Deprecated). Use \code{ndraws}.}
-
-\item{value}{(Deprecated). Use \code{linpred}.}
 
 \item{scale}{(Deprecated). Use the appropriate function (\code{epred_draws()} or \code{linpred_draws()})
 depending on what type of distirbution you want. For \code{linpred_draws()}, you may want the
 \code{transform} argument. See \code{rstanarm::posterior_linpred()} or \code{brms::posterior_linpred()}.}
 
-\item{prediction}{The name of the output column for \code{predicted_draws}; default \code{".prediction"}.}
-
-\item{residual}{The name of the output column for \code{residual_draws}; default \code{".residual"}.}
+\item{prediction, residual}{(Deprecated). Use \code{value}.}
 }
 \value{
 A data frame (actually, a \link[tibble:tibble]{tibble}) with a \code{.row} column (a

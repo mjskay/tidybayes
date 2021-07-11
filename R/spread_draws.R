@@ -194,15 +194,15 @@ globalVariables(c(".."))
 #'
 #' Would return a tidy data frame with variables starting with `b_` and having one dimension.
 #'
-#' @param model A supported Bayesian model fit. Tidybayes supports a variety of model objects;
-#' for a full list of supported models, see [tidybayes-models].
+#' @template param-model
 #' @param ... Expressions in the form of
 #' `variable_name[dimension_1, dimension_2, ...] | wide_dimension`. See *Details*.
 #' @param regex If `TRUE`, variable names are treated as regular expressions and all column matching the
 #' regular expression and number of dimensions are included in the output. Default `FALSE`.
 #' @param sep Separator used to separate dimensions in variable names, as a regular expression.
-#' @param n The number of draws to return, or `NULL` to return all draws.
-#' @param seed A seed to use when subsampling draws (i.e. when `n` is not `NULL`).
+#' @template param-ndraws
+#' @template param-seed
+#' @template param-deprecated-n
 #' @return A data frame.
 #' @author Matthew Kay
 #' @seealso [spread_rvars()], [recover_types()], [compose_data()].
@@ -232,8 +232,10 @@ globalVariables(c(".."))
 #' @importFrom dplyr inner_join group_by_at
 #' @rdname spread_draws
 #' @export
-spread_draws = function(model, ..., regex = FALSE, sep = "[, ]", n = NULL, seed = NULL) {
-  draws = sample_draws_from_model_(model, n, seed)
+spread_draws = function(model, ..., regex = FALSE, sep = "[, ]", ndraws = NULL, seed = NULL, n) {
+  ndraws = .Deprecated_argument_alias(ndraws, n)
+
+  draws = sample_draws_from_model_(model, ndraws, seed)
 
   tidysamples = lapply(enquos(...), function(variable_spec) {
     spread_draws_(draws, variable_spec, regex = regex, sep = sep)
@@ -538,12 +540,12 @@ nest_dimensions_ = function(long_draws, dimension_names, nested_dimension_names)
 # helpers -----------------------------------------------------------------
 
 # sample draws from a model
-sample_draws_from_model_ = function(model, n = NULL, seed = NULL) {
+sample_draws_from_model_ = function(model, ndraws = NULL, seed = NULL) {
   draws = tidy_draws(model)
 
-  if (!is.null(n)) {
+  if (!is.null(ndraws)) {
     if (!is.null(seed)) set.seed(seed)
-    draws = sample_n(draws, n)
+    draws = sample_n(draws, ndraws)
   }
 
   draws

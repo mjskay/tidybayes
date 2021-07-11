@@ -56,8 +56,7 @@ apply_prototypes = function(...) {
 #' Additional data types can be supported by providing a custom implementation
 #' of the generic function `as_constructor`.
 #'
-#' @param model A supported Bayesian model fit. Tidybayes supports a variety of model objects;
-#' for a full list of supported models, see [tidybayes-models].
+#' @template param-model
 #' @param ...  Lists (or data frames) providing data prototypes used to convert
 #' columns returned by [spread_draws()] and [gather_draws()] back into useful data types.
 #' See *Details*.

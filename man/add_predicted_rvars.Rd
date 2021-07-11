@@ -23,7 +23,7 @@ add_epred_rvars(
   newdata,
   object,
   ...,
-  epred = ".epred",
+  value = ".epred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -35,7 +35,7 @@ epred_rvars(
   object,
   newdata,
   ...,
-  epred = ".epred",
+  value = ".epred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -47,7 +47,7 @@ epred_rvars(
   object,
   newdata,
   ...,
-  epred = ".epred",
+  value = ".epred",
   seed = NULL,
   dpar = NULL,
   columns_to = NULL
@@ -57,7 +57,7 @@ epred_rvars(
   object,
   newdata,
   ...,
-  epred = ".epred",
+  value = ".epred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -69,7 +69,7 @@ epred_rvars(
   object,
   newdata,
   ...,
-  epred = ".epred",
+  value = ".epred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -81,7 +81,7 @@ add_linpred_rvars(
   newdata,
   object,
   ...,
-  linpred = ".linpred",
+  value = ".linpred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -93,7 +93,7 @@ linpred_rvars(
   object,
   newdata,
   ...,
-  linpred = ".linpred",
+  value = ".linpred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -105,7 +105,7 @@ linpred_rvars(
   object,
   newdata,
   ...,
-  linpred = ".linpred",
+  value = ".linpred",
   seed = NULL,
   dpar = NULL,
   columns_to = NULL
@@ -115,7 +115,7 @@ linpred_rvars(
   object,
   newdata,
   ...,
-  linpred = ".linpred",
+  value = ".linpred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -127,7 +127,7 @@ linpred_rvars(
   object,
   newdata,
   ...,
-  linpred = ".linpred",
+  value = ".linpred",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -139,7 +139,7 @@ add_predicted_rvars(
   newdata,
   object,
   ...,
-  prediction = ".prediction",
+  value = ".prediction",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -150,7 +150,7 @@ predicted_rvars(
   object,
   newdata,
   ...,
-  prediction = ".prediction",
+  value = ".prediction",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -161,7 +161,7 @@ predicted_rvars(
   object,
   newdata,
   ...,
-  prediction = ".prediction",
+  value = ".prediction",
   seed = NULL,
   columns_to = NULL
 )
@@ -170,7 +170,7 @@ predicted_rvars(
   object,
   newdata,
   ...,
-  prediction = ".prediction",
+  value = ".prediction",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -181,7 +181,7 @@ predicted_rvars(
   object,
   newdata,
   ...,
-  prediction = ".prediction",
+  value = ".prediction",
   ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
@@ -194,7 +194,7 @@ predicted_rvars(
 \item{object}{A supported Bayesian model fit that can provide fits and predictions. Supported models
 are listed in the second section of \link{tidybayes-models}: \emph{Models Supporting Prediction}. While other
 functions in this package (like \code{\link[=spread_rvars]{spread_rvars()}}) support a wider range of models, to work with
-\code{add_epred_rvars()} and \code{add_predicted_rvars()} a model must provide an interface for generating
+\code{add_epred_rvars()}, \code{add_predicted_rvars()}, etc. a model must provide an interface for generating
 predictions, thus more generic Bayesian modeling interfaces like \code{runjags} and \code{rstan} are not directly
 supported for these functions (only wrappers around those languages that provide predictions, like \code{rstanarm}
 and \code{brm}, are supported here).}
@@ -202,10 +202,14 @@ and \code{brm}, are supported here).}
 \item{...}{Additional arguments passed to the underlying prediction method for the type of
 model given.}
 
-\item{epred}{The name of the output column for \code{add_epred_rvars()}; default \code{".epred"}.}
+\item{value}{The name of the output column:
+\itemize{
+\item for \verb{[add_]epred_rvars()}, defaults to \code{".epred"}.
+\item for \verb{[add_]predicted_rvars()}, defaults to \code{".prediction"}.
+\item for \verb{[add_]linpred_rvars()}, defaults to \code{".linpred"}.
+}}
 
-\item{ndraws}{The number of draws per prediction / fit to return, or \code{NULL} to return all draws.
-Supported by \code{brms} and \pkg{rstanarm} models, but may not be supported by other model types.}
+\item{ndraws}{The number of draws to return, or \code{NULL} to return all draws.}
 
 \item{seed}{A seed to use when subsampling draws (i.e. when \code{ndraws} is not \code{NULL}).}
 
@@ -216,7 +220,7 @@ marginalizing over grouping factors by specifying new levels of a factor in \cod
 \code{\link[brms:brm]{brms::brm()}}, you must also pass \code{allow_new_levels = TRUE} here to include new levels (see
 \code{\link[brms:posterior_predict.brmsfit]{brms::posterior_predict()}}).}
 
-\item{dpar}{For \code{add_epred_rvars()}: Should distributional regression
+\item{dpar}{For \code{add_epred_rvars()} and \code{add_linpred_rvars()}: Should distributional regression
 parameters be included in the output? Valid only for models that support distributional regression parameters,
 such as submodels for variance parameters (as in \code{brms::brm()}). If \code{TRUE}, distributional regression
 parameters are included in the output as additional columns named after each parameter
@@ -232,10 +236,6 @@ It may be more convenient to turn these nested columns into rows in the output; 
 In this case, a \code{.row} column will also be added to the result indicating which rows of the output
 correspond to the same row in \code{newdata}.
 See \code{vignette("tidy-posterior")} for examples of dealing with output ordinal models.}
-
-\item{linpred}{The name of the output column for \code{add_linpred_rvars()}; default \code{".linpred"}.}
-
-\item{prediction}{The name of the output column for \code{add_predicted_rvars()}; default \code{".prediction"}.}
 }
 \value{
 A data frame (actually, a \link[tibble:tibble]{tibble}) equal to the input \code{newdata} with
@@ -293,7 +293,7 @@ if (
   mtcars \%>\%
     select(hp, cyl, mpg) \%>\%
     add_epred_rvars(m_mpg) \%>\%
-    add_linpred_rvars(m_mpg, linpred = "mu") \%>\%
+    add_linpred_rvars(m_mpg, value = "mu") \%>\%
     mutate(expmu = exp(mu), .epred - expmu) \%>\%
     print()
 

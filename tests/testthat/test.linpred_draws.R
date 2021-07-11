@@ -58,11 +58,7 @@ test_that("[add_]linpred_draws works on a simple rstanarm model", {
 
   expect_equal(linpred_draws(m_hp_wt, mtcars_tbl), ref)
   expect_equal(add_linpred_draws(mtcars_tbl, m_hp_wt), ref)
-  expect_equal(add_linpred_draws(mtcars_tbl, m_hp_wt, linpred = "foo"), rename(ref, foo = .linpred))
-  expect_warning(
-    expect_equal(add_linpred_draws(mtcars_tbl, m_hp_wt, value = "foo"), rename(ref, foo = .linpred)),
-    "`value`.*deprecated.*`linpred`"
-  )
+  expect_equal(add_linpred_draws(mtcars_tbl, m_hp_wt, value = "foo"), rename(ref, foo = .linpred))
 
   #subsetting to test the `ndraws` argument
   set.seed(1234)

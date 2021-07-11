@@ -58,7 +58,7 @@ test_that("[add_]epred_draws works on a simple rstanarm model", {
 
   expect_equal(epred_draws(m_hp_wt, mtcars_tbl), ref)
   expect_equal(add_epred_draws(mtcars_tbl, m_hp_wt), ref)
-  expect_equal(add_epred_draws(mtcars_tbl, m_hp_wt, epred = "foo"), rename(ref, foo = .epred))
+  expect_equal(add_epred_draws(mtcars_tbl, m_hp_wt, value = "foo"), rename(ref, foo = .epred))
 
   # fitted_draws deprecation check
   expect_warning(
@@ -129,7 +129,7 @@ test_that("[add_]epred_draws works on brms models without dpar", {
   expect_equal(epred_draws(m_hp, mtcars_tbl), ref)
   expect_equal(add_epred_draws(mtcars_tbl, m_hp), ref)
   expect_equal(add_epred_draws(mtcars_tbl, m_hp, dpar = FALSE), ref)
-  expect_equal(add_epred_draws(mtcars_tbl, m_hp, dpar = FALSE, epred = "foo"), rename(ref, foo = .epred))
+  expect_equal(add_epred_draws(mtcars_tbl, m_hp, dpar = FALSE, value = "foo"), rename(ref, foo = .epred))
 
   # fitted_draws deprecation check
   expect_warning(

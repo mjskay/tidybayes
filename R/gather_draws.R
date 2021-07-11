@@ -10,8 +10,10 @@
 #' @importFrom dplyr bind_rows group_by_at
 #' @importFrom rlang enquos
 #' @export
-gather_draws = function(model, ..., regex = FALSE, sep = "[, ]", n = NULL, seed = NULL) {
-  draws = sample_draws_from_model_(model, n, seed)
+gather_draws = function(model, ..., regex = FALSE, sep = "[, ]", ndraws = NULL, seed = NULL, n) {
+  ndraws = .Deprecated_argument_alias(ndraws, n)
+
+  draws = sample_draws_from_model_(model, ndraws, seed)
 
   tidysamples = lapply(enquos(...), function(variable_spec) {
     gather_variables(spread_draws_(draws, variable_spec, regex = regex, sep = sep))

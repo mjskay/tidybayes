@@ -14,8 +14,7 @@
 #' to construct calls to [spread_draws()] or [gather_draws()]
 #' in order to extract draws from models in a tidy format.
 #'
-#' @param model A supported Bayesian model fit. Tidybayes supports a variety of model objects;
-#' for a full list of supported models, see [tidybayes-models].
+#' @template param-model
 #' @return A character vector of variable names in the fitted model.
 #' @author Matthew Kay
 #' @seealso [spread_draws()], [gather_draws()].

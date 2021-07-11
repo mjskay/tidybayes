@@ -10,8 +10,8 @@
 #' @importFrom rlang enquos
 #' @importFrom dplyr inner_join
 #' @export
-gather_rvars = function(model, ..., n = NULL, seed = NULL) {
-  draws = sample_draws_from_rvars_(model, n, seed)
+gather_rvars = function(model, ..., ndraws = NULL, seed = NULL) {
+  draws = sample_draws_from_rvars_(model, ndraws, seed)
 
   list_of_list_of_rvar_tibbles = lapply(enquos(...), function(variable_spec) {
     spec = parse_variable_spec(variable_spec)

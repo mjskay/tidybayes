@@ -230,7 +230,7 @@ fitted_draws = function(
       ))
       epred_draws(
         object = object, newdata = newdata, ...,
-        epred = value, ndraws = n
+        value = value, ndraws = n
       )
     },
     linear = {
@@ -240,7 +240,7 @@ fitted_draws = function(
       ))
       linpred_draws(
         object = object, newdata = newdata, ...,
-        linpred = value, ndraws = n
+        value = value, ndraws = n
       )
     }
   )

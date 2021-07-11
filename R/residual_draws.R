@@ -10,14 +10,14 @@
 #' @export
 add_residual_draws = function(
   newdata, object, ...,
-  residual = ".residual", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
+  value = ".residual", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
   # deprecated arguments
   n
 ) {
   ndraws = .Deprecated_argument_alias(ndraws, n)
   residual_draws(
     object = object, newdata = newdata, ...,
-    residual = residual, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
+    value = value, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
   )
 }
 
@@ -25,17 +25,18 @@ add_residual_draws = function(
 #' @export
 residual_draws = function(
   object, newdata, ...,
-  residual = ".residual", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
+  value = ".residual", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
   # deprecated arguments
-  n
+  n, residual
 ) {
+  value = .Deprecated_argument_alias(value, residual)
   ndraws = .Deprecated_argument_alias(ndraws, n)
   # we need to update the argument list as well if there were deprecated
   # arguments or partial matching will assign `n` to `newdata`
-  if (!missing(n)) {
+  if (!missing(n) || !missing(residual)) {
     residual_draws(
       object = object, newdata = newdata, ...,
-      residual = residual, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
+      value = value, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
     )
   } else {
     UseMethod("residual_draws")
@@ -52,7 +53,7 @@ residual_draws.default = function(object, newdata, ...) {
 #' @export
 residual_draws.brmsfit = function(
   object, newdata, ...,
-  residual = ".residual", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category"
+  value = ".residual", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category"
 ) {
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]residual_draws", ndraws = "nsamples"
@@ -60,7 +61,7 @@ residual_draws.brmsfit = function(
 
   pred_draws_(
     .f = residuals, ...,
-    object = object, newdata = newdata, output_name = residual,
+    object = object, newdata = newdata, output_name = value,
     seed = seed, nsamples = ndraws, re_formula = re_formula, category = category,
     summary = FALSE
   )

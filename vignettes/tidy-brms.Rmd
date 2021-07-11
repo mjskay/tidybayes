@@ -733,7 +733,7 @@ data_plot = mtcars_clean %>%
 
 fit_plot = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
-  add_epred_draws(m_cyl, epred = "P(cyl | mpg)", category = "cyl") %>%
+  add_epred_draws(m_cyl, value = "P(cyl | mpg)", category = "cyl") %>%
   ggplot(aes(x = mpg, y = `P(cyl | mpg)`, color = cyl)) +
   stat_lineribbon(aes(fill = cyl), alpha = 1/5) +
   scale_color_brewer(palette = "Dark2") +
@@ -755,7 +755,7 @@ ndraws = 50
 
 p = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
-  add_epred_draws(m_cyl, epred = "P(cyl | mpg)", category = "cyl") %>%
+  add_epred_draws(m_cyl, value = "P(cyl | mpg)", category = "cyl") %>%
   ggplot(aes(x = mpg, y = `P(cyl | mpg)`, color = cyl)) +
   # we remove the `.draw` column from the data for stat_lineribbon so that the same ribbons
   # are drawn on every frame (since we use .draw to determine the transitions below)
@@ -774,7 +774,7 @@ Notice how the lines move together, and how they move up or down together or in 
 
 ```{r fig.width = med_width, fig.height = med_height}
 tibble(mpg = 20) %>%
-  add_epred_draws(m_cyl, epred = "P(cyl | mpg = 20)", category = "cyl") %>%
+  add_epred_draws(m_cyl, value = "P(cyl | mpg = 20)", category = "cyl") %>%
   ungroup() %>%
   select(.draw, cyl, `P(cyl | mpg = 20)`) %>%
   gather_pairs(cyl, `P(cyl | mpg = 20)`, triangle = "both") %>%
@@ -804,7 +804,7 @@ data_plot_with_mean = mtcars_clean %>%
   # NOTE: this shows the use of ndraws to subsample within add_epred_draws()
   # ONLY do this IF you are planning to make spaghetti plots, etc.
   # NEVER subsample to a small sample to plot intervals, densities, etc.
-  add_epred_draws(m_cyl, epred = "P(cyl | mpg)", category = "cyl", ndraws = 100) %>%
+  add_epred_draws(m_cyl, value = "P(cyl | mpg)", category = "cyl", ndraws = 100) %>%
   group_by(mpg, .draw) %>%
   # calculate expected cylinder value
   mutate(cyl = as.numeric(as.character(cyl))) %>%

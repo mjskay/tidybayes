@@ -46,8 +46,8 @@ tidy_draws(model, ...)
 \method{tidy_draws}{MCMCglmm}(model, ...)
 }
 \arguments{
-\item{model}{A supported Bayesian model fit object. See \code{\link[=tidybayes-models]{tidybayes-models()}} for a list of supported
-models.}
+\item{model}{A supported Bayesian model fit. Tidybayes supports a variety of model objects;
+for a full list of supported models, see \link{tidybayes-models}.}
 
 \item{...}{Further arguments passed to other methods (mostly unused).}
 }

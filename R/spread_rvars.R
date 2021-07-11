@@ -105,12 +105,11 @@
 #' rows of the data frame but leave the second index nested in the `b` column
 #' (see *Examples* below).
 #'
-#' @param model A supported Bayesian model fit. Tidybayes supports a variety of model objects;
-#' for a full list of supported models, see [tidybayes-models].
+#' @template param-model
 #' @param ... Expressions in the form of
 #' `variable_name[dimension_1, dimension_2, ...]`. See *Details*.
-#' @param n The number of draws to return, or `NULL` to return all draws.
-#' @param seed A seed to use when subsampling draws (i.e. when `n` is not `NULL`).
+#' @template param-ndraws
+#' @template param-seed
 #' @return A data frame.
 #' @author Matthew Kay
 #' @seealso [spread_draws()], [recover_types()], [compose_data()]. See also
@@ -140,8 +139,8 @@
 #' @importFrom rlang enquos
 #' @importFrom dplyr inner_join
 #' @export
-spread_rvars = function(model, ..., n = NULL, seed = NULL) {
-  draws = sample_draws_from_rvars_(model, n, seed)
+spread_rvars = function(model, ..., ndraws = NULL, seed = NULL) {
+  draws = sample_draws_from_rvars_(model, ndraws, seed)
 
   list_of_rvar_tibbles = lapply(enquos(...), function(variable_spec) {
     spec = parse_variable_spec(variable_spec)
@@ -255,7 +254,7 @@ spread_rvars_ = function(draws, spec) {
 
 # sample draws from a draws_rvars
 #' @importFrom posterior as_draws_rvars resample_draws
-sample_draws_from_rvars_ = function(model, n = NULL, seed = NULL) {
+sample_draws_from_rvars_ = function(model, ndraws = NULL, seed = NULL) {
   signature = class(model)
   if (has_method("as_draws_rvars", signature)) {
     draws = as_draws_rvars(model)
@@ -265,9 +264,10 @@ sample_draws_from_rvars_ = function(model, n = NULL, seed = NULL) {
     draws = as_draws_rvars(tidy_draws(model))
   }
 
-  if (!is.null(n)) {
+  if (!is.null(ndraws)) {
+    # TODO
     if (!is.null(seed)) set.seed(seed)
-    draws = resample_draws(draws, ndraws = n)
+    draws = resample_draws(draws, ndraws = ndraws)
   }
 
   draws

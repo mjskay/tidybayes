@@ -31,7 +31,7 @@ test_that("[add_]linpred_rvars works on a simple rstanarm model", {
     mutate(.linpred = rvar(rstantools::posterior_linpred(m_hp_wt, newdata = mtcars_tbl)))
 
   expect_equal(linpred_rvars(m_hp_wt, mtcars_tbl), ref)
-  expect_equal(add_linpred_rvars(mtcars_tbl, m_hp_wt, linpred = "foo"), rename(ref, foo = .linpred))
+  expect_equal(add_linpred_rvars(mtcars_tbl, m_hp_wt, value = "foo"), rename(ref, foo = .linpred))
 
   #linpred_rvars.default should work fine here
   expect_equal(linpred_rvars.default(m_hp_wt, mtcars_tbl), ref)

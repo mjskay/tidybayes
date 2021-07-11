@@ -5,9 +5,9 @@
 \alias{spread_rvars}
 \title{Extract draws from a Bayesian model into tidy data frames of random variables}
 \usage{
-gather_rvars(model, ..., n = NULL, seed = NULL)
+gather_rvars(model, ..., ndraws = NULL, seed = NULL)
 
-spread_rvars(model, ..., n = NULL, seed = NULL)
+spread_rvars(model, ..., ndraws = NULL, seed = NULL)
 }
 \arguments{
 \item{model}{A supported Bayesian model fit. Tidybayes supports a variety of model objects;
@@ -16,9 +16,9 @@ for a full list of supported models, see \link{tidybayes-models}.}
 \item{...}{Expressions in the form of
 \code{variable_name[dimension_1, dimension_2, ...]}. See \emph{Details}.}
 
-\item{n}{The number of draws to return, or \code{NULL} to return all draws.}
+\item{ndraws}{The number of draws to return, or \code{NULL} to return all draws.}
 
-\item{seed}{A seed to use when subsampling draws (i.e. when \code{n} is not \code{NULL}).}
+\item{seed}{A seed to use when subsampling draws (i.e. when \code{ndraws} is not \code{NULL}).}
 }
 \value{
 A data frame.

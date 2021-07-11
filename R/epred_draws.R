@@ -10,12 +10,12 @@
 #' @export
 add_epred_draws = function(
   newdata, object, ...,
-  epred = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL,
+  value = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL
 ) {
   epred_draws(
     object = object, newdata = newdata, ...,
-    epred = epred, ndraws = ndraws, seed = seed, re_formula = re_formula,
+    value = value, ndraws = ndraws, seed = seed, re_formula = re_formula,
     category = category, dpar = dpar
   )
 }
@@ -24,7 +24,7 @@ add_epred_draws = function(
 #' @export
 epred_draws = function(
   object, newdata, ...,
-  epred = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL,
+  value = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL
 ) {
   UseMethod("epred_draws")
@@ -37,12 +37,12 @@ epred_draws = function(
 #' @export
 epred_draws.default = function(
   object, newdata, ...,
-  epred = ".epred", seed = NULL, category = NULL
+  value = ".epred", seed = NULL, category = NULL
 ) {
   pred_draws_default_(
     .name = "epred_draws",
     .f = rstantools::posterior_epred, ...,
-    object = object, newdata = newdata, output_name = epred,
+    object = object, newdata = newdata, output_name = value,
     seed = seed, category = category
   )
 }
@@ -51,7 +51,7 @@ epred_draws.default = function(
 #' @export
 epred_draws.stanreg = function(
   object, newdata, ...,
-  epred = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL,
+  value = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL
 ) {
   stop_on_non_generic_arg_(
@@ -60,7 +60,7 @@ epred_draws.stanreg = function(
 
   pred_draws_(
     .f = rstantools::posterior_epred, ...,
-    object = object, newdata = newdata, output_name = epred,
+    object = object, newdata = newdata, output_name = value,
     draws = ndraws, seed = seed, category = category, re.form = re_formula
   )
 }
@@ -71,7 +71,7 @@ epred_draws.stanreg = function(
 #' @export
 epred_draws.brmsfit = function(
   object, newdata, ...,
-  epred = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL,
+  value = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL
 ) {
   stop_on_non_generic_arg_(
@@ -80,7 +80,7 @@ epred_draws.brmsfit = function(
 
   pred_draws_(
     .f = rstantools::posterior_epred, ...,
-    object = object, newdata = newdata, output_name = epred,
+    object = object, newdata = newdata, output_name = value,
     nsamples = ndraws, seed = seed, re_formula = re_formula, category = category, dpar = dpar
   )
 }

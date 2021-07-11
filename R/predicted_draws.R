@@ -36,29 +36,15 @@
 #' Given equal choice between the two, the spellings prefixed with `add_`
 #' are preferred.
 #'
-#' @param newdata Data frame to generate predictions from. If omitted, most model types will
-#' generate predictions from the data used to fit the model.
-#' @param object A supported Bayesian model fit that can provide fits and predictions. Supported models
-#' are listed in the second section of [tidybayes-models]: *Models Supporting Prediction*. While other
-#' functions in this package (like [spread_draws()]) support a wider range of models, to work with
-#' `add_epred_draws()`, `add_predicted_draws()`, etc. a model must provide an interface for generating
-#' predictions, thus more generic Bayesian modeling interfaces like `runjags` and `rstan` are not directly
-#' supported for these functions (only wrappers around those languages that provide predictions, like `rstanarm`
-#' and `brm`, are supported here).
-#' @param epred The name of the output column for `epred_draws`; default `".epred"`.
-#' @param prediction The name of the output column for `predicted_draws`; default `".prediction"`.
-#' @param linpred The name of the output column for `linpred_draws`; default `".linpred"`.
-#' @param residual The name of the output column for `residual_draws`; default `".residual"`.
-#' @param ... Additional arguments passed to the underlying prediction method for the type of
-#' model given.
-#' @param ndraws The number of draws per prediction / fit to return, or `NULL` to return all draws.
-#' @param seed A seed to use when subsampling draws (i.e. when `ndraws` is not `NULL`).
-#' @param re_formula formula containing group-level effects to be considered in the prediction.
-#' If `NULL` (default), include all group-level effects; if `NA`, include no group-level effects.
-#' Some model types (such as [brms::brmsfit] and [rstanarm::stanreg-objects]) allow
-#' marginalizing over grouping factors by specifying new levels of a factor in `newdata`. In the case of
-#' [brms::brm()], you must also pass `allow_new_levels = TRUE` here to include new levels (see
-#' [brms::predict.brmsfit()]).
+#' @templateVar pred_type draws
+#' @template param-pred-newdata
+#' @template param-pred-object
+#' @template param-pred-value
+#' @template param-pred-dots
+#' @template param-ndraws
+#' @template param-seed
+#' @template param-pred-re_formula
+#' @template param-pred-dpar
 #' @param category For *some* ordinal, multinomial, and multivariate models (notably, [brms::brm()] models but
 #' *not* [rstanarm::stan_polr()] models), multiple sets of rows will be returned per input row for
 #' `epred_draws()` or `predicted_draws()`, depending on the model type. For ordinal/multinomial models,
@@ -71,16 +57,8 @@
 #' the output from different modeling functions differs on this point.
 #' See `vignette("tidy-brms")` and `vignette("tidy-rstanarm")` for examples of dealing with output
 #' from ordinal models using both approaches.
-#' @param dpar For `epred_draws()`, `add_epred_draws()`, `linpred_draws()`, and `add_linpred_draws()`:
-#' Should distributional regression
-#' parameters be included in the output? Valid only for models that support distributional regression parameters,
-#' such as submodels for variance parameters (as in `brm`). If `TRUE`, distributional regression
-#' parameters are included in the output as additional columns named after each parameter
-#' (alternative names can be provided using a list or named vector, e.g. `c(sigma.hat = "sigma")`
-#' would output the `"sigma"` parameter from a model as a column named `"sigma.hat"`).
-#' If `FALSE` (the default), distributional regression parameters are not included.
-#' @param n (Deprecated). Use `ndraws`.
-#' @param value (Deprecated). Use `linpred`.
+#' @template param-deprecated-n
+#' @param prediction,residual (Deprecated). Use `value`.
 #' @param scale (Deprecated). Use the appropriate function (`epred_draws()` or `linpred_draws()`)
 #' depending on what type of distirbution you want. For `linpred_draws()`, you may want the
 #' `transform` argument. See `rstanarm::posterior_linpred()` or `brms::posterior_linpred()`.
@@ -149,14 +127,14 @@
 #' @export
 add_predicted_draws = function(
   newdata, object, ...,
-  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
+  value = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
   # deprecated arguments
   n
 ) {
   ndraws = .Deprecated_argument_alias(ndraws, n)
   predicted_draws(
     object = object, newdata = newdata, ...,
-    prediction = prediction, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
+    value = value, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
   )
 }
 
@@ -164,17 +142,18 @@ add_predicted_draws = function(
 #' @export
 predicted_draws = function(
   object, newdata, ...,
-  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
+  value = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
   # deprecated arguments
-  n
+  n, prediction
 ) {
+  value = .Deprecated_argument_alias(value, prediction)
   ndraws = .Deprecated_argument_alias(ndraws, n)
   # we need to update the argument list as well when there are deprecated
   # arguments, otherwise partial matching might assign `n` to `newdata`
-  if (!missing(n)) {
+  if (!missing(n) || !missing(prediction)) {
     predicted_draws(
       object = object, newdata = newdata, ...,
-      prediction = prediction, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
+      value = value, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
     )
   } else {
     UseMethod("predicted_draws")
@@ -188,12 +167,12 @@ predicted_draws = function(
 #' @export
 predicted_draws.default = function(
   object, newdata, ...,
-  prediction = ".prediction", seed = NULL, category = ".category"
+  value = ".prediction", seed = NULL, category = ".category"
 ) {
   pred_draws_default_(
     .name = "predicted_draws",
     .f = rstantools::posterior_predict, ...,
-    object = object, newdata = newdata, output_name = prediction,
+    object = object, newdata = newdata, output_name = value,
     seed = seed, category = category
   )
 }
@@ -202,7 +181,7 @@ predicted_draws.default = function(
 #' @export
 predicted_draws.stanreg = function(
   object, newdata, ...,
-  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category"
+  value = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category"
 ) {
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]predicted_draws", ndraws = "draws", re_formula = "re.form"
@@ -210,7 +189,7 @@ predicted_draws.stanreg = function(
 
   pred_draws_(
     .f = rstantools::posterior_predict, ...,
-    object = object, newdata = newdata, output_name = prediction,
+    object = object, newdata = newdata, output_name = value,
     draws = ndraws, seed = seed, re.form = re_formula, category = category
   )
 }
@@ -219,7 +198,7 @@ predicted_draws.stanreg = function(
 #' @export
 predicted_draws.brmsfit = function(
   object, newdata, ...,
-  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category"
+  value = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category"
 ) {
   stop_on_non_generic_arg_(
     names(enquos(...)), "[add_]predicted_draws", ndraws = "nsamples"
@@ -227,7 +206,7 @@ predicted_draws.brmsfit = function(
 
   pred_draws_(
     .f = rstantools::posterior_predict, ...,
-    object = object, newdata = newdata, output_name = prediction,
+    object = object, newdata = newdata, output_name = value,
     nsamples = ndraws, seed = seed, re_formula = re_formula, category = category
   )
 }

@@ -29,6 +29,7 @@
 ^vignettes/.*_cache$
 ^benchmarks.*$
 ^revdep$
+^man-roxygen$
 ^man/figures/README$
 ^vignettes/models$
 ^README_models$
