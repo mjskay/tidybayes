@@ -42,8 +42,9 @@
 #' @param linpred The name of the output column for `add_linpred_rvars()`; default `".linpred"`.
 #' @param ... Additional arguments passed to the underlying prediction method for the type of
 #' model given.
-#' @param n The number of draws per prediction / fit to return, or `NULL` to return all draws.
-#' @param seed A seed to use when subsampling draws (i.e. when `n` is not `NULL`).
+#' @param ndraws The number of draws per prediction / fit to return, or `NULL` to return all draws.
+#'   Supported by `brms` and \pkg{rstanarm} models, but may not be supported by other model types.
+#' @param seed A seed to use when subsampling draws (i.e. when `ndraws` is not `NULL`).
 #' @param re_formula formula containing group-level effects to be considered in the prediction.
 #' If `NULL` (default), include all group-level effects; if `NA`, include no group-level effects.
 #' Some model types (such as [brms::brmsfit] and [rstanarm::stanreg-objects]) allow
@@ -131,11 +132,11 @@
 #' @export
 add_predicted_rvars = function(
   newdata, object, ...,
-  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
+  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
 ) {
   predicted_rvars(
     object = object, newdata = newdata, ...,
-    prediction = prediction, n = n, seed = seed, re_formula = re_formula, columns_to = columns_to
+    prediction = prediction, ndraws = ndraws, seed = seed, re_formula = re_formula, columns_to = columns_to
   )
 }
 
@@ -143,7 +144,7 @@ add_predicted_rvars = function(
 #' @export
 predicted_rvars = function(
   object, newdata, ...,
-  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
+  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
 ) {
   UseMethod("predicted_rvars")
 }
@@ -152,32 +153,32 @@ predicted_rvars = function(
 #' @export
 predicted_rvars.default = function(
   object, newdata, ...,
-  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
+  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
 ) {
   pred_rvars_default_(
+    .name = "predicted_rvars",
     .f = rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = prediction,
-    n = n, seed = seed, re_formula = re_formula,
+    ndraws = ndraws, seed = seed, re_formula = re_formula,
     dpar = NULL, # posterior_predict does not support dpar
     columns_to = columns_to
   )
-
 }
 
 #' @rdname add_predicted_rvars
 #' @export
 predicted_rvars.stanreg = function(
   object, newdata, ...,
-  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
+  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
 ) {
   stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]predicted_rvars", re_formula = "re.form", n = "draws"
+    names(enquos(...)), "[add_]predicted_rvars", re_formula = "re.form", ndraws = "draws"
   )
 
   pred_rvars_(
-    rstantools::posterior_predict, ...,
+    .f = rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = prediction,
-    draws = n, seed = seed, re.form = re_formula,
+    draws = ndraws, seed = seed, re.form = re_formula,
     dpar = NULL, # posterior_predict does not support dpar
     columns_to = columns_to
   )
@@ -187,16 +188,16 @@ predicted_rvars.stanreg = function(
 #' @export
 predicted_rvars.brmsfit = function(
   object, newdata, ...,
-  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
+  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
 ) {
   stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]predicted_rvars", n = "nsamples"
+    names(enquos(...)), "[add_]predicted_rvars", ndraws = "nsamples"
   )
 
   pred_rvars_(
-    rstantools::posterior_predict, ...,
+    .f = rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = prediction,
-    nsamples = n, seed = seed, re_formula = re_formula,
+    nsamples = ndraws, seed = seed, re_formula = re_formula,
     dpar = NULL, # posterior_predict does not support dpar
     columns_to = columns_to
   )
@@ -209,29 +210,28 @@ predicted_rvars.brmsfit = function(
 #' epred_rvars.default, predicted_rvars.default, etc
 #' @noRd
 pred_rvars_default_ = function(
-  .f, ...,
+  .name, .f, ...,
   object, newdata, output_name,
-  n = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+  ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
 ) {
-  args = list(
-    .f = quote(.f),
-    ...,
-    object = quote(object),
-    newdata = quote(newdata),
-    output_name = output_name,
-    seed = seed,
-    columns_to = columns_to
-  )
-  # only set these if they aren't default (NULL) in case the underlying function
-  # does not actually support that parameter
-  for (arg in c("n", "re_formula", "dpar")) {
-    arg_value = get(arg, inherits = FALSE)
-    if (!is.null(arg_value)) {
-      args[[arg]] = arg_value
-    }
+  if (!requireNamespace("rstantools", quietly = TRUE)) {
+    stop0('Using `", .name, "` requires the `rstantools` package to be installed.') #nocov
+  }
+  model_class = class(object)
+  if (isTRUE(model_class %in% c("ulam", "quap", "map", "map2stan"))) {
+    stop0(
+      "Models of type ", deparse0(model_class), " are not supported by basic tidybayes::", .name, ".\n",
+      "Install the `tidybayes.rethinking` package to enable support for these models:\n",
+      "  devtools::install_github('mjskay/tidybayes.rethinking')"
+    )
   }
 
-  do.call(pred_rvars_, args)
+  pred_rvars_(
+    .f = .f, ...,
+    object = object, newdata = newdata, output_name = output_name,
+    ndraws = ndraws, seed = seed, re_formula = re_formula,
+    dpar = dpar, columns_to = columns_to
+  )
 }
 
 

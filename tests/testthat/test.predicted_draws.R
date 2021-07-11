@@ -52,8 +52,16 @@ test_that("[add_]predicted_draws and basic arguments works on a simple rstanarm 
     mutate(.row = as.integer(.row)) %>%
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
 
-  expect_equal(predicted_draws(m_hp_wt, mtcars_tbl, n = 100, seed = 123), ref)
-  expect_equal(add_predicted_draws(mtcars_tbl, m_hp_wt, n = 100, seed = 123), ref)
+  expect_equal(predicted_draws(m_hp_wt, mtcars_tbl, ndraws = 100, seed = 123), ref)
+  expect_equal(add_predicted_draws(mtcars_tbl, m_hp_wt, ndraws = 100, seed = 123), ref)
+  expect_warning(
+    expect_equal(predicted_draws(m_hp_wt, mtcars_tbl, n = 100, seed = 123), ref),
+    "`n`.*deprecated.*`ndraws`"
+  )
+  expect_warning(
+    expect_equal(add_predicted_draws(mtcars_tbl, m_hp_wt, n = 100, seed = 123), ref),
+    "`n`.*deprecated.*`ndraws`"
+  )
 })
 
 
@@ -77,8 +85,8 @@ test_that("[add_]predicted_draws and basic arguments works on an rstanarm model 
     mutate(.row = as.integer(.row)) %>%
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
 
-  expect_equal(predicted_draws(m_cyl, mtcars_tbl, n = 100, seed = 123), ref)
-  expect_equal(add_predicted_draws(mtcars_tbl, m_cyl, n = 100, seed = 123), ref)
+  expect_equal(predicted_draws(m_cyl, mtcars_tbl, ndraws = 100, seed = 123), ref)
+  expect_equal(add_predicted_draws(mtcars_tbl, m_cyl, ndraws = 100, seed = 123), ref)
 })
 
 
@@ -104,8 +112,8 @@ test_that("[add_]predicted_draws works on a simple brms model", {
     mutate(.row = as.integer(.row)) %>%
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
 
-  expect_equal(predicted_draws(m_hp, mtcars_tbl, n = 100, seed = 123), ref)
-  expect_equal(add_predicted_draws(mtcars_tbl, m_hp, n = 100, seed = 123), ref)
+  expect_equal(predicted_draws(m_hp, mtcars_tbl, ndraws = 100, seed = 123), ref)
+  expect_equal(add_predicted_draws(mtcars_tbl, m_hp, ndraws = 100, seed = 123), ref)
 })
 
 test_that("[add_]predicted_draws works on brms models with categorical outcomes", {
@@ -136,8 +144,8 @@ test_that("[add_]predicted_draws works on brms models with categorical outcomes"
     select(mpg:.row, .chain, .iteration, .draw, everything()) %>%
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
 
-  expect_equal(predicted_draws(m_cyl_mpg, mtcars_tbl, seed = 1234, n = 100), ref)
-  expect_equal(add_predicted_draws(mtcars_tbl, m_cyl_mpg, seed = 1234, n = 100), ref)
+  expect_equal(predicted_draws(m_cyl_mpg, mtcars_tbl, seed = 1234, ndraws = 100), ref)
+  expect_equal(add_predicted_draws(mtcars_tbl, m_cyl_mpg, seed = 1234, ndraws = 100), ref)
 })
 
 test_that("[add_]predicted_draws works on brms models with dirichlet responses", {
@@ -161,7 +169,7 @@ test_that("[add_]predicted_draws works on brms models with dirichlet responses",
     select(x, .row, .chain, .iteration, .draw, .category, everything()) %>%
     group_by(x, .row, .category)
 
-  expect_equal(predicted_draws(m_dirich, grid, seed = 1234, n = 100), ref)
+  expect_equal(predicted_draws(m_dirich, grid, seed = 1234, ndraws = 100), ref)
 })
 
 test_that("[add_]predicted_draws works on brms models with multinomial responses", {
@@ -186,34 +194,34 @@ test_that("[add_]predicted_draws works on brms models with multinomial responses
     select(total, .row, .chain, .iteration, .draw, .category, everything()) %>%
     group_by(total, .row, .category)
 
-  expect_equal(predicted_draws(m_multinom, grid, seed = 1234, n = 10), ref)
+  expect_equal(predicted_draws(m_multinom, grid, seed = 1234, ndraws = 10), ref)
 })
 
-test_that("[add_]predicted_draws throws an error when nsamples is called instead of n in brms", {
+test_that("[add_]predicted_draws throws an error when nsamples is called instead of ndraws in brms", {
   skip_if_not_installed("brms")
   m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
 
   expect_error(
     m_hp %>% predicted_draws(newdata = mtcars_tbl, nsamples = 100),
-    "`nsamples.*.`n`.*.See the documentation for additional details."
+    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
   expect_error(
     mtcars_tbl %>% add_predicted_draws(m_hp, nsamples = 100),
-    "`nsamples.*.`n`.*.See the documentation for additional details."
+    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
 })
 
-test_that("[add_]predicted_draws throws an error when draws is called instead of n in rstanarm", {
+test_that("[add_]predicted_draws throws an error when draws is called instead of ndraws in rstanarm", {
   skip_if_not_installed("rstanarm")
   m_hp_wt = readRDS(test_path("../models/models.rstanarm.m_hp_wt.rds"))
 
   expect_error(
     m_hp_wt %>% predicted_draws(mtcars_tbl, draws = 100),
-    "`draws.*.`n`.*.See the documentation for additional details."
+    "`draws.*.`ndraws`.*.See the documentation for additional details."
   )
   expect_error(
     mtcars_tbl %>% add_predicted_draws(m_hp_wt, draws = 100),
-    "`draws.*.`n`.*.See the documentation for additional details."
+    "`draws.*.`ndraws`.*.See the documentation for additional details."
   )
 })
 

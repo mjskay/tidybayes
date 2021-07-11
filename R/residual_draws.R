@@ -10,13 +10,14 @@
 #' @export
 add_residual_draws = function(
   newdata, object, ...,
-  residual = ".residual", n = NULL, seed = NULL, re_formula = NULL,
-  category = ".category"
+  residual = ".residual", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
+  # deprecated arguments
+  n
 ) {
+  ndraws = .Deprecated_argument_alias(ndraws, n)
   residual_draws(
     object = object, newdata = newdata, ...,
-    residual = residual, n = n, seed = seed, re_formula = re_formula,
-    category = category
+    residual = residual, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
   )
 }
 
@@ -24,10 +25,21 @@ add_residual_draws = function(
 #' @export
 residual_draws = function(
   object, newdata, ...,
-  residual = ".residual", n = NULL, seed = NULL, re_formula = NULL,
-  category = ".category"
+  residual = ".residual", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
+  # deprecated arguments
+  n
 ) {
-  UseMethod("residual_draws")
+  ndraws = .Deprecated_argument_alias(ndraws, n)
+  # we need to update the argument list as well if there were deprecated
+  # arguments or partial matching will assign `n` to `newdata`
+  if (!missing(n)) {
+    residual_draws(
+      object = object, newdata = newdata, ...,
+      residual = residual, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
+    )
+  } else {
+    UseMethod("residual_draws")
+  }
 }
 
 #' @rdname add_predicted_draws
@@ -40,17 +52,16 @@ residual_draws.default = function(object, newdata, ...) {
 #' @export
 residual_draws.brmsfit = function(
   object, newdata, ...,
-  residual = ".residual", n = NULL, seed = NULL, re_formula = NULL,
-  category = ".category"
+  residual = ".residual", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category"
 ) {
   stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]residual_draws", n = "nsamples"
+    names(enquos(...)), "[add_]residual_draws", ndraws = "nsamples"
   )
 
   pred_draws_(
     residuals, ...,
     object = object, newdata = newdata, output_name = residual,
-    seed = seed, nsamples = n, re_formula = re_formula, category = category,
+    seed = seed, nsamples = ndraws, re_formula = re_formula, category = category,
     summary = FALSE
   )
 }

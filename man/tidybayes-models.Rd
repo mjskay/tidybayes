@@ -11,7 +11,8 @@ do not.
 
 
 \strong{All supported models/formats} support the base tidybayes sample extraction functions, such as
-\code{\link[=tidy_draws]{tidy_draws()}}, \code{\link[=spread_draws]{spread_draws()}}, and \code{\link[=gather_draws]{gather_draws()}}. These models/formats include:
+\code{\link[=tidy_draws]{tidy_draws()}}, \code{\link[=spread_draws]{spread_draws()}}, \code{\link[=gather_draws]{gather_draws()}}, \code{\link[=spread_rvars]{spread_rvars()}}, and \code{\link[=gather_rvars]{gather_rvars()}}.
+These models/formats include:
 
 \itemize{
 \item \link[rstan:stan]{rstan} models
@@ -39,15 +40,21 @@ the \href{https://github.com/rmcelreath/rethinking}{rethinking} package are also
 
 
 In addition, the \strong{following models support fit and prediction} extraction functions, such as
-\code{\link[=add_fitted_draws]{add_fitted_draws()}} and \code{\link[=add_predicted_draws]{add_predicted_draws()}}:
+\code{\link[=add_epred_draws]{add_epred_draws()}}, \code{\link[=add_predicted_draws]{add_predicted_draws()}}, \code{\link[=add_linpred_draws]{add_linpred_draws()}}, \code{\link[=add_epred_rvars]{add_epred_rvars()}},
+\code{\link[=add_predicted_rvars]{add_predicted_rvars()}}, and \code{\link[=add_linpred_rvars]{add_linpred_rvars()}}:
 
 \itemize{
 \item \code{\link[brms:brm]{brms::brm()}} models
 \item \link[rstanarm:rstanarm-package]{rstanarm} models
+\item any package with implementations of \link[rstantools:posterior_epred]{rstantools::posterior_epred},
+\link[rstantools:posterior_predict]{rstantools::posterior_predict}, or \link[rstantools:posterior_linpred]{rstantools::posterior_linpred} that
+include an argument called \code{newdata} which takes a data frame of predictors.
 }
 
 \strong{If your model type is not in the above list}, you may still be able to use the \code{\link[=add_draws]{add_draws()}}
-function to turn matrices of predictive draws (or fit draws) into tidy data frames.
+function to turn matrices of predictive draws (or fit draws) into tidy data frames. Or,
+you can wrap output from a prediction function in \code{posterior::rvar()} and add it
+to a data frame so long as that output is a matrix with draws as rows.
 
 If you install the \href{https://mjskay.github.io/tidybayes.rethinking/}{tidybayes.rethinking} package, models from
 the \href{https://github.com/rmcelreath/rethinking}{rethinking} package are also supported.

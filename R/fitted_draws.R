@@ -10,12 +10,15 @@
 #' @export
 add_fitted_draws = function(
   newdata, object, ...,
-  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
-  category = ".category", dpar = NULL, scale = c("response", "linear")
+  value = ".value", ndraws = NULL, seed = NULL, re_formula = NULL,
+  category = ".category", dpar = NULL, scale = c("response", "linear"),
+  # deprecated arguments
+  n
 ) {
+  ndraws = .Deprecated_argument_alias(ndraws, n)
   fitted_draws(
     object = object, newdata = newdata, ...,
-    value = value, n = n, seed = seed, re_formula = re_formula,
+    value = value, ndraws = ndraws, seed = seed, re_formula = re_formula,
     category = category, dpar = dpar, scale = scale
   )
 }
@@ -24,22 +27,35 @@ add_fitted_draws = function(
 #' @export
 fitted_draws = function(
   object, newdata, ...,
-  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
-  category = ".category", dpar = NULL, scale = c("response", "linear")
+  value = ".value", ndraws = NULL, seed = NULL, re_formula = NULL,
+  category = ".category", dpar = NULL, scale = c("response", "linear"),
+  # deprecated arguments
+  n
 ) {
-  UseMethod("fitted_draws")
+  ndraws = .Deprecated_argument_alias(ndraws, n)
+  # we need to update the argument list as well if there were deprecated
+  # arguments or partial matching will assign `n` to `newdata`
+  if (!missing(n)) {
+    fitted_draws(
+      object = object, newdata = newdata, ...,
+      value = value, ndraws = ndraws, seed = seed, re_formula = re_formula,
+      category = category, dpar = dpar, scale = scale
+    )
+  } else {
+    UseMethod("fitted_draws")
+  }
 }
 
 #' @rdname add_predicted_draws
 #' @export
 add_linpred_draws = function(
   newdata, object, ...,
-  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
+  value = ".value", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL, scale = c("response", "linear")
 ) {
   fitted_draws(
     object = object, newdata = newdata, ...,
-    value = value, n = n, seed = seed, re_formula = re_formula,
+    value = value, ndraws = ndraws, seed = seed, re_formula = re_formula,
     category = category, dpar = dpar, scale = scale
   )
 }
@@ -48,12 +64,12 @@ add_linpred_draws = function(
 #' @export
 linpred_draws = function(
   object, newdata, ...,
-  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
+  value = ".value", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL, scale = c("response", "linear")
 ) {
   fitted_draws(
     object = object, newdata = newdata, ...,
-    value = value, n = n, seed = seed, re_formula = re_formula,
+    value = value, ndraws = ndraws, seed = seed, re_formula = re_formula,
     category = category, dpar = dpar, scale = scale
   )
 }
@@ -65,7 +81,7 @@ linpred_draws = function(
 fitted_draws.default = function(object, newdata, ...) {
   model_class = class(object)
 
-  if (model_class %in% c("ulam", "quap", "map", "map2stan")) {
+  if (isTRUE(model_class %in% c("ulam", "quap", "map", "map2stan"))) {
     stop(
       "Models of type ", deparse0(model_class), " are not supported by base tidybayes.\n",
       "Install the `tidybayes.rethinking` package to enable support for these models:\n",
@@ -84,7 +100,7 @@ fitted_draws.default = function(object, newdata, ...) {
 #' @export
 fitted_draws.stanreg = function(
   object, newdata, ...,
-  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
+  value = ".value", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL, scale = c("response", "linear")
 ) {
   transform = match.arg(scale) == "response" # TODO drop and just pass throgh transform
@@ -96,7 +112,7 @@ fitted_draws.stanreg = function(
   pred_draws_(
     rstanarm::posterior_linpred, ..., # TODO: switch to epred
     object = object, newdata = newdata, output_name = value,
-    draws = n, seed = seed, category = category, re.form = re_formula, transform = transform
+    draws = ndraws, seed = seed, category = category, re.form = re_formula, transform = transform
   )
 }
 
@@ -106,19 +122,19 @@ fitted_draws.stanreg = function(
 #' @export
 fitted_draws.brmsfit = function(
   object, newdata, ...,
-  value = ".value", n = NULL, seed = NULL, re_formula = NULL,
+  value = ".value", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL, scale = c("response", "linear")
 ) {
   scale = match.arg(scale) # TODO: remove
 
   stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]fitted_draws", n = "nsamples"
+    names(enquos(...)), "[add_]fitted_draws", ndraws = "nsamples"
   )
 
   pred_draws_(
     fitted, ...,
     object = object, newdata = newdata, output_name = value,
-    nsamples = n, seed = seed, re_formula = re_formula, category = category, dpar = dpar, scale = scale,
+    nsamples = ndraws, seed = seed, re_formula = re_formula, category = category, dpar = dpar, scale = scale,
     summary = FALSE # TODO: switch to epred vs linpred, drop scale and remove?
   )
 }

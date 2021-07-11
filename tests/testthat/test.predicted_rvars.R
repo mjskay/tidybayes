@@ -30,8 +30,8 @@ test_that("[add_]predicted_rvars and basic arguments works on a simple rstanarm 
   ref = mtcars_tbl %>%
     mutate(.prediction = rvar(rstantools::posterior_predict(m_hp_wt, mtcars_tbl, draws = 100, seed = 123)))
 
-  expect_equal(predicted_rvars(m_hp_wt, mtcars_tbl, n = 100, seed = 123), ref)
-  expect_equal(add_predicted_rvars(mtcars_tbl, m_hp_wt, n = 100, seed = 123), ref)
+  expect_equal(predicted_rvars(m_hp_wt, mtcars_tbl, ndraws = 100, seed = 123), ref)
+  expect_equal(add_predicted_rvars(mtcars_tbl, m_hp_wt, ndraws = 100, seed = 123), ref)
 
   #predicted_rvars.default should work fine here so long as we don't subset
   ref_all = mtcars_tbl %>%
@@ -47,8 +47,8 @@ test_that("[add_]predicted_rvars and basic arguments works on an rstanarm model 
   ref = mtcars_tbl %>%
     mutate(.prediction = rvar(rstantools::posterior_predict(m_cyl, mtcars_tbl, draws = 100, seed = 123)))
 
-  expect_equal(predicted_rvars(m_cyl, mtcars_tbl, n = 100, seed = 123), ref)
-  expect_equal(add_predicted_rvars(mtcars_tbl, m_cyl, n = 100, seed = 123), ref)
+  expect_equal(predicted_rvars(m_cyl, mtcars_tbl, ndraws = 100, seed = 123), ref)
+  expect_equal(add_predicted_rvars(mtcars_tbl, m_cyl, ndraws = 100, seed = 123), ref)
 })
 
 
@@ -60,8 +60,8 @@ test_that("[add_]predicted_rvars works on a simple brms model", {
   ref = mtcars_tbl %>%
     mutate(.prediction = rvar(rstantools::posterior_predict(m_hp, mtcars_tbl, nsamples = 100)))
 
-  expect_equal(predicted_rvars(m_hp, mtcars_tbl, n = 100, seed = 123), ref)
-  expect_equal(add_predicted_rvars(mtcars_tbl, m_hp, n = 100, seed = 123), ref)
+  expect_equal(predicted_rvars(m_hp, mtcars_tbl, ndraws = 100, seed = 123), ref)
+  expect_equal(add_predicted_rvars(mtcars_tbl, m_hp, ndraws = 100, seed = 123), ref)
 })
 
 test_that("[add_]predicted_rvars works on brms models with categorical outcomes", {
@@ -72,8 +72,8 @@ test_that("[add_]predicted_rvars works on brms models with categorical outcomes"
   ref = mtcars_tbl %>%
     mutate(.prediction = rvar(rstantools::posterior_predict(m_cyl_mpg, mtcars_tbl, nsamples = 100)))
 
-  expect_equal(predicted_rvars(m_cyl_mpg, mtcars_tbl, seed = 1234, n = 100), ref)
-  expect_equal(add_predicted_rvars(mtcars_tbl, m_cyl_mpg, seed = 1234, n = 100), ref)
+  expect_equal(predicted_rvars(m_cyl_mpg, mtcars_tbl, seed = 1234, ndraws = 100), ref)
+  expect_equal(add_predicted_rvars(mtcars_tbl, m_cyl_mpg, seed = 1234, ndraws = 100), ref)
 })
 
 test_that("[add_]predicted_rvars works on brms models with dirichlet responses", {
@@ -85,7 +85,7 @@ test_that("[add_]predicted_rvars works on brms models with dirichlet responses",
   ref = grid %>%
     mutate(.prediction = rvar(rstantools::posterior_predict(m_dirich, grid, nsamples = 100)))
 
-  expect_equal(predicted_rvars(m_dirich, grid, seed = 1234, n = 100), ref)
+  expect_equal(predicted_rvars(m_dirich, grid, seed = 1234, ndraws = 100), ref)
 })
 
 test_that("[add_]predicted_rvars works on brms models with multinomial responses", {
@@ -98,7 +98,7 @@ test_that("[add_]predicted_rvars works on brms models with multinomial responses
   ref = grid %>%
     mutate(.prediction = rvar(rstantools::posterior_predict(m_multinom, grid, nsamples = 10)))
 
-  expect_equal(predicted_rvars(m_multinom, grid, seed = 1234, n = 10), ref)
+  expect_equal(predicted_rvars(m_multinom, grid, seed = 1234, ndraws = 10), ref)
 
   # column transformation
   column_ref = ref %>%
@@ -109,34 +109,34 @@ test_that("[add_]predicted_rvars works on brms models with multinomial responses
   dim(column_ref$.prediction) = length(column_ref$.prediction)
   attr(draws_of(column_ref$.prediction), "levels") = c("a","b","c")
 
-  expect_equal(predicted_rvars(m_multinom, grid, seed = 1234, n = 10, columns_to = "col_pred"), column_ref)
+  expect_equal(predicted_rvars(m_multinom, grid, seed = 1234, ndraws = 10, columns_to = "col_pred"), column_ref)
 })
 
-test_that("[add_]predicted_rvars throws an error when nsamples is called instead of n in brms", {
+test_that("[add_]predicted_rvars throws an error when nsamples is called instead of ndraws in brms", {
   skip_if_not_installed("brms")
   m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
 
   expect_error(
     m_hp %>% predicted_rvars(mtcars_tbl, nsamples = 100),
-    "`nsamples.*.`n`.*.See the documentation for additional details."
+    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
   expect_error(
     mtcars_tbl %>% add_predicted_rvars(m_hp, nsamples = 100),
-    "`nsamples.*.`n`.*.See the documentation for additional details."
+    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
 })
 
-test_that("[add_]predicted_rvars throws an error when draws is called instead of n in rstanarm", {
+test_that("[add_]predicted_rvars throws an error when draws is called instead of ndraws in rstanarm", {
   skip_if_not_installed("rstanarm")
   m_hp_wt = readRDS(test_path("../models/models.rstanarm.m_hp_wt.rds"))
 
   expect_error(
     m_hp_wt %>% predicted_rvars(mtcars_tbl, draws = 100),
-    "`draws.*.`n`.*.See the documentation for additional details."
+    "`draws.*.`ndraws`.*.See the documentation for additional details."
   )
   expect_error(
     mtcars_tbl %>% add_predicted_rvars(m_hp_wt, draws = 100),
-    "`draws.*.`n`.*.See the documentation for additional details."
+    "`draws.*.`ndraws`.*.See the documentation for additional details."
   )
 })
 

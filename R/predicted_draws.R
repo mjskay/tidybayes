@@ -46,8 +46,8 @@
 #' @param residual The name of the output column for `residual_draws`; default `".residual"`.
 #' @param ... Additional arguments passed to the underlying prediction method for the type of
 #' model given.
-#' @param n The number of draws per prediction / fit to return, or `NULL` to return all draws.
-#' @param seed A seed to use when subsampling draws (i.e. when `n` is not `NULL`).
+#' @param ndraws The number of draws per prediction / fit to return, or `NULL` to return all draws.
+#' @param seed A seed to use when subsampling draws (i.e. when `ndraws` is not `NULL`).
 #' @param re_formula formula containing group-level effects to be considered in the prediction.
 #' If `NULL` (default), include all group-level effects; if `NA`, include no group-level effects.
 #' Some model types (such as [brms::brmsfit] and [rstanarm::stanreg-objects]) allow
@@ -76,6 +76,7 @@
 #' @param scale Either `"response"` or `"linear"`. If `"response"`, results are returned
 #' on the scale of the response variable. If `"linear"`, fitted values are returned on the scale of
 #' the linear predictor.
+#' @param n (Deprecated). Use `ndraws`.
 #' @return A data frame (actually, a [tibble][tibble::tibble]) with a `.row` column (a
 #' factor grouping rows from the input `newdata`), `.chain` column (the chain
 #' each draw came from, or `NA` if the model does not provide chain information),
@@ -111,7 +112,7 @@
 #'   print(mtcars %>%
 #'     group_by(cyl) %>%
 #'     data_grid(hp = seq_range(hp, n = 101)) %>%
-#'     add_fitted_draws(m_mpg, n = 100) %>%
+#'     add_fitted_draws(m_mpg, ndraws = 100) %>%
 #'     ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
 #'     geom_line(aes(y = .value, group = paste(cyl, .draw)), alpha = 0.25) +
 #'     geom_point(data = mtcars)
@@ -138,11 +139,14 @@
 #' @export
 add_predicted_draws = function(
   newdata, object, ...,
-  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, category = ".category"
+  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
+  # deprecated arguments
+  n
 ) {
+  ndraws = .Deprecated_argument_alias(ndraws, n)
   predicted_draws(
     object = object, newdata = newdata, ...,
-    prediction = prediction, n = n, seed = seed, re_formula = re_formula, category = category
+    prediction = prediction, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
   )
 }
 
@@ -150,9 +154,21 @@ add_predicted_draws = function(
 #' @export
 predicted_draws = function(
   object, newdata, ...,
-  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, category = ".category"
+  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category",
+  # deprecated arguments
+  n
 ) {
-  UseMethod("predicted_draws")
+  ndraws = .Deprecated_argument_alias(ndraws, n)
+  # we need to update the argument list as well if there were deprecated
+  # arguments or partial matching will assign `n` to `newdata`
+  if (!missing(n)) {
+    predicted_draws(
+      object = object, newdata = newdata, ...,
+      prediction = prediction, ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
+    )
+  } else {
+    UseMethod("predicted_draws")
+  }
 }
 
 #' @rdname add_predicted_draws
@@ -160,7 +176,7 @@ predicted_draws = function(
 predicted_draws.default = function(object, newdata, ...) {
   model_class = class(object)
 
-  if (model_class %in% c("ulam", "quap", "map", "map2stan")) {
+  if (isTRUE(model_class %in% c("ulam", "quap", "map", "map2stan"))) {
     stop(
       "Models of type ", deparse0(model_class), " are not supported by base tidybayes.\n",
       "Install the `tidybayes.rethinking` package to enable support for these models:\n",
@@ -179,16 +195,16 @@ predicted_draws.default = function(object, newdata, ...) {
 #' @export
 predicted_draws.stanreg = function(
   object, newdata, ...,
-  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, category = ".category"
+  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category"
 ) {
   stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]predicted_draws", n = "draws", re_formula = "re.form"
+    names(enquos(...)), "[add_]predicted_draws", ndraws = "draws", re_formula = "re.form"
   )
 
   pred_draws_(
     rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = prediction,
-    draws = n, seed = seed, re.form = re_formula, category = category
+    draws = ndraws, seed = seed, re.form = re_formula, category = category
   )
 }
 
@@ -196,16 +212,16 @@ predicted_draws.stanreg = function(
 #' @export
 predicted_draws.brmsfit = function(
   object, newdata, ...,
-  prediction = ".prediction", n = NULL, seed = NULL, re_formula = NULL, category = ".category"
+  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category"
 ) {
   stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]predicted_draws", n = "nsamples"
+    names(enquos(...)), "[add_]predicted_draws", ndraws = "nsamples"
   )
 
   pred_draws_(
     rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = prediction,
-    nsamples = n, seed = seed, re_formula = re_formula, category = category
+    nsamples = ndraws, seed = seed, re_formula = re_formula, category = category
   )
 }
 

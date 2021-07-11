@@ -38,6 +38,7 @@ Suggests:
     vdiffr (>= 1.0.0),
     svglite,
     rstan (>= 2.17.0),
+    rstantools (>= 2.1.0),
     runjags,
     rjags,
     jagsUI,

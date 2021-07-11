@@ -24,7 +24,7 @@ add_epred_rvars(
   object,
   ...,
   epred = ".epred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   dpar = NULL,
@@ -36,7 +36,7 @@ epred_rvars(
   newdata,
   ...,
   epred = ".epred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   dpar = NULL,
@@ -48,7 +48,7 @@ epred_rvars(
   newdata,
   ...,
   epred = ".epred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   dpar = NULL,
@@ -60,7 +60,7 @@ epred_rvars(
   newdata,
   ...,
   epred = ".epred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   dpar = NULL,
@@ -72,7 +72,7 @@ epred_rvars(
   newdata,
   ...,
   epred = ".epred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   dpar = NULL,
@@ -84,7 +84,7 @@ add_linpred_rvars(
   object,
   ...,
   linpred = ".linpred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   dpar = NULL,
@@ -96,7 +96,7 @@ linpred_rvars(
   newdata,
   ...,
   linpred = ".linpred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   dpar = NULL,
@@ -108,7 +108,7 @@ linpred_rvars(
   newdata,
   ...,
   linpred = ".linpred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   dpar = NULL,
@@ -120,7 +120,7 @@ linpred_rvars(
   newdata,
   ...,
   linpred = ".linpred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   dpar = NULL,
@@ -132,7 +132,7 @@ linpred_rvars(
   newdata,
   ...,
   linpred = ".linpred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   dpar = NULL,
@@ -144,7 +144,7 @@ add_predicted_rvars(
   object,
   ...,
   prediction = ".prediction",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   columns_to = NULL
@@ -155,7 +155,7 @@ predicted_rvars(
   newdata,
   ...,
   prediction = ".prediction",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   columns_to = NULL
@@ -166,7 +166,7 @@ predicted_rvars(
   newdata,
   ...,
   prediction = ".prediction",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   columns_to = NULL
@@ -177,7 +177,7 @@ predicted_rvars(
   newdata,
   ...,
   prediction = ".prediction",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   columns_to = NULL
@@ -188,7 +188,7 @@ predicted_rvars(
   newdata,
   ...,
   prediction = ".prediction",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   columns_to = NULL
@@ -210,9 +210,10 @@ model given.}
 
 \item{epred}{The name of the output column for \code{add_epred_rvars()}; default \code{".epred"}.}
 
-\item{n}{The number of draws per prediction / fit to return, or \code{NULL} to return all draws.}
+\item{ndraws}{The number of draws per prediction / fit to return, or \code{NULL} to return all draws.
+Supported by \code{brms} and \pkg{rstanarm} models, but may not be supported by other model types.}
 
-\item{seed}{A seed to use when subsampling draws (i.e. when \code{n} is not \code{NULL}).}
+\item{seed}{A seed to use when subsampling draws (i.e. when \code{ndraws} is not \code{NULL}).}
 
 \item{re_formula}{formula containing group-level effects to be considered in the prediction.
 If \code{NULL} (default), include all group-level effects; if \code{NA}, include no group-level effects.

@@ -30,7 +30,7 @@ add_epred_draws(
   object,
   ...,
   epred = ".epred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
@@ -42,7 +42,7 @@ epred_draws(
   newdata,
   ...,
   epred = ".epred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
@@ -56,7 +56,7 @@ epred_draws(
   newdata,
   ...,
   epred = ".epred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
@@ -68,7 +68,7 @@ epred_draws(
   newdata,
   ...,
   epred = ".epred",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
@@ -80,12 +80,13 @@ add_fitted_draws(
   object,
   ...,
   value = ".value",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
   dpar = NULL,
-  scale = c("response", "linear")
+  scale = c("response", "linear"),
+  n
 )
 
 fitted_draws(
@@ -93,12 +94,13 @@ fitted_draws(
   newdata,
   ...,
   value = ".value",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
   dpar = NULL,
-  scale = c("response", "linear")
+  scale = c("response", "linear"),
+  n
 )
 
 add_linpred_draws(
@@ -106,7 +108,7 @@ add_linpred_draws(
   object,
   ...,
   value = ".value",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
@@ -119,7 +121,7 @@ linpred_draws(
   newdata,
   ...,
   value = ".value",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
@@ -134,7 +136,7 @@ linpred_draws(
   newdata,
   ...,
   value = ".value",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
@@ -147,7 +149,7 @@ linpred_draws(
   newdata,
   ...,
   value = ".value",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category",
@@ -160,10 +162,11 @@ add_predicted_draws(
   object,
   ...,
   prediction = ".prediction",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
-  category = ".category"
+  category = ".category",
+  n
 )
 
 predicted_draws(
@@ -171,10 +174,11 @@ predicted_draws(
   newdata,
   ...,
   prediction = ".prediction",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
-  category = ".category"
+  category = ".category",
+  n
 )
 
 \method{predicted_draws}{default}(object, newdata, ...)
@@ -184,7 +188,7 @@ predicted_draws(
   newdata,
   ...,
   prediction = ".prediction",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category"
@@ -195,7 +199,7 @@ predicted_draws(
   newdata,
   ...,
   prediction = ".prediction",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category"
@@ -206,10 +210,11 @@ add_residual_draws(
   object,
   ...,
   residual = ".residual",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
-  category = ".category"
+  category = ".category",
+  n
 )
 
 residual_draws(
@@ -217,10 +222,11 @@ residual_draws(
   newdata,
   ...,
   residual = ".residual",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
-  category = ".category"
+  category = ".category",
+  n
 )
 
 \method{residual_draws}{default}(object, newdata, ...)
@@ -230,7 +236,7 @@ residual_draws(
   newdata,
   ...,
   residual = ".residual",
-  n = NULL,
+  ndraws = NULL,
   seed = NULL,
   re_formula = NULL,
   category = ".category"
@@ -251,9 +257,9 @@ and \code{brm}, are supported here).}
 \item{...}{Additional arguments passed to the underlying prediction method for the type of
 model given.}
 
-\item{n}{The number of draws per prediction / fit to return, or \code{NULL} to return all draws.}
+\item{ndraws}{The number of draws per prediction / fit to return, or \code{NULL} to return all draws.}
 
-\item{seed}{A seed to use when subsampling draws (i.e. when \code{n} is not \code{NULL}).}
+\item{seed}{A seed to use when subsampling draws (i.e. when \code{ndraws} is not \code{NULL}).}
 
 \item{re_formula}{formula containing group-level effects to be considered in the prediction.
 If \code{NULL} (default), include all group-level effects; if \code{NA}, include no group-level effects.
@@ -288,6 +294,8 @@ If \code{FALSE} (the default), distributional regression parameters are not incl
 \item{scale}{Either \code{"response"} or \code{"linear"}. If \code{"response"}, results are returned
 on the scale of the response variable. If \code{"linear"}, fitted values are returned on the scale of
 the linear predictor.}
+
+\item{n}{(Deprecated). Use \code{ndraws}.}
 
 \item{prediction}{The name of the output column for \code{predicted_draws}; default \code{".prediction"}.}
 
@@ -352,7 +360,7 @@ if (
   print(mtcars \%>\%
     group_by(cyl) \%>\%
     data_grid(hp = seq_range(hp, n = 101)) \%>\%
-    add_fitted_draws(m_mpg, n = 100) \%>\%
+    add_fitted_draws(m_mpg, ndraws = 100) \%>\%
     ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
     geom_line(aes(y = .value, group = paste(cyl, .draw)), alpha = 0.25) +
     geom_point(data = mtcars)

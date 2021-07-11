@@ -62,12 +62,20 @@ test_that("[add_]fitted_draws works on a simple rstanarm model", {
   expect_equal(linpred_draws(m_hp_wt, mtcars_tbl), ref)
   expect_equal(add_linpred_draws(mtcars_tbl, m_hp_wt), ref)
 
-  #subsetting to test the `n` argument
+  #subsetting to test the `ndraws` argument
   set.seed(1234)
   filtered_ref = make_ref(draws = 10)
 
-  expect_equal(fitted_draws(m_hp_wt, mtcars_tbl, n = 10, seed = 1234), filtered_ref)
-  expect_equal(add_fitted_draws(mtcars_tbl, m_hp_wt, n = 10, seed = 1234), filtered_ref)
+  expect_equal(fitted_draws(m_hp_wt, mtcars_tbl, ndraws = 10, seed = 1234), filtered_ref)
+  expect_equal(add_fitted_draws(mtcars_tbl, m_hp_wt, ndraws = 10, seed = 1234), filtered_ref)
+  expect_warning(
+    expect_equal(fitted_draws(m_hp_wt, mtcars_tbl, n = 10, seed = 1234), filtered_ref),
+    "`n`.*deprecated.*`ndraws`"
+  )
+  expect_warning(
+    expect_equal(add_fitted_draws(mtcars_tbl, m_hp_wt, n = 10, seed = 1234), filtered_ref),
+    "`n`.*deprecated.*`ndraws`"
+  )
 })
 
 test_that("[add_]fitted_draws works on an rstanarm model with grouped newdata", {
@@ -124,11 +132,11 @@ test_that("[add_]fitted_draws works on brms models without dpar", {
   expect_equal(add_fitted_draws(mtcars_tbl, m_hp, dpar = FALSE), ref)
   expect_equal(add_fitted_draws(mtcars_tbl, m_hp, dpar = FALSE, value = "foo"), rename(ref, foo = .value))
 
-  #subsetting to test the `n` argument
+  #subsetting to test the `ndraws` argument
   set.seed(1234)
   filtered_ref = make_ref(nsamples = 10)
 
-  expect_equal(add_fitted_draws(mtcars_tbl, m_hp, n = 10, seed = 1234), filtered_ref)
+  expect_equal(add_fitted_draws(mtcars_tbl, m_hp, ndraws = 10, seed = 1234), filtered_ref)
 })
 
 
@@ -178,10 +186,10 @@ test_that("[add_]fitted_draws works on brms models with dpar", {
   expect_equal(add_fitted_draws(mtcars_tbl, m_hp_sigma, dpar = list("mu", "sigma", s1 = "sigma")), mutate(ref, s1 = sigma))
 
 
-  #subsetting to test the `n` argument
+  #subsetting to test the `ndraws` argument
   filtered_ref = make_ref(seed = 1234, nsamples = 10)
 
-  expect_equal(add_fitted_draws(mtcars_tbl, m_hp_sigma, n = 10, seed = 1234, dpar = TRUE), filtered_ref)
+  expect_equal(add_fitted_draws(mtcars_tbl, m_hp_sigma, ndraws = 10, seed = 1234, dpar = TRUE), filtered_ref)
 })
 
 
@@ -278,11 +286,11 @@ test_that("[add_]fitted_draws works on brms models with ordinal outcomes (respon
   expect_equal(add_fitted_draws(mtcars_tbl, m_cyl_mpg), ref)
   expect_equal(add_fitted_draws(mtcars_tbl, m_cyl_mpg, category = "foo"), rename(ref, foo = .category))
 
-  #subsetting to test the `n` argument
+  #subsetting to test the `ndraws` argument
   set.seed(1234)
   filtered_ref = make_ref(nsamples = 10)
 
-  expect_equal(add_fitted_draws(mtcars_tbl, m_cyl_mpg, n = 10, seed = 1234), filtered_ref)
+  expect_equal(add_fitted_draws(mtcars_tbl, m_cyl_mpg, ndraws = 10, seed = 1234), filtered_ref)
 
 })
 
@@ -404,17 +412,17 @@ test_that("[add_]fitted_draws allows extraction of dpar on brms models with cate
 })
 
 
-test_that("[add_]fitted_draws throws an error when nsamples is called instead of n in brms", {
+test_that("[add_]fitted_draws throws an error when nsamples is called instead of ndraws in brms", {
   skip_if_not_installed("brms")
   m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
 
   expect_error(
     m_hp %>% fitted_draws(newdata = mtcars_tbl, nsamples = 100),
-    "`nsamples.*.`n`.*.See the documentation for additional details."
+    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
   expect_error(
     m_hp %>% add_fitted_draws(newdata = mtcars_tbl, nsamples = 100),
-    "`nsamples.*.`n`.*.See the documentation for additional details."
+    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
 })
 

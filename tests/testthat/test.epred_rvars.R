@@ -37,15 +37,15 @@ test_that("[add_]epred_rvars works on a simple rstanarm model", {
   #epred_rvars.default should work fine here
   expect_equal(epred_rvars.default(m_hp_wt, mtcars_tbl), ref)
 
-  #subsetting to test the `n` argument
+  #subsetting to test the `ndraws` argument
   set.seed(1234)
   draw_subset = sample.int(ndraws(ref$.epred), 10)
   filtered_ref = ref
   draws_of(filtered_ref$.epred) = draws_of(filtered_ref$.epred)[draw_subset,]
   dimnames(draws_of(filtered_ref$.epred))[[1]] = 1:10
 
-  expect_equal(epred_rvars(m_hp_wt, mtcars_tbl, n = 10, seed = 1234), filtered_ref)
-  expect_equal(add_epred_rvars(mtcars_tbl, m_hp_wt, n = 10, seed = 1234), filtered_ref)
+  expect_equal(epred_rvars(m_hp_wt, mtcars_tbl, ndraws = 10, seed = 1234), filtered_ref)
+  expect_equal(add_epred_rvars(mtcars_tbl, m_hp_wt, ndraws = 10, seed = 1234), filtered_ref)
 })
 
 test_that("[add_]epred_rvars works on an rstanarm model with grouped newdata", {
@@ -76,14 +76,14 @@ test_that("[add_]epred_rvars works on brms models without dpar", {
   #epred_rvars.default should work fine here
   expect_equal(epred_rvars.default(m_hp, mtcars_tbl), ref)
 
-  #subsetting to test the `n` argument
+  #subsetting to test the `ndraws` argument
   set.seed(1234)
   draw_subset = sample.int(ndraws(ref$.epred), 10)
   filtered_ref = ref
   draws_of(filtered_ref$.epred) = draws_of(filtered_ref$.epred)[draw_subset,]
   dimnames(draws_of(filtered_ref$.epred))[[1]] = 1:10
 
-  expect_equal(add_epred_rvars(mtcars_tbl, m_hp, n = 10, seed = 1234), filtered_ref)
+  expect_equal(add_epred_rvars(mtcars_tbl, m_hp, ndraws = 10, seed = 1234), filtered_ref)
 })
 
 
@@ -107,7 +107,7 @@ test_that("[add_]epred_rvars works on brms models with dpar", {
   expect_equal(add_epred_rvars(mtcars_tbl, m_hp_sigma, dpar = list("mu", "sigma", s1 = "sigma")), mutate(ref, s1 = sigma))
 
 
-  #subsetting to test the `n` argument
+  #subsetting to test the `ndraws` argument
   set.seed(1234)
   draw_subset = sample.int(ndraws(ref$.epred), 10)
   filtered_ref = ref
@@ -118,7 +118,7 @@ test_that("[add_]epred_rvars works on brms models with dpar", {
   draws_of(filtered_ref$sigma) = draws_of(filtered_ref$sigma)[draw_subset,]
   dimnames(draws_of(filtered_ref$sigma))[[1]] = 1:10
 
-  expect_equal(add_epred_rvars(mtcars_tbl, m_hp_sigma, n = 10, seed = 1234, dpar = TRUE), filtered_ref)
+  expect_equal(add_epred_rvars(mtcars_tbl, m_hp_sigma, ndraws = 10, seed = 1234, dpar = TRUE), filtered_ref)
 })
 
 
@@ -204,17 +204,19 @@ test_that("[add_]epred_rvars allows extraction of dpar on brms models with categ
 })
 
 
-test_that("[add_]epred_rvars throws an error when nsamples is called instead of n in brms", {
+# non-generic argument tests ----------------------------------------------
+
+test_that("[add_]epred_rvars throws an error when nsamples is called instead of ndraws in brms", {
   skip_if_not_installed("brms")
   m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
 
   expect_error(
     m_hp %>% epred_rvars(mtcars_tbl, nsamples = 100),
-    "`nsamples.*.`n`.*.See the documentation for additional details."
+    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
   expect_error(
     mtcars_tbl %>% add_epred_rvars(m_hp, nsamples = 100),
-    "`nsamples.*.`n`.*.See the documentation for additional details."
+    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
 })
 
@@ -232,3 +234,8 @@ test_that("[add_]epred_rvars throws an error when re.form is called instead of r
     "`re.form.*.`re_formula`.*.See the documentation for additional details."
   )
 })
+
+
+# unknown model type tests ------------------------------------------------
+
+
