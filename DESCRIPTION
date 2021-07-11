@@ -43,7 +43,6 @@ Suggests:
     rjags,
     jagsUI,
     rstanarm (>= 2.19.2),
-    rstantools,
     emmeans,
     broom (>= 0.4.3),
     dotwhisker,
@@ -65,7 +64,8 @@ Suggests:
     transformr
 Remotes:
     mjskay/ggdist,
-    stan-dev/posterior
+    stan-dev/posterior,
+    paul-buerkner/brms
 License: GPL (>= 3)
 Language: en-US
 BugReports: https://github.com/mjskay/tidybayes/issues/new
