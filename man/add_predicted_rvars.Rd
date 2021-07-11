@@ -194,7 +194,7 @@ predicted_rvars(
 \item{object}{A supported Bayesian model fit that can provide fits and predictions. Supported models
 are listed in the second section of \link{tidybayes-models}: \emph{Models Supporting Prediction}. While other
 functions in this package (like \code{\link[=spread_rvars]{spread_rvars()}}) support a wider range of models, to work with
-\code{add_fitted_rvars()} and \code{add_predicted_rvars()} a model must provide an interface for generating
+\code{add_epred_rvars()} and \code{add_predicted_rvars()} a model must provide an interface for generating
 predictions, thus more generic Bayesian modeling interfaces like \code{runjags} and \code{rstan} are not directly
 supported for these functions (only wrappers around those languages that provide predictions, like \code{rstanarm}
 and \code{brm}, are supported here).}

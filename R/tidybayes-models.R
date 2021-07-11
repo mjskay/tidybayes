@@ -67,9 +67,13 @@
 #' @section Extending tidybayes:
 #'
 #' To include basic support for new models, one need only implement the [tidy_draws()] generic function
-#' for that model.
+#' for that model. Alternatively, objects that support [posterior::as_draws()] or [coda::as.mcmc.list()]
+#' will automatically be supported by [tidy_draws()].
 #'
-#' To include support for estimation and prediction, one must implement the [fitted_draws()] and
-#' [predicted_draws()] generic functions.
+#' To include support for estimation and prediction, one must either implement the [epred_draws()],
+#' [predicted_draws()], and [linpred_draws()] functions or their correspond functions from
+#' \pkg{rstantools}: [rstantools::posterior_epred()], [rstantools::posterior_predict()], and
+#' [rstantools::posterior_linpred()]. If you take the latter approach, you should include
+#' `newdata` and `ndraws` arguments that work as documented in `predicted_draws()`.
 #'
 NULL

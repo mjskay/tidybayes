@@ -573,10 +573,10 @@ Or we can sample a reasonable number of fit lines (say 100) and overplot them:
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
-  # NOTE: this shows the use of n to subsample within add_epred_draws()
+  # NOTE: this shows the use of ndraws to subsample within add_epred_rvars()
   # ONLY do this IF you are planning to make spaghetti plots, etc.
   # NEVER subsample to a small sample to plot intervals, densities, etc.
-  add_epred_rvars(m_mpg, n = 100) %>%
+  add_epred_rvars(m_mpg, ndraws = 100) %>%
   unnest_rvars() %>%
   ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
   geom_line(aes(y = .epred, group = paste(cyl, .draw)), alpha = .1) +
@@ -593,7 +593,10 @@ ndraws = 50
 p = mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
-  add_epred_rvars(m_mpg, n = ndraws) %>%
+  # NOTE: this shows the use of ndraws to subsample within add_epred_rvars()
+  # ONLY do this IF you are planning to make spaghetti plots, etc.
+  # NEVER subsample to a small sample to plot intervals, densities, etc.
+  add_epred_rvars(m_mpg, ndraws = ndraws) %>%
   unnest_rvars() %>%
   ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
   geom_line(aes(y = .epred, group = paste(cyl, .draw))) +
@@ -882,9 +885,9 @@ label_data_function = . %>%
 
 data_plot_with_mean = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
-  # NOTE: use of n = 100 here subsets draws for the creation of spaghetti plots;
+  # NOTE: use of ndraws = 100 here subsets draws for the creation of spaghetti plots;
   # DOT NOT do this if you are making other chart types like intervals or densities
-  add_epred_rvars(m_cyl, epred = "P(cyl | mpg)", n = 100) %>%
+  add_epred_rvars(m_cyl, epred = "P(cyl | mpg)", ndraws = 100) %>%
   # calculate expected cylinder value
   mutate(cyl = `P(cyl | mpg)` %**% c(4,6,8)) %>%
   # transform in long-data-frame-of-draws format for making spaghetti plots

@@ -48,10 +48,12 @@ if (
   mtcars \%>\%
     group_by(cyl) \%>\%
     data_grid(hp = seq_range(hp, n = 101)) \%>\%
-    add_fitted_draws(m_mpg) \%>\%
+    add_epred_draws(m_mpg) \%>\%
+    # NOTE: only use sample_draws here when making spaghetti plots; for
+    # plotting intervals it is always best to use all draws
     sample_draws(100) \%>\%
     ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-    geom_line(aes(y = .value, group = paste(cyl, .draw)), alpha = 0.25) +
+    geom_line(aes(y = .epred, group = paste(cyl, .draw)), alpha = 0.25) +
     geom_point(data = mtcars)
 }
 }

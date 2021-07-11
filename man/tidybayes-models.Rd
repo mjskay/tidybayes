@@ -64,9 +64,13 @@ the \href{https://github.com/rmcelreath/rethinking}{rethinking} package are also
 
 
 To include basic support for new models, one need only implement the \code{\link[=tidy_draws]{tidy_draws()}} generic function
-for that model.
+for that model. Alternatively, objects that support \code{\link[posterior:draws]{posterior::as_draws()}} or \code{\link[coda:mcmc.list]{coda::as.mcmc.list()}}
+will automatically be supported by \code{\link[=tidy_draws]{tidy_draws()}}.
 
-To include support for estimation and prediction, one must implement the \code{\link[=fitted_draws]{fitted_draws()}} and
-\code{\link[=predicted_draws]{predicted_draws()}} generic functions.
+To include support for estimation and prediction, one must either implement the \code{\link[=epred_draws]{epred_draws()}},
+\code{\link[=predicted_draws]{predicted_draws()}}, and \code{\link[=linpred_draws]{linpred_draws()}} functions or their correspond functions from
+\pkg{rstantools}: \code{\link[rstantools:posterior_epred]{rstantools::posterior_epred()}}, \code{\link[rstantools:posterior_predict]{rstantools::posterior_predict()}}, and
+\code{\link[rstantools:posterior_linpred]{rstantools::posterior_linpred()}}. If you take the latter approach, you should include
+\code{newdata} and \code{ndraws} arguments that work as documented in \code{predicted_draws()}.
 }
 

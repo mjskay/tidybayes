@@ -28,7 +28,7 @@ and the remaining columns containing summary statistics and diagnostics.
 An implemention of \code{posterior::summarise_draws()} for grouped data frames
 (\code{dplyr::grouped_df} objects) such as returned by \code{dplyr::group_by()} and
 the various grouped-data-aware functions in tidybayes, such as \code{spread_draws()},
-\code{gather_draws()}, \code{add_fitted_draws()}, and \code{add_predicted_draws()}.
+\code{gather_draws()}, \code{add_epred_draws()}, and \code{add_predicted_draws()}.
 This function provides a quick way to get a variety of summary statistics
 and diagnostics on draws.
 }

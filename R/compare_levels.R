@@ -99,7 +99,7 @@ comparison_types = within(list(), {
 #' value.
 #' @param ignore_groups character vector of names of groups to ignore by
 #' default in the input grouping. This is primarily provided to make it
-#' easier to pipe output of [add_fitted_draws()] into this function,
+#' easier to pipe output of [add_epred_draws()] into this function,
 #' as that function provides a `".row"` output column that is grouped,
 #' but which is virtually never desired to group by when using `compare_levels`.
 #' @return A `data.frame` with the same columns as `data`, except

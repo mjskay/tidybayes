@@ -560,7 +560,6 @@ ABC %>%
 `compare_levels()` allows us to compare the value of some variable across levels of some factor. By default it computes all pairwise differences, though this can be changed using the `comparison = ` argument:
 
 ```{r fig.width = small_width, fig.height = tiny_height}
-#N.B. the syntax for compare_levels is experimental and may change
 m %>%
   spread_draws(condition_mean[condition]) %>%
   compare_levels(condition_mean, by = condition) %>%
@@ -641,15 +640,15 @@ m_mpg = brm(
 )
 ```
 
-We can draw fit curves with probability bands using `add_fitted_draws()` and `ggdist::stat_lineribbon()`:
+We can draw fit curves with probability bands using `add_epred_draws()` and `ggdist::stat_lineribbon()`:
 
 ```{r}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 51)) %>%
-  add_fitted_draws(m_mpg) %>%
+  add_epred_draws(m_mpg) %>%
   ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-  stat_lineribbon(aes(y = .value)) +
+  stat_lineribbon(aes(y = .epred)) +
   geom_point(data = mtcars) +
   scale_fill_brewer(palette = "Greys") +
   scale_color_brewer(palette = "Set2")
@@ -661,9 +660,12 @@ Or we can sample a reasonable number of fit lines (say 100) and overplot them:
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
-  add_fitted_draws(m_mpg, n = 100) %>%
+  # NOTE: this shows the use of ndraws to subsample within add_epred_draws()
+  # ONLY do this IF you are planning to make spaghetti plots, etc.
+  # NEVER subsample to a small sample to plot intervals, densities, etc.
+  add_epred_draws(m_mpg, ndraws = 100) %>%
   ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-  geom_line(aes(y = .value, group = paste(cyl, .draw)), alpha = .1) +
+  geom_line(aes(y = .epred, group = paste(cyl, .draw)), alpha = .1) +
   geom_point(data = mtcars) +
   scale_color_brewer(palette = "Dark2")
 ```

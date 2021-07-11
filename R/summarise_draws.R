@@ -12,7 +12,7 @@ posterior::summarise_draws
 #' An implemention of `posterior::summarise_draws()` for grouped data frames
 #' (`dplyr::grouped_df` objects) such as returned by `dplyr::group_by()` and
 #' the various grouped-data-aware functions in tidybayes, such as `spread_draws()`,
-#' `gather_draws()`, `add_fitted_draws()`, and `add_predicted_draws()`.
+#' `gather_draws()`, `add_epred_draws()`, and `add_predicted_draws()`.
 #' This function provides a quick way to get a variety of summary statistics
 #' and diagnostics on draws.
 #'

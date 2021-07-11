@@ -59,8 +59,12 @@ test_that("[add_]epred_draws works on a simple rstanarm model", {
   expect_equal(epred_draws(m_hp_wt, mtcars_tbl), ref)
   expect_equal(add_epred_draws(mtcars_tbl, m_hp_wt), ref)
   expect_equal(add_epred_draws(mtcars_tbl, m_hp_wt, epred = "foo"), rename(ref, foo = .epred))
-  # TODO: check
-  expect_equal(add_fitted_draws(mtcars_tbl, m_hp_wt, value = "foo"), rename(ref, foo = .epred))
+
+  # fitted_draws deprecation check
+  expect_warning(
+    expect_equal(add_fitted_draws(mtcars_tbl, m_hp_wt, value = "foo"), rename(ref, foo = .epred)),
+    "fitted_draws.*deprecated.*epred_draws.*linpred_draws"
+  )
 
   #subsetting to test the `ndraws` argument
   set.seed(1234)
@@ -126,8 +130,12 @@ test_that("[add_]epred_draws works on brms models without dpar", {
   expect_equal(add_epred_draws(mtcars_tbl, m_hp), ref)
   expect_equal(add_epred_draws(mtcars_tbl, m_hp, dpar = FALSE), ref)
   expect_equal(add_epred_draws(mtcars_tbl, m_hp, dpar = FALSE, epred = "foo"), rename(ref, foo = .epred))
-  # TODO: check
-  expect_equal(add_fitted_draws(mtcars_tbl, m_hp, dpar = FALSE, value = "foo"), rename(ref, foo = .epred))
+
+  # fitted_draws deprecation check
+  expect_warning(
+    expect_equal(add_fitted_draws(mtcars_tbl, m_hp, dpar = FALSE, value = "foo"), rename(ref, foo = .epred)),
+    "fitted_draws.*deprecated.*epred_draws.*linpred_draws"
+  )
 
   #subsetting to test the `ndraws` argument
   set.seed(1234)
@@ -195,7 +203,7 @@ test_that("[add_]epred_draws works on simple brms models with nlpars", {
   m_nlpar = readRDS(test_path("../models/models.brms.m_nlpar.rds"))
   df_nlpar = as_tibble(m_nlpar$data)
 
-  fits = rstantools::posterior_epred(m_nlpar, df_nlpar, summary = FALSE) %>%
+  fits = rstantools::posterior_epred(m_nlpar, df_nlpar) %>%
     as.data.frame() %>%
     set_names(seq_len(ncol(.))) %>%
     mutate(
@@ -223,7 +231,7 @@ test_that("[add_]epred_draws works on simple brms models with multiple dpars", {
   m_dpars = readRDS(test_path("../models/models.brms.m_dpars.rds"))
   df_dpars = as_tibble(m_dpars$data)
 
-  fits = rstantools::posterior_epred(m_dpars, df_dpars, summary = FALSE) %>%
+  fits = rstantools::posterior_epred(m_dpars, df_dpars) %>%
     as.data.frame() %>%
     set_names(seq_len(ncol(.))) %>%
     mutate(
@@ -234,12 +242,12 @@ test_that("[add_]epred_draws works on simple brms models with multiple dpars", {
     gather(.row, .epred, -.chain, -.iteration, -.draw) %>%
     as_tibble()
 
-  fits$mu1 = rstantools::posterior_epred(m_dpars, df_dpars, summary = FALSE, dpar = "mu1") %>%
+  fits$mu1 = rstantools::posterior_epred(m_dpars, df_dpars, dpar = "mu1") %>%
     as.data.frame() %>%
     gather(.row, mu1) %$%
     mu1
 
-  fits$mu2 = rstantools::posterior_epred(m_dpars, df_dpars, summary = FALSE, dpar = "mu2") %>%
+  fits$mu2 = rstantools::posterior_epred(m_dpars, df_dpars, dpar = "mu2") %>%
     as.data.frame() %>%
     gather(.row, mu2) %$%
     mu2
@@ -263,7 +271,7 @@ test_that("[add_]epred_draws works on brms models with ordinal outcomes (respons
   m_cyl_mpg = readRDS(test_path("../models/models.brms.m_cyl_mpg.rds"))
 
   make_ref = function(nsamples = NULL) {
-    fits = rstantools::posterior_epred(m_cyl_mpg, mtcars_tbl, summary = FALSE, nsamples = nsamples) %>%
+    fits = rstantools::posterior_epred(m_cyl_mpg, mtcars_tbl, nsamples = nsamples) %>%
       array2df(list(.draw = NA, .row = NA, .category = TRUE), label.x = ".epred") %>%
       mutate(
         .chain = NA_integer_,
@@ -297,7 +305,7 @@ test_that("[add_]epred_draws works on brms models with dirichlet outcomes (respo
   m_dirich = readRDS(test_path("../models/models.brms.m_dirich.rds"))
 
   grid = tibble(x = c("A", "B"))
-  fits = rstantools::posterior_epred(m_dirich, grid, summary = FALSE) %>%
+  fits = rstantools::posterior_epred(m_dirich, grid) %>%
     array2df(list(.draw = NA, .row = NA, .category = TRUE), label.x = ".epred") %>%
     mutate(
       .chain = NA_integer_,

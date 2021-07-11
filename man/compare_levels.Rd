@@ -65,7 +65,7 @@ value.}
 
 \item{ignore_groups}{character vector of names of groups to ignore by
 default in the input grouping. This is primarily provided to make it
-easier to pipe output of \code{\link[=add_fitted_draws]{add_fitted_draws()}} into this function,
+easier to pipe output of \code{\link[=add_epred_draws]{add_epred_draws()}} into this function,
 as that function provides a \code{".row"} output column that is grouped,
 but which is virtually never desired to group by when using \code{compare_levels}.}
 }

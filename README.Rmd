@@ -66,8 +66,9 @@ and visualization tasks common to many models:
 
 * __Extracting tidy fits and predictions__ from models. For models like those
   provided by `rstanarm` and `brms`, `tidybayes` provides a tidy analog of the
-  `fitted` and `predict` functions, called `add_fitted_draws()` and 
-  `add_predicted_draws()`. These functions are modeled after the `modelr::add_predictions()`
+  `posterior_epred()`, `posterior_predict()`, and `posterior_linpred()` functions,
+  called `add_epred_draws()`, `add_predicted_draws()`, and `add_linpred_draws()`.
+  These functions are modeled after the `modelr::add_predictions()`
   function, and turn a grid of predictions into a long-format data frame of
   draws from either the fits or predictions from a model. These functions make
   it straightforward to generate arbitrary fit lines from a model.
@@ -387,7 +388,7 @@ This plot shows 66% and 95% quantile credible intervals of posterior median for 
 
 ### Fit curves
 
-For models that support it (like `rstanarm` and `brms` models), We can also use the `add_fitted_draws` or `add_predicted_draws` functions to generate posterior fits or predictions. Combined with the functions from the `modelr` package, this makes it easy to generate fit curves.
+For models that support it (like `rstanarm` and `brms` models), We can also use the `add_epred_draws()` or `add_predicted_draws()` functions to generate distributions of posterior means or predictions. Combined with the functions from the `modelr` package, this makes it easy to generate fit curves.
 
 Let's fit a slightly naive model to miles per gallon versus horsepower in the `mtcars` dataset:
 
@@ -450,14 +451,17 @@ mtcars %>%
   facet_wrap(~ am)                                  # facet by am
 ```
 
-Or, if you would like overplotted posterior fit lines, you can instead use `tidybayes::add_fitted_draws()` to get draws from fit lines (instead of predictions), select some reasonable number of them (say `n = 100`), and then plot them:
+Or, if you would like overplotted posterior fit lines, you can instead use `tidybayes::add_epred_draws()` to get draws from conditional means (expectations of the posterior predictive, thus `epred`), select some reasonable number of them (say `ndraws = 100`), and then plot them:
 
 ```{r spaghetti}
 mtcars %>%
   data_grid(hp = seq_range(hp, n = 200), am) %>%
-  add_fitted_draws(m_mpg_am, n = 100) %>%         # sample 100 fits from the posterior
+  # NOTE: this shows the use of ndraws to subsample within add_epred_draws()
+  # ONLY do this IF you are planning to make spaghetti plots, etc.
+  # NEVER subsample to a small sample to plot intervals, densities, etc.
+  add_epred_draws(m_mpg_am, ndraws = 100) %>%   # sample 100 means from the posterior
   ggplot(aes(x = hp, y = mpg)) +
-  geom_line(aes(y = .value, group = .draw), alpha = 1/20, color = "#08519C") +
+  geom_line(aes(y = .epred, group = .draw), alpha = 1/20, color = "#08519C") +
   geom_point(data = mtcars) +
   facet_wrap(~ am)
 ```
@@ -470,9 +474,12 @@ ndraws = 50
 
 p = mtcars %>%
   data_grid(hp = seq_range(hp, n = 50), am) %>%
-  add_fitted_draws(m_mpg_am, n = ndraws) %>%
+  # NOTE: this shows the use of ndraws to subsample within add_epred_draws()
+  # ONLY do this IF you are planning to make spaghetti plots, etc.
+  # NEVER subsample to a small sample to plot intervals, densities, etc.
+  add_epred_draws(m_mpg_am, ndraws = ndraws) %>%
   ggplot(aes(x = hp, y = mpg)) +
-  geom_line(aes(y = .value, group = .draw), color = "#08519C") +
+  geom_line(aes(y = .epred, group = .draw), color = "#08519C") +
   geom_point(data = mtcars) +
   facet_wrap(~ am, labeller = label_both) +
   transition_states(.draw, 0, 1) +

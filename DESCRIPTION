@@ -105,7 +105,6 @@ Collate:
     "emmeans_comparison.R"
     "epred_draws.R"
     "epred_rvars.R"
-    "fitted_draws.R"
     "flip_aes.R"
     "gather_draws.R"
     "gather_emmeans_draws.R"

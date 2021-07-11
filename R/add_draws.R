@@ -11,17 +11,17 @@ globalVariables(".draw")
 #' Add draws to a data frame in tidy format
 #'
 #' Add draws from a matrix of draws (usually draws from a predictive distribution) to a data frame in tidy format. This is
-#' a generic version of [add_fitted_draws()]/[add_predicted_draws()] that can be used with model types
+#' a generic version of [add_predicted_draws()] that can be used with model types
 #' that have their own prediction functions that are not yet supported by tidybayes.
 #'
 #' Given a data frame with M rows and an N by M matrix of N draws, adds a `.row`, `.draw`, and `.value`
 #' column (or another name if `value` is set) to `data`, and expands `data` into a long-format dataframe of draws.
 #'
-#' `add_fitted_draws(df, m)` is roughly equivalent to `add_draws(df, posterior_linpred(m, newdata = df, summary = FALSE))`, except
-#' that `add_fitted_draws` standardizes argument names and values across packages and has additional features for some
+#' `add_epred_draws(df, m)` is roughly equivalent to `add_draws(df, posterior_epred(m, newdata = df))`, except
+#' that `add_epred_draws` standardizes argument names and values across packages and has additional features for some
 #' model types (like handling ordinal responses and distributional parameters in brms).
 #'
-#' `add_predicted_draws(df, m)` is roughly equivalent to `add_draws(df, posterior_predict(m, newdata = df, summary = FALSE))`, except
+#' `add_predicted_draws(df, m)` is roughly equivalent to `add_draws(df, posterior_predict(m, newdata = df))`, except
 #' that `add_predicted_draws` standardizes argument names and values across packages.
 #'
 #' @param data Data frame to add draws to, with M rows.
@@ -32,7 +32,7 @@ globalVariables(".draw")
 #' from the distribution), and a column with its name specified by the `value` argument (default is `.value`)
 #' containing the values of draws from `draws`. The data frame is grouped by all rows in `data` plus the `.row` column.
 #' @author Matthew Kay
-#' @seealso [add_fitted_draws()], [add_predicted_draws()], [add_draws()]
+#' @seealso [add_predicted_draws()], [add_draws()]
 #' @keywords manip
 #' @examples
 #' \donttest{
@@ -56,12 +56,9 @@ globalVariables(".draw")
 #'   mtcars %>%
 #'     group_by(cyl) %>%
 #'     data_grid(hp = seq_range(hp, n = 101)) %>%
-#'     # the line below is equivalent to add_fitted_draws(m_mpg), except that it does not
-#'     # standardize arguments across model types. `summary = FALSE` is not strictly necessary
-#'     # with posterior_linpred(), but because it is necessary on some functions (otherwise
-#'     # those functions return summaries instead of a matrix of draws) it is
-#'     # included in this example.
-#'     add_draws(posterior_linpred(m_mpg, newdata = ., summary = FALSE)) %>%
+#'     # the line below is roughly equivalent to add_epred_draws(m_mpg), except
+#'     # that it does not standardize arguments across model types.
+#'     add_draws(posterior_epred(m_mpg, newdata = .)) %>%
 #'     ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
 #'     stat_lineribbon(aes(y = .value), alpha = 0.25) +
 #'     geom_point(data = mtcars) +

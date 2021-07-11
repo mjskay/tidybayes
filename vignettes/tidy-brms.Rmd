@@ -50,7 +50,7 @@ dir.create("models", showWarnings = FALSE)
 
 ## Introduction
   
-This vignette describes how to use the `tidybayes` and `ggdist` packages to extract and visualize [tidy](https://dx.doi.org/10.18637/jss.v059.i10) data frames of draws from posterior distributions of model variables, fits, and predictions from `brms::brm`. For a more general introduction to `tidybayes` and its use on general-purpose Bayesian modeling languages (like Stan and JAGS), see `vignette("tidybayes")`. 
+This vignette describes how to use the `tidybayes` and `ggdist` packages to extract and visualize [tidy](https://dx.doi.org/10.18637/jss.v059.i10) data frames of draws from posterior distributions of model variables, means, and predictions from `brms::brm`. For a more general introduction to `tidybayes` and its use on general-purpose Bayesian modeling languages (like Stan and JAGS), see `vignette("tidybayes")`. 
 
 
 ## Setup
@@ -377,14 +377,14 @@ There are a variety of additional stats for visualizing distributions in the `gg
 See `vignette("slabinterval", package = "ggdist")` for an overview.
 
 
-## Posterior fits
+## Posterior means and predictions
 
-Rather than calculating conditional means manually as in the previous example, we could use `add_fitted_draws()`, which is analogous to `brms::fitted.brmsfit()` or `brms::posterior_linpred()` (giving posterior draws from the model's linear predictor, in this case, posterior distributions of conditional means), but uses a tidy data format. We can combine it with `modelr::data_grid()` to first generate a grid describing the fits we want, then transform that grid into a long-format data frame of draws from posterior fits:
+Rather than calculating conditional means manually as in the previous example, we could use `add_epred_draws()`, which is analogous to `brms::posterior_epred()` (giving posterior draws from the expectation of the posterior predictive; i.e. posterior distributions of conditional means), but uses a tidy data format. We can combine it with `modelr::data_grid()` to first generate a grid describing the predictions we want, then transform that grid into a long-format data frame of draws from conditional means:
 
 ```{r}
 ABC %>%
   data_grid(condition) %>%
-  add_fitted_draws(m) %>%
+  add_epred_draws(m) %>%
   head(10)
 ```
 
@@ -393,8 +393,8 @@ To plot this example, we'll also show the use of `ggdist::stat_pointinterval()` 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
   data_grid(condition) %>%
-  add_fitted_draws(m) %>%
-  ggplot(aes(x = .value, y = condition)) +
+  add_epred_draws(m) %>%
+  ggplot(aes(x = .epred, y = condition)) +
   stat_pointinterval(.width = c(.66, .95))
 ```
 
@@ -403,14 +403,14 @@ ABC %>%
 
 Intervals are nice if the alpha level happens to line up with whatever decision you are trying to make, but getting a shape of the posterior is better (hence eye plots, above). On the other hand, making inferences from density plots is imprecise (estimating the area of one shape as a proportion of another is a hard perceptual task). Reasoning about probability in frequency formats is easier, motivating [quantile dotplots](https://github.com/mjskay/when-ish-is-my-bus/blob/master/quantile-dotplots.md) ([Kay et al. 2016](https://doi.org/10.1145/2858036.2858558), [Fernandes et al. 2018](https://doi.org/10.1145/3173574.3173718)), which also allow precise estimation of arbitrary intervals (down to the dot resolution of the plot, 100 in the example below). 
 
-Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `ggdist::stat_dots()` is the variant designed for use on samples:
+Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `ggdist::stat_dotsinterval()` is the variant designed for use on samples:
 
 ```{r fig.width = med_width, fig.height = med_height}
 ABC %>%
   data_grid(condition) %>%
-  add_fitted_draws(m) %>%
-  ggplot(aes(x = .value, y = condition)) +
-  stat_dots(quantiles = 100)
+  add_epred_draws(m) %>%
+  ggplot(aes(x = .epred, y = condition)) +
+  stat_dotsinterval(quantiles = 100)
 ```
 
 The idea is to get away from thinking about the posterior as indicating one canonical point or interval, but instead to represent it as (say) 100 approximately equally likely points.
@@ -418,7 +418,7 @@ The idea is to get away from thinking about the posterior as indicating one cano
 
 ## Posterior predictions
 
-Where `add_fitted_draws()` is analogous to `brms::fitted.brmsfit()` (or `brms::posterior_linpred()`), `add_predicted_draws()` is analogous to `brms::predict.brmsfit()` (or `brms::posterior_predict()`), giving draws from the posterior predictive distribution.
+Where `add_epred_draws()` is analogous to `brms::posterior_epred()`, `add_predicted_draws()` is analogous to `brms::posterior_predict()`, giving draws from the posterior predictive distribution.
 
 Here is an example of posterior predictive distributions plotted using `ggdist::stat_slab()`:
 
@@ -448,8 +448,8 @@ Altogether, data, posterior predictions, and posterior distributions of the mean
 grid = ABC %>%
   data_grid(condition)
 
-fits = grid %>%
-  add_fitted_draws(m)
+means = grid %>%
+  add_epred_draws(m)
 
 preds = grid %>%
   add_predicted_draws(m)
@@ -457,7 +457,7 @@ preds = grid %>%
 ABC %>%
   ggplot(aes(y = condition, x = response)) +
   stat_interval(aes(x = .prediction), data = preds) +
-  stat_pointinterval(aes(x = .value), data = fits, .width = c(.66, .95), position = position_nudge(y = -0.3)) +
+  stat_pointinterval(aes(x = .epred), data = means, .width = c(.66, .95), position = position_nudge(y = -0.3)) +
   geom_point() +
   scale_color_brewer()
 ```
@@ -466,12 +466,12 @@ ABC %>%
 
 The above approach to posterior predictions integrates over the parameter uncertainty to give a single posterior predictive distribution. Another approach, often used by John Kruschke in his book [Doing Bayesian Data Analysis](https://sites.google.com/site/doingbayesiandataanalysis/), is to attempt to show both the predictive uncertainty and the parameter uncertainty simultaneously by showing several possible predictive distributions implied by the posterior.
 
-We can do this pretty easily by asking for the distributional parameters for a given prediction implied by the posterior. We'll do it explicitly here by setting `dpar = c("mu", "sigma")` in `add_fitted_draws()`. Rather than specifying the parameters explicitly, you can also just set `dpar = TRUE` to get draws from all distributional parameters in a model, and this will work for any response distribution supported by brms. Then, we can select a small number of draws using `sample_draws()` and then use `ggdist::stat_dist_slab()` to visualize each predictive distribution implied by the values of `mu` and `sigma`:
+We can do this pretty easily by asking for the distributional parameters for a given prediction implied by the posterior. We'll do it explicitly here by setting `dpar = c("mu", "sigma")` in `add_epred_draws()`. Rather than specifying the parameters explicitly, you can also just set `dpar = TRUE` to get draws from all distributional parameters in a model, and this will work for any response distribution supported by brms. Then, we can select a small number of draws using `sample_draws()` and then use `ggdist::stat_dist_slab()` to visualize each predictive distribution implied by the values of `mu` and `sigma`:
 
 ```{r fig.width = small_width, fig.height = small_height}
 ABC %>%
   data_grid(condition) %>%
-  add_fitted_draws(m, dpar = c("mu", "sigma")) %>%
+  add_epred_draws(m, dpar = c("mu", "sigma")) %>%
   sample_draws(30) %>%
   ggplot(aes(y = condition)) +
   stat_dist_slab(aes(dist = "norm", arg1 = mu, arg2 = sigma), 
@@ -487,12 +487,12 @@ We could even combine the Kruschke-style plots of predictive distributions with 
 ```{r fig.width = small_width, fig.height = small_height}
 ABC %>%
   data_grid(condition) %>%
-  add_fitted_draws(m, dpar = c("mu", "sigma")) %>%
+  add_epred_draws(m, dpar = c("mu", "sigma")) %>%
   ggplot(aes(x = condition)) +
   stat_dist_slab(aes(dist = "norm", arg1 = mu, arg2 = sigma), 
     slab_color = "gray65", alpha = 1/10, fill = NA, data = . %>% sample_draws(30), scale = .5
   ) +
-  stat_halfeye(aes(y = .value), side = "bottom", scale = .5) +
+  stat_halfeye(aes(y = .epred), side = "bottom", scale = .5) +
   geom_point(aes(y = response), data = ABC, shape = 21, fill = "#9ECAE1", size = 2, position = position_nudge(x = -.2))
 ```
 
@@ -515,9 +515,9 @@ We can draw fit curves with probability bands:
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 51)) %>%
-  add_fitted_draws(m_mpg) %>%
+  add_epred_draws(m_mpg) %>%
   ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-  stat_lineribbon(aes(y = .value)) +
+  stat_lineribbon(aes(y = .epred)) +
   geom_point(data = mtcars) +
   scale_fill_brewer(palette = "Greys") +
   scale_color_brewer(palette = "Set2")
@@ -529,9 +529,12 @@ Or we can sample a reasonable number of fit lines (say 100) and overplot them:
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
-  add_fitted_draws(m_mpg, n = 100) %>%
+  # NOTE: this shows the use of ndraws to subsample within add_epred_draws()
+  # ONLY do this IF you are planning to make spaghetti plots, etc.
+  # NEVER subsample to a small sample to plot intervals, densities, etc.
+  add_epred_draws(m_mpg, ndraws = 100) %>%
   ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-  geom_line(aes(y = .value, group = paste(cyl, .draw)), alpha = .1) +
+  geom_line(aes(y = .epred, group = paste(cyl, .draw)), alpha = .1) +
   geom_point(data = mtcars) +
   scale_color_brewer(palette = "Dark2")
 ```
@@ -545,9 +548,9 @@ ndraws = 50
 p = mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
-  add_fitted_draws(m_mpg, n = ndraws) %>%
+  add_epred_draws(m_mpg, ndraws = ndraws) %>%
   ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-  geom_line(aes(y = .value, group = paste(cyl, .draw))) +
+  geom_line(aes(y = .epred, group = paste(cyl, .draw))) +
   geom_point(data = mtcars) +
   scale_color_brewer(palette = "Dark2") +
   transition_states(.draw, 0, 1) +
@@ -556,7 +559,7 @@ p = mtcars %>%
 animate(p, nframes = ndraws, fps = 2.5, width = 432, height = 288, res = 96, dev = "png", type = "cairo")
 ```
 
-Or, for posterior predictions (instead of fits), we can go back to probability bands:
+Or, for posterior predictions (instead of means), we can go back to probability bands:
 
 ```{r fig.width = med_width, fig.height = small_height}
 mtcars %>%
@@ -622,15 +625,15 @@ We can plot the posterior distribution of the mean `response` alongside posterio
 grid = AB %>%
   data_grid(group)
 
-fits = grid %>%
-  add_fitted_draws(m_ab)
+means = grid %>%
+  add_epred_draws(m_ab)
 
 preds = grid %>%
   add_predicted_draws(m_ab)
 
 AB %>%
   ggplot(aes(x = response, y = group)) +
-  stat_halfeye(aes(x = .value), scale = 0.6, position = position_nudge(y = 0.175), data = fits) +
+  stat_halfeye(aes(x = .epred), scale = 0.6, position = position_nudge(y = 0.175), data = means) +
   stat_interval(aes(x = .prediction), data = preds) +
   geom_point(data = AB) +
   scale_color_brewer()
@@ -638,17 +641,17 @@ AB %>%
 
 This shows posteriors of the mean of each group (black intervals and the density plots) and posterior predictive intervals (blue).
 
-The predictive intervals in group `b` are larger than in group `a` because the model fits a different standard deviation for each group. We can see how the corresponding distributional parameter, `sigma`, changes by extracting it using the `dpar` argument to `add_fitted_draws()`:
+The predictive intervals in group `b` are larger than in group `a` because the model fits a different standard deviation for each group. We can see how the corresponding distributional parameter, `sigma`, changes by extracting it using the `dpar` argument to `add_epred_draws()`:
 
 ```{r fig.width = small_width, fig.height = tiny_height}
 grid %>%
-  add_fitted_draws(m_ab, dpar = TRUE) %>%
+  add_epred_draws(m_ab, dpar = TRUE) %>%
   ggplot(aes(x = sigma, y = group)) +
   stat_halfeye() +
   geom_vline(xintercept = 0, linetype = "dashed")
 ```
 
-By setting `dpar = TRUE`, all distributional parameters are added as additional columns in the result of `add_fitted_draws()`; if you only want a specific parameter, you can specify it (or a list of just the parameters you want). In the above model, `dpar = TRUE` is equivalent to `dpar = list("mu", "sigma")`.
+By setting `dpar = TRUE`, all distributional parameters are added as additional columns in the result of `add_epred_draws()`; if you only want a specific parameter, you can specify it (or a list of just the parameters you want). In the above model, `dpar = TRUE` is equivalent to `dpar = list("mu", "sigma")`.
 
 
 ## Comparing levels of a factor
@@ -658,7 +661,6 @@ If we wish compare the means from each condition, `compare_levels()` facilitates
 Let's demonstrate `compare_levels()` with `ggdist::stat_halfeye()`:
 
 ```{r fig.width = small_width, fig.height = small_height}
-#N.B. the syntax for compare_levels is experimental and may change
 m %>%
   spread_draws(r_condition[condition,]) %>%
   compare_levels(r_condition, by = condition) %>%
@@ -682,7 +684,7 @@ m %>%
 
 ## Ordinal models
 
-The `brms::fitted.brmsfit()` function for ordinal and multinomial regression models in brms returns multiple variables for each draw: one for each outcome category (in contrast to `rstanarm::stan_polr()` models, which return draws from the latent linear predictor). The philosophy of `tidybayes` is to tidy whatever format is output by a model, so in keeping with that philosophy, when applied to ordinal and multinomial `brms` models, `add_fitted_draws()` adds an additional column called `.category` and a separate row containing the variable for each category is output for every draw and predictor. 
+The `posterior_epred()` function for ordinal and multinomial regression models in brms returns multiple variables for each draw: one for each outcome category (in contrast to `rstanarm::stan_polr()` models, which return draws from the latent linear predictor). The philosophy of `tidybayes` is to tidy whatever format is output by a model, so in keeping with that philosophy, when applied to ordinal and multinomial `brms` models, `add_epred_draws()` adds an additional column called `.category` and a separate row containing the variable for each category is output for every draw and predictor. 
 
 ### Ordinal model with continuous predictor
 
@@ -710,29 +712,18 @@ m_cyl = brm(
 )
 ```
 
-`add_fitted_draws()` will include a `.category` column, and `.value` will contain draws from the posterior distribution for the probability that the response is in that category. For example, here is the fit for the first row in the dataset:
+`add_epred_draws()` will include a `.category` column, and `.epred` will contain draws from the posterior distribution for the probability that the response is in that category. For example, here is the fit for the first row in the dataset:
 
 ```{r}
 tibble(mpg = 21) %>%
-  add_fitted_draws(m_cyl) %>%
-  median_qi(.value)
+  add_epred_draws(m_cyl) %>%
+  median_qi(.epred)
 ```
 
-Note how the `.category` variable does not retain the original factor level names. This is due to a bug in brms 2.11 (see [here](https://github.com/paul-buerkner/brms/issues/838)). As a workaround, we can recover the original factor labels and assign the result to a `cyl` column:
+Note: for the `.category` variable to reatin the original factor level names you
+must be using `brms` greater than version 2.15.
 
-```{r}
-tibble(mpg = 21) %>%
-  add_fitted_draws(m_cyl) %>%
-  
-  # recover original factor labels
-  mutate(cyl = levels(mtcars_clean$cyl)[.category]) %>%
-  group_by(cyl, .add = TRUE) %>%
-  
-  median_qi(.value)
-```
-
-
-We could plot fit lines for fitted probabilities against the dataset:
+We could plot fit lines for predicted probabilities against the dataset:
 
 ```{r fig.width = med_width, fig.height = med_height}
 data_plot = mtcars_clean %>%
@@ -742,9 +733,7 @@ data_plot = mtcars_clean %>%
 
 fit_plot = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
-  add_fitted_draws(m_cyl, value = "P(cyl | mpg)") %>%
-  # recover original factor labels
-  mutate(cyl = levels(mtcars_clean$cyl)[.category]) %>%
+  add_epred_draws(m_cyl, epred = "P(cyl | mpg)", category = "cyl") %>%
   ggplot(aes(x = mpg, y = `P(cyl | mpg)`, color = cyl)) +
   stat_lineribbon(aes(fill = cyl), alpha = 1/5) +
   scale_color_brewer(palette = "Dark2") +
@@ -766,9 +755,7 @@ ndraws = 50
 
 p = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
-  add_fitted_draws(m_cyl, value = "P(cyl | mpg)") %>%
-  # recover original factor labels
-  mutate(cyl = levels(mtcars_clean$cyl)[.category]) %>%
+  add_epred_draws(m_cyl, epred = "P(cyl | mpg)", category = "cyl") %>%
   ggplot(aes(x = mpg, y = `P(cyl | mpg)`, color = cyl)) +
   # we remove the `.draw` column from the data for stat_lineribbon so that the same ribbons
   # are drawn on every frame (since we use .draw to determine the transitions below)
@@ -787,9 +774,7 @@ Notice how the lines move together, and how they move up or down together or in 
 
 ```{r fig.width = med_width, fig.height = med_height}
 tibble(mpg = 20) %>%
-  add_fitted_draws(m_cyl, value = "P(cyl | mpg = 20)") %>%
-  # recover original factor labels
-  mutate(cyl = levels(mtcars_clean$cyl)[.category]) %>%
+  add_epred_draws(m_cyl, epred = "P(cyl | mpg = 20)", category = "cyl") %>%
   ungroup() %>%
   select(.draw, cyl, `P(cyl | mpg = 20)`) %>%
   gather_pairs(cyl, `P(cyl | mpg = 20)`, triangle = "both") %>%
@@ -806,7 +791,7 @@ While talking about the mean for an ordinal distribution often does not make sen
 $$
 \textrm{E}[\textrm{cyl}|\textrm{mpg}=m] = \sum_{c \in \{4,6,8\}} c\cdot \textrm{P}(\textrm{cyl}=c|\textrm{mpg}=m)
 $$
-We can use the above formula to derive a posterior distribution for $\textrm{E}[\textrm{cyl}|\textrm{mpg}=m]$ from the model. The model gives us a posterior distribution for $\textrm{P}(\textrm{cyl}=c|\textrm{mpg}=m)$: when `mpg` = $m$, the response-scale linear predictor (the `.value` column from `add_fitted_draws()`) for `cyl` (aka `.category`) = $c$ is $\textrm{P}(\textrm{cyl}=c|\textrm{mpg}=m)$. Thus, we can group within `.draw` and then use `summarise` to calculate the expected value:
+We can use the above formula to derive a posterior distribution for $\textrm{E}[\textrm{cyl}|\textrm{mpg}=m]$ from the model. The model gives us a posterior distribution for $\textrm{P}(\textrm{cyl}=c|\textrm{mpg}=m)$: when `mpg` = $m$, the response-scale linear predictor (the `.epred` column from `add_epred_draws()`) for `cyl` (aka `.category`) = $c$ is $\textrm{P}(\textrm{cyl}=c|\textrm{mpg}=m)$. Thus, we can group within `.draw` and then use `summarise` to calculate the expected value:
 
 ```{r fig.width = med_width, fig.height = med_height}
 label_data_function = . %>% 
@@ -816,12 +801,14 @@ label_data_function = . %>%
 
 data_plot_with_mean = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
-  add_fitted_draws(m_cyl, value = "P(cyl | mpg)", n = 100) %>%
-  # recover original factor labels (and convert into numbers)
-  mutate(cyl = as.numeric(levels(mtcars_clean$cyl)[.category])) %>%
+  # NOTE: this shows the use of ndraws to subsample within add_epred_draws()
+  # ONLY do this IF you are planning to make spaghetti plots, etc.
+  # NEVER subsample to a small sample to plot intervals, densities, etc.
+  add_epred_draws(m_cyl, epred = "P(cyl | mpg)", category = "cyl", ndraws = 100) %>%
   group_by(mpg, .draw) %>%
   # calculate expected cylinder value
-  summarise(cyl = sum(cyl * `P(cyl | mpg)`)) %>%
+  mutate(cyl = as.numeric(as.character(cyl))) %>%
+  summarise(cyl = sum(cyl * `P(cyl | mpg)`), .groups = "drop") %>%
   ggplot(aes(x = mpg, y = cyl)) +
   geom_line(aes(group = .draw), alpha = 5/100) +
   geom_point(aes(y = as.numeric(as.character(cyl)), fill = cyl), data = mtcars_clean, shape = 21, size = 2) +
@@ -866,7 +853,7 @@ This looks pretty good. Let's check using another typical posterior predictive c
 ```{r fig.width = med_width, fig.height = med_height}
 mtcars_clean %>%
   select(mpg) %>%
-  add_predicted_draws(m_cyl, n = 100, seed = 12345) %>%
+  add_predicted_draws(m_cyl, ndraws = 100, seed = 12345) %>%
   # recover original factor labels
   mutate(cyl = levels(mtcars_clean$cyl)[.prediction]) %>%
   ggplot(aes(x = cyl)) +
@@ -926,11 +913,10 @@ Then we can plot predicted probabilities for each outcome category within each l
 ```{r fig.width = med_width, fig.height = med_height}
 esoph %>%
   data_grid(agegp) %>%
-  add_fitted_draws(m_esoph_brm, dpar = TRUE) %>%
-  mutate(tobgp = levels(esoph$tobgp)[.category]) %>%
-  ggplot(aes(x = agegp, y = .value, color = tobgp)) +
+  add_epred_draws(m_esoph_brm, dpar = TRUE, category = "tobgp") %>%
+  ggplot(aes(x = agegp, y = .epred, color = tobgp)) +
   stat_pointinterval(position = position_dodge(width = .4)) +
-  scale_size_continuous(guide = FALSE) +
+  scale_size_continuous(guide = "none") +
   scale_color_manual(values = brewer.pal(6, "Blues")[-c(1,2)])
 ```
 
@@ -939,9 +925,8 @@ It is hard to see the changes in categories in the above plot; let's try somethi
 ```{r fig.width = large_width, fig.height = large_height/2}
 esoph_plot = esoph %>%
   data_grid(agegp) %>%
-  add_fitted_draws(m_esoph_brm) %>%
-  mutate(tobgp = levels(esoph$tobgp)[.category]) %>%
-  ggplot(aes(x = .value, y = tobgp)) +
+  add_epred_draws(m_esoph_brm, category = "tobgp") %>%
+  ggplot(aes(x = .epred, y = tobgp)) +
   coord_cartesian(expand = FALSE) +
   facet_grid(. ~ agegp, switch = "x") +
   theme_classic() +
@@ -950,7 +935,7 @@ esoph_plot = esoph %>%
   xlab("age group")
 
 esoph_plot +
-  stat_summary(fun = median, geom = "bar", fill = "gray75", width = 1, color = "white") +
+  stat_summary(fun = median, geom = "bar", fill = "gray65", width = 1, color = "white") +
   stat_pointinterval()
 ```
 

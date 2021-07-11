@@ -4,6 +4,8 @@
 \name{tidybayes-deprecated}
 \alias{tidybayes-deprecated}
 \alias{ggeye}
+\alias{add_fitted_draws}
+\alias{fitted_draws}
 \alias{fitted_samples}
 \alias{add_fitted_samples}
 \alias{predicted_samples}
@@ -113,9 +115,11 @@ reflecting a package-wide move to using \emph{draws} instead of \emph{samples} f
 describing multiple realizations from a distribution.
 
 \item \code{fitted_samples} / \code{add_fitted_samples} are deprecated names for
-\code{\link[=fitted_draws]{fitted_draws()}} / \code{\link[=add_fitted_draws]{add_fitted_draws()}},
+\code{fitted_draws} / \code{add_fitted_draws},
 reflecting a package-wide move to using \emph{draws} instead of \emph{samples} for
-describing multiple realizations from a distribution.
+describing multiple realizations from a distribution. (though see
+the nore above about the deprecation of \code{fitted_draws} in favor of
+\code{\link[=epred_draws]{epred_draws()}} and \code{\link[=linpred_draws]{linpred_draws()}}).
 
 \item \code{predicted_samples} / \code{add_predicted_samples} are deprecated names for
 \code{\link[=predicted_draws]{predicted_draws()}} / \code{\link[=add_predicted_draws]{add_predicted_draws()}},
@@ -205,13 +209,13 @@ except that when passed a vector, they return a data frame with
 
 Arguments deprecated in tidybayes 3.0 are:
 \itemize{
-\item The \code{n} column is now called \code{ndraws} in \code{predicted_draws()}, \code{linpred_draws()}, etc.
+\item The \code{n} argument is now called \code{ndraws} in \code{predicted_draws()}, \code{linpred_draws()}, etc.
 This prevents some bugs due to partial matching of argument names where \code{n} might
 be mistaken for \code{newdata}.
-\item The \code{value} column in \code{linpred_draws()} is now spelled \code{linpred} and defaults to
+\item The \code{value} argument in \code{linpred_draws()} is now spelled \code{linpred} and defaults to
 \code{".linpred"} in the same way that the \code{predicted_draws()} and \code{epred_draws()} functions
 work.
-\item The \code{scale} column in \code{linpred_draws()} is no longer allowed (use \code{transform} instead)
+\item The \code{scale} argument in \code{linpred_draws()} is no longer allowed (use \code{transform} instead)
 as this naming scheme only made sense when \code{linpred_draws()} was an alias for
 \code{fitted_draws()}, which it no longer is (see note above about the deprecation of
 \code{fitted_draws()}).

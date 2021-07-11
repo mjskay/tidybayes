@@ -36,7 +36,7 @@
 #' @param object A supported Bayesian model fit that can provide fits and predictions. Supported models
 #' are listed in the second section of [tidybayes-models]: *Models Supporting Prediction*. While other
 #' functions in this package (like [spread_rvars()]) support a wider range of models, to work with
-#' `add_fitted_rvars()` and `add_predicted_rvars()` a model must provide an interface for generating
+#' `add_epred_rvars()` and `add_predicted_rvars()` a model must provide an interface for generating
 #' predictions, thus more generic Bayesian modeling interfaces like `runjags` and `rstan` are not directly
 #' supported for these functions (only wrappers around those languages that provide predictions, like `rstanarm`
 #' and `brm`, are supported here).

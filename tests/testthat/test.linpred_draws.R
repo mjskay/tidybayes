@@ -152,9 +152,16 @@ test_that("[add_]linpred_draws works on brms models with ordinal outcomes (linea
 
   expect_equal(linpred_draws(m_cyl_mpg, mtcars_tbl), ref)
   expect_equal(add_linpred_draws(mtcars_tbl, m_cyl_mpg), ref)
-  #TODO: check again (fitted)
-  expect_equal(fitted_draws(m_cyl_mpg, mtcars_tbl, scale = "linear"), rename(ref, .value = .linpred))
-  expect_equal(add_fitted_draws(mtcars_tbl, m_cyl_mpg, scale = "linear"), rename(ref, .value = .linpred))
+
+  #fitted_draws deprecation check
+  expect_warning(
+    expect_equal(fitted_draws(m_cyl_mpg, mtcars_tbl, scale = "linear"), rename(ref, .value = .linpred)),
+    "fitted_draws.*deprecated.*epred_draws.*linpred_draws"
+  )
+  expect_warning(
+    expect_equal(add_fitted_draws(mtcars_tbl, m_cyl_mpg, scale = "linear"), rename(ref, .value = .linpred)),
+    "fitted_draws.*deprecated.*epred_draws.*linpred_draws"
+  )
 })
 
 
@@ -173,12 +180,12 @@ test_that("[add_]linpred_draws allows extraction of dpar on brms models with ord
     gather(.row, .linpred, -.chain, -.iteration, -.draw) %>%
     as_tibble()
 
-  fits$mu = rstantools::posterior_linpred(m_cyl_mpg, newdata = mtcars_tbl, summary = FALSE, dpar = "mu", scale = "linear") %>%
+  fits$mu = rstantools::posterior_linpred(m_cyl_mpg, newdata = mtcars_tbl, dpar = "mu", scale = "linear") %>%
     as.data.frame() %>%
     gather(.row, mu) %$%
     mu
 
-  fits$disc = rstantools::posterior_linpred(m_cyl_mpg, newdata = mtcars_tbl, summary = FALSE, dpar = "disc", scale = "linear") %>%
+  fits$disc = rstantools::posterior_linpred(m_cyl_mpg, newdata = mtcars_tbl, dpar = "disc", scale = "linear") %>%
     as.data.frame() %>%
     gather(.row, disc) %$%
     disc
@@ -190,8 +197,12 @@ test_that("[add_]linpred_draws allows extraction of dpar on brms models with ord
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
 
   expect_equal(linpred_draws(m_cyl_mpg, mtcars_tbl, dpar = TRUE), ref)
-  #TODO: check
-  expect_equal(fitted_draws(m_cyl_mpg, mtcars_tbl, scale = "linear", dpar = TRUE), rename(ref, .value = .linpred))
+
+  # fitted_draws deprecation check
+  expect_warning(
+    expect_equal(fitted_draws(m_cyl_mpg, mtcars_tbl, scale = "linear", dpar = TRUE), rename(ref, .value = .linpred)),
+    "fitted_draws.*deprecated.*epred_draws.*linpred_draws"
+  )
 
   # scale = "linear" is deprecated and should give a warning to use `transform`
   ref$disc = NULL

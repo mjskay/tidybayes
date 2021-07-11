@@ -21,18 +21,18 @@ containing the values of draws from \code{draws}. The data frame is grouped by a
 }
 \description{
 Add draws from a matrix of draws (usually draws from a predictive distribution) to a data frame in tidy format. This is
-a generic version of \code{\link[=add_fitted_draws]{add_fitted_draws()}}/\code{\link[=add_predicted_draws]{add_predicted_draws()}} that can be used with model types
+a generic version of \code{\link[=add_predicted_draws]{add_predicted_draws()}} that can be used with model types
 that have their own prediction functions that are not yet supported by tidybayes.
 }
 \details{
 Given a data frame with M rows and an N by M matrix of N draws, adds a \code{.row}, \code{.draw}, and \code{.value}
 column (or another name if \code{value} is set) to \code{data}, and expands \code{data} into a long-format dataframe of draws.
 
-\code{add_fitted_draws(df, m)} is roughly equivalent to \code{add_draws(df, posterior_linpred(m, newdata = df, summary = FALSE))}, except
-that \code{add_fitted_draws} standardizes argument names and values across packages and has additional features for some
+\code{add_epred_draws(df, m)} is roughly equivalent to \code{add_draws(df, posterior_epred(m, newdata = df))}, except
+that \code{add_epred_draws} standardizes argument names and values across packages and has additional features for some
 model types (like handling ordinal responses and distributional parameters in brms).
 
-\code{add_predicted_draws(df, m)} is roughly equivalent to \code{add_draws(df, posterior_predict(m, newdata = df, summary = FALSE))}, except
+\code{add_predicted_draws(df, m)} is roughly equivalent to \code{add_draws(df, posterior_predict(m, newdata = df))}, except
 that \code{add_predicted_draws} standardizes argument names and values across packages.
 }
 \examples{
@@ -57,12 +57,9 @@ if (
   mtcars \%>\%
     group_by(cyl) \%>\%
     data_grid(hp = seq_range(hp, n = 101)) \%>\%
-    # the line below is equivalent to add_fitted_draws(m_mpg), except that it does not
-    # standardize arguments across model types. `summary = FALSE` is not strictly necessary
-    # with posterior_linpred(), but because it is necessary on some functions (otherwise
-    # those functions return summaries instead of a matrix of draws) it is
-    # included in this example.
-    add_draws(posterior_linpred(m_mpg, newdata = ., summary = FALSE)) \%>\%
+    # the line below is roughly equivalent to add_epred_draws(m_mpg), except
+    # that it does not standardize arguments across model types.
+    add_draws(posterior_epred(m_mpg, newdata = .)) \%>\%
     ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
     stat_lineribbon(aes(y = .value), alpha = 0.25) +
     geom_point(data = mtcars) +
@@ -71,7 +68,7 @@ if (
 }
 }
 \seealso{
-\code{\link[=add_fitted_draws]{add_fitted_draws()}}, \code{\link[=add_predicted_draws]{add_predicted_draws()}}, \code{\link[=add_draws]{add_draws()}}
+\code{\link[=add_predicted_draws]{add_predicted_draws()}}, \code{\link[=add_draws]{add_draws()}}
 }
 \author{
 Matthew Kay

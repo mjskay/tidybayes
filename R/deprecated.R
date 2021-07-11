@@ -60,9 +60,11 @@ globalVariables(c(".lower", ".upper", ".width"))
 #'   describing multiple realizations from a distribution.
 #'
 #'   \item `fitted_samples` / `add_fitted_samples` are deprecated names for
-#'   [fitted_draws()] / [add_fitted_draws()],
+#'   `fitted_draws` / `add_fitted_draws`,
 #'   reflecting a package-wide move to using *draws* instead of *samples* for
-#'   describing multiple realizations from a distribution.
+#'   describing multiple realizations from a distribution. (though see
+#'   the nore above about the deprecation of `fitted_draws` in favor of
+#'   [epred_draws()] and [linpred_draws()]).
 #'
 #'   \item `predicted_samples` / `add_predicted_samples` are deprecated names for
 #'   [predicted_draws()] / [add_predicted_draws()],
@@ -142,13 +144,13 @@ globalVariables(c(".lower", ".upper", ".width"))
 #'
 #' Arguments deprecated in tidybayes 3.0 are:
 #'
-#' - The `n` column is now called `ndraws` in `predicted_draws()`, `linpred_draws()`, etc.
+#' - The `n` argument is now called `ndraws` in `predicted_draws()`, `linpred_draws()`, etc.
 #'   This prevents some bugs due to partial matching of argument names where `n` might
 #'   be mistaken for `newdata`.
-#' - The `value` column in `linpred_draws()` is now spelled `linpred` and defaults to
+#' - The `value` argument in `linpred_draws()` is now spelled `linpred` and defaults to
 #'   `".linpred"` in the same way that the `predicted_draws()` and `epred_draws()` functions
 #'   work.
-#' - The `scale` column in `linpred_draws()` is no longer allowed (use `transform` instead)
+#' - The `scale` argument in `linpred_draws()` is no longer allowed (use `transform` instead)
 #'   as this naming scheme only made sense when `linpred_draws()` was an alias for
 #'   `fitted_draws()`, which it no longer is (see note above about the deprecation of
 #'   `fitted_draws()`).
@@ -197,6 +199,54 @@ ggeye = function(data = NULL, mapping = NULL, ...) {
 }
 
 
+# [add_]fitted_draws -------------------------------------------------
+
+#' @rdname tidybayes-deprecated
+#' @format NULL
+#' @usage NULL
+#' @export
+add_fitted_draws = function(newdata, object, ..., n = NULL) {
+  fitted_draws(object = object, newdata = newdata, ..., n = n)
+}
+
+#' @rdname tidybayes-deprecated
+#' @format NULL
+#' @usage NULL
+#' @export
+fitted_draws = function(
+  object, newdata, ..., value = ".value", n = NULL, scale = c("response", "linear")
+) {
+  scale = match.arg(scale)
+  deprecation_message_base = paste0(
+    "`fitted_draws` and `add_fitted_draws` are deprecated as their names were confusing.\n",
+    "Use [add_]epred_draws() to get the expectation of the posterior predictive.\n",
+    "Use [add_]linpred_draws() to get the distribution of the linear predictor.\n"
+  )
+  switch(scale,
+    response = {
+      .Deprecated("epred_draws", "tidybayes", paste0(deprecation_message_base,
+        'For example, you used [add_]fitted_draws(..., scale = "response"), which\n',
+        'means you most likely want [add_]epred_draws(...).'
+      ))
+      epred_draws(
+        object = object, newdata = newdata, ...,
+        epred = value, ndraws = n
+      )
+    },
+    linear = {
+      .Deprecated("linpred_draws", "tidybayes", paste0(deprecation_message_base,
+        'For example, you used [add_]fitted_draws(..., scale = "linear"), which\n',
+        'means you most likely want [add_]linpred_draws(...).'
+      ))
+      linpred_draws(
+        object = object, newdata = newdata, ...,
+        linpred = value, ndraws = n
+      )
+    }
+  )
+}
+
+
 # [add_]fitted_draws aliases -------------------------------
 
 #' @rdname tidybayes-deprecated
@@ -204,8 +254,8 @@ ggeye = function(data = NULL, mapping = NULL, ...) {
 #' @usage NULL
 #' @export
 fitted_samples = function(model, newdata, ..., n = NULL) {
-  .Deprecated("fitted_draws", package = "tidybayes") # nocov
-  fitted_samples_(model, newdata,  ..., n = n)       # nocov
+  # no deprecation message here as it will be handled in fitted_draws
+  fitted_samples_(model, newdata, ..., n = n)       # nocov
 }
 fitted_samples_ = function(model, newdata, var = "estimate", ..., n = NULL, category = "category") {
   combine_chains_for_deprecated_(fitted_draws(                      # nocov
@@ -218,7 +268,7 @@ fitted_samples_ = function(model, newdata, var = "estimate", ..., n = NULL, cate
 #' @usage NULL
 #' @export
 add_fitted_samples = function(newdata, model, ..., n = NULL) {
-  .Deprecated("add_fitted_draws", package = "tidybayes") # nocov
+  # no deprecation message here as it will be handled in fitted_draws
   fitted_samples_(model, newdata, ..., n = n)            # nocov
 }
 

@@ -41,7 +41,7 @@
 #' @param object A supported Bayesian model fit that can provide fits and predictions. Supported models
 #' are listed in the second section of [tidybayes-models]: *Models Supporting Prediction*. While other
 #' functions in this package (like [spread_draws()]) support a wider range of models, to work with
-#' `add_fitted_draws` and `add_predicted_draws` a model must provide an interface for generating
+#' `add_epred_draws()`, `add_predicted_draws()`, etc. a model must provide an interface for generating
 #' predictions, thus more generic Bayesian modeling interfaces like `runjags` and `rstan` are not directly
 #' supported for these functions (only wrappers around those languages that provide predictions, like `rstanarm`
 #' and `brm`, are supported here).
@@ -61,7 +61,7 @@
 #' [brms::predict.brmsfit()]).
 #' @param category For *some* ordinal, multinomial, and multivariate models (notably, [brms::brm()] models but
 #' *not* [rstanarm::stan_polr()] models), multiple sets of rows will be returned per input row for
-#' `fitted_draws` or `predicted_draws`, depending on the model type. For ordinal/multinomial models,
+#' `epred_draws()` or `predicted_draws()`, depending on the model type. For ordinal/multinomial models,
 #' these rows correspond to different categories of the response variable. For multivariate models, these correspond to
 #' different response variables. The `category` argument specifies the name of the column
 #' to put the category names (or variable names) into in the resulting data frame. The default name of this column
@@ -71,7 +71,8 @@
 #' the output from different modeling functions differs on this point.
 #' See `vignette("tidy-brms")` and `vignette("tidy-rstanarm")` for examples of dealing with output
 #' from ordinal models using both approaches.
-#' @param dpar For `fitted_draws` and `add_fitted_draws`: Should distributional regression
+#' @param dpar For `epred_draws()`, `add_epred_draws()`, `linpred_draws()`, and `add_linpred_draws()`:
+#' Should distributional regression
 #' parameters be included in the output? Valid only for models that support distributional regression parameters,
 #' such as submodels for variance parameters (as in `brm`). If `TRUE`, distributional regression
 #' parameters are included in the output as additional columns named after each parameter
@@ -88,10 +89,11 @@
 #' each draw came from, or `NA` if the model does not provide chain information),
 #' `.iteration` column (the iteration the draw came from, or `NA` if the model does
 #' not provide iteration information), and a `.draw` column (a unique index corresponding to each draw
-#' from the distribution). In addition, `fitted_draws` includes a column with its name specified by
-#' the `value` argument (default is `.value`) containing draws from the (transformed) linear predictor,
-#' and `predicted_draws` contains a `.prediction` column containing draws from the posterior predictive
-#' distribution. For convenience, the resulting data frame comes grouped by the original input rows.
+#' from the distribution). In addition, `epred_draws` includes a column with its name specified by
+#' the `epred` argument (default `".epred"`); `linpred_draws` includes a column with its name
+#' specified by the `linpred` argument (default `".linpred"`), and
+#' `predicted_draws` contains a column with its name specified by the `.prediction` argument (default
+#' `".prediction"`). For convenience, the resulting data frame comes grouped by the original input rows.
 #' @author Matthew Kay
 #' @seealso [add_draws()] for the variant of these functions for use with packages that do not have
 #' explicit support for these functions yet. See [spread_draws()] for manipulating posteriors directly.
@@ -114,13 +116,15 @@
 #'     # do not use in practice
 #'     chains = 1, iter = 500)
 #'
-#'   # draw 100 fit lines from the posterior and overplot them
+#'   # draw 100 lines from the posterior means and overplot them
 #'   print(mtcars %>%
 #'     group_by(cyl) %>%
 #'     data_grid(hp = seq_range(hp, n = 101)) %>%
-#'     add_fitted_draws(m_mpg, ndraws = 100) %>%
+#'     # NOTE: only use ndraws here when making spaghetti plots; for
+#'     # plotting intervals it is always best to use all draws (omit ndraws)
+#'     add_epred_draws(m_mpg, ndraws = 100) %>%
 #'     ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-#'     geom_line(aes(y = .value, group = paste(cyl, .draw)), alpha = 0.25) +
+#'     geom_line(aes(y = .epred, group = paste(cyl, .draw)), alpha = 0.25) +
 #'     geom_point(data = mtcars)
 #'   )
 #'

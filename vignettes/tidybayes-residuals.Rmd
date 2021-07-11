@@ -193,7 +193,7 @@ m_ideal
 
 ### Residuals
 
-`add_residual_draws()` operates much like `add_fitted_draws()` and `add_predicted_draws()`: it gives us draws from the posterior distribution for each residual:
+`add_residual_draws()` operates much like `add_epred_draws()` and `add_predicted_draws()`: it gives us draws from the posterior distribution for each residual:
 
 ```{r}
 cens_df %>%
