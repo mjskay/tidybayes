@@ -79,7 +79,18 @@ when iteration information is not available --- new functions always set \code{.
 but may not set \code{.iteration}), so be careful when upgrading to new function names.
 See \emph{Deprecated Arguments and Column Names}, below, for more information.
 
-Deprecated functions include:
+Functions deprecated in tidybayes 3.0:
+\itemize{
+\item \code{fitted_draws} and \code{add_fitted_draws} are deprecated because their names
+were confusing: it was unclear to many users if these functions returned
+draws from the posterior predictive, the mean of the posterior predictive,
+or the linear predictor (and depending on model type it might have been
+either of the latter). Use \code{\link[=epred_draws]{epred_draws()}}/\code{\link[=add_epred_draws]{add_epred_draws()}} if you
+want the expectation of the posterior predictive and use
+\code{\link[=linpred_draws]{linpred_draws()}}/\code{\link[=add_linpred_draws]{add_linpred_draws()}} if you want the linear predictor.
+}
+
+Functions deprecated in tidybayes 1.0:
 
 \itemize{
 
@@ -192,10 +203,24 @@ except that when passed a vector, they return a data frame with
 \section{Deprecated Arguments and Column Names}{
 
 
+Arguments deprecated in tidybayes 3.0 are:
+\itemize{
+\item The \code{n} column is now called \code{ndraws} in \code{predicted_draws()}, \code{linpred_draws()}, etc.
+This prevents some bugs due to partial matching of argument names where \code{n} might
+be mistaken for \code{newdata}.
+\item The \code{value} column in \code{linpred_draws()} is now spelled \code{linpred} and defaults to
+\code{".linpred"} in the same way that the \code{predicted_draws()} and \code{epred_draws()} functions
+work.
+\item The \code{scale} column in \code{linpred_draws()} is no longer allowed (use \code{transform} instead)
+as this naming scheme only made sense when \code{linpred_draws()} was an alias for
+\code{fitted_draws()}, which it no longer is (see note above about the deprecation of
+\code{fitted_draws()}).
+}
+
 Versions of tidybayes before version 1.0 used a different naming scheme for several
 arguments and output columns.
 
-Deprecated arguments and column names are:
+Arguments and column names deprecated in tidybayes 1.0 are:
 
 \itemize{
 \item \code{term} is now \code{.variable}

@@ -8,29 +8,33 @@
 
 #' Add draws from the posterior fit, predictions, or residuals of a model to a data frame
 #'
-#' Given a data frame and a model, adds draws from the (possibly transformed) posterior "fit" (aka the
-#' linear/link-level predictor), the posterior predictions of the model, or the residuals of a model to
+
+#' Given a data frame and a model, adds draws from the linear/link-level predictor,
+#' the expectation of the posterior predictive, the posterior predictive, or the residuals of a model to
 #' the data frame in a long format.
 #'
-#' `add_fitted_draws` adds draws from (possibly transformed) posterior linear predictors (or "link-level" predictors) to
-#' the data. It corresponds to [rstanarm::posterior_linpred()] in `rstanarm` or
-#' [brms::fitted.brmsfit()] in `brms`.
+#' `add_epred_draws()` adds draws from **expectation** of the posterior predictive distribution to
+#' the data.
+#' It corresponds to [rstanarm::posterior_epred()] or [brms::posterior_epred()].
 #'
-#' `add_predicted_draws` adds draws from posterior predictions to
-#' the data. It corresponds to [rstanarm::posterior_predict()] in `rstanarm` or
-#' [brms::predict.brmsfit()] in `brms`.
+#' `add_predicted_draws()` adds draws from posterior predictive distribution to
+#' the data.
+#' It corresponds to [rstanarm::posterior_predict()] or [brms::posterior_predict()].
 #'
-#' `add_fitted_draws` and `fitted_draws` are alternate spellings of the
-#' same function with opposite order of the first two arguments to facilitate use in data
-#' processing pipelines that start either with a data frame or a model. Similarly,
-#' `add_predicted_draws` and `predicted_draws` are alternate spellings.
+#' `add_linpred_draws()` adds draws from (possibly transformed) posterior **linear**
+#' predictors (or "link-level" predictors) to the data.
+#' It corresponds to [rstanarm::posterior_linpred()] or [brms::posterior_linpred()].
 #'
-#' Given equal choice between the two, `add_fitted_draws` and `add_predicted_draws`
-#' are the preferred spellings.
+#' `add_residual_draws()` adds draws from residuals to the data.
+#' It corresponds to [brms::residuals.brmsfit()].
 #'
-#' `add_linpred_draws` and `linpred_draws` are alternative spellings of `fitted_draws`
-#' and `add_fitted_draws` for consistency with `rstanarm` terminology (specifically
-#' [rstanarm::posterior_linpred()]).
+#' The corresponding functions without `add_` as a prefix are alternate spellings
+#' with the opposite order of the first two arguments: e.g. `add_predicted_draws()`
+#' and `predicted_draws()`. This facilitates use in data
+#' processing pipelines that start either with a data frame or a model.
+#'
+#' Given equal choice between the two, the spellings prefixed with `add_`
+#' are preferred.
 #'
 #' @param newdata Data frame to generate predictions from. If omitted, most model types will
 #' generate predictions from the data used to fit the model.
@@ -41,8 +45,9 @@
 #' predictions, thus more generic Bayesian modeling interfaces like `runjags` and `rstan` are not directly
 #' supported for these functions (only wrappers around those languages that provide predictions, like `rstanarm`
 #' and `brm`, are supported here).
-#' @param value The name of the output column for `fitted_draws`; default `".value"`.
+#' @param epred The name of the output column for `epred_draws`; default `".epred"`.
 #' @param prediction The name of the output column for `predicted_draws`; default `".prediction"`.
+#' @param linpred The name of the output column for `linpred_draws`; default `".linpred"`.
 #' @param residual The name of the output column for `residual_draws`; default `".residual"`.
 #' @param ... Additional arguments passed to the underlying prediction method for the type of
 #' model given.
@@ -73,10 +78,11 @@
 #' (alternative names can be provided using a list or named vector, e.g. `c(sigma.hat = "sigma")`
 #' would output the `"sigma"` parameter from a model as a column named `"sigma.hat"`).
 #' If `FALSE` (the default), distributional regression parameters are not included.
-#' @param scale Either `"response"` or `"linear"`. If `"response"`, results are returned
-#' on the scale of the response variable. If `"linear"`, fitted values are returned on the scale of
-#' the linear predictor.
 #' @param n (Deprecated). Use `ndraws`.
+#' @param value (Deprecated). Use `linpred`.
+#' @param scale (Deprecated). Use the appropriate function (`epred_draws()` or `linpred_draws()`)
+#' depending on what type of distirbution you want. For `linpred_draws()`, you may want the
+#' `transform` argument. See `rstanarm::posterior_linpred()` or `brms::posterior_linpred()`.
 #' @return A data frame (actually, a [tibble][tibble::tibble]) with a `.row` column (a
 #' factor grouping rows from the input `newdata`), `.chain` column (the chain
 #' each draw came from, or `NA` if the model does not provide chain information),
@@ -159,8 +165,8 @@ predicted_draws = function(
   n
 ) {
   ndraws = .Deprecated_argument_alias(ndraws, n)
-  # we need to update the argument list as well if there were deprecated
-  # arguments or partial matching will assign `n` to `newdata`
+  # we need to update the argument list as well when there are deprecated
+  # arguments, otherwise partial matching might assign `n` to `newdata`
   if (!missing(n)) {
     predicted_draws(
       object = object, newdata = newdata, ...,
@@ -171,23 +177,20 @@ predicted_draws = function(
   }
 }
 
+
+# predicted_draws generics ------------------------------------------------
+
 #' @rdname add_predicted_draws
 #' @export
-predicted_draws.default = function(object, newdata, ...) {
-  model_class = class(object)
-
-  if (isTRUE(model_class %in% c("ulam", "quap", "map", "map2stan"))) {
-    stop(
-      "Models of type ", deparse0(model_class), " are not supported by base tidybayes.\n",
-      "Install the `tidybayes.rethinking` package to enable support for these models:\n",
-      "  devtools::install_github('mjskay/tidybayes.rethinking')"
-    )
-  }
-  stop(
-    "Models of type ", deparse0(model_class), " are not currently supported by `predicted_draws`.\n",
-    "You might try using `add_draws()` for models that do not have explicit fit/prediction\n",
-    "support; see help(\"add_draws\") for an example. See also help(\"tidybayes-models\") for\n",
-    "more information on what functions are supported by what model types."
+predicted_draws.default = function(
+  object, newdata, ...,
+  prediction = ".prediction", seed = NULL, category = ".category"
+) {
+  pred_draws_default_(
+    .name = "predicted_draws",
+    .f = rstantools::posterior_predict, ...,
+    object = object, newdata = newdata, output_name = prediction,
+    seed = seed, category = category
   )
 }
 
@@ -202,7 +205,7 @@ predicted_draws.stanreg = function(
   )
 
   pred_draws_(
-    rstantools::posterior_predict, ...,
+    .f = rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = prediction,
     draws = ndraws, seed = seed, re.form = re_formula, category = category
   )
@@ -219,7 +222,7 @@ predicted_draws.brmsfit = function(
   )
 
   pred_draws_(
-    rstantools::posterior_predict, ...,
+    .f = rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = prediction,
     nsamples = ndraws, seed = seed, re_formula = re_formula, category = category
   )
@@ -227,6 +230,32 @@ predicted_draws.brmsfit = function(
 
 
 # helpers for creating fits/predictions -----------------------------------
+
+#' epred_draws.default, predicted_draws.default, etc
+#' @noRd
+pred_draws_default_ = function(
+  .name, .f, ...,
+  object, newdata, output_name,
+  seed = NULL, dpar = NULL, category
+) {
+  if (!requireNamespace("rstantools", quietly = TRUE)) {
+    stop0('Using `", .name, "` requires the `rstantools` package to be installed.') #nocov
+  }
+  model_class = class(object)
+  if (isTRUE(model_class %in% c("ulam", "quap", "map", "map2stan"))) {
+    stop0(
+      "Models of type ", deparse0(model_class), " are not supported by basic tidybayes::", .name, ".\n",
+      "Install the `tidybayes.rethinking` package to enable support for these models:\n",
+      "  devtools::install_github('mjskay/tidybayes.rethinking')"
+    )
+  }
+
+  pred_draws_(
+    .f = .f, ...,
+    object = object, newdata = newdata, output_name = output_name,
+    seed = seed, dpar = dpar, category = category
+  )
+}
 
 #' add draws of predictions from `object` to `newdata`. Handles dpars (if present)
 #' and ensures that the same seed is set if multiple calls to the prediction
@@ -237,12 +266,12 @@ predicted_draws.brmsfit = function(
 #' @param output_name name of the output column
 #' @param seed seed to set
 #' @param dpar dpars from the model to include
-#' @param columns_to name of column to move columns from the prediction output into
+#' @param category name of column to take category names from prediction
 #' @noRd
 pred_draws_ = function(
   .f, ...,
-  object, newdata, output_name, category,
-  seed = NULL, dpar = NULL
+  object, newdata, output_name,
+  seed = NULL, dpar = NULL, category
 ) {
   # get the names of distributional regression parameters to include
   dpars = get_model_dpars(object, dpar)

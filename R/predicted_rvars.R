@@ -9,25 +9,28 @@
 #' Add rvars for the linear predictor, posterior expectation, posterior predictive, or residuals of a model to a data frame
 #'
 #' Given a data frame and a model, adds [`rvar`]s of draws from the linear/link-level predictor,
-#' the expectation of the posterior predictive, the posterior predictive, or the residuals of a model to
+#' the expectation of the posterior predictive, or the posterior predictive to
 #' the data frame.
 #'
-#' `add_epred_rvars()` adds draws from **expectation** of the posterior predictive distribution to
-#' the data.
+#' `add_epred_rvars()` adds [`rvar`]s containing draws from the **expectation**
+#' of the posterior predictive distribution to the data.
 #' It corresponds to [rstanarm::posterior_epred()] or [brms::posterior_epred()].
 #'
-#' `add_predicted_rvars()` adds draws from posterior predictive distribution to
-#' the data.
+#' `add_predicted_rvars()` adds [`rvar`]s containing draws from the
+#' posterior predictive distribution to the data.
 #' It corresponds to [rstanarm::posterior_predict()] or [brms::posterior_predict()].
 #'
-#' `add_linpred_rvars()` adds [`rvar`]s containing draws from (possibly transformed) posterior **linear**
-#' predictors (or "link-level" predictors) to the data.
+#' `add_linpred_rvars()` adds [`rvar`]s containing draws from the (possibly
+#' transformed) posterior **linear** predictors (or "link-level" predictors) to the data.
 #' It corresponds to [rstanarm::posterior_linpred()] or [brms::posterior_linpred()].
 #'
 #' The corresponding functions without `add_` as a prefix are alternate spellings
 #' with the opposite order of the first two arguments: e.g. `add_predicted_rvars()`
 #' and `predicted_rvars()`. This facilitates use in data
 #' processing pipelines that start either with a data frame or a model.
+#'
+#' Given equal choice between the two, the spellings prefixed with `add_`
+#' are preferred.
 #'
 #' @param newdata Data frame to generate predictions from.
 #' @param object A supported Bayesian model fit that can provide fits and predictions. Supported models
@@ -153,15 +156,13 @@ predicted_rvars = function(
 #' @export
 predicted_rvars.default = function(
   object, newdata, ...,
-  prediction = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
+  prediction = ".prediction", seed = NULL, columns_to = NULL
 ) {
   pred_rvars_default_(
     .name = "predicted_rvars",
     .f = rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = prediction,
-    ndraws = ndraws, seed = seed, re_formula = re_formula,
-    dpar = NULL, # posterior_predict does not support dpar
-    columns_to = columns_to
+    seed = seed, columns_to = columns_to
   )
 }
 
@@ -212,10 +213,10 @@ predicted_rvars.brmsfit = function(
 pred_rvars_default_ = function(
   .name, .f, ...,
   object, newdata, output_name,
-  ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+  seed = NULL, dpar = NULL, columns_to = NULL
 ) {
   if (!requireNamespace("rstantools", quietly = TRUE)) {
-    stop0('Using `", .name, "` requires the `rstantools` package to be installed.') #nocov
+    stop0('Using `', .name, '` requires the `rstantools` package to be installed.') #nocov
   }
   model_class = class(object)
   if (isTRUE(model_class %in% c("ulam", "quap", "map", "map2stan"))) {
@@ -229,8 +230,7 @@ pred_rvars_default_ = function(
   pred_rvars_(
     .f = .f, ...,
     object = object, newdata = newdata, output_name = output_name,
-    ndraws = ndraws, seed = seed, re_formula = re_formula,
-    dpar = dpar, columns_to = columns_to
+    seed = seed, dpar = dpar, columns_to = columns_to
   )
 }
 

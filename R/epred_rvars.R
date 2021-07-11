@@ -4,7 +4,7 @@
 ###############################################################################
 
 
-# [add_]epred_rvars aliases -------------------------------------------------
+# epred_rvars / add_epred_rvars aliases -------------------------------------------------
 
 #' @rdname add_predicted_rvars
 #' @export
@@ -34,13 +34,13 @@ epred_rvars = function(
 #' @export
 epred_rvars.default = function(
   object, newdata, ...,
-  epred = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+  epred = ".epred", seed = NULL, dpar = NULL, columns_to = NULL
 ) {
   pred_rvars_default_(
     .name = "epred_rvars",
     .f = rstantools::posterior_epred, ...,
     object = object, newdata = newdata, output_name = epred,
-    ndraws = ndraws, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
+    seed = seed, dpar = dpar, columns_to = columns_to
   )
 }
 

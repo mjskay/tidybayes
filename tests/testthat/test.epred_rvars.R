@@ -211,11 +211,11 @@ test_that("[add_]epred_rvars throws an error when nsamples is called instead of 
   m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
 
   expect_error(
-    m_hp %>% epred_rvars(mtcars_tbl, nsamples = 100),
+    m_hp %>% epred_rvars(mtcars_tbl, nsamples = 10),
     "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
   expect_error(
-    mtcars_tbl %>% add_epred_rvars(m_hp, nsamples = 100),
+    mtcars_tbl %>% add_epred_rvars(m_hp, nsamples = 10),
     "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
 })

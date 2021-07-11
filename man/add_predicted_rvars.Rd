@@ -48,9 +48,7 @@ epred_rvars(
   newdata,
   ...,
   epred = ".epred",
-  ndraws = NULL,
   seed = NULL,
-  re_formula = NULL,
   dpar = NULL,
   columns_to = NULL
 )
@@ -108,9 +106,7 @@ linpred_rvars(
   newdata,
   ...,
   linpred = ".linpred",
-  ndraws = NULL,
   seed = NULL,
-  re_formula = NULL,
   dpar = NULL,
   columns_to = NULL
 )
@@ -166,9 +162,7 @@ predicted_rvars(
   newdata,
   ...,
   prediction = ".prediction",
-  ndraws = NULL,
   seed = NULL,
-  re_formula = NULL,
   columns_to = NULL
 )
 
@@ -249,26 +243,29 @@ additional columns added containing \code{\link{rvar}}s representing the request
 }
 \description{
 Given a data frame and a model, adds \code{\link{rvar}}s of draws from the linear/link-level predictor,
-the expectation of the posterior predictive, the posterior predictive, or the residuals of a model to
+the expectation of the posterior predictive, or the posterior predictive to
 the data frame.
 }
 \details{
-\code{add_epred_rvars()} adds draws from \strong{expectation} of the posterior predictive distribution to
-the data.
+\code{add_epred_rvars()} adds \code{\link{rvar}}s containing draws from the \strong{expectation}
+of the posterior predictive distribution to the data.
 It corresponds to \code{\link[rstanarm:posterior_linpred.stanreg]{rstanarm::posterior_epred()}} or \code{\link[brms:posterior_epred.brmsfit]{brms::posterior_epred()}}.
 
-\code{add_predicted_rvars()} adds draws from posterior predictive distribution to
-the data.
+\code{add_predicted_rvars()} adds \code{\link{rvar}}s containing draws from the
+posterior predictive distribution to the data.
 It corresponds to \code{\link[rstanarm:posterior_predict.stanreg]{rstanarm::posterior_predict()}} or \code{\link[brms:posterior_predict.brmsfit]{brms::posterior_predict()}}.
 
-\code{add_linpred_rvars()} adds \code{\link{rvar}}s containing draws from (possibly transformed) posterior \strong{linear}
-predictors (or "link-level" predictors) to the data.
+\code{add_linpred_rvars()} adds \code{\link{rvar}}s containing draws from the (possibly
+transformed) posterior \strong{linear} predictors (or "link-level" predictors) to the data.
 It corresponds to \code{\link[rstanarm:posterior_linpred.stanreg]{rstanarm::posterior_linpred()}} or \code{\link[brms:posterior_linpred.brmsfit]{brms::posterior_linpred()}}.
 
 The corresponding functions without \code{add_} as a prefix are alternate spellings
 with the opposite order of the first two arguments: e.g. \code{add_predicted_rvars()}
 and \code{predicted_rvars()}. This facilitates use in data
 processing pipelines that start either with a data frame or a model.
+
+Given equal choice between the two, the spellings prefixed with \code{add_}
+are preferred.
 }
 \examples{
 \donttest{

@@ -27,7 +27,17 @@ globalVariables(c(".lower", ".upper", ".width"))
 #' but may not set `.iteration`), so be careful when upgrading to new function names.
 #' See *Deprecated Arguments and Column Names*, below, for more information.
 #'
-#' Deprecated functions include:
+#' Functions deprecated in tidybayes 3.0:
+#'
+#' - `fitted_draws` and `add_fitted_draws` are deprecated because their names
+#'   were confusing: it was unclear to many users if these functions returned
+#'   draws from the posterior predictive, the mean of the posterior predictive,
+#'   or the linear predictor (and depending on model type it might have been
+#'   either of the latter). Use [epred_draws()]/[add_epred_draws()] if you
+#'   want the expectation of the posterior predictive and use
+#'   [linpred_draws()]/[add_linpred_draws()] if you want the linear predictor.
+#'
+#' Functions deprecated in tidybayes 1.0:
 #'
 #' \itemize{
 #'
@@ -130,10 +140,23 @@ globalVariables(c(".lower", ".upper", ".width"))
 #'
 #' @section Deprecated Arguments and Column Names:
 #'
+#' Arguments deprecated in tidybayes 3.0 are:
+#'
+#' - The `n` column is now called `ndraws` in `predicted_draws()`, `linpred_draws()`, etc.
+#'   This prevents some bugs due to partial matching of argument names where `n` might
+#'   be mistaken for `newdata`.
+#' - The `value` column in `linpred_draws()` is now spelled `linpred` and defaults to
+#'   `".linpred"` in the same way that the `predicted_draws()` and `epred_draws()` functions
+#'   work.
+#' - The `scale` column in `linpred_draws()` is no longer allowed (use `transform` instead)
+#'   as this naming scheme only made sense when `linpred_draws()` was an alias for
+#'   `fitted_draws()`, which it no longer is (see note above about the deprecation of
+#'   `fitted_draws()`).
+#'
 #' Versions of tidybayes before version 1.0 used a different naming scheme for several
 #' arguments and output columns.
 #'
-#' Deprecated arguments and column names are:
+#' Arguments and column names deprecated in tidybayes 1.0 are:
 #'
 #' \itemize{
 #'   \item `term` is now `.variable`

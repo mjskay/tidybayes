@@ -46,53 +46,19 @@ fitted_draws = function(
   }
 }
 
-#' @rdname add_predicted_draws
-#' @export
-add_linpred_draws = function(
-  newdata, object, ...,
-  value = ".value", ndraws = NULL, seed = NULL, re_formula = NULL,
-  category = ".category", dpar = NULL, scale = c("response", "linear")
-) {
-  fitted_draws(
-    object = object, newdata = newdata, ...,
-    value = value, ndraws = ndraws, seed = seed, re_formula = re_formula,
-    category = category, dpar = dpar, scale = scale
-  )
-}
-
-#' @rdname add_predicted_draws
-#' @export
-linpred_draws = function(
-  object, newdata, ...,
-  value = ".value", ndraws = NULL, seed = NULL, re_formula = NULL,
-  category = ".category", dpar = NULL, scale = c("response", "linear")
-) {
-  fitted_draws(
-    object = object, newdata = newdata, ...,
-    value = value, ndraws = ndraws, seed = seed, re_formula = re_formula,
-    category = category, dpar = dpar, scale = scale
-  )
-}
-
 # fitted_draws generics -------------------------------------------------
 
 #' @rdname add_predicted_draws
 #' @export
-fitted_draws.default = function(object, newdata, ...) {
-  model_class = class(object)
-
-  if (isTRUE(model_class %in% c("ulam", "quap", "map", "map2stan"))) {
-    stop(
-      "Models of type ", deparse0(model_class), " are not supported by base tidybayes.\n",
-      "Install the `tidybayes.rethinking` package to enable support for these models:\n",
-      "  devtools::install_github('mjskay/tidybayes.rethinking')"
-    )
-  }
-  stop(
-    "Models of type ", deparse0(model_class), " are not currently supported by `fitted_draws`.\n",
-    "You might try using `add_draws()` for models that do not have explicit fit/prediction\n",
-    "support; see help(\"add_draws\") for an example. See also help(\"tidybayes-models\") for\n",
-    "more information on what functions are supported by what model types."
+fitted_draws.default = function(
+  object, newdata, ...,
+  value = ".value", seed = NULL, category = NULL
+) {
+  pred_draws_default_(
+    .name = "fitted_draws",
+    .f = rstantools::posterior_epred, ...,
+    object = object, newdata = newdata, output_name = value,
+    seed = seed, category = category
   )
 }
 
@@ -110,7 +76,7 @@ fitted_draws.stanreg = function(
   )
 
   pred_draws_(
-    rstanarm::posterior_linpred, ..., # TODO: switch to epred
+    .f = rstanarm::posterior_linpred, ..., # TODO: switch to epred
     object = object, newdata = newdata, output_name = value,
     draws = ndraws, seed = seed, category = category, re.form = re_formula, transform = transform
   )
@@ -132,7 +98,7 @@ fitted_draws.brmsfit = function(
   )
 
   pred_draws_(
-    fitted, ...,
+    .f = fitted, ...,
     object = object, newdata = newdata, output_name = value,
     nsamples = ndraws, seed = seed, re_formula = re_formula, category = category, dpar = dpar, scale = scale,
     summary = FALSE # TODO: switch to epred vs linpred, drop scale and remove?

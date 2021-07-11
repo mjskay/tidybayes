@@ -59,7 +59,7 @@ residual_draws.brmsfit = function(
   )
 
   pred_draws_(
-    residuals, ...,
+    .f = residuals, ...,
     object = object, newdata = newdata, output_name = residual,
     seed = seed, nsamples = ndraws, re_formula = re_formula, category = category,
     summary = FALSE

@@ -27,9 +27,9 @@ test_that("[add_]fitted_draws throws an error on unsupported models", {
   data("RankCorr", package = "ggdist")
 
   expect_error(fitted_draws(RankCorr, data.frame()),
-    'Models of type "mcmc.list" are not currently supported by `fitted_draws`')
+    'no applicable method')
   expect_error(add_fitted_draws(data.frame(), RankCorr),
-    'Models of type "mcmc.list" are not currently supported by `fitted_draws`')
+    'no applicable method')
 })
 
 
@@ -59,8 +59,6 @@ test_that("[add_]fitted_draws works on a simple rstanarm model", {
   expect_equal(fitted_draws(m_hp_wt, mtcars_tbl), ref)
   expect_equal(add_fitted_draws(mtcars_tbl, m_hp_wt), ref)
   expect_equal(add_fitted_draws(mtcars_tbl, m_hp_wt, value = "foo"), rename(ref, foo = .value))
-  expect_equal(linpred_draws(m_hp_wt, mtcars_tbl), ref)
-  expect_equal(add_linpred_draws(mtcars_tbl, m_hp_wt), ref)
 
   #subsetting to test the `ndraws` argument
   set.seed(1234)
@@ -76,6 +74,9 @@ test_that("[add_]fitted_draws works on a simple rstanarm model", {
     expect_equal(add_fitted_draws(mtcars_tbl, m_hp_wt, n = 10, seed = 1234), filtered_ref),
     "`n`.*deprecated.*`ndraws`"
   )
+
+  # default implementation should still work here
+  expect_equal(fitted_draws.default(m_hp_wt, mtcars_tbl, draws = 10, seed = 1234), filtered_ref)
 })
 
 test_that("[add_]fitted_draws works on an rstanarm model with grouped newdata", {
@@ -417,11 +418,11 @@ test_that("[add_]fitted_draws throws an error when nsamples is called instead of
   m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
 
   expect_error(
-    m_hp %>% fitted_draws(newdata = mtcars_tbl, nsamples = 100),
+    m_hp %>% fitted_draws(newdata = mtcars_tbl, nsamples = 10),
     "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
   expect_error(
-    m_hp %>% add_fitted_draws(newdata = mtcars_tbl, nsamples = 100),
+    m_hp %>% add_fitted_draws(newdata = mtcars_tbl, nsamples = 10),
     "`nsamples.*.`ndraws`.*.See the documentation for additional details."
   )
 })

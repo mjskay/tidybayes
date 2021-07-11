@@ -34,13 +34,13 @@ linpred_rvars = function(
 #' @export
 linpred_rvars.default = function(
   object, newdata, ...,
-  linpred = ".linpred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
+  linpred = ".linpred", seed = NULL, dpar = NULL, columns_to = NULL
 ) {
   pred_rvars_default_(
     .name = "linpred_rvars",
     .f = rstantools::posterior_linpred, ...,
     object = object, newdata = newdata, output_name = linpred,
-    ndraws = ndraws, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
+    seed = seed, dpar = dpar, columns_to = columns_to
   )
 }
 
