@@ -8,27 +8,31 @@
 #'
 #' Extract draws from a Bayesian fit into a wide-format data frame with a
 #' `.chain`, `.iteration`, and `.draw` column, as well as all variables
-#' as columns. While this function can be useful for quick glances at models (especially
-#' combined with [gather_variables()] and [median_qi()]), it is
-#' generally speaking not as useful as [spread_draws()] or
-#' [gather_draws()] for most applications, and is mainly used internally (see *Details*).
+#' as columns. This function does not parse indices from variable names
+#' (e.g. for variable names like `"x[1]"`); see [spread_draws()] or
+#' [gather_draws()] for functions that parse variable indices.
 #'
-#' In practice, apart from quick looks at a model you will probably not call this directly;
-#' [spread_draws()] or [gather_draws()], which are build on top of this
-#' function, provide support for extracting variable dimensions are so are often more useful.
+#' This function can be useful for quick glances at models (especially
+#' combined with [gather_variables()] and [median_qi()]), and for models with
+#' parameters without indices in their names (like `"x[1]"`).
+#' [spread_draws()] and [gather_draws()], which *do* parse variable name indices,
+#' call this function internally if their input is not already a tidy data frame.
 #'
 #' To provide support for new models in tidybayes,
 #' you must provide an implementation of this function *or* an implementation
 #' of [coda::as.mcmc.list()] (`tidy_draws` should work on any model
 #' with an implementation of [coda::as.mcmc.list()])
 #'
-#' `tidy_draws` can be applied to a data frame that is already a tidy-format data frame
+#' `tidy_draws()` can be applied to a data frame that is already a tidy-format data frame
 #' of draws, provided it has one row per draw. In other words, it can be applied to data frames
 #' that have the same format it returns, and it will return the same data frame back, while
 #' checking to ensure the `.chain`, `.iteration`, and `.draw` columns are all
 #' integers (converting if possible) and that the `.draw` column is unique. This allows
 #' you to pass already-tidy-format data frames into other tidybayes functions, like
-#' [spread_draws()] or [gather_draws()].
+#' [spread_draws()] or [gather_draws()]. This functionality can be useful if the
+#' tidying step is expensive: you can tidy once, possibly subsetting to some
+#' particular variables of interest, then call [spread_draws()] or [gather_draws()]
+#' repeatedly to extract variables and indices from the already-tidied data frame.
 #'
 #' @template param-model
 #' @param ... Further arguments passed to other methods (mostly unused).

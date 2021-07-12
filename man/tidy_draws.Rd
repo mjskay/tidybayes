@@ -58,28 +58,32 @@ A data frame (actually, a \link[tibble:tibble]{tibble}) with a \code{.chain} col
 \description{
 Extract draws from a Bayesian fit into a wide-format data frame with a
 \code{.chain}, \code{.iteration}, and \code{.draw} column, as well as all variables
-as columns. While this function can be useful for quick glances at models (especially
-combined with \code{\link[=gather_variables]{gather_variables()}} and \code{\link[=median_qi]{median_qi()}}), it is
-generally speaking not as useful as \code{\link[=spread_draws]{spread_draws()}} or
-\code{\link[=gather_draws]{gather_draws()}} for most applications, and is mainly used internally (see \emph{Details}).
+as columns. This function does not parse indices from variable names
+(e.g. for variable names like \code{"x[1]"}); see \code{\link[=spread_draws]{spread_draws()}} or
+\code{\link[=gather_draws]{gather_draws()}} for functions that parse variable indices.
 }
 \details{
-In practice, apart from quick looks at a model you will probably not call this directly;
-\code{\link[=spread_draws]{spread_draws()}} or \code{\link[=gather_draws]{gather_draws()}}, which are build on top of this
-function, provide support for extracting variable dimensions are so are often more useful.
+This function can be useful for quick glances at models (especially
+combined with \code{\link[=gather_variables]{gather_variables()}} and \code{\link[=median_qi]{median_qi()}}), and for models with
+parameters without indices in their names (like \code{"x[1]"}).
+\code{\link[=spread_draws]{spread_draws()}} and \code{\link[=gather_draws]{gather_draws()}}, which \emph{do} parse variable name indices,
+call this function internally if their input is not already a tidy data frame.
 
 To provide support for new models in tidybayes,
 you must provide an implementation of this function \emph{or} an implementation
 of \code{\link[coda:mcmc.list]{coda::as.mcmc.list()}} (\code{tidy_draws} should work on any model
 with an implementation of \code{\link[coda:mcmc.list]{coda::as.mcmc.list()}})
 
-\code{tidy_draws} can be applied to a data frame that is already a tidy-format data frame
+\code{tidy_draws()} can be applied to a data frame that is already a tidy-format data frame
 of draws, provided it has one row per draw. In other words, it can be applied to data frames
 that have the same format it returns, and it will return the same data frame back, while
 checking to ensure the \code{.chain}, \code{.iteration}, and \code{.draw} columns are all
 integers (converting if possible) and that the \code{.draw} column is unique. This allows
 you to pass already-tidy-format data frames into other tidybayes functions, like
-\code{\link[=spread_draws]{spread_draws()}} or \code{\link[=gather_draws]{gather_draws()}}.
+\code{\link[=spread_draws]{spread_draws()}} or \code{\link[=gather_draws]{gather_draws()}}. This functionality can be useful if the
+tidying step is expensive: you can tidy once, possibly subsetting to some
+particular variables of interest, then call \code{\link[=spread_draws]{spread_draws()}} or \code{\link[=gather_draws]{gather_draws()}}
+repeatedly to extract variables and indices from the already-tidied data frame.
 }
 \examples{
 
