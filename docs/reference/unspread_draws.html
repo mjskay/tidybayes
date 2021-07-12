@@ -93,7 +93,7 @@ results that look like tidy_draws()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@ results that look like tidy_draws()." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -122,6 +122,9 @@ results that look like tidy_draws()." />
       <a href="../articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a>
     </li>
     <li>
+      <a href="../articles/tidy-posterior.html">Using tidybayes with the posterior package</a>
+    </li>
+    <li>
       <a href="../articles/tidy-rstanarm.html">Extracting and visualizing tidy draws from rstanarm models</a>
     </li>
     <li>
@@ -136,7 +139,7 @@ results that look like tidy_draws()." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mjskay/tidybayes/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -159,25 +162,25 @@ results that look like tidy_draws()." />
     </div>
 
     <div class="ref-description">
-    <p>Inverse operations of <code><a href='spread_draws.html'>spread_draws()</a></code> and <code><a href='spread_draws.html'>gather_draws()</a></code>, giving
+    <p>Inverse operations of <code><a href='gather_draws.html'>spread_draws()</a></code> and <code><a href='gather_draws.html'>gather_draws()</a></code>, giving
 results that look like <code><a href='tidy_draws.html'>tidy_draws()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ungather_draws</span>(
-  <span class='no'>data</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>".variable"</span>,
-  <span class='kw'>value</span> <span class='kw'>=</span> <span class='st'>".value"</span>,
-  <span class='kw'>draw_indices</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>".chain"</span>, <span class='st'>".iteration"</span>, <span class='st'>".draw"</span>),
-  <span class='kw'>drop_indices</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+    <pre class="usage"><span class='fu'>ungather_draws</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>...</span>,
+  variable <span class='op'>=</span> <span class='st'>".variable"</span>,
+  value <span class='op'>=</span> <span class='st'>".value"</span>,
+  draw_indices <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>".chain"</span>, <span class='st'>".iteration"</span>, <span class='st'>".draw"</span><span class='op'>)</span>,
+  drop_indices <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
-<span class='fu'>unspread_draws</span>(
-  <span class='no'>data</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>draw_indices</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>".chain"</span>, <span class='st'>".iteration"</span>, <span class='st'>".draw"</span>),
-  <span class='kw'>drop_indices</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+<span class='fu'>unspread_draws</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>...</span>,
+  draw_indices <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>".chain"</span>, <span class='st'>".iteration"</span>, <span class='st'>".draw"</span><span class='op'>)</span>,
+  drop_indices <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,7 +192,7 @@ results that look like <code><a href='tidy_draws.html'>tidy_draws()</a></code>.<
     <tr>
       <th>...</th>
       <td><p>Expressions in the form of
-<code>variable_name[dimension_1, dimension_2, ...]</code>. See <code><a href='spread_draws.html'>spread_draws()</a></code>.</p></td>
+<code>variable_name[dimension_1, dimension_2, ...]</code>. See <code><a href='gather_draws.html'>spread_draws()</a></code>.</p></td>
     </tr>
     <tr>
       <th>variable</th>
@@ -204,7 +207,7 @@ results that look like <code><a href='tidy_draws.html'>tidy_draws()</a></code>.<
       <td><p>Character vector of column names in <code>data</code> that
 should be treated as indices of draws. The default is <code><a href='https://rdrr.io/r/base/c.html'>c(".chain",".iteration",".draw")</a></code>,
 which are the same names used for chain, iteration, and draw indices returned by
-<code><a href='spread_draws.html'>spread_draws()</a></code> or <code><a href='spread_draws.html'>gather_draws()</a></code>.</p></td>
+<code><a href='gather_draws.html'>spread_draws()</a></code> or <code><a href='gather_draws.html'>gather_draws()</a></code>.</p></td>
     </tr>
     <tr>
       <th>drop_indices</th>
@@ -218,34 +221,39 @@ which are the same names used for chain, iteration, and draw indices returned by
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>These functions take symbolic specifications of variable names and dimensions in the same format as
-<code><a href='spread_draws.html'>spread_draws()</a></code> and <code><a href='spread_draws.html'>gather_draws()</a></code> and invert the tidy data frame back into
+<code><a href='gather_draws.html'>spread_draws()</a></code> and <code><a href='gather_draws.html'>gather_draws()</a></code> and invert the tidy data frame back into
 a data frame whose column names are variables with dimensions in them.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='spread_draws.html'>spread_draws()</a></code>, <code><a href='spread_draws.html'>gather_draws()</a></code>, <code><a href='tidy_draws.html'>tidy_draws()</a></code>.</p></div>
+    <div class='dont-index'><p><code><a href='gather_draws.html'>spread_draws()</a></code>, <code><a href='gather_draws.html'>gather_draws()</a></code>, <code><a href='tidy_draws.html'>tidy_draws()</a></code>.</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Matthew Kay</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>RankCorr</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"ggdist"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>RankCorr</span>, package <span class='op'>=</span> <span class='st'>"ggdist"</span><span class='op'>)</span>
 
 <span class='co'># We can use unspread_draws to allow us to manipulate draws with tidybayes</span>
 <span class='co'># and then transform the draws into a form we can use with packages like bayesplot.</span>
 <span class='co'># Here we subset b[i,j] to just values of i in 1:2 and j == 1, then plot with bayesplot</span>
-<span class='no'>RankCorr</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='spread_draws.html'>spread_draws</a></span>(<span class='no'>b</span>[<span class='no'>i</span>,<span class='no'>j</span>]) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>i</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>2</span>, <span class='no'>j</span> <span class='kw'>==</span> <span class='fl'>1</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>unspread_draws</span>(<span class='no'>b</span>[<span class='no'>i</span>,<span class='no'>j</span>], <span class='kw'>drop_indices</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>bayesplot</span><span class='kw ns'>::</span><span class='fu'><a href='https://mc-stan.org/bayesplot/reference/MCMC-intervals.html'>mcmc_areas</a></span>()</div><div class='img'><img src='unspread_draws-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>RankCorr</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='gather_draws.html'>spread_draws</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='va'>i</span>,<span class='va'>j</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>i</span> <span class='op'>%in%</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='va'>j</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>unspread_draws</span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='va'>i</span>,<span class='va'>j</span><span class='op'>]</span>, drop_indices <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>bayesplot</span><span class='fu'>::</span><span class='fu'><a href='https://mc-stan.org/bayesplot/reference/MCMC-intervals.html'>mcmc_areas</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='unspread_draws-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># As another example, we could use compare_levels to plot all pairwise comparisons</span>
 <span class='co'># of b[1,j] for j in 1:3</span>
-<span class='no'>RankCorr</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='spread_draws.html'>spread_draws</a></span>(<span class='no'>b</span>[<span class='no'>i</span>,<span class='no'>j</span>]) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>i</span> <span class='kw'>==</span> <span class='fl'>1</span>, <span class='no'>j</span> <span class='kw'>%in%</span> <span class='fl'>1</span>:<span class='fl'>3</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='compare_levels.html'>compare_levels</a></span>(<span class='no'>b</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='no'>j</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>unspread_draws</span>(<span class='no'>b</span>[<span class='no'>j</span>], <span class='kw'>drop_indices</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>bayesplot</span><span class='kw ns'>::</span><span class='fu'><a href='https://mc-stan.org/bayesplot/reference/MCMC-intervals.html'>mcmc_areas</a></span>()</div><div class='img'><img src='unspread_draws-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>RankCorr</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='gather_draws.html'>spread_draws</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='va'>i</span>,<span class='va'>j</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>i</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='va'>j</span> <span class='op'>%in%</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='compare_levels.html'>compare_levels</a></span><span class='op'>(</span><span class='va'>b</span>, by <span class='op'>=</span> <span class='va'>j</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>unspread_draws</span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='va'>j</span><span class='op'>]</span>, drop_indices <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>bayesplot</span><span class='fu'>::</span><span class='fu'><a href='https://mc-stan.org/bayesplot/reference/MCMC-intervals.html'>mcmc_areas</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='unspread_draws-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -262,7 +270,7 @@ a data frame whose column names are variables with dimensions in them.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -94,7 +94,7 @@ useful for producing scatter-plot matrices." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
       </span>
     </div>
 
@@ -102,7 +102,7 @@ useful for producing scatter-plot matrices." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -123,6 +123,9 @@ useful for producing scatter-plot matrices." />
       <a href="../articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a>
     </li>
     <li>
+      <a href="../articles/tidy-posterior.html">Using tidybayes with the posterior package</a>
+    </li>
+    <li>
       <a href="../articles/tidy-rstanarm.html">Extracting and visualizing tidy draws from rstanarm models</a>
     </li>
     <li>
@@ -137,7 +140,7 @@ useful for producing scatter-plot matrices." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mjskay/tidybayes/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -165,16 +168,16 @@ assuming long-format (tidy) data with an equal number of values per key. Among o
 useful for producing scatter-plot matrices.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gather_pairs</span>(
-  <span class='no'>data</span>,
-  <span class='no'>key</span>,
-  <span class='no'>value</span>,
-  <span class='kw'>row</span> <span class='kw'>=</span> <span class='st'>".row"</span>,
-  <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>".col"</span>,
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>".x"</span>,
-  <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>".y"</span>,
-  <span class='kw'>triangle</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lower only"</span>, <span class='st'>"upper only"</span>, <span class='st'>"lower"</span>, <span class='st'>"upper"</span>, <span class='st'>"both only"</span>, <span class='st'>"both"</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>gather_pairs</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>key</span>,
+  <span class='va'>value</span>,
+  row <span class='op'>=</span> <span class='st'>".row"</span>,
+  col <span class='op'>=</span> <span class='st'>".col"</span>,
+  x <span class='op'>=</span> <span class='st'>".x"</span>,
+  y <span class='op'>=</span> <span class='st'>".y"</span>,
+  triangle <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lower only"</span>, <span class='st'>"upper only"</span>, <span class='st'>"lower"</span>, <span class='st'>"upper"</span>, <span class='st'>"both only"</span>, <span class='st'>"both"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -231,53 +234,63 @@ from <code>value</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/emmeans/man/emmeans.html'>emmeans::emmeans()</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Matthew Kay</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 
-<span class='no'>t_a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>)
-<span class='no'>t_b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>, <span class='no'>t_a</span> * <span class='fl'>2</span>)
-<span class='no'>t_c</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 
-<span class='no'>df</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(
-  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>g</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>t</span> <span class='kw'>=</span> <span class='no'>t_a</span>),
-  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>g</span> <span class='kw'>=</span> <span class='st'>"b"</span>, <span class='kw'>t</span> <span class='kw'>=</span> <span class='no'>t_b</span>),
-  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>g</span> <span class='kw'>=</span> <span class='st'>"c"</span>, <span class='kw'>t</span> <span class='kw'>=</span> <span class='no'>t_c</span>)
-)
+<span class='va'>t_a</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>
+<span class='va'>t_b</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='va'>t_a</span> <span class='op'>*</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>t_c</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>
 
-<span class='no'>df</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>gather_pairs</span>(<span class='no'>g</span>, <span class='no'>t</span>, <span class='kw'>row</span> <span class='kw'>=</span> <span class='st'>"g_row"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"g_col"</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"t_x"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"t_y"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='no'>t_x</span>, <span class='no'>t_y</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>() +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>g_row</span>), <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>g_col</span>))</div><div class='img'><img src='gather_pairs-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>df</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>gather_pairs</span>(<span class='no'>g</span>, <span class='no'>t</span>, <span class='kw'>triangle</span> <span class='kw'>=</span> <span class='st'>"upper"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='no'>.x</span>, <span class='no'>.y</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>() +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>.row</span>), <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>.col</span>))</div><div class='img'><img src='gather_pairs-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>df</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>gather_pairs</span>(<span class='no'>g</span>, <span class='no'>t</span>, <span class='kw'>triangle</span> <span class='kw'>=</span> <span class='st'>"both"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='no'>.x</span>, <span class='no'>.y</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>() +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>.row</span>), <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>.col</span>))</div><div class='img'><img src='gather_pairs-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>line</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"coda"</span>)
+<span class='va'>df</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>g <span class='op'>=</span> <span class='st'>"a"</span>, t <span class='op'>=</span> <span class='va'>t_a</span><span class='op'>)</span>,
+  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>g <span class='op'>=</span> <span class='st'>"b"</span>, t <span class='op'>=</span> <span class='va'>t_b</span><span class='op'>)</span>,
+  <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>g <span class='op'>=</span> <span class='st'>"c"</span>, t <span class='op'>=</span> <span class='va'>t_c</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='no'>line</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='tidy_draws.html'>tidy_draws</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='gather_variables.html'>gather_variables</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>gather_pairs</span>(<span class='no'>.variable</span>, <span class='no'>.value</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='no'>.x</span>, <span class='no'>.y</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>.25</span>) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>.row</span>), <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>.col</span>))</div><div class='img'><img src='gather_pairs-4.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>line</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='tidy_draws.html'>tidy_draws</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='gather_variables.html'>gather_variables</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>gather_pairs</span>(<span class='no'>.variable</span>, <span class='no'>.value</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='no'>.x</span>, <span class='no'>.y</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>.chain</span>))) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>geom_density_2d</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>.5</span>) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>.row</span>), <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='no'>.col</span>))</div><div class='img'><img src='gather_pairs-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>gather_pairs</span><span class='op'>(</span><span class='va'>g</span>, <span class='va'>t</span>, row <span class='op'>=</span> <span class='st'>"g_row"</span>, col <span class='op'>=</span> <span class='st'>"g_col"</span>, x <span class='op'>=</span> <span class='st'>"t_x"</span>, y <span class='op'>=</span> <span class='st'>"t_y"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>t_x</span>, <span class='va'>t_y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>g_row</span><span class='op'>)</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>g_col</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='gather_pairs-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>gather_pairs</span><span class='op'>(</span><span class='va'>g</span>, <span class='va'>t</span>, triangle <span class='op'>=</span> <span class='st'>"upper"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>.row</span><span class='op'>)</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>.col</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='gather_pairs-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>gather_pairs</span><span class='op'>(</span><span class='va'>g</span>, <span class='va'>t</span>, triangle <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>.row</span><span class='op'>)</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>.col</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='gather_pairs-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>line</span>, package <span class='op'>=</span> <span class='st'>"coda"</span><span class='op'>)</span>
+
+<span class='va'>line</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tidy_draws.html'>tidy_draws</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='gather_variables.html'>gather_variables</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>gather_pairs</span><span class='op'>(</span><span class='va'>.variable</span>, <span class='va'>.value</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>.25</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>.row</span><span class='op'>)</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>.col</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='gather_pairs-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>line</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tidy_draws.html'>tidy_draws</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='gather_variables.html'>gather_variables</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>gather_pairs</span><span class='op'>(</span><span class='va'>.variable</span>, <span class='va'>.value</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>.x</span>, <span class='va'>.y</span>, color <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.chain</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_density_2d.html'>geom_density_2d</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>.5</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_grid.html'>facet_grid</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>.row</span><span class='op'>)</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>.col</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='gather_pairs-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># }</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -294,7 +307,7 @@ from <code>value</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -96,7 +96,7 @@ Deprecated Horizontal Shortcut Geoms and Stats)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@ Deprecated Horizontal Shortcut Geoms and Stats)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -125,6 +125,9 @@ Deprecated Horizontal Shortcut Geoms and Stats)." />
       <a href="../articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a>
     </li>
     <li>
+      <a href="../articles/tidy-posterior.html">Using tidybayes with the posterior package</a>
+    </li>
+    <li>
       <a href="../articles/tidy-rstanarm.html">Extracting and visualizing tidy draws from rstanarm models</a>
     </li>
     <li>
@@ -139,7 +142,7 @@ Deprecated Horizontal Shortcut Geoms and Stats)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mjskay/tidybayes/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -182,28 +185,40 @@ functions use <code>.variable</code> and <code>.value</code>; or they set <code>
 when iteration information is not available --- new functions always set <code>.draw</code>
 but may not set <code>.iteration</code>), so be careful when upgrading to new function names.
 See <em>Deprecated Arguments and Column Names</em>, below, for more information.</p>
-<p>Deprecated functions include:</p>
+<p>Functions deprecated in tidybayes 3.0:</p><ul>
+<li><p><code>fitted_draws</code> and <code>add_fitted_draws</code> are deprecated because their names
+were confusing: it was unclear to many users if these functions returned
+draws from the posterior predictive, the mean of the posterior predictive,
+or the linear predictor (and depending on model type it might have been
+either of the latter). Use <code><a href='add_epred_draws.html'>epred_draws()</a></code>/<code><a href='add_epred_draws.html'>add_epred_draws()</a></code> if you
+want the expectation of the posterior predictive and use
+<code><a href='add_epred_draws.html'>linpred_draws()</a></code>/<code><a href='add_epred_draws.html'>add_linpred_draws()</a></code> if you want the linear predictor.</p></li>
+</ul>
+
+<p>Functions deprecated in tidybayes 1.0:</p>
 <ul>
 <li><p><code>spread_samples</code>, <code>extract_samples</code>, and <code>tidy_samples</code> are
-deprecated names for <code><a href='spread_draws.html'>spread_draws()</a></code>. The spread/gather terminology
+deprecated names for <code><a href='gather_draws.html'>spread_draws()</a></code>. The spread/gather terminology
 better distinguishes the resulting data frame format, and <em>draws</em> is more
 correct terminology than <em>samples</em> for describing multiple realizations from
 a posterior distribution.</p></li>
-<li><p><code>gather_samples</code> is a deprecated name for <code><a href='spread_draws.html'>gather_draws()</a></code>,
+<li><p><code>gather_samples</code> is a deprecated name for <code><a href='gather_draws.html'>gather_draws()</a></code>,
 reflecting a package-wide move to using <em>draws</em> instead of <em>samples</em> for
 describing multiple realizations from a distribution.</p></li>
-<li><p><code>unspread_samples</code> is a deprecated name for <code><a href='unspread_draws.html'>unspread_draws()</a></code>,
+<li><p><code>unspread_samples</code> is a deprecated name for <code><a href='ungather_draws.html'>unspread_draws()</a></code>,
 reflecting a package-wide move to using <em>draws</em> instead of <em>samples</em> for
 describing multiple realizations from a distribution.</p></li>
-<li><p><code>ungather_samples</code> is a deprecated name for <code><a href='unspread_draws.html'>ungather_draws()</a></code>,
+<li><p><code>ungather_samples</code> is a deprecated name for <code><a href='ungather_draws.html'>ungather_draws()</a></code>,
 reflecting a package-wide move to using <em>draws</em> instead of <em>samples</em> for
 describing multiple realizations from a distribution.</p></li>
 <li><p><code>fitted_samples</code> / <code>add_fitted_samples</code> are deprecated names for
-<code><a href='add_predicted_draws.html'>fitted_draws()</a></code> / <code><a href='add_predicted_draws.html'>add_fitted_draws()</a></code>,
+<code>fitted_draws</code> / <code>add_fitted_draws</code>,
 reflecting a package-wide move to using <em>draws</em> instead of <em>samples</em> for
-describing multiple realizations from a distribution.</p></li>
+describing multiple realizations from a distribution. (though see
+the nore above about the deprecation of <code>fitted_draws</code> in favor of
+<code><a href='add_epred_draws.html'>epred_draws()</a></code> and <code><a href='add_epred_draws.html'>linpred_draws()</a></code>).</p></li>
 <li><p><code>predicted_samples</code> / <code>add_predicted_samples</code> are deprecated names for
-<code><a href='add_predicted_draws.html'>predicted_draws()</a></code> / <code><a href='add_predicted_draws.html'>add_predicted_draws()</a></code>,
+<code><a href='add_epred_draws.html'>predicted_draws()</a></code> / <code><a href='add_epred_draws.html'>add_predicted_draws()</a></code>,
 reflecting a package-wide move to using <em>draws</em> instead of <em>samples</em> for
 describing multiple realizations from a distribution.</p></li>
 <li><p><code>gather_lsmeans_samples</code> and <code>gather_emmeans_samples</code> are deprecated aliases
@@ -283,9 +298,22 @@ except that when passed a vector, they return a data frame with
     
 
 
+<p>Arguments deprecated in tidybayes 3.0 are:</p><ul>
+<li><p>The <code>n</code> argument is now called <code>ndraws</code> in <code><a href='add_epred_draws.html'>predicted_draws()</a></code>, <code><a href='add_epred_draws.html'>linpred_draws()</a></code>, etc.
+This prevents some bugs due to partial matching of argument names where <code>n</code> might
+be mistaken for <code>newdata</code>.</p></li>
+<li><p>The <code>value</code> argument in <code><a href='add_epred_draws.html'>linpred_draws()</a></code> is now spelled <code>linpred</code> and defaults to
+<code>".linpred"</code> in the same way that the <code><a href='add_epred_draws.html'>predicted_draws()</a></code> and <code><a href='add_epred_draws.html'>epred_draws()</a></code> functions
+work.</p></li>
+<li><p>The <code>scale</code> argument in <code><a href='add_epred_draws.html'>linpred_draws()</a></code> is no longer allowed (use <code>transform</code> instead)
+as this naming scheme only made sense when <code><a href='add_epred_draws.html'>linpred_draws()</a></code> was an alias for
+<code>fitted_draws()</code>, which it no longer is (see note above about the deprecation of
+<code>fitted_draws()</code>).</p></li>
+</ul>
+
 <p>Versions of tidybayes before version 1.0 used a different naming scheme for several
 arguments and output columns.</p>
-<p>Deprecated arguments and column names are:</p>
+<p>Arguments and column names deprecated in tidybayes 1.0 are:</p>
 <ul>
 <li><p><code>term</code> is now <code>.variable</code></p></li>
 <li><p><code>estimate</code> is now <code>.value</code></p></li>
@@ -311,6 +339,9 @@ make terminology more consistent and in order to satisfy these criteria:</p>
 <li><p>Names should be nouns (I made an exception for lower/upper because they are common).</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Matthew Kay</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -327,7 +358,7 @@ make terminology more consistent and in order to satisfy these criteria:</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

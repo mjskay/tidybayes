@@ -10,6 +10,9 @@
     <loc>http://mjskay.github.io/tidybayes/reference/add_predicted_draws.html</loc>
   </url>
   <url>
+    <loc>http://mjskay.github.io/tidybayes/reference/add_predicted_rvars.html</loc>
+  </url>
+  <url>
     <loc>http://mjskay.github.io/tidybayes/reference/combine_chains.html</loc>
   </url>
   <url>
@@ -40,6 +43,9 @@
     <loc>http://mjskay.github.io/tidybayes/reference/get_variables.html</loc>
   </url>
   <url>
+    <loc>http://mjskay.github.io/tidybayes/reference/nest_rvars.html</loc>
+  </url>
+  <url>
     <loc>http://mjskay.github.io/tidybayes/reference/n_prefix.html</loc>
   </url>
   <url>
@@ -56,6 +62,12 @@
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/reference/spread_draws.html</loc>
+  </url>
+  <url>
+    <loc>http://mjskay.github.io/tidybayes/reference/spread_rvars.html</loc>
+  </url>
+  <url>
+    <loc>http://mjskay.github.io/tidybayes/reference/summarise_draws.grouped_df.html</loc>
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/reference/tidybayes-deprecated.html</loc>
@@ -77,6 +89,9 @@
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/articles/tidy-brms.html</loc>
+  </url>
+  <url>
+    <loc>http://mjskay.github.io/tidybayes/articles/tidy-posterior.html</loc>
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/articles/tidy-rstanarm.html</loc>

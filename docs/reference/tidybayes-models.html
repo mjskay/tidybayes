@@ -93,7 +93,7 @@ do not." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@ do not." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -122,6 +122,9 @@ do not." />
       <a href="../articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a>
     </li>
     <li>
+      <a href="../articles/tidy-posterior.html">Using tidybayes with the posterior package</a>
+    </li>
+    <li>
       <a href="../articles/tidy-rstanarm.html">Extracting and visualizing tidy draws from rstanarm models</a>
     </li>
     <li>
@@ -136,7 +139,7 @@ do not." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mjskay/tidybayes/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -171,19 +174,24 @@ do not.</p>
 
 
 <p><strong>All supported models/formats</strong> support the base tidybayes sample extraction functions, such as
-<code><a href='tidy_draws.html'>tidy_draws()</a></code>, <code><a href='spread_draws.html'>spread_draws()</a></code>, and <code><a href='spread_draws.html'>gather_draws()</a></code>. These models/formats include:</p>
+<code><a href='tidy_draws.html'>tidy_draws()</a></code>, <code><a href='gather_draws.html'>spread_draws()</a></code>, <code><a href='gather_draws.html'>gather_draws()</a></code>, <code><a href='gather_rvars.html'>spread_rvars()</a></code>, and <code><a href='gather_rvars.html'>gather_rvars()</a></code>.
+These models/formats include:</p>
 <ul>
-<li><p><a href='https://rdrr.io/pkg/rstan/man/stan.html'>rstan</a> models</p></li>
+<li><p><a href='https://mc-stan.org/rstan/reference/stan.html'>rstan</a> models</p></li>
+<li><p><a href='https://mc-stan.org/cmdstanr/'>CmdStanR</a> models</p></li>
 <li><p><code><a href='https://rdrr.io/pkg/brms/man/brm.html'>brms::brm()</a></code> models</p></li>
 <li><p><a href='https://mc-stan.org/rstanarm/reference/rstanarm-package.html'>rstanarm</a> models</p></li>
-<li><p><code><a href='https://rdrr.io/pkg/runjags/man/runjags.html'>runjags::runjags()</a></code> models</p></li>
+<li><p><code><a href='https://rdrr.io/pkg/runjags/man/runjags-package.html'>runjags::runjags()</a></code> models</p></li>
 <li><p><code><a href='https://rdrr.io/pkg/rjags/man/jags.model.html'>rjags::jags.model()</a></code> models, if sampled using <code><a href='https://rdrr.io/pkg/rjags/man/coda.samples.html'>rjags::coda.samples()</a></code></p></li>
 <li><p><code><a href='https://rdrr.io/pkg/jagsUI/man/jags.html'>jagsUI::jags()</a></code> models</p></li>
 <li><p><code><a href='https://rdrr.io/pkg/MCMCglmm/man/MCMCglmm.html'>MCMCglmm::MCMCglmm()</a></code> models</p></li>
 <li><p><code><a href='https://rdrr.io/pkg/coda/man/mcmc.html'>coda::mcmc()</a></code> and <code><a href='https://rdrr.io/pkg/coda/man/mcmc.list.html'>coda::mcmc.list()</a></code> objects, which are output by several model
 types.</p></li>
-<li><p>Any object with an implementation of <code><a href='https://rdrr.io/pkg/coda/man/mcmc.list.html'>coda::as.mcmc.list()</a></code>. For a list of those available in your
-environment, run <code><a href='https://rdrr.io/r/utils/methods.html'>methods(as.mcmc.list)</a></code></p></li>
+<li><p><a href='https://mc-stan.org/posterior/reference/draws.html'>posterior::draws</a> objects</p></li>
+<li><p>Any object with an implementation of <code><a href='https://mc-stan.org/posterior/reference/draws_df.html'>posterior::as_draws_df()</a></code> or <code><a href='https://mc-stan.org/posterior/reference/draws.html'>posterior::as_draws()</a></code>.
+For a list of those available in your environment, run <code><a href='https://rdrr.io/r/utils/methods.html'>methods(as_draws_df)</a></code> or <code><a href='https://rdrr.io/r/utils/methods.html'>methods(as_draws)</a></code></p></li>
+<li><p>Any object with an implementation of <code><a href='https://rdrr.io/pkg/coda/man/mcmc.list.html'>coda::as.mcmc.list()</a></code>.
+For a list of those available in your environment, run <code><a href='https://rdrr.io/r/utils/methods.html'>methods(as.mcmc.list)</a></code></p></li>
 </ul>
 
 <p>If you install the <a href='https://mjskay.github.io/tidybayes.rethinking/'>tidybayes.rethinking</a> package, models from
@@ -194,14 +202,20 @@ the <a href='https://github.com/rmcelreath/rethinking'>rethinking</a> package ar
 
 
 <p>In addition, the <strong>following models support fit and prediction</strong> extraction functions, such as
-<code><a href='add_predicted_draws.html'>add_fitted_draws()</a></code> and <code><a href='add_predicted_draws.html'>add_predicted_draws()</a></code>:</p>
+<code><a href='add_epred_draws.html'>add_epred_draws()</a></code>, <code><a href='add_epred_draws.html'>add_predicted_draws()</a></code>, <code><a href='add_epred_draws.html'>add_linpred_draws()</a></code>, <code><a href='add_epred_rvars.html'>add_epred_rvars()</a></code>,
+<code><a href='add_epred_rvars.html'>add_predicted_rvars()</a></code>, and <code><a href='add_epred_rvars.html'>add_linpred_rvars()</a></code>:</p>
 <ul>
 <li><p><code><a href='https://rdrr.io/pkg/brms/man/brm.html'>brms::brm()</a></code> models</p></li>
 <li><p><a href='https://mc-stan.org/rstanarm/reference/rstanarm-package.html'>rstanarm</a> models</p></li>
+<li><p>any package with implementations of <a href='https://mc-stan.org/rstantools/reference/posterior_epred.html'>rstantools::posterior_epred</a>,
+<a href='https://mc-stan.org/rstantools/reference/posterior_predict.html'>rstantools::posterior_predict</a>, or <a href='https://mc-stan.org/rstantools/reference/posterior_linpred.html'>rstantools::posterior_linpred</a> that
+include an argument called <code>newdata</code> which takes a data frame of predictors.</p></li>
 </ul>
 
 <p><strong>If your model type is not in the above list</strong>, you may still be able to use the <code><a href='add_draws.html'>add_draws()</a></code>
-function to turn matrices of predictive draws (or fit draws) into tidy data frames.</p>
+function to turn matrices of predictive draws (or fit draws) into tidy data frames. Or,
+you can wrap output from a prediction function in <code><a href='https://mc-stan.org/posterior/reference/rvar.html'>posterior::rvar()</a></code> and add it
+to a data frame so long as that output is a matrix with draws as rows.</p>
 <p>If you install the <a href='https://mjskay.github.io/tidybayes.rethinking/'>tidybayes.rethinking</a> package, models from
 the <a href='https://github.com/rmcelreath/rethinking'>rethinking</a> package are also supported.</p>
     <h2 class="hasAnchor" id="extending-tidybayes"><a class="anchor" href="#extending-tidybayes"></a>Extending tidybayes</h2>
@@ -210,9 +224,13 @@ the <a href='https://github.com/rmcelreath/rethinking'>rethinking</a> package ar
 
 
 <p>To include basic support for new models, one need only implement the <code><a href='tidy_draws.html'>tidy_draws()</a></code> generic function
-for that model.</p>
-<p>To include support for estimation and prediction, one must implement the <code><a href='add_predicted_draws.html'>fitted_draws()</a></code> and
-<code><a href='add_predicted_draws.html'>predicted_draws()</a></code> generic functions.</p>
+for that model. Alternatively, objects that support <code><a href='https://mc-stan.org/posterior/reference/draws.html'>posterior::as_draws()</a></code> or <code><a href='https://rdrr.io/pkg/coda/man/mcmc.list.html'>coda::as.mcmc.list()</a></code>
+will automatically be supported by <code><a href='tidy_draws.html'>tidy_draws()</a></code>.</p>
+<p>To include support for estimation and prediction, one must either implement the <code><a href='add_epred_draws.html'>epred_draws()</a></code>,
+<code><a href='add_epred_draws.html'>predicted_draws()</a></code>, and <code><a href='add_epred_draws.html'>linpred_draws()</a></code> functions or their correspond functions from
+<span class="pkg">rstantools</span>: <code><a href='https://mc-stan.org/rstantools/reference/posterior_epred.html'>rstantools::posterior_epred()</a></code>, <code><a href='https://mc-stan.org/rstantools/reference/posterior_predict.html'>rstantools::posterior_predict()</a></code>, and
+<code><a href='https://mc-stan.org/rstantools/reference/posterior_linpred.html'>rstantools::posterior_linpred()</a></code>. If you take the latter approach, you should include
+<code>newdata</code> and <code>ndraws</code> arguments that work as documented in <code><a href='add_epred_draws.html'>predicted_draws()</a></code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -229,7 +247,7 @@ for that model.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

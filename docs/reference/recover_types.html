@@ -95,7 +95,7 @@ those functions are translated back into useful data types." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@ those functions are translated back into useful data types." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -124,6 +124,9 @@ those functions are translated back into useful data types." />
       <a href="../articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a>
     </li>
     <li>
+      <a href="../articles/tidy-posterior.html">Using tidybayes with the posterior package</a>
+    </li>
+    <li>
       <a href="../articles/tidy-rstanarm.html">Extracting and visualizing tidy draws from rstanarm models</a>
     </li>
     <li>
@@ -138,7 +141,7 @@ those functions are translated back into useful data types." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mjskay/tidybayes/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -163,11 +166,11 @@ those functions are translated back into useful data types." />
     <div class="ref-description">
     <p>Decorate a Bayesian model fit or a sample from it with types for
 variable and dimension data types. Meant to be used before calling
-<code><a href='spread_draws.html'>spread_draws()</a></code> or <code><a href='spread_draws.html'>gather_draws()</a></code> so that the values returned by
+<code><a href='gather_draws.html'>spread_draws()</a></code> or <code><a href='gather_draws.html'>gather_draws()</a></code> so that the values returned by
 those functions are translated back into useful data types.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>recover_types</span>(<span class='no'>model</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>recover_types</span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -180,7 +183,7 @@ for a full list of supported models, see <a href='tidybayes-models.html'>tidybay
     <tr>
       <th>...</th>
       <td><p>Lists (or data frames) providing data prototypes used to convert
-columns returned by <code><a href='spread_draws.html'>spread_draws()</a></code> and <code><a href='spread_draws.html'>gather_draws()</a></code> back into useful data types.
+columns returned by <code><a href='gather_draws.html'>spread_draws()</a></code> and <code><a href='gather_draws.html'>gather_draws()</a></code> back into useful data types.
 See <em>Details</em>.</p></td>
     </tr>
     </table>
@@ -193,7 +196,7 @@ See <em>Details</em>.</p></td>
     <p>Each argument in <code>...</code> specifies a list or data.frame. The <code>model</code>
 is decorated with a list of constructors that can convert a numeric column
 into the data types in the lists in <code>...</code>.</p>
-<p>Then, when <code><a href='spread_draws.html'>spread_draws()</a></code> or <code><a href='spread_draws.html'>gather_draws()</a></code> is called on the decorated
+<p>Then, when <code><a href='gather_draws.html'>spread_draws()</a></code> or <code><a href='gather_draws.html'>gather_draws()</a></code> is called on the decorated
 <code>model</code>, each list entry with the same name as the variable or a dimension
 in <code>variable_spec</code> is a used as a prototype for that variable or dimension ---
 i.e., its type is taken to be the expected type of that variable or dimension.
@@ -216,28 +219,31 @@ using <code><a href='https://rdrr.io/r/base/logical.html'>as.logical(v)</a></cod
 of the generic function <code>as_constructor</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='spread_draws.html'>spread_draws()</a></code>, <code><a href='spread_draws.html'>gather_draws()</a></code>, <code><a href='compose_data.html'>compose_data()</a></code>.</p></div>
+    <div class='dont-index'><p><code><a href='gather_draws.html'>spread_draws()</a></code>, <code><a href='gather_draws.html'>gather_draws()</a></code>, <code><a href='compose_data.html'>compose_data()</a></code>.</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Matthew Kay</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>magrittr</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://magrittr.tidyverse.org'>magrittr</a></span><span class='op'>)</span>
 
-<span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='st'>"rstan"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
+<span class='kw'>if</span><span class='op'>(</span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='st'><a href='https://mc-stan.org/rstan/'>"rstan"</a></span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
 
   <span class='co'># Here's an example dataset with a categorical predictor (`condition`) with several levels:</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>5</span>)
-  <span class='no'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>
-  <span class='no'>n_condition</span> <span class='kw'>=</span> <span class='fl'>5</span>
-  <span class='no'>ABC</span> <span class='kw'>=</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(
-      <span class='kw'>condition</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>,<span class='st'>"B"</span>,<span class='st'>"C"</span>,<span class='st'>"D"</span>,<span class='st'>"E"</span>), <span class='no'>n</span>),
-      <span class='kw'>response</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='no'>n</span> * <span class='fl'>5</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,-<span class='fl'>1</span>), <span class='fl'>0.5</span>)
-    )
+  <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>
+  <span class='va'>n</span> <span class='op'>=</span> <span class='fl'>10</span>
+  <span class='va'>n_condition</span> <span class='op'>=</span> <span class='fl'>5</span>
+  <span class='va'>ABC</span> <span class='op'>=</span>
+    <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>
+      condition <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>,<span class='st'>"B"</span>,<span class='st'>"C"</span>,<span class='st'>"D"</span>,<span class='st'>"E"</span><span class='op'>)</span>, <span class='va'>n</span><span class='op'>)</span>,
+      response <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='va'>n</span> <span class='op'>*</span> <span class='fl'>5</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span>, <span class='fl'>0.5</span><span class='op'>)</span>
+    <span class='op'>)</span>
 
   <span class='co'># We'll fit the following model to it:</span>
-  <span class='no'>stan_code</span> <span class='kw'>=</span> <span class='st'>"
+  <span class='va'>stan_code</span> <span class='op'>=</span> <span class='st'>"
     data {
       int&lt;lower=1&gt; n;
       int&lt;lower=1&gt; n_condition;
@@ -268,44 +274,48 @@ of the generic function <code>as_constructor</code>.</p>
     }
     "</span>
 
-  <span class='no'>m</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/rstan/man/stan.html'>stan</a></span>(<span class='kw'>model_code</span> <span class='kw'>=</span> <span class='no'>stan_code</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='compose_data.html'>compose_data</a></span>(<span class='no'>ABC</span>), <span class='kw'>control</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>adapt_delta</span><span class='kw'>=</span><span class='fl'>0.99</span>),
+  <span class='va'>m</span> <span class='op'>=</span> <span class='fu'><a href='https://mc-stan.org/rstan/reference/stan.html'>stan</a></span><span class='op'>(</span>model_code <span class='op'>=</span> <span class='va'>stan_code</span>, data <span class='op'>=</span> <span class='fu'><a href='compose_data.html'>compose_data</a></span><span class='op'>(</span><span class='va'>ABC</span><span class='op'>)</span>, control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>adapt_delta<span class='op'>=</span><span class='fl'>0.99</span><span class='op'>)</span>,
     <span class='co'># 1 chain / few iterations just so example runs quickly</span>
     <span class='co'># do not use in practice</span>
-    <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>)
+    chains <span class='op'>=</span> <span class='fl'>1</span>, iter <span class='op'>=</span> <span class='fl'>500</span><span class='op'>)</span>
 
   <span class='co'># without using recover_types(), the `condition` column returned by spread_draws()</span>
   <span class='co'># will be an integer:</span>
-  <span class='no'>m</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='spread_draws.html'>spread_draws</a></span>(<span class='no'>condition_mean</span>[<span class='no'>condition</span>]) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>median_qi</a></span>()
+  <span class='va'>m</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='gather_draws.html'>spread_draws</a></span><span class='op'>(</span><span class='va'>condition_mean</span><span class='op'>[</span><span class='va'>condition</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>median_qi</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='op'>)</span>
 
   <span class='co'># If we apply recover_types() first, subsequent calls to other tidybayes functions will</span>
   <span class='co'># automatically back-convert factors so that they are labeled with their original levels</span>
   <span class='co'># (assuming the same name is used)</span>
-  <span class='no'>m</span> <span class='kw'>%&lt;&gt;%</span> <span class='fu'>recover_types</span>(<span class='no'>ABC</span>)
+  <span class='va'>m</span> <span class='op'>%&lt;&gt;%</span> <span class='fu'>recover_types</span><span class='op'>(</span><span class='va'>ABC</span><span class='op'>)</span>
 
   <span class='co'># now the `condition` column with be a factor with levels "A", "B", "C", ...</span>
-  <span class='no'>m</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='spread_draws.html'>spread_draws</a></span>(<span class='no'>condition_mean</span>[<span class='no'>condition</span>]) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>median_qi</a></span>()
+  <span class='va'>m</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='gather_draws.html'>spread_draws</a></span><span class='op'>(</span><span class='va'>condition_mean</span><span class='op'>[</span><span class='va'>condition</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>median_qi</a></span><span class='op'>(</span><span class='op'>)</span>
 
-}</div><div class='output co'>#&gt; <span class='message'>rstan (Version 2.19.3, GitRev: 2e1f913d3ca3)</span></div><div class='output co'>#&gt; <span class='message'>For execution on a local, multicore CPU with excess RAM we recommend calling</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>rstan version 2.26.2 (Stan version 2.26.1)</span></div><div class='output co'>#&gt; <span class='message'>For execution on a local, multicore CPU with excess RAM we recommend calling</span>
 #&gt; <span class='message'>options(mc.cores = parallel::detectCores()).</span>
 #&gt; <span class='message'>To avoid recompilation of unchanged Stan programs, we recommend calling</span>
-#&gt; <span class='message'>rstan_options(auto_write = TRUE)</span></div><div class='output co'>#&gt; <span class='message'>For improved execution time, we recommend calling</span>
-#&gt; <span class='message'>Sys.setenv(LOCAL_CPPFLAGS = '-march=corei7 -mtune=corei7')</span>
-#&gt; <span class='message'>although this causes Stan to throw an error on a few processors.</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: 'rstan'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:tidyr':</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    extract</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:coda':</span>
+#&gt; <span class='message'>rstan_options(auto_write = TRUE)</span>
+#&gt; <span class='message'>For within-chain threading using `reduce_sum()` or `map_rect()` Stan functions,</span>
+#&gt; <span class='message'>change `threads_per_chain` option:</span>
+#&gt; <span class='message'>rstan_options(threads_per_chain = 1)</span></div><div class='output co'>#&gt; <span class='message'>Do not specify '-march=native' in 'LOCAL_CPPFLAGS' or a Makevars file</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: 'rstan'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:coda':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    traceplot</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:magrittr':</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    extract</span></div><div class='output co'>#&gt; 
-#&gt; SAMPLING FOR MODEL 'cd9b191279da85ce85fc8454c66a58e5' NOW (CHAIN 1).
+#&gt; <span class='message'>    extract</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:posterior':</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    ess_bulk, ess_tail</span></div><div class='output co'>#&gt; 
+#&gt; SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 0 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+#&gt; Chain 1: Gradient evaluation took 2.8e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.28 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -322,22 +332,29 @@ of the generic function <code>as_constructor</code>.</p>
 #&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.117 seconds (Warm-up)
-#&gt; Chain 1:                0.126 seconds (Sampling)
-#&gt; Chain 1:                0.243 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.106 seconds (Warm-up)
+#&gt; Chain 1:                0.106 seconds (Sampling)
+#&gt; Chain 1:                0.212 seconds (Total)
 #&gt; Chain 1: </div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
+#&gt; <span class='warning'>https://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 5 x 7</span><span>
+#&gt; <span class='warning'>https://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 7</span>
 #&gt;   condition condition_mean .lower .upper .width .point .interval
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    
-#&gt; </span><span style='color: #555555;'>1</span><span> A                  0.188 -</span><span style='color: #BB0000;'>0.196</span><span>  0.559   0.95 median qi       
-#&gt; </span><span style='color: #555555;'>2</span><span> B                  0.999  0.676  1.36    0.95 median qi       
-#&gt; </span><span style='color: #555555;'>3</span><span> C                  1.85   1.49   2.18    0.95 median qi       
-#&gt; </span><span style='color: #555555;'>4</span><span> D                  1.04   0.657  1.33    0.95 median qi       
-#&gt; </span><span style='color: #555555;'>5</span><span> E                 -</span><span style='color: #BB0000;'>0.883</span><span> -</span><span style='color: #BB0000;'>1.22</span><span>  -</span><span style='color: #BB0000;'>0.523</span><span>   0.95 median qi       </div><div class='input'># }
-</div></span></pre>
+#&gt;       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    
+#&gt; <span style='color: #BCBCBC;'>1</span>         1          0.188 -<span style='color: #BB0000;'>0.196</span>  0.559   0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>2</span>         2          0.999  0.676  1.36    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>3</span>         3          1.85   1.49   2.18    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>4</span>         4          1.04   0.657  1.33    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>5</span>         5         -<span style='color: #BB0000;'>0.883</span> -<span style='color: #BB0000;'>1.22</span>  -<span style='color: #BB0000;'>0.523</span>   0.95 median qi       </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 7</span>
+#&gt;   condition condition_mean .lower .upper .width .point .interval
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    
+#&gt; <span style='color: #BCBCBC;'>1</span> A                  0.188 -<span style='color: #BB0000;'>0.196</span>  0.559   0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>2</span> B                  0.999  0.676  1.36    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>3</span> C                  1.85   1.49   2.18    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>4</span> D                  1.04   0.657  1.33    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>5</span> E                 -<span style='color: #BB0000;'>0.883</span> -<span style='color: #BB0000;'>1.22</span>  -<span style='color: #BB0000;'>0.523</span>   0.95 median qi       </div><div class='input'><span class='co'># }</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -353,7 +370,7 @@ of the generic function <code>as_constructor</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

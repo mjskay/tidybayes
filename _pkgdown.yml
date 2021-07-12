@@ -29,7 +29,7 @@ reference:
   - x_at_y
 
 - title: Extracting posteriors
-  desc:  Get tidy draws of posterior distributions from objects (and helper functions for examining objects)
+  desc:  Get tidy draws or `rvar`s of posterior distributions from objects (and helper functions for examining objects)
   contents:
   - get_variables
   - recover_types
@@ -39,9 +39,14 @@ reference:
   - gather_emmeans_draws
   - ungather_draws
   - unspread_draws
+  - spread_rvars
+  - gather_rvars
+  - nest_rvars
+  - unnest_rvars
+  - summarise_draws.grouped_df
 
 - title: Extracting fits, predictions, and residuals
-  desc:  Get tidy draws from transformed linear predictors ("fits"), posterior predictions, or residuals
+  desc:  Get tidy draws or `rvar`s from transformed linear predictors ("fits"), posterior predictions, or residuals
   contents:
   - add_fitted_draws
   - fitted_draws
@@ -52,6 +57,9 @@ reference:
   - add_residual_draws
   - residual_draws
   - add_draws
+  - epred_rvars
+  - predicted_rvars
+  - linpred_rvars
 
 - title: Manipulating tidy data frames of draws
   desc:  Convenience functions for common data manipulation tasks with tidy data frames of draws

@@ -93,7 +93,7 @@ gather variables and their values from that data frame into a &quot;.variable&qu
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@ gather variables and their values from that data frame into a &quot;.variable&qu
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -122,6 +122,9 @@ gather variables and their values from that data frame into a &quot;.variable&qu
       <a href="../articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a>
     </li>
     <li>
+      <a href="../articles/tidy-posterior.html">Using tidybayes with the posterior package</a>
+    </li>
+    <li>
       <a href="../articles/tidy-rstanarm.html">Extracting and visualizing tidy draws from rstanarm models</a>
     </li>
     <li>
@@ -136,7 +139,7 @@ gather variables and their values from that data frame into a &quot;.variable&qu
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mjskay/tidybayes/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -159,11 +162,11 @@ gather variables and their values from that data frame into a &quot;.variable&qu
     </div>
 
     <div class="ref-description">
-    <p>Given a data frame such as might be returned by <code><a href='tidy_draws.html'>tidy_draws()</a></code> or <code><a href='spread_draws.html'>spread_draws()</a></code>,
+    <p>Given a data frame such as might be returned by <code><a href='tidy_draws.html'>tidy_draws()</a></code> or <code><a href='gather_draws.html'>spread_draws()</a></code>,
 gather variables and their values from that data frame into a <code>".variable"</code> and <code>".value"</code> column.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gather_variables</span>(<span class='no'>data</span>, <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>".chain"</span>, <span class='st'>".iteration"</span>, <span class='st'>".draw"</span>, <span class='st'>".row"</span>))</pre>
+    <pre class="usage"><span class='fu'>gather_variables</span><span class='op'>(</span><span class='va'>data</span>, exclude <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>".chain"</span>, <span class='st'>".iteration"</span>, <span class='st'>".draw"</span>, <span class='st'>".row"</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,7 +174,7 @@ gather variables and their values from that data frame into a <code>".variable"<
     <tr>
       <th>data</th>
       <td><p>A data frame with variable names spread across columns, such as one returned by
-<code><a href='tidy_draws.html'>tidy_draws()</a></code> or <code><a href='spread_draws.html'>spread_draws()</a></code>.</p></td>
+<code><a href='tidy_draws.html'>tidy_draws()</a></code> or <code><a href='gather_draws.html'>spread_draws()</a></code>.</p></td>
     </tr>
     <tr>
       <th>exclude</th>
@@ -187,7 +190,7 @@ ignores several meta-data column names used in tidybayes.</p></td>
 
     <p>This function gathers every column except grouping columns and those matching the expression
 <code>exclude</code> into key/value columns <code>".variable"</code> and <code>".value"</code>.</p>
-<p>Imagine a data frame <code>data</code> as returned by <code><a href='spread_draws.html'>spread_draws(fit, a[i], b[i,v])</a></code>, like this:</p><ul>
+<p>Imagine a data frame <code>data</code> as returned by <code><a href='gather_draws.html'>spread_draws(fit, a[i], b[i,v])</a></code>, like this:</p><ul>
 <li><p>column <code>".chain"</code>: the chain number</p></li>
 <li><p>column <code>".iteration"</code>: the iteration number</p></li>
 <li><p>column <code>".draw"</code>: the draw number</p></li>
@@ -211,70 +214,75 @@ repeated for every value of <code>"v"</code>) or <code>"b[i,v]"</code> (when <co
 </ul>
 
 <p>In this example, this call:</p>
-<pre><span class='fu'>gather_variables</span>(<span class='no'>data</span>)</pre>
+<pre><span class='fu'>gather_variables</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
 
 <p>Is roughly equivalent to:</p>
-<pre><span class='no'>data</span> <span class='kw'>%&amp;gt;%</span>
-  <span class='fu'>gather</span>(<span class='no'>.variable</span>, <span class='no'>.value</span>, -<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>.chain</span>, <span class='no'>.iteration</span>, <span class='no'>.draw</span>, <span class='no'>i</span>, <span class='no'>v</span>)) <span class='kw'>%&amp;gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>.variable</span>, <span class='kw'>.add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<pre><span class='va'>data</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>gather</span><span class='op'>(</span><span class='va'>.variable</span>, <span class='va'>.value</span>, <span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>.chain</span>, <span class='va'>.iteration</span>, <span class='va'>.draw</span>, <span class='va'>i</span>, <span class='va'>v</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>.variable</span>, .add <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</pre>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='spread_draws.html'>spread_draws()</a></code>, <code><a href='tidy_draws.html'>tidy_draws()</a></code>.</p></div>
+    <div class='dont-index'><p><code><a href='gather_draws.html'>spread_draws()</a></code>, <code><a href='tidy_draws.html'>tidy_draws()</a></code>.</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Matthew Kay</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>RankCorr</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"ggdist"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>RankCorr</span>, package <span class='op'>=</span> <span class='st'>"ggdist"</span><span class='op'>)</span>
 
-<span class='no'>RankCorr</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='spread_draws.html'>spread_draws</a></span>(<span class='no'>b</span>[<span class='no'>i</span>,<span class='no'>v</span>], <span class='no'>tau</span>[<span class='no'>i</span>]) <span class='kw'>%&gt;%</span>
-  <span class='fu'>gather_variables</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>median_qi</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 24 x 9</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   i, v [12]</span><span>
+<span class='va'>RankCorr</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='gather_draws.html'>spread_draws</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>[</span><span class='va'>i</span>,<span class='va'>v</span><span class='op'>]</span>, <span class='va'>tau</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>gather_variables</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>median_qi</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 24 x 9</span>
 #&gt;        i     v .variable .value  .lower .upper .width .point .interval
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    
-#&gt; </span><span style='color: #555555;'> 1</span><span>     1     1 b         -</span><span style='color: #BB0000;'>1.08</span><span>  -</span><span style='color: #BB0000;'>1.27</span><span>   -</span><span style='color: #BB0000;'>0.897</span><span>   0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 2</span><span>     1     1 tau        6.03   5.03    7.11    0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 3</span><span>     1     2 b         -</span><span style='color: #BB0000;'>1.83</span><span>  -</span><span style='color: #BB0000;'>2.08</span><span>   -</span><span style='color: #BB0000;'>1.54</span><span>    0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 4</span><span>     1     2 tau        6.03   5.03    7.11    0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 5</span><span>     1     3 b          0.175  0.044</span><span style='text-decoration: underline;'>7</span><span>  0.322   0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 6</span><span>     1     3 tau        6.03   5.03    7.11    0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 7</span><span>     1     4 b         -</span><span style='color: #BB0000;'>0.101</span><span> -</span><span style='color: #BB0000;'>0.347</span><span>   0.134   0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 8</span><span>     1     4 tau        6.03   5.03    7.11    0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 9</span><span>     2     1 b         -</span><span style='color: #BB0000;'>0.739</span><span> -</span><span style='color: #BB0000;'>1.01</span><span>   -</span><span style='color: #BB0000;'>0.430</span><span>   0.95 median qi       
-#&gt; </span><span style='color: #555555;'>10</span><span>     2     1 tau        3.30   2.41    4.46    0.95 median qi       
-#&gt; </span><span style='color: #555555;'># ... with 14 more rows</span><span></div><div class='input'>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    
+#&gt; <span style='color: #BCBCBC;'> 1</span>     1     1 b         -<span style='color: #BB0000;'>1.08</span>  -<span style='color: #BB0000;'>1.27</span>   -<span style='color: #BB0000;'>0.897</span>   0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 2</span>     1     1 tau        6.03   5.03    7.11    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 3</span>     1     2 b         -<span style='color: #BB0000;'>1.83</span>  -<span style='color: #BB0000;'>2.08</span>   -<span style='color: #BB0000;'>1.54</span>    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 4</span>     1     2 tau        6.03   5.03    7.11    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 5</span>     1     3 b          0.175  0.044<span style='text-decoration: underline;'>7</span>  0.322   0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 6</span>     1     3 tau        6.03   5.03    7.11    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 7</span>     1     4 b         -<span style='color: #BB0000;'>0.101</span> -<span style='color: #BB0000;'>0.347</span>   0.134   0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 8</span>     1     4 tau        6.03   5.03    7.11    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 9</span>     2     1 b         -<span style='color: #BB0000;'>0.739</span> -<span style='color: #BB0000;'>1.01</span>   -<span style='color: #BB0000;'>0.430</span>   0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>10</span>     2     1 tau        3.30   2.41    4.46    0.95 median qi       
+#&gt; <span style='color: #949494;'># ... with 14 more rows</span></div><div class='input'>
 <span class='co'># the first three lines below are roughly equivalent to ggmcmc::ggs(RankCorr)</span>
-<span class='no'>RankCorr</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='tidy_draws.html'>tidy_draws</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>gather_variables</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>median_qi</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 19 x 7</span><span>
+<span class='va'>RankCorr</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='tidy_draws.html'>tidy_draws</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>gather_variables</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>median_qi</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 19 x 7</span>
 #&gt;    .variable  .value  .lower  .upper .width .point .interval
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    
-#&gt; </span><span style='color: #555555;'> 1</span><span> b[1,1]    -</span><span style='color: #BB0000;'>1.08</span><span>   -</span><span style='color: #BB0000;'>1.27</span><span>   -</span><span style='color: #BB0000;'>0.897</span><span>    0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 2</span><span> b[1,2]    -</span><span style='color: #BB0000;'>1.83</span><span>   -</span><span style='color: #BB0000;'>2.08</span><span>   -</span><span style='color: #BB0000;'>1.54</span><span>     0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 3</span><span> b[1,3]     0.175   0.044</span><span style='text-decoration: underline;'>7</span><span>  0.322    0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 4</span><span> b[1,4]    -</span><span style='color: #BB0000;'>0.101</span><span>  -</span><span style='color: #BB0000;'>0.347</span><span>   0.134    0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 5</span><span> b[2,1]    -</span><span style='color: #BB0000;'>0.739</span><span>  -</span><span style='color: #BB0000;'>1.01</span><span>   -</span><span style='color: #BB0000;'>0.430</span><span>    0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 6</span><span> b[2,2]     0.090</span><span style='text-decoration: underline;'>9</span><span> -</span><span style='color: #BB0000;'>0.384</span><span>   0.602    0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 7</span><span> b[2,3]    -</span><span style='color: #BB0000;'>0.175</span><span>  -</span><span style='color: #BB0000;'>0.410</span><span>   0.056</span><span style='text-decoration: underline;'>3</span><span>   0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 8</span><span> b[2,4]     0.270  -</span><span style='color: #BB0000;'>0.151</span><span>   0.710    0.95 median qi       
-#&gt; </span><span style='color: #555555;'> 9</span><span> b[3,1]    -</span><span style='color: #BB0000;'>0.340</span><span>  -</span><span style='color: #BB0000;'>0.609</span><span>  -</span><span style='color: #BB0000;'>0.061</span><span style='color: #BB0000;text-decoration: underline;'>5</span><span>   0.95 median qi       
-#&gt; </span><span style='color: #555555;'>10</span><span> b[3,2]    -</span><span style='color: #BB0000;'>0.732</span><span>  -</span><span style='color: #BB0000;'>1.18</span><span>   -</span><span style='color: #BB0000;'>0.286</span><span>    0.95 median qi       
-#&gt; </span><span style='color: #555555;'>11</span><span> b[3,3]     0.063</span><span style='text-decoration: underline;'>6</span><span> -</span><span style='color: #BB0000;'>0.163</span><span>   0.312    0.95 median qi       
-#&gt; </span><span style='color: #555555;'>12</span><span> b[3,4]     0.091</span><span style='text-decoration: underline;'>8</span><span> -</span><span style='color: #BB0000;'>0.327</span><span>   0.463    0.95 median qi       
-#&gt; </span><span style='color: #555555;'>13</span><span> tau[1]     6.03    5.03    7.11     0.95 median qi       
-#&gt; </span><span style='color: #555555;'>14</span><span> tau[2]     3.30    2.41    4.46     0.95 median qi       
-#&gt; </span><span style='color: #555555;'>15</span><span> tau[3]     3.65    2.73    4.72     0.95 median qi       
-#&gt; </span><span style='color: #555555;'>16</span><span> typical_r  0.548   0.309   0.778    0.95 median qi       
-#&gt; </span><span style='color: #555555;'>17</span><span> u_tau[1]   5.62    3.86    8.03     0.95 median qi       
-#&gt; </span><span style='color: #555555;'>18</span><span> u_tau[2]   5.48    3.46    9.07     0.95 median qi       
-#&gt; </span><span style='color: #555555;'>19</span><span> u_tau[3]   4.96    3.10    7.86     0.95 median qi       </div><div class='input'>
-# }
-</div></span></pre>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>    
+#&gt; <span style='color: #BCBCBC;'> 1</span> b[1,1]    -<span style='color: #BB0000;'>1.08</span>   -<span style='color: #BB0000;'>1.27</span>   -<span style='color: #BB0000;'>0.897</span>    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 2</span> b[1,2]    -<span style='color: #BB0000;'>1.83</span>   -<span style='color: #BB0000;'>2.08</span>   -<span style='color: #BB0000;'>1.54</span>     0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 3</span> b[1,3]     0.175   0.044<span style='text-decoration: underline;'>7</span>  0.322    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 4</span> b[1,4]    -<span style='color: #BB0000;'>0.101</span>  -<span style='color: #BB0000;'>0.347</span>   0.134    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 5</span> b[2,1]    -<span style='color: #BB0000;'>0.739</span>  -<span style='color: #BB0000;'>1.01</span>   -<span style='color: #BB0000;'>0.430</span>    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 6</span> b[2,2]     0.090<span style='text-decoration: underline;'>9</span> -<span style='color: #BB0000;'>0.384</span>   0.602    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 7</span> b[2,3]    -<span style='color: #BB0000;'>0.175</span>  -<span style='color: #BB0000;'>0.410</span>   0.056<span style='text-decoration: underline;'>3</span>   0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 8</span> b[2,4]     0.270  -<span style='color: #BB0000;'>0.151</span>   0.710    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'> 9</span> b[3,1]    -<span style='color: #BB0000;'>0.340</span>  -<span style='color: #BB0000;'>0.609</span>  -<span style='color: #BB0000;'>0.061</span><span style='color: #BB0000; text-decoration: underline;'>5</span>   0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>10</span> b[3,2]    -<span style='color: #BB0000;'>0.732</span>  -<span style='color: #BB0000;'>1.18</span>   -<span style='color: #BB0000;'>0.286</span>    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>11</span> b[3,3]     0.063<span style='text-decoration: underline;'>6</span> -<span style='color: #BB0000;'>0.163</span>   0.312    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>12</span> b[3,4]     0.091<span style='text-decoration: underline;'>8</span> -<span style='color: #BB0000;'>0.327</span>   0.463    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>13</span> tau[1]     6.03    5.03    7.11     0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>14</span> tau[2]     3.30    2.41    4.46     0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>15</span> tau[3]     3.65    2.73    4.72     0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>16</span> typical_r  0.548   0.309   0.778    0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>17</span> u_tau[1]   5.62    3.86    8.03     0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>18</span> u_tau[2]   5.48    3.46    9.07     0.95 median qi       
+#&gt; <span style='color: #BCBCBC;'>19</span> u_tau[3]   4.96    3.10    7.86     0.95 median qi       </div><div class='input'>
+<span class='co'># }</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -290,7 +298,7 @@ repeated for every value of <code>"v"</code>) or <code>"b[i,v]"</code> (when <co
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

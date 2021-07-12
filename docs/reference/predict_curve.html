@@ -93,7 +93,7 @@ prediction curve)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@ prediction curve)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -122,6 +122,9 @@ prediction curve)." />
       <a href="../articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a>
     </li>
     <li>
+      <a href="../articles/tidy-posterior.html">Using tidybayes with the posterior package</a>
+    </li>
+    <li>
       <a href="../articles/tidy-rstanarm.html">Extracting and visualizing tidy draws from rstanarm models</a>
     </li>
     <li>
@@ -136,7 +139,7 @@ prediction curve)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mjskay/tidybayes/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -163,25 +166,25 @@ prediction curve)." />
 prediction curve).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>predict_curve</span>(<span class='no'>data</span>, <span class='no'>formula</span>, <span class='kw'>summary</span> <span class='kw'>=</span> <span class='no'>median</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>predict_curve</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>formula</span>, summary <span class='op'>=</span> <span class='va'>median</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>predict_curve_density</span>(
-  <span class='no'>data</span>,
-  <span class='no'>formula</span>,
-  <span class='kw'>summary</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>...</span>) <span class='fu'><a href='density_bins.html'>density_bins</a></span>(<span class='no'>...</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='no'>n</span>),
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='no'>...</span>
-)</pre>
+<span class='fu'>predict_curve_density</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>formula</span>,
+  summary <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> <span class='fu'><a href='density_bins.html'>density_bins</a></span><span class='op'>(</span><span class='va'>...</span>, n <span class='op'>=</span> <span class='va'>n</span><span class='op'>)</span>,
+  n <span class='op'>=</span> <span class='fl'>50</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>A <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>, tbl_df or
-grouped_df representing posteriors from a Bayesian model as
-might be obtained through <code><a href='spread_draws.html'>spread_draws()</a></code>. Grouped data frames
-as returned by <code>group_by()</code> are supported.</p></td>
+      <td><p>A <a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a>, <a href='https://dplyr.tidyverse.org/reference/tbl_df.html'>tbl_df</a> or
+<a href='https://dplyr.tidyverse.org/reference/grouped_df.html'>grouped_df</a> representing posteriors from a Bayesian model as
+might be obtained through <code><a href='gather_draws.html'>spread_draws()</a></code>. Grouped data frames
+as returned by <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code> are supported.</p></td>
     </tr>
     <tr>
       <th>formula</th>
@@ -237,7 +240,7 @@ with <code><a href='http://mjskay.github.io/ggdist/reference/point_interval.html
 <p>The function generates a predictive curve given posterior draws
 (<code>data</code>), an expression (<code>formula</code>), and a set of variables
 defining the curve (<code>...</code>). For every group in <code>data</code> (if it is a
-grouped data frame---see <code>group_by()</code>; otherwise the entire data
+grouped data frame---see <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by()</a></code>; otherwise the entire data
 frame is taken at once), and for each combination of values in <code>...</code>,
 the right-hand side of <code>formula</code> is evaluated and its results passed to
 the <code>summary</code> function. This allows a predictive curve to be generated,
@@ -254,10 +257,13 @@ curve.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>See <code><a href='density_bins.html'>density_bins()</a></code>.</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Matthew Kay</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-# Deprecated; see examples for density_bins
+<span class='co'># Deprecated; see examples for density_bins</span>
 
 </div></pre>
   </div>
@@ -275,7 +281,7 @@ curve.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
