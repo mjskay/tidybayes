@@ -253,7 +253,7 @@ spread_rvars_ = function(draws, spec) {
 # helpers -----------------------------------------------------------------
 
 # sample draws from a draws_rvars
-#' @importFrom posterior as_draws as_draws_rvars resample_draws ndraws merge_chains
+#' @importFrom posterior as_draws as_draws_rvars resample_draws ndraws nchains merge_chains
 #' @importFrom stats weights
 sample_draws_from_rvars_ = function(model, ndraws = NULL, seed = NULL) {
   signature = class(model)
