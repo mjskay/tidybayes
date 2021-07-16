@@ -911,6 +911,14 @@ beta = draws_cyl$b_Intercept
 beta
 ```
 
+We're also going to want the positions where the linear predictor intercepts 
+those thresholds, which we can calculate using the thresholds and the slope (`b_mpg`):
+
+```{r}
+x_intercept = with(draws_cyl, b_Intercept / b_mpg)
+x_intercept
+```
+
 We can use `add_linpred_rvars()` analogously to `add_epred_rvars()` to 
 get the latent linear predictor. We'll combine this with the thresholds in `beta`,
 subtracting `beta[1]` from the linear predictor and from the other threshold, `beta[2]`,
@@ -923,6 +931,17 @@ lineribbons:
 ```{r, fig.width = med_width, fig.height = med_width}
 beta_2_color = brewer.pal(n = 3, name = "Dark2")[[3]]
 beta_1_color = brewer.pal(n = 3, name = "Dark2")[[1]]
+
+# vertical lines we will use to show the relationship between the linear 
+# predictor and P(cyl | mpg)
+x_intercept_lines = geom_vline(
+  # this works because `rvar`s define median() to take the median of the 
+  # distribution of each element, see vignette("rvar", package = "posterior")
+  xintercept = median(x_intercept),
+  color = "gray50",
+  alpha = 0.2,
+  size = 1
+)
 
 thresholds_plot = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
@@ -954,9 +973,9 @@ thresholds_plot = mtcars_clean %>%
   coord_cartesian(ylim = c(-10, 10))
 
 plot_grid(ncol = 1, align = "v", axis = "lr",
-  data_plot_with_mean,
-  fit_plot,
-  thresholds_plot
+  data_plot_with_mean + x_intercept_lines,
+  fit_plot + x_intercept_lines,
+  thresholds_plot + x_intercept_lines
 )
 ```
 
