@@ -1,3 +1,70 @@
+# tidybayes 3.0.0
+
+Breaking changes and deprecations:
+
+* The `[add_]XXX_draws()` (`predicted_draws()`, `add_predicted_draws()`, etc)
+  functions have been substantially restructured:
+  * `add_fitted_draws()` and `fitted_draws()` are now deprecated, along with the
+    `scale` argument. Several years' teaching experience has demonstrated that
+    "fitted" is a very confusing name for students. Use the more-specific 
+    [`add_`]`linpred_draws()` if you want draws from the linear predictor or the new
+    [`add_`]`epred_draws()` if you want draws from the expectation of the
+    posterior predictive (which is what `fitted_draws()` was most typically
+    used for).
+  * Arguments for renaming output columns are now all called `value`, but
+    retain function-specific default column names. E.g. the `prediction` argument
+    for `predicted_draws()` is now spelled `value` but has a default of `".prediction"`.
+    One breaking change is that the default output column for `linpred_draws()`
+    is now `".linpred"` instead of `".value"`. This should make it easier to
+    combine outputs across multiple functions while also making it easier to
+    remember the name of the argument that changes the output column name.
+  * The `n` argument is now spelled `ndraws` to be more consistent with 
+    terminology in the `posterior` package and to prevent partial argument
+    name matching bugs with `newdata`.
+  * The first argument to all of these functions is now `object` instead of
+    `model`, in order to match with argument names in `posterior_predict()`, etc.
+    This was necessary to prevent partial argument name matching bugs with
+    certain model types in `rstanarm` that have an `m` argument to their
+    prediction functions.
+
+New features:
+
+* Support for the new `posterior` package:
+  * Several new `_rvars` counterparts to the `_draws` family of functions, 
+    including `spread_rvars()`, `gather_rvars()`, `epred_rvars()`, `linpred_rvars()`,
+    and `predicted_rvars()`, which add columns of `posterior::rvar()` objects
+    to data frames instead of long-format columns of draws. These can be
+    easier to read and take up less memory than the long-format data frames
+    of draws. See `vignette("tidy-posterior")` for examples.
+  * The `nest_rvars()` and `unnest_rvars()` functions for converting between
+    data frames of `rvar`s and long format data frames of draws.
+  * `tidy_draws()` has been rebuilt on top of `posterior::as_draws_df()`, which
+    means it should support even more model types and benefit from efficiency 
+    improvements in `posterior`. This means that `cmdstanr` is now supported,
+    for example.
+  * An implementation of `posterior::summarise_draws()` for grouped data frames
+    of draws: `summarise_draws.grouped_df()`
+  * `compare_levels()` now supports data frames of `posterior::rvar()`s.
+* The `epred_draws()`, `linpred_draws()`, and `predicted_draws()` functions should
+  now support any models that implement `posterior_epred()`, `posterior_linpred()`,
+  and `posterior_predict()` so long as they take a `newdata` argument.
+* Several dependencies have been removed or demoted to *Suggests*, including
+  `forcats`, `plyr`, and `purrr`.
+* Added the option to set the `seed` when subsampling to several functions (#276).
+
+New documentation:
+
+* `vignette("tidy-posterior")` describing the use of `tidybayes` with `posterior`,
+  and particularly the `posterior::rvar()` data type. This vignette also includes
+  an updated version of the ordinal regression example from `vignette("tidy-brms")`,
+  now with an illustration of the relationship between the latent linear predictor
+  and the category-level probabilities.
+
+Bug fixes:
+
+* Omit sampler parameters in `tidy_draws()` if retrieving them results in an error (#244)
+
+
 # tidybayes 2.3.1
 
 * Allow user-specified names for comparisons in `compare_levels()` (#272)
