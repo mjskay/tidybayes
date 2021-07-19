@@ -93,7 +93,7 @@ dimensions) into one of two types of long-format data frames of posterior::rvar 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -204,7 +204,7 @@ dimension <code>v</code> in <code>1:3</code>. However, the default format for dr
 JAGS or Stan in R will not reflect this indexing structure, instead
 they will have multiple columns with names like <code>"b[1,1]"</code>, <code>"b[2,1]"</code>, etc.</p>
 <p><code>spread_rvars</code> and <code>gather_rvars</code> provide a straightforward
-syntax to translate these columns back into properly-indexed <a href='https://mc-stan.org/posterior/reference/rvar.html'>rvar</a>s in two different
+syntax to translate these columns back into properly-indexed <code><a href='https://mc-stan.org/posterior/reference/rvar.html'>rvar</a></code>s in two different
 tidy data frame formats, optionally recovering dimension types (e.g. factor levels) as it does so.</p>
 <p><code>spread_rvars</code> will spread names of variables in the model across the data frame as column names,
 whereas <code>gather_rvars</code> will gather variable names into a single column named <code>".variable"</code> and place

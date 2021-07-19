@@ -51,10 +51,9 @@
 <meta property="og:title" content="Get a sample of posterior draws from a model as a tibble — tidy_draws" />
 <meta property="og:description" content="Extract draws from a Bayesian fit into a wide-format data frame with a
 .chain, .iteration, and .draw column, as well as all variables
-as columns. While this function can be useful for quick glances at models (especially
-combined with gather_variables() and median_qi()), it is
-generally speaking not as useful as spread_draws() or
-gather_draws() for most applications, and is mainly used internally (see Details)." />
+as columns. This function does not parse indices from variable names
+(e.g. for variable names like &quot;x[1]&quot;); see spread_draws() or
+gather_draws() for functions that parse variable indices." />
 <meta property="og:image" content="http://mjskay.github.io/tidybayes/logo.svg" />
 
 
@@ -97,7 +96,7 @@ gather_draws() for most applications, and is mainly used internally (see Details
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -168,10 +167,9 @@ gather_draws() for most applications, and is mainly used internally (see Details
     <div class="ref-description">
     <p>Extract draws from a Bayesian fit into a wide-format data frame with a
 <code>.chain</code>, <code>.iteration</code>, and <code>.draw</code> column, as well as all variables
-as columns. While this function can be useful for quick glances at models (especially
-combined with <code><a href='gather_variables.html'>gather_variables()</a></code> and <code><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>median_qi()</a></code>), it is
-generally speaking not as useful as <code><a href='gather_draws.html'>spread_draws()</a></code> or
-<code><a href='gather_draws.html'>gather_draws()</a></code> for most applications, and is mainly used internally (see <em>Details</em>).</p>
+as columns. This function does not parse indices from variable names
+(e.g. for variable names like <code>"x[1]"</code>); see <code><a href='gather_draws.html'>spread_draws()</a></code> or
+<code><a href='gather_draws.html'>gather_draws()</a></code> for functions that parse variable indices.</p>
     </div>
 
     <pre class="usage"><span class='fu'>tidy_draws</span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -235,20 +233,25 @@ for a full list of supported models, see <a href='tidybayes-models.html'>tidybay
 <code>.iteration</code> column, <code>.draw</code> column, and one column for every variable in <code>model</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>In practice, apart from quick looks at a model you will probably not call this directly;
-<code><a href='gather_draws.html'>spread_draws()</a></code> or <code><a href='gather_draws.html'>gather_draws()</a></code>, which are build on top of this
-function, provide support for extracting variable dimensions are so are often more useful.</p>
+    <p>This function can be useful for quick glances at models (especially
+combined with <code><a href='gather_variables.html'>gather_variables()</a></code> and <code><a href='http://mjskay.github.io/ggdist/reference/point_interval.html'>median_qi()</a></code>), and for models with
+parameters without indices in their names (like <code>"x[1]"</code>).
+<code><a href='gather_draws.html'>spread_draws()</a></code> and <code><a href='gather_draws.html'>gather_draws()</a></code>, which <em>do</em> parse variable name indices,
+call this function internally if their input is not already a tidy data frame.</p>
 <p>To provide support for new models in tidybayes,
 you must provide an implementation of this function <em>or</em> an implementation
 of <code><a href='https://rdrr.io/pkg/coda/man/mcmc.list.html'>coda::as.mcmc.list()</a></code> (<code>tidy_draws</code> should work on any model
 with an implementation of <code><a href='https://rdrr.io/pkg/coda/man/mcmc.list.html'>coda::as.mcmc.list()</a></code>)</p>
-<p><code>tidy_draws</code> can be applied to a data frame that is already a tidy-format data frame
+<p><code>tidy_draws()</code> can be applied to a data frame that is already a tidy-format data frame
 of draws, provided it has one row per draw. In other words, it can be applied to data frames
 that have the same format it returns, and it will return the same data frame back, while
 checking to ensure the <code>.chain</code>, <code>.iteration</code>, and <code>.draw</code> columns are all
 integers (converting if possible) and that the <code>.draw</code> column is unique. This allows
 you to pass already-tidy-format data frames into other tidybayes functions, like
-<code><a href='gather_draws.html'>spread_draws()</a></code> or <code><a href='gather_draws.html'>gather_draws()</a></code>.</p>
+<code><a href='gather_draws.html'>spread_draws()</a></code> or <code><a href='gather_draws.html'>gather_draws()</a></code>. This functionality can be useful if the
+tidying step is expensive: you can tidy once, possibly subsetting to some
+particular variables of interest, then call <code><a href='gather_draws.html'>spread_draws()</a></code> or <code><a href='gather_draws.html'>gather_draws()</a></code>
+repeatedly to extract variables and indices from the already-tidied data frame.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='gather_draws.html'>spread_draws()</a></code> or <code><a href='gather_draws.html'>gather_draws()</a></code>, which use this function

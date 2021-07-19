@@ -94,7 +94,7 @@ the data frame in a long format." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -470,7 +470,7 @@ If <code>NULL</code> or <code>FALSE</code> (the default), distributional regress
     <tr>
       <th>scale</th>
       <td><p>(Deprecated). Use the appropriate function (<code>epred_draws()</code> or <code>linpred_draws()</code>)
-depending on what type of distirbution you want. For <code>linpred_draws()</code>, you may want the
+depending on what type of distribution you want. For <code>linpred_draws()</code>, you may want the
 <code>transform</code> argument. See <code><a href='https://mc-stan.org/rstanarm/reference/posterior_linpred.stanreg.html'>rstanarm::posterior_linpred()</a></code> or <code><a href='https://rdrr.io/pkg/brms/man/posterior_linpred.brmsfit.html'>brms::posterior_linpred()</a></code>.</p></td>
     </tr>
     <tr>
@@ -562,8 +562,8 @@ explicit support for these functions yet. See <code><a href='gather_draws.html'>
 </div><div class='output co'>#&gt; <span class='message'>Compiling Stan program...</span></div><div class='output co'>#&gt; <span class='message'>Start sampling</span></div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 2.6e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.26 seconds.
+#&gt; Chain 1: Gradient evaluation took 2.5e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.25 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -580,9 +580,9 @@ explicit support for these functions yet. See <code><a href='gather_draws.html'>
 #&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.075 seconds (Warm-up)
-#&gt; Chain 1:                0.035 seconds (Sampling)
-#&gt; Chain 1:                0.11 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.056 seconds (Warm-up)
+#&gt; Chain 1:                0.023 seconds (Sampling)
+#&gt; Chain 1:                0.079 seconds (Total)
 #&gt; Chain 1: </div><div class='output co'>#&gt; <span class='warning'>Warning: The largest R-hat is 1.07, indicating chains have not mixed.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
 #&gt; <span class='warning'>https://mc-stan.org/misc/warnings.html#r-hat</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>

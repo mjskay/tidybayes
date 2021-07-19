@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -105,13 +105,13 @@
 
       
 
-      </header><script src="tidybayes_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="tidybayes_files/header-attrs-2.9.3/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using tidy data with Bayesian models</h1>
                         <h4 class="author">Matthew Kay</h4>
             
-            <h4 class="date">2021-07-11</h4>
+            <h4 class="date">2021-07-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mjskay/tidybayes/blob/master/vignettes/tidybayes.Rmd"><code>vignettes/tidybayes.Rmd</code></a></small>
       <div class="hidden name"><code>tidybayes.Rmd</code></div>
@@ -284,8 +284,8 @@ model {
 <pre><code>## 
 ## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
 ## Chain 1: 
-## Chain 1: Gradient evaluation took 2.8e-05 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.28 seconds.
+## Chain 1: Gradient evaluation took 2.6e-05 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.26 seconds.
 ## Chain 1: Adjust your expectations accordingly!
 ## Chain 1: 
 ## Chain 1: 
@@ -302,15 +302,15 @@ model {
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 0.43 seconds (Warm-up)
-## Chain 1:                0.423 seconds (Sampling)
-## Chain 1:                0.853 seconds (Total)
+## Chain 1:  Elapsed Time: 0.416 seconds (Warm-up)
+## Chain 1:                0.407 seconds (Sampling)
+## Chain 1:                0.823 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
 ## Chain 2: 
-## Chain 2: Gradient evaluation took 7e-06 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
+## Chain 2: Gradient evaluation took 6e-06 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
 ## Chain 2: Adjust your expectations accordingly!
 ## Chain 2: 
 ## Chain 2: 
@@ -327,9 +327,9 @@ model {
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 0.481 seconds (Warm-up)
-## Chain 2:                0.598 seconds (Sampling)
-## Chain 2:                1.079 seconds (Total)
+## Chain 2:  Elapsed Time: 0.428 seconds (Warm-up)
+## Chain 2:                0.583 seconds (Sampling)
+## Chain 2:                1.011 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
@@ -352,9 +352,9 @@ model {
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 0.47 seconds (Warm-up)
-## Chain 3:                0.435 seconds (Sampling)
-## Chain 3:                0.905 seconds (Total)
+## Chain 3:  Elapsed Time: 0.456 seconds (Warm-up)
+## Chain 3:                0.465 seconds (Sampling)
+## Chain 3:                0.921 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
@@ -377,9 +377,9 @@ model {
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 0.484 seconds (Warm-up)
-## Chain 4:                0.886 seconds (Sampling)
-## Chain 4:                1.37 seconds (Total)
+## Chain 4:  Elapsed Time: 0.476 seconds (Warm-up)
+## Chain 4:                0.933 seconds (Sampling)
+## Chain 4:                1.409 seconds (Total)
 ## Chain 4:</code></pre>
 <p>The results look like this:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -404,7 +404,7 @@ model {
 ## condition_mean[5]    -0.89    0.00 0.18 -1.23 -1.01 -0.89 -0.77 -0.53  4725    1
 ## lp__                  0.30    0.08 2.34 -5.02 -1.08  0.63  2.06  3.79   915    1
 ## 
-## Samples were drawn using NUTS(diag_e) at Sun Jul 11 15:27:25 2021.
+## Samples were drawn using NUTS(diag_e) at Mon Jul 19 16:40:26 2021.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
 ## convergence, Rhat=1).</code></pre>
@@ -1145,9 +1145,9 @@ model {
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 0.049 seconds (Warm-up)
-## Chain 1:                0.05 seconds (Sampling)
-## Chain 1:                0.099 seconds (Total)
+## Chain 1:  Elapsed Time: 0.047 seconds (Warm-up)
+## Chain 1:                0.056 seconds (Sampling)
+## Chain 1:                0.103 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL 'continuous' NOW (CHAIN 2).
@@ -1170,9 +1170,9 @@ model {
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 0.054 seconds (Warm-up)
-## Chain 2:                0.054 seconds (Sampling)
-## Chain 2:                0.108 seconds (Total)
+## Chain 2:  Elapsed Time: 0.055 seconds (Warm-up)
+## Chain 2:                0.051 seconds (Sampling)
+## Chain 2:                0.106 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL 'continuous' NOW (CHAIN 3).
@@ -1195,9 +1195,9 @@ model {
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 0.052 seconds (Warm-up)
+## Chain 3:  Elapsed Time: 0.049 seconds (Warm-up)
 ## Chain 3:                0.043 seconds (Sampling)
-## Chain 3:                0.095 seconds (Total)
+## Chain 3:                0.092 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL 'continuous' NOW (CHAIN 4).

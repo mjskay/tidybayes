@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -105,13 +105,13 @@
 
       
 
-      </header><script src="tidybayes-residuals_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="tidybayes-residuals_files/header-attrs-2.9.3/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extracting and visualizing tidy residuals from Bayesian models</h1>
                         <h4 class="author">Matthew Kay</h4>
             
-            <h4 class="date">2021-07-11</h4>
+            <h4 class="date">2021-07-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mjskay/tidybayes/blob/master/vignettes/tidybayes-residuals.Rmd"><code>vignettes/tidybayes-residuals.Rmd</code></a></small>
       <div class="hidden name"><code>tidybayes-residuals.Rmd</code></div>
@@ -290,7 +290,7 @@ y^\textrm{upper}_i &amp;= \lceil{y^*_i}\rceil
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">.residual</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-7-1.png" width="648"></p>
+<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-7-1.png" width="432"></p>
 <p>This is a typical way of looking at residuals. However, this type of residual will not generalize to discrete and censored models, so let’s consider something else…</p>
 </div>
 <div id="probability-residuals-and-quantile-residuals" class="section level3">
@@ -315,7 +315,7 @@ z^{*\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{*\textrm{resid}}_i)
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">z_residual</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_abline</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-8-1.png" width="648"></p>
+<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-8-1.png" width="432"></p>
 <p>This QQ plot shows us the model fits okay.</p>
 </div>
 </div>
@@ -369,7 +369,7 @@ z^{*\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{*\textrm{resid}}_i)
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Results may not be meaningful for censored models.</code></pre>
-<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-11-1.png" width="648"></p>
+<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-11-1.png" width="432"></p>
 <p>Again, the striations are making interpretation difficult. But there is hope!</p>
 <div id="randomized-quantile-residuals" class="section level3">
 <h3 class="hasAnchor">
@@ -422,7 +422,7 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">z_residual</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_abline</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-13-1.png" width="648"></p>
+<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-13-1.png" width="432"></p>
 <p>Looks decent. However, our residuals are now subject to noise—we actually have a distribution of possible QQ plots. So, let’s check on some of them to make sure this nice-looking one is not just a fluke. We’ll employ <a href="https://mucollective.co/project/hops-trends">HOPs</a> to do that:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">k</span> <span class="op">=</span> <span class="fl">20</span>
@@ -515,7 +515,7 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Results may not be meaningful for censored models.</code></pre>
-<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-17-1.png" width="648"></p>
+<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-17-1.png" width="432"></p>
 <p>It looks like this could be problematic, but the striations make diagnosing the problem difficult.</p>
 </div>
 <div id="randomized-quantile-residuals-1" class="section level3">
@@ -536,7 +536,7 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_abline</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Removed 1 rows containing non-finite values (stat_qq).</code></pre>
-<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-18-1.png" width="648"></p>
+<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-18-1.png" width="432"></p>
 <p>Does not look good for the model—this s-shape is characteristic of excess kurtosis (aka fat tails), which is exactly what a t distribution should produce. So let’s try a different model.</p>
 </div>
 </div>
@@ -561,7 +561,7 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Results may not be meaningful for censored models.</code></pre>
-<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-19-1.png" width="648"></p>
+<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-19-1.png" width="432"></p>
 <p>Odd, these don’t look great! But again, these residuals are not to be trusted…</p>
 <div id="randomized-quantile-residuals-2" class="section level3">
 <h3 class="hasAnchor">
@@ -685,15 +685,8 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
 <a href="#a-function-for-probability-residuals" class="anchor"></a>A function for probability residuals</h2>
 <p>Here’s a function that can calculate randomized probability residuals for you. A future version of <code>tidybayes</code> will likely supply some variant of this function, but for now, since it is experimental, I have not folded it into the main package yet. Use at your own risk:</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org">rlang</a></span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: 'rlang'</code></pre>
-<pre><code>## The following objects are masked from 'package:purrr':
-## 
-##     %@%, as_function, flatten, flatten_chr, flatten_dbl, flatten_int, flatten_lgl, flatten_raw, invoke,
-##     list_along, modify, prepend, splice</code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">make_probability_residuals</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">prediction</span>, <span class="va">y</span>, <span class="va">y_upper</span> <span class="op">=</span> <span class="cn">NA</span>, <span class="va">n</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org">rlang</a></span><span class="op">)</span>
+<span class="va">make_probability_residuals</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">prediction</span>, <span class="va">y</span>, <span class="va">y_upper</span> <span class="op">=</span> <span class="cn">NA</span>, <span class="va">n</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">.prediction</span> <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html">enquo</a></span><span class="op">(</span><span class="va">prediction</span><span class="op">)</span>
   <span class="va">.y</span> <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html">enquo</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
   <span class="va">.y_upper</span> <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html">enquo</a></span><span class="op">(</span><span class="va">y_upper</span><span class="op">)</span>
@@ -731,14 +724,14 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
 <h2 class="hasAnchor">
 <a href="#logistic-regression" class="anchor"></a>Logistic regression</h2>
 <p>Consider a simple dataset with a single binary outcome:</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">51919</span><span class="op">)</span>
 
 <span class="va">bin_df</span> <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
   y <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/rbernoulli.html">rbernoulli</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">.7</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>A model for this might be the following:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_bin</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
   <span class="va">y</span> <span class="op">~</span> <span class="fl">1</span>, 
   data <span class="op">=</span> <span class="va">bin_df</span>, 
@@ -747,16 +740,16 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
   file <span class="op">=</span> <span class="st">"models/tidybayes-residuals_m_bin.rds"</span>  <span class="co"># cache model (can be removed)</span>
 <span class="op">)</span></code></pre></div>
 <p>Again, standard residuals are hard to interpret:</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bin_df</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/add_epred_draws.html">add_residual_draws</a></span><span class="op">(</span><span class="va">m_bin</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">.residual</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html">geom_qq_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-27-1.png" width="648"></p>
+<p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-27-1.png" width="432"></p>
 <p>Randomized quantile residuals help us see that the fit is probably reasonable. In this case (just to switch it up), we’ll look at the probability residuals instead, comparing them against a uniform distribution, like so:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">k</span> <span class="op">=</span> <span class="fl">20</span>
 
 <span class="va">p</span> <span class="op">=</span> <span class="va">bin_df</span> <span class="op">%&gt;%</span>
@@ -769,7 +762,7 @@ z^{\textrm{resid}}_i = F_{\textrm{Normal}}^{-1}(p^{\textrm{resid}}_i)
 <pre><code>## Warning: Subsetting quosures with `[[` is deprecated as of rlang 0.4.0
 ## Please use `quo_get_expr()` instead.
 ## This warning is displayed once per session.</code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://gganimate.com/reference/animate.html">animate</a></span><span class="op">(</span><span class="va">p</span>, nframes <span class="op">=</span> <span class="va">k</span>, width <span class="op">=</span> <span class="fl">384</span>, height <span class="op">=</span> <span class="fl">384</span>, res <span class="op">=</span> <span class="fl">96</span>, dev <span class="op">=</span> <span class="st">"png"</span>, type <span class="op">=</span> <span class="st">"cairo"</span><span class="op">)</span></code></pre></div>
 <p><img src="tidybayes-residuals_files/figure-html/unnamed-chunk-28-1.gif"><!-- --></p>
 </div>

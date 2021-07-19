@@ -53,7 +53,8 @@ simplify these two common (often tedious) operations:
     corresponding to variable indices. In most cases this kind of
     long-format data is much easier to use with other data-manipulation
     and plotting packages (e.g., `dplyr`, `tidyr`, `ggplot2`) than the
-    format provided by default from the model.
+    format provided by default from the model. See
+    `vignette("tidybayes")` for examples.
 
 `tidybayes` also provides some additional functionality for data
 manipulation and visualization tasks common to many models:
@@ -66,7 +67,8 @@ manipulation and visualization tasks common to many models:
     are modeled after the `modelr::add_predictions()` function, and turn
     a grid of predictions into a long-format data frame of draws from
     either the fits or predictions from a model. These functions make it
-    straightforward to generate arbitrary fit lines from a model.
+    straightforward to generate arbitrary fit lines from a model. See
+    `vignette("tidy-brms")` or `vignette("tidy-rstanarm")` for examples.
 
 -   **Summarizing posterior distributions** from models. `tidybayes`
     re-exports the `ggdist::point_interval()` family of functions
@@ -75,7 +77,9 @@ manipulation and visualization tasks common to many models:
     tidy workflows in mind. They can generate point summaries plus an
     arbitrary number of probability intervals *from* tidy data frames of
     draws, they *return* tidy data frames, and they **respect data frame
-    groups**. These functions
+    groups**. `tidybayes` also provides and implementation of
+    `posterior::summarise_draws()` for use with grouped data frames,
+    such as those returned by the `tidybayes::XXX_draws` functions.
 
 -   **Visualizing priors and posteriors**. The focus on tidy data makes
     the output from tidybayes easy to visualize using `ggplot`. While
@@ -104,6 +108,19 @@ manipulation and visualization tasks common to many models:
     See `vignette("slabinterval", package = "ggdist")` for more
     information.
 
+-   **Extracting and visualizing data frames of random variables** from
+    models. `tidybayes` also provides `XXX_rvars` functions as
+    alternatives to the `XXX_draws` functions, such as `spread_rvars()`,
+    `add_predicted_rvars()`, etc. These functions instead return tidy
+    data frames of `posterior::rvar()`s, a vectorized random variable
+    data type (see `vignette("rvar", package = "posterior")` for more
+    about `rvar`s). Combined with the `ggdist::stat_dist_slabinterval()`
+    and `ggdist::stat_dist_lineribbon()` geometries, these functions
+    make it easy to extract samples from distributions, manipulate them,
+    and visualize them; this format may have significant advantages in
+    terms of memory required for large models. See
+    `vignette("tidy-posterior")` for examples.
+
 -   **Comparing a variable across levels of a factor**, which often
     means first generating pairs of levels of a factor (according to
     some desired set of comparisons) and then computing a function over
@@ -114,6 +131,9 @@ manipulation and visualization tasks common to many models:
 
 Finally, `tidybayes` aims to fit into common workflows through
 **compatibility with other packages**:
+
+-   Its core functions for returning tidy data frames of draws are built
+    on top of `posterior::as_draws_df()`.
 
 -   Drop-in functions to translate tidy column names used by `tidybayes`
     to/from names used by other common packages and functions, including
@@ -665,6 +685,5 @@ have encountered, but I would love to make it cover more!
 ## Citing `tidybayes`
 
 Matthew Kay (2021). *tidybayes: Tidy Data and Geoms for Bayesian
-Models*. R package version 2.4.1.9001,
-<https://mjskay.github.io/tidybayes/>. DOI:
-[10.5281/zenodo.1308151](https://doi.org/10.5281/zenodo.1308151).
+Models*. R package version 3.0.0, <https://mjskay.github.io/tidybayes/>.
+DOI: [10.5281/zenodo.1308151](https://doi.org/10.5281/zenodo.1308151).

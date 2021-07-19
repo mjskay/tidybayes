@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -105,13 +105,13 @@
 
       
 
-      </header><script src="tidy-brms_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="tidy-brms_files/header-attrs-2.9.3/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extracting and visualizing tidy draws from brms models</h1>
                         <h4 class="author">Matthew Kay</h4>
             
-            <h4 class="date">2021-07-11</h4>
+            <h4 class="date">2021-07-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mjskay/tidybayes/blob/master/vignettes/tidy-brms.Rmd"><code>vignettes/tidy-brms.Rmd</code></a></small>
       <div class="hidden name"><code>tidy-brms.Rmd</code></div>
@@ -662,7 +662,7 @@ img {
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">response</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">ABC</span>, shape <span class="op">=</span> <span class="fl">21</span>, fill <span class="op">=</span> <span class="st">"#9ECAE1"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="tidy-brms_files/figure-html/unnamed-chunk-31-1.png" width="648"></p>
-<p>For a more detailed description of these charts (and some useful variations on them), see <a href="https://solomonkurz.netlify.app/post/make-rotated-gaussians-kruschke-style/">Solomon Kurz’s excellent blog post on the topic</a>.</p>
+<p>For a more detailed description of these charts (and some useful variations on them), see <a href="https://solomonkurz.netlify.app/post/2018-12-20-make-rotated-gaussians-kruschke-style/">Solomon Kurz’s excellent blog post on the topic</a>.</p>
 <p>We could even combine the Kruschke-style plots of predictive distributions with half-eyes showing the posterior means:</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ABC</span> <span class="op">%&gt;%</span>

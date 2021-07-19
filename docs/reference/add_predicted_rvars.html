@@ -94,7 +94,7 @@ the data frame." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -157,7 +157,7 @@ the data frame." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add rvars for the linear predictor, posterior expectation, posterior predictive, or residuals of a model to a data frame</h1>
+    <h1>Add <code>rvar</code>s for the linear predictor, posterior expectation, posterior predictive, or residuals of a model to a data frame</h1>
     <small class="dont-index">Source: <a href='https://github.com/mjskay/tidybayes/blob/master/R/epred_rvars.R'><code>R/epred_rvars.R</code></a>, <a href='https://github.com/mjskay/tidybayes/blob/master/R/linpred_rvars.R'><code>R/linpred_rvars.R</code></a>, <a href='https://github.com/mjskay/tidybayes/blob/master/R/predicted_rvars.R'><code>R/predicted_rvars.R</code></a></small>
     <div class="hidden name"><code>add_predicted_rvars.Rd</code></div>
     </div>
@@ -440,7 +440,7 @@ are preferred.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='add_epred_draws.html'>add_predicted_draws()</a></code> for the analogous functions that use a long-data-frame-of-draws
-format instead of a data-frame-of-rvars format. See <code><a href='gather_rvars.html'>spread_rvars()</a></code> for manipulating posteriors directly.</p></div>
+format instead of a data-frame-of-<code>rvar</code>s format. See <code><a href='gather_rvars.html'>spread_rvars()</a></code> for manipulating posteriors directly.</p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Matthew Kay</p>
@@ -451,7 +451,7 @@ format instead of a data-frame-of-rvars format. See <code><a href='gather_rvars.
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://mc-stan.org/posterior/'>posterior</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>This is posterior version 1.0.0</span></div><div class='output co'>#&gt; <span class='message'></span>
+</div><div class='output co'>#&gt; <span class='message'>This is posterior version 1.0.1</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: 'posterior'</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from 'package:brms':</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    rhat</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from 'package:stats':</span>
@@ -507,8 +507,8 @@ format instead of a data-frame-of-rvars format. See <code><a href='gather_rvars.
 </div><div class='output co'>#&gt; <span class='message'>Compiling Stan program...</span></div><div class='output co'>#&gt; <span class='message'>Start sampling</span></div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 7.3e-05 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.73 seconds.
+#&gt; Chain 1: Gradient evaluation took 1.9e-05 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.19 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -525,9 +525,9 @@ format instead of a data-frame-of-rvars format. See <code><a href='gather_rvars.
 #&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.327 seconds (Warm-up)
-#&gt; Chain 1:                0.09 seconds (Sampling)
-#&gt; Chain 1:                0.417 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.286 seconds (Warm-up)
+#&gt; Chain 1:                0.086 seconds (Sampling)
+#&gt; Chain 1:                0.372 seconds (Total)
 #&gt; Chain 1: </div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
 #&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
 #&gt; <span class='warning'>https://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>

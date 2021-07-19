@@ -483,7 +483,7 @@ ABC %>%
   geom_point(aes(x = response), data = ABC, shape = 21, fill = "#9ECAE1", size = 2)
 ```
 
-For a more detailed description of these charts (and some useful variations on them), see [Solomon Kurz's excellent blog post on the topic](https://solomonkurz.netlify.app/post/make-rotated-gaussians-kruschke-style/).
+For a more detailed description of these charts (and some useful variations on them), see [Solomon Kurz's excellent blog post on the topic](https://solomonkurz.netlify.app/post/2018-12-20-make-rotated-gaussians-kruschke-style/).
 
 We could even combine the Kruschke-style plots of predictive distributions with half-eyes showing the posterior means:
 

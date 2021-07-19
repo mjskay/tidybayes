@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -105,13 +105,13 @@
 
       
 
-      </header><script src="tidy-posterior_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="tidy-posterior_files/header-attrs-2.9.3/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using tidybayes with the posterior package</h1>
                         <h4 class="author">Matthew Kay</h4>
             
-            <h4 class="date">2021-07-11</h4>
+            <h4 class="date">2021-07-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mjskay/tidybayes/blob/master/vignettes/tidy-posterior.Rmd"><code>vignettes/tidy-posterior.Rmd</code></a></small>
       <div class="hidden name"><code>tidy-posterior.Rmd</code></div>
@@ -132,7 +132,7 @@ img {
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>This vignette describes how to use the <code>tidybayes</code> and <code>ggdist</code> packages along with the <code>posterior</code> package (and particularly the <code><a href="https://mc-stan.org/posterior/reference/rvar.html">posterior::rvar()</a></code> datatype) to extract and visualize <a href="https://dx.doi.org/10.18637/jss.v059.i10">tidy</a> data frames of <code>rvar</code>s from posterior distributions of model variables, fits, and predictions.</p>
-<p>This workflow is a “long-data-frame-of-rvars” workflow, which is bit different from the “long-data-frame-of-draws” workflow described in <code><a href="../articles/tidybayes.html">vignette("tidybayes")</a></code> or <code><a href="../articles/tidy-brms.html">vignette("tidy-brms")</a></code>. The <code>rvar</code> based approach may be particularly useful on larger models, as it is more memory efficient.</p>
+<p>This workflow is a “long-data-frame-of-<code>rvar</code>s” workflow, which is bit different from the “long-data-frame-of-draws” workflow described in <code><a href="../articles/tidybayes.html">vignette("tidybayes")</a></code> or <code><a href="../articles/tidy-brms.html">vignette("tidy-brms")</a></code>. The <code>rvar</code> based approach may be particularly useful on larger models, as it is more memory efficient.</p>
 </div>
 <div id="setup" class="section level2">
 <h2 class="hasAnchor">
@@ -626,7 +626,7 @@ img {
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">response</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">ABC</span>, shape <span class="op">=</span> <span class="fl">21</span>, fill <span class="op">=</span> <span class="st">"#9ECAE1"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><img src="tidy-posterior_files/figure-html/unnamed-chunk-34-1.png" width="648"></p>
-<p>For a more detailed description of these charts (and some useful variations on them), see <a href="https://solomonkurz.netlify.app/post/make-rotated-gaussians-kruschke-style/">Solomon Kurz’s excellent blog post on the topic</a>.</p>
+<p>For a more detailed description of these charts (and some useful variations on them), see <a href="https://solomonkurz.netlify.app/post/2018-12-20-make-rotated-gaussians-kruschke-style/">Solomon Kurz’s excellent blog post on the topic</a>.</p>
 <p>We could even combine the Kruschke-style plots of predictive distributions with half-eyes showing the posterior means:</p>
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ABC</span> <span class="op">%&gt;%</span>
@@ -1006,10 +1006,27 @@ img {
 <span class="va">beta</span></code></pre></div>
 <pre><code>## rvar&lt;1000,4&gt;[2] mean ± sd:
 ## [1] -38 ± 12  -33 ± 11</code></pre>
-<p>We can use <code><a href="../reference/add_epred_rvars.html">add_linpred_rvars()</a></code> analogously to <code><a href="../reference/add_epred_rvars.html">add_epred_rvars()</a></code> to get the latent linear predictor. We’ll combine this with the thresholds in <code>beta</code>, subtracting <code>beta[1]</code> from the linear predictor and from the other threshold, <code>beta[2]</code>, as these values are all highly correlated (thus are hard to visualize with uncertainty in a meaningful way without looking at their differences). We’ll also demonstrate the use of <code>.width = ppoints(XXX)</code> on a lineribbon where <code>XXX</code> is a number like <code>30</code> or <code>50</code>, which combined with a low <code>alpha</code> value produces gradient-like lineribbons:</p>
+<p>We’re also going to want the positions where the linear predictor intercepts those thresholds, which we can calculate using the thresholds and the slope (<code>b_mpg</code>):</p>
 <div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x_intercept</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">draws_cyl</span>, <span class="va">b_Intercept</span> <span class="op">/</span> <span class="va">b_mpg</span><span class="op">)</span>
+<span class="va">x_intercept</span></code></pre></div>
+<pre><code>## rvar&lt;1000,4&gt;[2] mean ± sd:
+## [1] 21 ± 0.50  18 ± 0.52</code></pre>
+<p>We can use <code><a href="../reference/add_epred_rvars.html">add_linpred_rvars()</a></code> analogously to <code><a href="../reference/add_epred_rvars.html">add_epred_rvars()</a></code> to get the latent linear predictor. We’ll combine this with the thresholds in <code>beta</code>, subtracting <code>beta[1]</code> from the linear predictor and from the other threshold, <code>beta[2]</code>, as these values are all highly correlated (thus are hard to visualize with uncertainty in a meaningful way without looking at their differences). We’ll also demonstrate the use of <code>.width = ppoints(XXX)</code> with <code><a href="http://mjskay.github.io/ggdist/reference/stat_lineribbon.html">stat_dist_lineribbon()</a></code> where <code>XXX</code> is a number like <code>30</code> or <code>50</code>, which combined with a low <code>alpha</code> value produces gradient-like lineribbons:</p>
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">beta_2_color</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3</span>, name <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>
 <span class="va">beta_1_color</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3</span>, name <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
+
+<span class="co"># vertical lines we will use to show the relationship between the linear </span>
+<span class="co"># predictor and P(cyl | mpg)</span>
+<span class="va">x_intercept_lines</span> <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>
+  <span class="co"># this works because `rvar`s define median() to take the median of the </span>
+  <span class="co"># distribution of each element, see vignette("rvar", package = "posterior")</span>
+  xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">x_intercept</span><span class="op">)</span>,
+  color <span class="op">=</span> <span class="st">"gray50"</span>,
+  alpha <span class="op">=</span> <span class="fl">0.2</span>,
+  size <span class="op">=</span> <span class="fl">1</span>
+<span class="op">)</span>
 
 <span class="va">thresholds_plot</span> <span class="op">=</span> <span class="va">mtcars_clean</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span><span class="op">(</span>mpg <span class="op">=</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range</a></span><span class="op">(</span><span class="va">mpg</span>, n <span class="op">=</span> <span class="fl">101</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1041,11 +1058,11 @@ img {
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">plot_grid</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">1</span>, align <span class="op">=</span> <span class="st">"v"</span>, axis <span class="op">=</span> <span class="st">"lr"</span>,
-  <span class="va">data_plot_with_mean</span>,
-  <span class="va">fit_plot</span>,
-  <span class="va">thresholds_plot</span>
+  <span class="va">data_plot_with_mean</span> <span class="op">+</span> <span class="va">x_intercept_lines</span>,
+  <span class="va">fit_plot</span> <span class="op">+</span> <span class="va">x_intercept_lines</span>,
+  <span class="va">thresholds_plot</span> <span class="op">+</span> <span class="va">x_intercept_lines</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="tidy-posterior_files/figure-html/unnamed-chunk-56-1.png" width="648"></p>
+<p><img src="tidy-posterior_files/figure-html/unnamed-chunk-57-1.png" width="648"></p>
 <p>Note how when the linear predictor intersects the line for <code>beta[1]</code> categories 1 and 2 are equally likely, and when it intersects the line for <code>beta[2]</code> categories 2 and 3 are equally likely.</p>
 <p>For more examples with this model using the long-data-frame-of-draws workflow (which can be easier for certain tasks), see the corresponding section of <code><a href="../articles/tidy-brms.html">vignette("tidy-brms")</a></code>.</p>
 </div>
@@ -1053,7 +1070,7 @@ img {
 <h3 class="hasAnchor">
 <a href="#ordinal-model-with-categorical-predictor" class="anchor"></a>Ordinal model with categorical predictor</h3>
 <p>Here’s an ordinal model with a categorical predictor:</p>
-<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">esoph</span><span class="op">)</span>
 <span class="va">m_esoph_brm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
   <span class="va">tobgp</span> <span class="op">~</span> <span class="va">agegp</span>, 
@@ -1063,7 +1080,7 @@ img {
   file <span class="op">=</span> <span class="st">"models/tidy-brms_m_esoph_brm.rds"</span>  
 <span class="op">)</span></code></pre></div>
 <p>Then we can plot predicted probabilities for each outcome category within each level of the predictor:</p>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">esoph</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span><span class="op">(</span><span class="va">agegp</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/add_epred_rvars.html">add_epred_rvars</a></span><span class="op">(</span><span class="va">m_esoph_brm</span>, columns_to <span class="op">=</span> <span class="st">"tobgp"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1071,9 +1088,9 @@ img {
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html">stat_dist_pointinterval</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="va">.epred</span><span class="op">)</span>, position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">.4</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html">scale_size_continuous</a></span><span class="op">(</span>guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">6</span>, <span class="st">"Blues"</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></code></pre></div>
-<p><img src="tidy-posterior_files/figure-html/unnamed-chunk-57-1.png" width="648"></p>
+<p><img src="tidy-posterior_files/figure-html/unnamed-chunk-58-1.png" width="648"></p>
 <p>It is hard to see the changes in categories in the above plot; let’s try something that gives a better gist of the distribution within each year:</p>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">esoph_plot</span> <span class="op">=</span> <span class="va">esoph</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span><span class="op">(</span><span class="va">agegp</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/add_epred_rvars.html">add_epred_rvars</a></span><span class="op">(</span><span class="va">m_esoph_brm</span>, columns_to <span class="op">=</span> <span class="st">"tobgp"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1088,13 +1105,13 @@ img {
 <span class="va">esoph_plot</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">.epred</span><span class="op">)</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">"gray65"</span>, width <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html">stat_dist_pointinterval</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="va">.epred</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="tidy-posterior_files/figure-html/unnamed-chunk-58-1.png" width="768"></p>
+<p><img src="tidy-posterior_files/figure-html/unnamed-chunk-59-1.png" width="768"></p>
 <p>The bars in this case might present a false sense of precision, so we could also try CCDF barplots instead:</p>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">esoph_plot</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html">stat_dist_ccdfinterval</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="va">.epred</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expand_limits.html">expand_limits</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="co">#ensure bars go to 0</span></code></pre></div>
-<p><img src="tidy-posterior_files/figure-html/unnamed-chunk-59-1.png" width="768"></p>
+<p><img src="tidy-posterior_files/figure-html/unnamed-chunk-60-1.png" width="768"></p>
 <p>This output should be very similar to the output from the corresponding <code>m_esoph_rs</code> model in <code><a href="../articles/tidy-rstanarm.html">vignette("tidy-rstanarm")</a></code> (modulo different priors), though brms does more of the work for us to produce it than <code>rstanarm</code> does.</p>
 </div>
 </div>

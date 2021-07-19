@@ -1,4 +1,4 @@
-pandoc: 2.11.4
+pandoc: 2.14.0.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
@@ -7,7 +7,7 @@ articles:
   tidy-rstanarm: tidy-rstanarm.html
   tidybayes-residuals: tidybayes-residuals.html
   tidybayes: tidybayes.html
-last_built: 2021-07-11T20:14Z
+last_built: 2021-07-19T21:28Z
 urls:
   reference: http://mjskay.github.io/tidybayes/reference
   article: http://mjskay.github.io/tidybayes/articles

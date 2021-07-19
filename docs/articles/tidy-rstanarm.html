@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -105,13 +105,13 @@
 
       
 
-      </header><script src="tidy-rstanarm_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="tidy-rstanarm_files/header-attrs-2.9.3/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extracting and visualizing tidy draws from rstanarm models</h1>
                         <h4 class="author">Matthew Kay</h4>
             
-            <h4 class="date">2021-07-11</h4>
+            <h4 class="date">2021-07-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mjskay/tidybayes/blob/master/vignettes/tidy-rstanarm.Rmd"><code>vignettes/tidy-rstanarm.Rmd</code></a></small>
       <div class="hidden name"><code>tidy-rstanarm.Rmd</code></div>
@@ -225,9 +225,9 @@ img {
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 0.523 seconds (Warm-up)
-## Chain 1:                0.571 seconds (Sampling)
-## Chain 1:                1.094 seconds (Total)
+## Chain 1:  Elapsed Time: 0.534 seconds (Warm-up)
+## Chain 1:                0.595 seconds (Sampling)
+## Chain 1:                1.129 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL 'continuous' NOW (CHAIN 2).
@@ -250,15 +250,15 @@ img {
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 0.471 seconds (Warm-up)
-## Chain 2:                0.54 seconds (Sampling)
-## Chain 2:                1.011 seconds (Total)
+## Chain 2:  Elapsed Time: 0.525 seconds (Warm-up)
+## Chain 2:                0.559 seconds (Sampling)
+## Chain 2:                1.084 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL 'continuous' NOW (CHAIN 3).
 ## Chain 3: 
-## Chain 3: Gradient evaluation took 0.001 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 10 seconds.
+## Chain 3: Gradient evaluation took 0 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
 ## Chain 3: Adjust your expectations accordingly!
 ## Chain 3: 
 ## Chain 3: 
@@ -275,9 +275,9 @@ img {
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 0.422 seconds (Warm-up)
-## Chain 3:                0.516 seconds (Sampling)
-## Chain 3:                0.938 seconds (Total)
+## Chain 3:  Elapsed Time: 0.421 seconds (Warm-up)
+## Chain 3:                0.496 seconds (Sampling)
+## Chain 3:                0.917 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL 'continuous' NOW (CHAIN 4).
@@ -300,9 +300,9 @@ img {
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 0.584 seconds (Warm-up)
-## Chain 4:                0.883 seconds (Sampling)
-## Chain 4:                1.467 seconds (Total)
+## Chain 4:  Elapsed Time: 0.521 seconds (Warm-up)
+## Chain 4:                0.783 seconds (Sampling)
+## Chain 4:                1.304 seconds (Total)
 ## Chain 4:</code></pre>
 <p>The results look like this:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -691,7 +691,7 @@ img {
 <div id="posterior-means-and-predictions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#posterior-means-and-predictions" class="anchor"></a>Posterior means and predictions</h2>
-<p>Rather than calculating conditional means manually as in the previous example, we could use <code><a href="../reference/add_epred_draws.html">add_epred_draws()</a></code>, which is analogous to <code>rstanarm</code>::posterior_epred()<code>(giving posterior draws from the expectation of the posterior predictive; i.e. posterior distributions of conditional means), but uses a tidy data format. We can combine it with</code>modelr::data_grid()` to first generate a grid describing the predictions we want, then transform that grid into a long-format data frame of draws from conditional means:</p>
+<p>Rather than calculating conditional means manually as in the previous example, we could use <code><a href="../reference/add_epred_draws.html">add_epred_draws()</a></code>, which is analogous to <code><a href="https://mc-stan.org/rstanarm/reference/posterior_linpred.stanreg.html">rstanarm::posterior_epred()</a></code> (giving posterior draws from the expectation of the posterior predictive; i.e. posterior distributions of conditional means), but uses a tidy data format. We can combine it with <code><a href="https://modelr.tidyverse.org/reference/data_grid.html">modelr::data_grid()</a></code> to first generate a grid describing the predictions we want, then transform that grid into a long-format data frame of draws from conditional means:</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ABC</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -908,9 +908,9 @@ img {
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 0.807 seconds (Warm-up)
-## Chain 1:                0.732 seconds (Sampling)
-## Chain 1:                1.539 seconds (Total)
+## Chain 1:  Elapsed Time: 0.774 seconds (Warm-up)
+## Chain 1:                0.733 seconds (Sampling)
+## Chain 1:                1.507 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL 'polr' NOW (CHAIN 2).
@@ -933,9 +933,9 @@ img {
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 0.693 seconds (Warm-up)
-## Chain 2:                0.655 seconds (Sampling)
-## Chain 2:                1.348 seconds (Total)
+## Chain 2:  Elapsed Time: 0.688 seconds (Warm-up)
+## Chain 2:                0.652 seconds (Sampling)
+## Chain 2:                1.34 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL 'polr' NOW (CHAIN 3).
@@ -958,9 +958,9 @@ img {
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 0.829 seconds (Warm-up)
-## Chain 3:                0.646 seconds (Sampling)
-## Chain 3:                1.475 seconds (Total)
+## Chain 3:  Elapsed Time: 0.793 seconds (Warm-up)
+## Chain 3:                0.655 seconds (Sampling)
+## Chain 3:                1.448 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL 'polr' NOW (CHAIN 4).
@@ -983,11 +983,11 @@ img {
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 0.841 seconds (Warm-up)
-## Chain 4:                0.969 seconds (Sampling)
-## Chain 4:                1.81 seconds (Total)
+## Chain 4:  Elapsed Time: 0.844 seconds (Warm-up)
+## Chain 4:                0.952 seconds (Sampling)
+## Chain 4:                1.796 seconds (Total)
 ## Chain 4:</code></pre>
-<p>The <code><a href="https://mc-stan.org/rstanarm/reference/posterior_linpred.stanreg.html">rstanarm::posterior_linpred()</a></code> function for ordinal regression models in rstanarm returns the link-level prediction for each draw (in contrast to <code><a href="https://rdrr.io/pkg/brms/man/posterior_epred.brmsfit.html">brms::posterior_epred()</a></code>, which returns one prediction per category for ordinal models, see the ordinal regression examples in <code><a href="../articles/tidy-brms.html">vignette("tidy-brms")</a></code>). Unfortunately, <code><a href="https://mc-stan.org/rstanarm/reference/posterior_linpred.stanreg.html">rstanarm::posterior_epred()</a></code> does not provide this format. The philosophy of <code>tidybayes</code> is to tidy whatever format is output by a model, so in keeping with that philosophy, when applied to ordinal <code>rstanarm</code> models, we will use examples with <code><a href="../reference/add_epred_draws.html">add_linpred_draws()</a></code> and show how to transform them into predicted per-category proabilities.</p>
+<p>The <code><a href="https://mc-stan.org/rstanarm/reference/posterior_linpred.stanreg.html">rstanarm::posterior_linpred()</a></code> function for ordinal regression models in rstanarm returns the link-level prediction for each draw (in contrast to <code><a href="https://rdrr.io/pkg/brms/man/posterior_epred.brmsfit.html">brms::posterior_epred()</a></code>, which returns one prediction per category for ordinal models, see the ordinal regression examples in <code><a href="../articles/tidy-brms.html">vignette("tidy-brms")</a></code>). Unfortunately, <code><a href="https://mc-stan.org/rstanarm/reference/posterior_linpred.stanreg.html">rstanarm::posterior_epred()</a></code> does not provide this format. The philosophy of <code>tidybayes</code> is to tidy whatever format is output by a model, so in keeping with that philosophy, when applied to ordinal <code>rstanarm</code> models, we will use examples with <code><a href="../reference/add_epred_draws.html">add_linpred_draws()</a></code> and show how to transform them into predicted per-category probabilities.</p>
 <p>For example, here is a plot of the link-level fit:</p>
 <div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">esoph</span> <span class="op">%&gt;%</span>

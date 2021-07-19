@@ -91,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -158,6 +158,50 @@
       <small>Source: <a href='https://github.com/mjskay/tidybayes/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="tidybayes-300" class="section level1">
+<h1 class="page-header" data-toc-text="3.0.0">
+<a href="#tidybayes-300" class="anchor"></a>tidybayes 3.0.0<small> Unreleased </small>
+</h1>
+<p>Breaking changes and deprecations:</p>
+<ul>
+<li>The <code>[add_]XXX_draws()</code> (<code><a href="../reference/add_epred_draws.html">predicted_draws()</a></code>, <code><a href="../reference/add_epred_draws.html">add_predicted_draws()</a></code>, etc) functions have been substantially restructured:
+<ul>
+<li>
+<code><a href="../reference/tidybayes-deprecated.html">add_fitted_draws()</a></code> and <code><a href="../reference/tidybayes-deprecated.html">fitted_draws()</a></code> are now deprecated, along with the <code>scale</code> argument. Several years’ teaching experience has demonstrated that “fitted” is a very confusing name for students. Use the more-specific [<code>add_</code>]<code><a href="../reference/add_epred_draws.html">linpred_draws()</a></code> if you want draws from the linear predictor or the new [<code>add_</code>]<code><a href="../reference/add_epred_draws.html">epred_draws()</a></code> if you want draws from the expectation of the posterior predictive (which is what <code><a href="../reference/tidybayes-deprecated.html">fitted_draws()</a></code> was most typically used for).</li>
+<li>Arguments for renaming output columns are now all called <code>value</code>, but retain function-specific default column names. E.g. the <code>prediction</code> argument for <code><a href="../reference/add_epred_draws.html">predicted_draws()</a></code> is now spelled <code>value</code> but has a default of <code>".prediction"</code>. One breaking change is that the default output column for <code><a href="../reference/add_epred_draws.html">linpred_draws()</a></code> is now <code>".linpred"</code> instead of <code>".value"</code>. This should make it easier to combine outputs across multiple functions while also making it easier to remember the name of the argument that changes the output column name.</li>
+<li>The <code>n</code> argument is now spelled <code>ndraws</code> to be more consistent with terminology in the <code>posterior</code> package and to prevent partial argument name matching bugs with <code>newdata</code>.</li>
+<li>The first argument to all of these functions is now <code>object</code> instead of <code>model</code>, in order to match with argument names in <code><a href="https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html">posterior_predict()</a></code>, etc. This was necessary to prevent partial argument name matching bugs with certain model types in <code>rstanarm</code> that have an <code>m</code> argument to their prediction functions.</li>
+</ul>
+</li>
+</ul>
+<p>New features:</p>
+<ul>
+<li>Support for the new <code>posterior</code> package:
+<ul>
+<li>Several new <code>_rvars</code> counterparts to the <code>_draws</code> family of functions, including <code><a href="../reference/gather_rvars.html">spread_rvars()</a></code>, <code><a href="../reference/gather_rvars.html">gather_rvars()</a></code>, <code><a href="../reference/add_epred_rvars.html">epred_rvars()</a></code>, <code><a href="../reference/add_epred_rvars.html">linpred_rvars()</a></code>, and <code><a href="../reference/add_epred_rvars.html">predicted_rvars()</a></code>, which add columns of <code><a href="https://mc-stan.org/posterior/reference/rvar.html">posterior::rvar()</a></code> objects to data frames instead of long-format columns of draws. These can be easier to read and take up less memory than the long-format data frames of draws. See <code><a href="../articles/tidy-posterior.html">vignette("tidy-posterior")</a></code> for examples.</li>
+<li>The <code><a href="../reference/nest_rvars.html">nest_rvars()</a></code> and <code><a href="../reference/nest_rvars.html">unnest_rvars()</a></code> functions for converting between data frames of <code>rvar</code>s and long format data frames of draws.</li>
+<li>
+<code><a href="../reference/tidy_draws.html">tidy_draws()</a></code> has been rebuilt on top of <code><a href="https://mc-stan.org/posterior/reference/draws_df.html">posterior::as_draws_df()</a></code>, which means it should support even more model types and benefit from efficiency improvements in <code>posterior</code>. This means that <code>cmdstanr</code> is now supported, for example.</li>
+<li>An implementation of <code><a href="https://mc-stan.org/posterior/reference/draws_summary.html">posterior::summarise_draws()</a></code> for grouped data frames of draws: <code><a href="../reference/summarise_draws.grouped_df.html">summarise_draws.grouped_df()</a></code>
+</li>
+<li>
+<code><a href="../reference/compare_levels.html">compare_levels()</a></code> now supports data frames of <code><a href="https://mc-stan.org/posterior/reference/rvar.html">posterior::rvar()</a></code>s.</li>
+</ul>
+</li>
+<li>The <code><a href="../reference/add_epred_draws.html">epred_draws()</a></code>, <code><a href="../reference/add_epred_draws.html">linpred_draws()</a></code>, and <code><a href="../reference/add_epred_draws.html">predicted_draws()</a></code> functions should now support any models that implement <code><a href="https://mc-stan.org/rstanarm/reference/posterior_linpred.stanreg.html">posterior_epred()</a></code>, <code><a href="https://mc-stan.org/rstanarm/reference/posterior_linpred.stanreg.html">posterior_linpred()</a></code>, and <code><a href="https://mc-stan.org/rstanarm/reference/posterior_predict.stanreg.html">posterior_predict()</a></code> so long as they take a <code>newdata</code> argument.</li>
+<li>Several dependencies have been removed or demoted to <em>Suggests</em>, including <code>forcats</code>, <code>plyr</code>, and <code>purrr</code>.</li>
+<li>Added the option to set the <code>seed</code> when subsampling to several functions (<a href='https://github.com/mjskay/tidybayes/issues/276'>#276</a>).</li>
+</ul>
+<p>New documentation:</p>
+<ul>
+<li>
+<code><a href="../articles/tidy-posterior.html">vignette("tidy-posterior")</a></code> describing the use of <code>tidybayes</code> with <code>posterior</code>, and particularly the <code><a href="https://mc-stan.org/posterior/reference/rvar.html">posterior::rvar()</a></code> data type. This vignette also includes an updated version of the ordinal regression example from <code><a href="../articles/tidy-brms.html">vignette("tidy-brms")</a></code>, now with an illustration of the relationship between the latent linear predictor and the category-level probabilities.</li>
+</ul>
+<p>Bug fixes:</p>
+<ul>
+<li>Omit sampler parameters in <code><a href="../reference/tidy_draws.html">tidy_draws()</a></code> if retrieving them results in an error (<a href='https://github.com/mjskay/tidybayes/issues/244'>#244</a>)</li>
+</ul>
+</div>
     <div id="tidybayes-231" class="section level1">
 <h1 class="page-header" data-toc-text="2.3.1">
 <a href="#tidybayes-231" class="anchor"></a>tidybayes 2.3.1<small> 2020-11-02 </small>
@@ -172,7 +216,7 @@
 <a href="#tidybayes-211" class="anchor"></a>tidybayes 2.1.1<small> 2020-06-19 </small>
 </h1>
 <ul>
-<li>Initial split of <code>tidybayes</code> into <code>tidybayes</code> and <code>ggdist</code> (<a href='https://github.com/mjskay/tidybayes/issues/250'>#250</a>). <code>ggdist</code> now contains all stats/geoms from tidybayes (except deprecated ones), all support functions for stats/geoms (such as <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">point_interval()</a></code>), <code>vignette("slabinterval")</code>, and <code>vignette("freq-uncertainty-vis")</code>. <code>tidybayes</code> retains all other functions, and re-exports all <code>ggdist</code> functions for now.</li>
+<li>Initial split of <code>tidybayes</code> into <code>tidybayes</code> and <code>ggdist</code> (<a href='https://github.com/mjskay/tidybayes/issues/250'>#250</a>). <code>ggdist</code> now contains all stats/geoms from tidybayes (except deprecated ones), all support functions for stats/geoms (such as <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">point_interval()</a></code>), <code><a href="http://mjskay.github.io/ggdist/articles/slabinterval.html">vignette("slabinterval")</a></code>, and <code><a href="http://mjskay.github.io/ggdist/articles/freq-uncertainty-vis.html">vignette("freq-uncertainty-vis")</a></code>. <code>tidybayes</code> retains all other functions, and re-exports all <code>ggdist</code> functions for now.</li>
 <li>All stats and geoms now support automatic orientation detection (<a href='https://github.com/mjskay/tidybayes/issues/257'>#257</a>), following the new automatic orientation detection approach in <code>ggplot2</code>. If needed, this can be overridden using the existing <code>orientation</code> parameter.
 <ul>
 <li>All <code>h</code>-suffix geoms are now deprecated. The <code>h</code>-suffix geoms have been left in <code>tidybayes</code> and give a deprecation warning when used; they cannot be used from <code>ggdist</code> directly.</li>
@@ -211,7 +255,7 @@
 <a href="#tidybayes-201" class="anchor"></a>tidybayes 2.0.1<small> 2020-01-28 </small>
 </h1>
 <ul>
-<li>Various geoms and stats have been merged together under the <code><a href="http://mjskay.github.io/ggdist/reference/geom_slabinterval.html">geom_slabinterval()</a></code> and <code><a href="http://mjskay.github.io/ggdist/reference/stat_slabinterval.html">stat_slabinterval()</a></code> “meta-geom” (<a href='https://github.com/mjskay/tidybayes/issues/84'>#84</a>). This has enabled a bunch of new geoms to be created (see <code>vignette("slabinterval")</code> and fixed a number of outstanding issues:
+<li>Various geoms and stats have been merged together under the <code><a href="http://mjskay.github.io/ggdist/reference/geom_slabinterval.html">geom_slabinterval()</a></code> and <code><a href="http://mjskay.github.io/ggdist/reference/stat_slabinterval.html">stat_slabinterval()</a></code> “meta-geom” (<a href='https://github.com/mjskay/tidybayes/issues/84'>#84</a>). This has enabled a bunch of new geoms to be created (see <code><a href="http://mjskay.github.io/ggdist/articles/slabinterval.html">vignette("slabinterval")</a></code> and fixed a number of outstanding issues:
 <ul>
 <li>Histogram geoms and histogram+interval geoms (<a href='https://github.com/mjskay/tidybayes/issues/162'>#162</a>)</li>
 <li>CCDF bar charts and gradient plots</li>
@@ -227,7 +271,7 @@
 <li>Analytical distributions can be visualized using the new <code>stat_dist_...</code> family of geoms for both the <code><a href="http://mjskay.github.io/ggdist/reference/geom_slabinterval.html">geom_slabinterval()</a></code> family and <code><a href="http://mjskay.github.io/ggdist/reference/geom_lineribbon.html">geom_lineribbon()</a></code> (see <code><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html">stat_dist_slabinterval()</a></code> and <code><a href="http://mjskay.github.io/ggdist/reference/stat_lineribbon.html">stat_dist_lineribbon()</a></code>).</li>
 <li>The new <code><a href="http://mjskay.github.io/ggdist/reference/parse_dist.html">parse_dist()</a></code>, which parses distribution specifications (like <code><a href="https://mc-stan.org/rstanarm/reference/priors.html">normal(0,1)</a></code>) into tidy columns, can be combined with the <code>stat_dist_...</code> family of geoms to easily to visualize priors (e.g. from <code>brms</code>).</li>
 <li>New distribution functions for the marginal LKJ distribution (<code><a href="http://mjskay.github.io/ggdist/reference/lkjcorr_marginal.html">dlkjcorr_marginal()</a></code> and company), combined with <code><a href="http://mjskay.github.io/ggdist/reference/parse_dist.html">parse_dist()</a></code> and the <code>stat_dist_...</code> family make it easy to visualize the marginal LKJ prior on a cell in a correlation matrix. (<a href='https://github.com/mjskay/tidybayes/issues/191'>#191</a> <a href='https://github.com/mjskay/tidybayes/issues/192'>#192</a>)</li>
-<li>There is a new vignette on frequentist uncertainty visualization, <code>vignette("freq-uncertainty-vis")</code>, also made possible by the new <code>stat_dist_...</code> family of geoms (<a href='https://github.com/mjskay/tidybayes/issues/188'>#188</a>)</li>
+<li>There is a new vignette on frequentist uncertainty visualization, <code><a href="http://mjskay.github.io/ggdist/articles/freq-uncertainty-vis.html">vignette("freq-uncertainty-vis")</a></code>, also made possible by the new <code>stat_dist_...</code> family of geoms (<a href='https://github.com/mjskay/tidybayes/issues/188'>#188</a>)</li>
 <li>
 <code><a href="../reference/tidy_draws.html">tidy_draws()</a></code> can now be applied to already-tidied data frames, allowing dependent functions (like <code><a href="../reference/gather_draws.html">spread_draws()</a></code> and <code><a href="../reference/gather_draws.html">gather_draws()</a></code>) to also be applied to data frames directly (<a href='https://github.com/mjskay/tidybayes/issues/82'>#82</a>). This can be a useful optimization in workflows where the initial tidying is slow but spreading/gathering is fast (see discussion in <a href='https://github.com/mjskay/tidybayes/issues/144'>#144</a>)</li>
 <li>Kruschke-style distribution-of-distribution plots are now easier to construct with <code><a href="../reference/tidybayes-deprecated.html">stat_dist_slabh()</a></code>. An example of this usage is in <code><a href="../articles/tidy-brms.html">vignette("tidy-brms")</a></code>.</li>
