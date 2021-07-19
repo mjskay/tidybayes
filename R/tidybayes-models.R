@@ -21,7 +21,7 @@
 #'
 #' \itemize{
 #'   \item [rstan][rstan::stan] models
-#'   \item [CmdStanR](https://mc-stan.org/cmdstanr/) models
+#'   \item [cmdstanr](https://mc-stan.org/cmdstanr/) models
 #'   \item [brms::brm()] models
 #'   \item [rstanarm][rstanarm::rstanarm-package] models
 #'   \item [runjags::runjags()] models
@@ -50,8 +50,8 @@
 #' \itemize{
 #'   \item [brms::brm()] models
 #'   \item [rstanarm][rstanarm::rstanarm-package] models
-#'   \item any package with implementations of [rstantools::posterior_epred],
-#'     [rstantools::posterior_predict], or [rstantools::posterior_linpred] that
+#'   \item any package with implementations of [rstantools::posterior_epred()],
+#'     [rstantools::posterior_predict()], or [rstantools::posterior_linpred()] that
 #'     include an argument called `newdata` which takes a data frame of predictors.
 #' }
 #'

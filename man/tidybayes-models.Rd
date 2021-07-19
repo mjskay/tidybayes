@@ -16,7 +16,7 @@ These models/formats include:
 
 \itemize{
 \item \link[rstan:stan]{rstan} models
-\item \href{https://mc-stan.org/cmdstanr/}{CmdStanR} models
+\item \href{https://mc-stan.org/cmdstanr/}{cmdstanr} models
 \item \code{\link[brms:brm]{brms::brm()}} models
 \item \link[rstanarm:rstanarm-package]{rstanarm} models
 \item \code{\link[runjags:runjags-package]{runjags::runjags()}} models
@@ -46,8 +46,8 @@ In addition, the \strong{following models support fit and prediction} extraction
 \itemize{
 \item \code{\link[brms:brm]{brms::brm()}} models
 \item \link[rstanarm:rstanarm-package]{rstanarm} models
-\item any package with implementations of \link[rstantools:posterior_epred]{rstantools::posterior_epred},
-\link[rstantools:posterior_predict]{rstantools::posterior_predict}, or \link[rstantools:posterior_linpred]{rstantools::posterior_linpred} that
+\item any package with implementations of \code{\link[rstantools:posterior_epred]{rstantools::posterior_epred()}},
+\code{\link[rstantools:posterior_predict]{rstantools::posterior_predict()}}, or \code{\link[rstantools:posterior_linpred]{rstantools::posterior_linpred()}} that
 include an argument called \code{newdata} which takes a data frame of predictors.
 }
 

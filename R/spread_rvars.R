@@ -18,7 +18,7 @@
 #' they will have multiple columns with names like `"b[1,1]"`, `"b[2,1]"`, etc.
 #'
 #' `spread_rvars` and `gather_rvars` provide a straightforward
-#' syntax to translate these columns back into properly-indexed [rvar]s in two different
+#' syntax to translate these columns back into properly-indexed [`rvar`]s in two different
 #' tidy data frame formats, optionally recovering dimension types (e.g. factor levels) as it does so.
 #'
 #' `spread_rvars` will spread names of variables in the model across the data frame as column names,

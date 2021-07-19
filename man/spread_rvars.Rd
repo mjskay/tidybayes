@@ -35,7 +35,7 @@ JAGS or Stan in R will not reflect this indexing structure, instead
 they will have multiple columns with names like \code{"b[1,1]"}, \code{"b[2,1]"}, etc.
 
 \code{spread_rvars} and \code{gather_rvars} provide a straightforward
-syntax to translate these columns back into properly-indexed \link{rvar}s in two different
+syntax to translate these columns back into properly-indexed \code{\link{rvar}}s in two different
 tidy data frame formats, optionally recovering dimension types (e.g. factor levels) as it does so.
 
 \code{spread_rvars} will spread names of variables in the model across the data frame as column names,

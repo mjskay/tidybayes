@@ -25,7 +25,7 @@ columns from \code{.x}, a \code{"variable"} column containing variable names fro
 and the remaining columns containing summary statistics and diagnostics.
 }
 \description{
-An implemention of \code{posterior::summarise_draws()} for grouped data frames
+An implementation of \code{posterior::summarise_draws()} for grouped data frames
 (\code{dplyr::grouped_df} objects) such as returned by \code{dplyr::group_by()} and
 the various grouped-data-aware functions in tidybayes, such as \code{spread_draws()},
 \code{gather_draws()}, \code{add_epred_draws()}, and \code{add_predicted_draws()}.

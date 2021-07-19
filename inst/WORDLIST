@@ -6,6 +6,7 @@ brms
 CCDF
 CCDFs
 cdot
+cmdstanr
 composable
 conf
 configurability
@@ -94,6 +95,9 @@ tidyverse
 toc
 trt
 unevaluated
+unnest
+unnested
+unnesting
 vectorized
 VignetteEncoding
 VignetteEngine

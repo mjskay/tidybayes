@@ -388,7 +388,7 @@ See `vignette("slabinterval", package = "ggdist")` for an overview.
 
 ## Posterior means and predictions
 
-Rather than calculating conditional means manually as in the previous example, we could use `add_epred_draws()`, which is analogous to `rstanarm`::posterior_epred()` (giving posterior draws from the expectation of the posterior predictive; i.e. posterior distributions of conditional means), but uses a tidy data format. We can combine it with `modelr::data_grid()` to first generate a grid describing the predictions we want, then transform that grid into a long-format data frame of draws from conditional means:
+Rather than calculating conditional means manually as in the previous example, we could use `add_epred_draws()`, which is analogous to `rstanarm::posterior_epred()` (giving posterior draws from the expectation of the posterior predictive; i.e. posterior distributions of conditional means), but uses a tidy data format. We can combine it with `modelr::data_grid()` to first generate a grid describing the predictions we want, then transform that grid into a long-format data frame of draws from conditional means:
 
 ```{r}
 ABC %>%
@@ -600,7 +600,7 @@ data(esoph)
 m_esoph_rs = stan_polr(tobgp ~ agegp, data = esoph, prior = R2(0.25), prior_counts = rstanarm::dirichlet(1))
 ```
 
-The `rstanarm::posterior_linpred()` function for ordinal regression models in rstanarm returns the link-level prediction for each draw (in contrast to `brms::posterior_epred()`, which returns one prediction per category for ordinal models, see the ordinal regression examples in `vignette("tidy-brms")`). Unfortunately, `rstanarm::posterior_epred()` does not provide this format. The philosophy of `tidybayes` is to tidy whatever format is output by a model, so in keeping with that philosophy, when applied to ordinal `rstanarm` models, we will use examples with `add_linpred_draws()` and show how to transform them into predicted per-category proabilities. 
+The `rstanarm::posterior_linpred()` function for ordinal regression models in rstanarm returns the link-level prediction for each draw (in contrast to `brms::posterior_epred()`, which returns one prediction per category for ordinal models, see the ordinal regression examples in `vignette("tidy-brms")`). Unfortunately, `rstanarm::posterior_epred()` does not provide this format. The philosophy of `tidybayes` is to tidy whatever format is output by a model, so in keeping with that philosophy, when applied to ordinal `rstanarm` models, we will use examples with `add_linpred_draws()` and show how to transform them into predicted per-category probabilities. 
 
 For example, here is a plot of the link-level fit:
 

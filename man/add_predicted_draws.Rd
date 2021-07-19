@@ -291,7 +291,7 @@ If \code{NULL} or \code{FALSE} (the default), distributional regression paramete
 \item{n}{(Deprecated). Use \code{ndraws}.}
 
 \item{scale}{(Deprecated). Use the appropriate function (\code{epred_draws()} or \code{linpred_draws()})
-depending on what type of distirbution you want. For \code{linpred_draws()}, you may want the
+depending on what type of distribution you want. For \code{linpred_draws()}, you may want the
 \code{transform} argument. See \code{rstanarm::posterior_linpred()} or \code{brms::posterior_linpred()}.}
 
 \item{prediction, residual}{(Deprecated). Use \code{value}.}

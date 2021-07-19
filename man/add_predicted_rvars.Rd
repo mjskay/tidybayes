@@ -17,7 +17,7 @@
 \alias{predicted_rvars.default}
 \alias{predicted_rvars.stanreg}
 \alias{predicted_rvars.brmsfit}
-\title{Add rvars for the linear predictor, posterior expectation, posterior predictive, or residuals of a model to a data frame}
+\title{Add \code{rvar}s for the linear predictor, posterior expectation, posterior predictive, or residuals of a model to a data frame}
 \usage{
 add_epred_rvars(
   newdata,
@@ -325,7 +325,7 @@ if (
 }
 \seealso{
 \code{\link[=add_predicted_draws]{add_predicted_draws()}} for the analogous functions that use a long-data-frame-of-draws
-format instead of a data-frame-of-rvars format. See \code{\link[=spread_rvars]{spread_rvars()}} for manipulating posteriors directly.
+format instead of a data-frame-of-\code{rvar}s format. See \code{\link[=spread_rvars]{spread_rvars()}} for manipulating posteriors directly.
 }
 \author{
 Matthew Kay

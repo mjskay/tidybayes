@@ -119,7 +119,7 @@ describing multiple realizations from a distribution.
 \code{fitted_draws} / \code{add_fitted_draws},
 reflecting a package-wide move to using \emph{draws} instead of \emph{samples} for
 describing multiple realizations from a distribution. (though see
-the nore above about the deprecation of \code{fitted_draws} in favor of
+the note above about the deprecation of \code{fitted_draws} in favor of
 \code{\link[=epred_draws]{epred_draws()}} and \code{\link[=linpred_draws]{linpred_draws()}}).
 
 \item \code{predicted_samples} / \code{add_predicted_samples} are deprecated names for

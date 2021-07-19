@@ -56,7 +56,7 @@ This vignette describes how to use the `tidybayes` and `ggdist` packages along w
 (and particularly the `posterior::rvar()` datatype) to extract and visualize [tidy](https://dx.doi.org/10.18637/jss.v059.i10)
 data frames of `rvar`s from posterior distributions of model variables, fits, and predictions.
 
-This workflow is a "long-data-frame-of-rvars" workflow, which is bit different from the "long-data-frame-of-draws" workflow
+This workflow is a "long-data-frame-of-`rvar`s" workflow, which is bit different from the "long-data-frame-of-draws" workflow
 described in `vignette("tidybayes")` or `vignette("tidy-brms")`. The `rvar` based approach may be particularly useful on
 larger models, as it is more memory efficient.
 
@@ -927,7 +927,7 @@ get the latent linear predictor. We'll combine this with the thresholds in `beta
 subtracting `beta[1]` from the linear predictor and from the other threshold, `beta[2]`,
 as these values are all highly correlated (thus are hard to visualize with
 uncertainty in a meaningful way without looking at their differences). We'll
-also demonstrate the use of `.width = ppoints(XXX)` on a lineribbon where `XXX` is a number
+also demonstrate the use of `.width = ppoints(XXX)` with `stat_dist_lineribbon()` where `XXX` is a number
 like `30` or `50`, which combined with a low `alpha` value produces gradient-like
 lineribbons:
 

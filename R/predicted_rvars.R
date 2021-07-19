@@ -6,7 +6,7 @@
 
 # predicted_rvars / add_predicted_rvars ---------------------------------------
 
-#' Add rvars for the linear predictor, posterior expectation, posterior predictive, or residuals of a model to a data frame
+#' Add `rvar`s for the linear predictor, posterior expectation, posterior predictive, or residuals of a model to a data frame
 #'
 #' Given a data frame and a model, adds [`rvar`]s of draws from the linear/link-level predictor,
 #' the expectation of the posterior predictive, or the posterior predictive to
@@ -53,7 +53,7 @@
 #' additional columns added containing [`rvar`]s representing the requested predictions or fits.
 #' @author Matthew Kay
 #' @seealso [add_predicted_draws()] for the analogous functions that use a long-data-frame-of-draws
-#' format instead of a data-frame-of-rvars format. See [spread_rvars()] for manipulating posteriors directly.
+#' format instead of a data-frame-of-`rvar`s format. See [spread_rvars()] for manipulating posteriors directly.
 #' @keywords manip
 #' @examples
 #' \donttest{

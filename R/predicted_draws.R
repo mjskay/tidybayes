@@ -60,7 +60,7 @@
 #' @template param-deprecated-n
 #' @param prediction,residual (Deprecated). Use `value`.
 #' @param scale (Deprecated). Use the appropriate function (`epred_draws()` or `linpred_draws()`)
-#' depending on what type of distirbution you want. For `linpred_draws()`, you may want the
+#' depending on what type of distribution you want. For `linpred_draws()`, you may want the
 #' `transform` argument. See `rstanarm::posterior_linpred()` or `brms::posterior_linpred()`.
 #' @return A data frame (actually, a [tibble][tibble::tibble]) with a `.row` column (a
 #' factor grouping rows from the input `newdata`), `.chain` column (the chain

@@ -63,7 +63,7 @@ globalVariables(c(".lower", ".upper", ".width"))
 #'   `fitted_draws` / `add_fitted_draws`,
 #'   reflecting a package-wide move to using *draws* instead of *samples* for
 #'   describing multiple realizations from a distribution. (though see
-#'   the nore above about the deprecation of `fitted_draws` in favor of
+#'   the note above about the deprecation of `fitted_draws` in favor of
 #'   [epred_draws()] and [linpred_draws()]).
 #'
 #'   \item `predicted_samples` / `add_predicted_samples` are deprecated names for
