@@ -6,6 +6,7 @@
 \alias{ggeye}
 \alias{add_fitted_draws}
 \alias{fitted_draws}
+\alias{fitted_draws.default}
 \alias{fitted_samples}
 \alias{add_fitted_samples}
 \alias{predicted_samples}

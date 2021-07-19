@@ -205,8 +205,8 @@ ggeye = function(data = NULL, mapping = NULL, ...) {
 #' @format NULL
 #' @usage NULL
 #' @export
-add_fitted_draws = function(newdata, object, ..., n = NULL) {
-  fitted_draws(object = object, newdata = newdata, ..., n = n)
+add_fitted_draws = function(newdata, model, ..., n = NULL) {
+  fitted_draws(model = model, newdata = newdata, ..., n = n)
 }
 
 #' @rdname tidybayes-deprecated
@@ -214,7 +214,17 @@ add_fitted_draws = function(newdata, object, ..., n = NULL) {
 #' @usage NULL
 #' @export
 fitted_draws = function(
-  object, newdata, ..., value = ".value", n = NULL, scale = c("response", "linear")
+  model, newdata, ..., value = ".value", n = NULL, scale = c("response", "linear")
+) {
+  UseMethod("fitted_draws")
+}
+
+#' @rdname tidybayes-deprecated
+#' @format NULL
+#' @usage NULL
+#' @export
+fitted_draws.default = function(
+  model, newdata, ..., value = ".value", n = NULL, scale = c("response", "linear")
 ) {
   scale = match.arg(scale)
   deprecation_message_base = paste0(
@@ -229,7 +239,7 @@ fitted_draws = function(
         'means you most likely want [add_]epred_draws(...).'
       ))
       epred_draws(
-        object = object, newdata = newdata, ...,
+        object = model, newdata = newdata, ...,
         value = value, ndraws = n
       )
     },
@@ -239,7 +249,7 @@ fitted_draws = function(
         'means you most likely want [add_]linpred_draws(...).'
       ))
       linpred_draws(
-        object = object, newdata = newdata, ...,
+        object = model, newdata = newdata, ...,
         value = value, ndraws = n
       )
     }
