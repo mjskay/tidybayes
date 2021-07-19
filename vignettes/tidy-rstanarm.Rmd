@@ -24,16 +24,19 @@ img {
 </style>
 
 ```{r chunk_options, include=FALSE}
-# if (requireNamespace("pkgdown", quietly = TRUE) && pkgdown::in_pkgdown()) {
-tiny_width = small_width = med_width = 6.75
-tiny_height = small_height = med_height = 4.5
-large_width = 8; large_height = 5.25
-# } else {
-#   tiny_width = 3; tiny_height = 2.5
-#   small_width = 4.5; small_height = 3
-#   med_width = 5; med_height = 3.5
-#   large_width = 7; large_height = 4.5
-# }
+if (requireNamespace("pkgdown", quietly = TRUE) && pkgdown::in_pkgdown()) {
+  tiny_width = small_width = med_width = 6.75
+  tiny_height = small_height = med_height = 4.5
+  large_width = 8
+  large_height = 5.25
+} else {
+  tiny_width = 5.5
+  tiny_height = 3 + 2/3
+  small_width = med_width = 6.75
+  small_height = med_height = 4.5
+  large_width = 8
+  large_height = 5.25
+}
 
 knitr::opts_chunk$set(
   fig.width = small_width,
@@ -319,7 +322,7 @@ m %>%
 
 Plotting point summaries and with one interval is straightforward using `ggdist::geom_pointinterval()`:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(`(Intercept)`, b[,group]) %>%
   median_qi(condition_mean = `(Intercept)` + b) %>%
@@ -340,7 +343,7 @@ m %>%
 
 The results are in a tidy format: one row per group and uncertainty interval width (`.width`). This facilitates plotting. For example, assigning `-.width` to the `size` aesthetic will show all intervals, making thicker lines correspond to smaller intervals. The `ggdist::geom_pointinterval()` geom automatically sets the `size` aesthetic appropriately based on the `.width` columns in the data to produce plots of points with multiple probability levels:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(`(Intercept)`, b[,group]) %>%
   median_qi(condition_mean = `(Intercept)` + b, .width = c(.95, .66)) %>%
@@ -353,7 +356,7 @@ m %>%
 
 To see the density along with the intervals, we can use `ggdist::stat_eye()` ("eye plots", which combine intervals with violin plots), or `ggdist::stat_halfeye()` (interval + density plots):
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(`(Intercept)`, b[,group]) %>%
   mutate(condition_mean = `(Intercept)` + b) %>%
@@ -363,7 +366,7 @@ m %>%
 
 Or say you want to annotate portions of the densities in color; the `fill` aesthetic can vary within a slab in all geoms and stats in the `ggdist::geom_slabinterval()` family, including `ggdist::stat_halfeye()`. For example, if you want to annotate a domain-specific region of practical equivalence (ROPE), you could do something like this:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(`(Intercept)`, b[,group]) %>%
   mutate(condition_mean = `(Intercept)` + b) %>%
@@ -428,7 +431,7 @@ Where `add_epred_draws()` is analogous to `rstanarm::posterior_epred()`, `add_pr
 
 Here is an example of posterior predictive distributions plotted using `ggdist::stat_slab()`:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
   data_grid(condition) %>%
   add_predicted_draws(m) %>%
@@ -438,7 +441,7 @@ ABC %>%
 
 We could also use `tidybayes::stat_interval()` to plot predictive bands alongside the data:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
   data_grid(condition) %>%
   add_predicted_draws(m) %>%
@@ -478,7 +481,7 @@ m_mpg = stan_glm(mpg ~ hp * cyl, data = mtcars)
 
 We can plot fit curves with probability bands:
 
-```{r fig.width = med_width, fig.height = small_height}
+```{r fig.width = small_width, fig.height = small_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 51)) %>%
@@ -492,7 +495,7 @@ mtcars %>%
 
 Or we can sample a reasonable number of fit lines (say 100) and overplot them:
 
-```{r fig.width = med_width, fig.height = small_height}
+```{r fig.width = small_width, fig.height = small_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
@@ -531,7 +534,7 @@ animate(p, nframes = ndraws, fps = 2.5, width = 432, height = 288, res = 96, dev
 
 Or, for posterior predictions (instead of means), we can go back to probability bands:
 
-```{r fig.width = med_width, fig.height = small_height}
+```{r fig.width = small_width, fig.height = small_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
@@ -545,7 +548,7 @@ mtcars %>%
 
 This can get difficult to judge by group, so could be better to facet into multiple plots. Fortunately, since we are using ggplot, that functionality is built in:
 
-```{r fig.width = med_width, fig.height = small_height}
+```{r fig.width = small_width, fig.height = small_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
@@ -601,7 +604,7 @@ The `rstanarm::posterior_linpred()` function for ordinal regression models in rs
 
 For example, here is a plot of the link-level fit:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 esoph %>%
   data_grid(agegp) %>%
   add_linpred_draws(m_esoph_rs) %>%

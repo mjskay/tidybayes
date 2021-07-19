@@ -24,16 +24,19 @@ img {
 </style>
 
 ```{r chunk_options, include=FALSE}
-# if (requireNamespace("pkgdown", quietly = TRUE) && pkgdown::in_pkgdown()) {
-tiny_width = small_width = med_width = 6.75
-tiny_height = small_height = med_height = 4.5
-large_width = 8; large_height = 5.25
-# } else {
-#   tiny_width = 3; tiny_height = 2.5
-#   small_width = 4.5; small_height = 3
-#   med_width = 5; med_height = 3.5
-#   large_width = 7; large_height = 4.5
-# }
+if (requireNamespace("pkgdown", quietly = TRUE) && pkgdown::in_pkgdown()) {
+  tiny_width = small_width = med_width = 6.75
+  tiny_height = small_height = med_height = 4.5
+  large_width = 8
+  large_height = 5.25
+} else {
+  tiny_width = 5.5
+  tiny_height = 3 + 2/3
+  small_width = med_width = 6.75
+  small_height = med_height = 4.5
+  large_width = 8
+  large_height = 5.25
+}
 
 knitr::opts_chunk$set(
   fig.width = small_width,
@@ -360,7 +363,7 @@ These functions have `.width = c(.66, .95)` by default (showing 66% and 95% inte
 
 The `ggdist::stat_eye()` geom provides a shortcut to generating "eye plots" (combinations of intervals and densities, drawn as violin plots):
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(condition_mean[condition]) %>%
   ggplot(aes(y = fct_rev(condition), x = condition_mean)) +
@@ -371,7 +374,7 @@ m %>%
 
 If you prefer densities over violins, you can use `ggdist::stat_halfeye()`. This example also demonstrates how to change the interval probability (here, to 90% and 50% intervals):
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(condition_mean[condition]) %>%
   ggplot(aes(y = fct_rev(condition), x = condition_mean)) +
@@ -380,7 +383,7 @@ m %>%
 
 Or say you want to annotate portions of the densities in color; the `fill` aesthetic can vary within a slab in all geoms and stats in the `ggdist::geom_slabinterval()` family, including `ggdist::stat_halfeye()`. For example, if you want to annotate a domain-specific region of practical equivalence (ROPE), you could do something like this:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(condition_mean[condition]) %>%
   ggplot(aes(y = fct_rev(condition), x = condition_mean, fill = stat(abs(x) < .8))) +
@@ -431,7 +434,7 @@ m %>%
 
 Just as the `point_interval()` functions can generate an arbitrary number of intervals per distribution, so too can `ggdist::geom_pointinterval()` draw an arbitrary number of intervals, though in most cases this starts to get pretty silly (and will require the use of `interval_size_range =`, which determines the minimum and maximum line thickness, to make it legible). Here it is with 3:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(condition_mean[condition]) %>%
   median_qi(.width = c(.95, .8, .5)) %>%
@@ -512,7 +515,7 @@ m %>%
 
 We can use combinations of variables with difference indices to generate predictions from the model. In this case, we can combine the condition means with the residual standard deviation to generate predictive distributions from the model, then show the distributions using `ggdist::stat_slab()`:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(condition_mean[condition], response_sd) %>%
   mutate(y_rep = rnorm(n(), condition_mean, response_sd)) %>%
@@ -522,7 +525,7 @@ m %>%
 
 And even summarize these as predictive intervals and compare them to the data:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(condition_mean[condition], response_sd) %>%
   mutate(y_rep = rnorm(n(), condition_mean, response_sd)) %>%
@@ -559,7 +562,7 @@ ABC %>%
 
 `compare_levels()` allows us to compare the value of some variable across levels of some factor. By default it computes all pairwise differences, though this can be changed using the `comparison = ` argument:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(condition_mean[condition]) %>%
   compare_levels(condition_mean, by = condition) %>%
@@ -708,7 +711,7 @@ bayes_results
 
 Here, `to_broom_names()` will convert `.lower` and `.upper` into `conf.low` and `conf.high` so the names of the columns we need to make the comparison (`condition`, `estimate`, `conf.low`, and `conf.high`) all line up easily. This makes it simple to combine the two tidy data frames together using `bind_rows`, and plot them:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 bind_rows(linear_results, bayes_results) %>%
   mutate(condition = fct_rev(condition)) %>%
   ggplot(aes(y = condition, x = estimate, xmin = conf.low, xmax = conf.high, color = model)) +
@@ -717,7 +720,7 @@ bind_rows(linear_results, bayes_results) %>%
 
 Compatibility with `broom::tidy()` also gives compatibility with `dotwhisker::dwplot()`:
 
-```{r warning = FALSE, fig.width = small_width, fig.height = tiny_height}
+```{r warning = FALSE, fig.width = tiny_width, fig.height = tiny_height}
 bind_rows(linear_results, bayes_results) %>%
   rename(term = condition) %>%
   dotwhisker::dwplot()
@@ -752,7 +755,7 @@ m %>%
 
 We can pass that into `bayesplot::mcmc_areas()` directly. The `drop_indices = TRUE` argument to `unspread_draws()` indicates that `.chain`, `.iteration`, and `.draw` should not be included in the output:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(condition_mean[condition]) %>%
   compare_levels(condition_mean, by = condition) %>%
@@ -804,7 +807,7 @@ See the documentation for `emmeans::pairwise.emmc()` for a list of the numerous 
 
 As before, we can plot the results instead of using a table:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m_rst %>%
   emmeans( ~ condition) %>%
   contrast(method = "pairwise") %>%

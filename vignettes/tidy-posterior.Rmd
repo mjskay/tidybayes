@@ -23,16 +23,19 @@ img {
 </style>
 
 ```{r chunk_options, include=FALSE}
-# if (requireNamespace("pkgdown", quietly = TRUE) && pkgdown::in_pkgdown()) {
-tiny_width = small_width = med_width = 6.75
-tiny_height = small_height = med_height = 4.5
-large_width = 8; large_height = 5.25
-# } else {
-#   tiny_width = 3; tiny_height = 2.5
-#   small_width = 4.5; small_height = 3
-#   med_width = 5; med_height = 3.5
-#   large_width = 7; large_height = 4.5
-# }
+if (requireNamespace("pkgdown", quietly = TRUE) && pkgdown::in_pkgdown()) {
+  tiny_width = small_width = med_width = 6.75
+  tiny_height = small_height = med_height = 4.5
+  large_width = 8
+  large_height = 5.25
+} else {
+  tiny_width = 5.5
+  tiny_height = 3 + 2/3
+  small_width = med_width = 6.75
+  small_height = med_height = 4.5
+  large_width = 8
+  large_height = 5.25
+}
 
 knitr::opts_chunk$set(
   fig.width = small_width,
@@ -322,7 +325,7 @@ m %>%
 
 Plotting point summaries and intervals is straightforward using `ggdist::stat_dist_pointinterval()`, which will produce visualizations with 66% and 95% intervals by default:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_rvars(b_Intercept, r_condition[condition,]) %>%
   mutate(condition_mean = b_Intercept + r_condition) %>%
@@ -333,7 +336,7 @@ m %>%
 You can use any number of intervals you want by passing the interval sizes to
 the `.width` parameter; for example, 50%, 80%, and 95% intervals:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_rvars(b_Intercept, r_condition[condition,]) %>%
   mutate(condition_mean = b_Intercept + r_condition) %>%
@@ -356,7 +359,7 @@ The results are in a tidy format: one row per group and uncertainty interval wid
 
 While using `stat_dist_pointinterval()` is usually easier, if you wish to manually construct the above plot by using `median_qi()` first, the `ggdist::geom_pointinterval()` geom automatically sets the `size` aesthetic appropriately based on the `.width` column in the data to produce plots of points with multiple probability levels:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_rvars(b_Intercept, r_condition[condition,]) %>%
   median_qi(condition_mean = b_Intercept + r_condition, .width = c(.95, .66)) %>%
@@ -369,7 +372,7 @@ m %>%
 
 To see the density along with the intervals, we can use `ggdist::stat__dist_eye()` ("eye plots", which combine intervals with violin plots), or `ggdist::stat_dist_halfeye()` (interval + density plots):
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_rvars(b_Intercept, r_condition[condition,]) %>%
   mutate(condition_mean = b_Intercept + r_condition) %>%
@@ -379,7 +382,7 @@ m %>%
 
 Or say you want to annotate portions of the densities in color; the `fill` aesthetic can vary within a slab in all geoms and stats in the `ggdist::geom_slabinterval()` family, including `ggdist::stat_dist_halfeye()`. For example, if you want to annotate a domain-specific region of practical equivalence (ROPE), you could do something like this:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_rvars(b_Intercept, r_condition[condition,]) %>%
   mutate(condition_mean = b_Intercept + r_condition) %>%
@@ -442,7 +445,7 @@ Where `add_epred_rvars()` is analogous to `brms::posterior_epred()`, `add_predic
 
 Here is an example of posterior predictive distributions plotted using `ggdist::stat_dist_slab()`:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
   data_grid(condition) %>%
   add_predicted_rvars(m) %>%
@@ -452,7 +455,7 @@ ABC %>%
 
 We could also use `ggdist::stat_dist_interval()` to plot predictive bands alongside the data:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
   data_grid(condition) %>%
   add_predicted_rvars(m) %>%
@@ -552,7 +555,7 @@ m_mpg = brm(
 
 We can draw fit curves with probability bands:
 
-```{r fig.width = med_width, fig.height = small_height}
+```{r fig.width = small_width, fig.height = small_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 51)) %>%
@@ -566,7 +569,7 @@ mtcars %>%
 
 Or we can sample a reasonable number of fit lines (say 100) and overplot them:
 
-```{r fig.width = med_width, fig.height = small_height}
+```{r fig.width = small_width, fig.height = small_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
@@ -607,7 +610,7 @@ animate(p, nframes = ndraws, fps = 2.5, width = 432, height = 288, res = 96, dev
 
 Or, for posterior predictions (instead of fits), we can go back to probability bands:
 
-```{r fig.width = med_width, fig.height = small_height}
+```{r fig.width = small_width, fig.height = small_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
@@ -621,7 +624,7 @@ mtcars %>%
 
 This gets difficult to judge by group, so probably better to facet into multiple plots. Fortunately, since we are using ggplot, that functionality is built in:
 
-```{r fig.width = med_width, fig.height = small_height}
+```{r fig.width = small_width, fig.height = small_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
@@ -671,7 +674,7 @@ m_ab = brm(
 
 We can plot the posterior distribution of the mean `response` alongside posterior predictive intervals and the data:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 AB %>%
   data_grid(group) %>%
   add_epred_rvars(m_ab) %>%
@@ -687,7 +690,7 @@ This shows posteriors of the mean of each group (black intervals and the density
 
 The predictive intervals in group `b` are larger than in group `a` because the model fits a different standard deviation for each group. We can see how the corresponding distributional parameter, `sigma`, changes by extracting it using the `dpar` argument to `add_epred_rvars()`:
 
-```{r fig.width = small_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 AB %>%
   data_grid(group) %>%
   add_epred_rvars(m_ab, dpar = TRUE) %>%
