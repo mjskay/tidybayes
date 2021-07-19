@@ -1,7 +1,7 @@
 Package: tidybayes
 Title: Tidy Data and 'Geoms' for Bayesian Models
-Version: 2.9.9.9000
-Date: 2021-07-11
+Version: 3.0.0
+Date: 2021-07-19
 Authors@R: c(
         person("Matthew", "Kay", role = c("aut", "cre"), email = "mjskay@northwestern.edu"),
         person("Timothy", "Mastny", role = "ctb", email = "tim.mastny@gmail.com")
@@ -17,7 +17,7 @@ Depends:
     R (>= 3.5.0)
 Imports:
     methods,
-    ggdist (>= 2.9.9.9000),
+    ggdist (>= 3.0.0),
     dplyr (>= 0.8.0),
     tidyr (>= 1.0.0),
     ggplot2 (>= 3.3.5),
@@ -27,7 +27,7 @@ Imports:
     tidyselect,
     tibble,
     magrittr,
-    posterior,
+    posterior (>= 1.0.1),
     withr,
     vctrs
 Suggests:
@@ -49,7 +49,7 @@ Suggests:
     MCMCglmm,
     bayesplot,
     modelr,
-    brms (>= 2.15.9),
+    brms (>= 2.15.0),
     cowplot,
     covr,
     gdtools,
@@ -62,10 +62,6 @@ Suggests:
     png,
     pkgdown,
     transformr
-Remotes:
-    mjskay/ggdist,
-    stan-dev/posterior,
-    paul-buerkner/brms
 License: GPL (>= 3)
 Language: en-US
 BugReports: https://github.com/mjskay/tidybayes/issues/new
