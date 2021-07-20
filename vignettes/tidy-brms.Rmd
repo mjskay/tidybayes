@@ -133,7 +133,7 @@ ABC %>%
 
 Let's fit a hierarchical model with shrinkage towards a global mean:
 
-```{r m_brm, cache = TRUE}
+```{r m_brm, results = "hide", message = FALSE, cache = TRUE}
 m = brm(
   response ~ (1|condition), 
   data = ABC, 
@@ -312,22 +312,9 @@ m %>%
   median_qi(condition_mean = b_Intercept + r_condition)
 ```
 
-## Plotting point summaries and intervals
+## Plotting intervals with multiple probability levels
 
-Plotting point summaries and with one interval is straightforward using `ggdist::geom_pointinterval()`:
-
-```{r fig.width = tiny_width, fig.height = tiny_height}
-m %>%
-  spread_draws(b_Intercept, r_condition[condition,]) %>%
-  median_qi(condition_mean = b_Intercept + r_condition) %>%
-  ggplot(aes(y = condition, x = condition_mean, xmin = .lower, xmax = .upper)) +
-  geom_pointinterval()
-```
-
-
-## Intervals with multiple probability levels
-
-`median_qi()` and its sister functions can also produce an arbitrary number of probability intervals by setting the `.width =` argument:
+`median_qi()` and its sister functions can produce an arbitrary number of probability intervals by setting the `.width =` argument:
 
 ```{r}
 m %>%
@@ -408,7 +395,7 @@ Intervals are nice if the alpha level happens to line up with whatever decision 
 
 Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `ggdist::stat_dotsinterval()` is the variant designed for use on samples:
 
-```{r fig.width = med_width, fig.height = med_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
   data_grid(condition) %>%
   add_epred_draws(m) %>%
@@ -447,7 +434,7 @@ ABC %>%
 
 Altogether, data, posterior predictions, and posterior distributions of the means:
 
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 grid = ABC %>%
   data_grid(condition)
 
@@ -471,7 +458,7 @@ The above approach to posterior predictions integrates over the parameter uncert
 
 We can do this pretty easily by asking for the distributional parameters for a given prediction implied by the posterior. We'll do it explicitly here by setting `dpar = c("mu", "sigma")` in `add_epred_draws()`. Rather than specifying the parameters explicitly, you can also just set `dpar = TRUE` to get draws from all distributional parameters in a model, and this will work for any response distribution supported by brms. Then, we can select a small number of draws using `sample_draws()` and then use `ggdist::stat_dist_slab()` to visualize each predictive distribution implied by the values of `mu` and `sigma`:
 
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
   data_grid(condition) %>%
   add_epred_draws(m, dpar = c("mu", "sigma")) %>%
@@ -487,7 +474,7 @@ For a more detailed description of these charts (and some useful variations on t
 
 We could even combine the Kruschke-style plots of predictive distributions with half-eyes showing the posterior means:
 
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
   data_grid(condition) %>%
   add_epred_draws(m, dpar = c("mu", "sigma")) %>%
@@ -514,7 +501,7 @@ m_mpg = brm(
 
 We can draw fit curves with probability bands:
 
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 51)) %>%
@@ -528,7 +515,7 @@ mtcars %>%
 
 Or we can sample a reasonable number of fit lines (say 100) and overplot them:
 
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
@@ -546,7 +533,9 @@ Or we can create animated [hypothetical outcome plots (HOPs)](https://mucollecti
 
 ```{r}
 set.seed(123456)
-ndraws = 50
+# NOTE: using a small number of draws to keep this example
+# small, but in practice you probably want 50 or 100
+ndraws = 20
 
 p = mtcars %>%
   group_by(cyl) %>%
@@ -562,9 +551,10 @@ p = mtcars %>%
 animate(p, nframes = ndraws, fps = 2.5, width = 432, height = 288, res = 96, dev = "png", type = "cairo")
 ```
 
-Or, for posterior predictions (instead of means), we can go back to probability bands:
+Or we could plot posterior predictions (instead of means). For this example
+we'll also use `alpha` to make it easier to see overlapping bands:
 
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
@@ -578,7 +568,7 @@ mtcars %>%
 
 This gets difficult to judge by group, so probably better to facet into multiple plots. Fortunately, since we are using ggplot, that functionality is built in:
 
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
@@ -610,7 +600,7 @@ AB %>%
 
 Here is a model that lets the mean _and standard deviation_ of `response` be dependent on `group`:
 
-```{r m_ab_brm, cache = TRUE}
+```{r m_ab_brm, results = "hide", message = FALSE, cache = TRUE}
 m_ab = brm(
   bf(
     response ~ group,
@@ -661,19 +651,10 @@ By setting `dpar = TRUE`, all distributional parameters are added as additional 
 
 If we wish compare the means from each condition, `compare_levels()` facilitates comparisons of the value of some variable across levels of a factor. By default it computes all pairwise differences. 
 
-Let's demonstrate `compare_levels()` with `ggdist::stat_halfeye()`:
+Let's demonstrate `compare_levels()` with `ggdist::stat_halfeye()`. We'll also
+re-order by the mean of the difference:
 
-```{r fig.width = small_width, fig.height = small_height}
-m %>%
-  spread_draws(r_condition[condition,]) %>%
-  compare_levels(r_condition, by = condition) %>%
-  ggplot(aes(y = condition, x = r_condition)) +
-  stat_halfeye()
-```
-
-If you prefer "caterpillar" plots, ordered by something like the mean of the difference, you can reorder the factor before plotting:
-
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(r_condition[condition,]) %>%
   compare_levels(r_condition, by = condition) %>%
@@ -703,7 +684,7 @@ head(mtcars_clean)
 
 Then we'll fit an ordinal regression model:
 
-```{r m_cyl_brm, cache = TRUE}
+```{r m_cyl_brm, results = "hide", message = FALSE, cache = TRUE}
 m_cyl = brm(
   cyl ~ mpg, 
   data = mtcars_clean, 
@@ -753,7 +734,9 @@ One way to see this correlation might be to employ [hypothetical outcome plots (
 
 
 ```{r}
-ndraws = 50
+# NOTE: using a small number of draws to keep this example
+# small, but in practice you probably want 50 or 100
+ndraws = 20
 
 p = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
@@ -774,7 +757,7 @@ animate(p, nframes = ndraws, fps = 2.5, width = 576, height = 192, res = 96, dev
 
 Notice how the lines move together, and how they move up or down together or in opposition. We could take a slice through these lines at an x position in the above chart (say, `mpg = 20`) and look at the correlation between them using a scatterplot matrix:
 
-```{r fig.width = med_width, fig.height = med_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 tibble(mpg = 20) %>%
   add_epred_draws(m_cyl, value = "P(cyl | mpg = 20)", category = "cyl") %>%
   ungroup() %>%
@@ -852,7 +835,7 @@ mtcars_clean %>%
 
 This looks pretty good. Let's check using another typical posterior predictive checking plot: many simulated distributions of the response (`cyl`) against the observed distribution of the response. For a continuous response variable this is usually done with a density plot; here, we'll plot the number of posterior predictions in each bin as a line plot, since the response variable is discrete:
 
-```{r fig.width = med_width, fig.height = med_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 mtcars_clean %>%
   select(mpg) %>%
   add_predicted_draws(m_cyl, ndraws = 100, seed = 12345) %>%
@@ -871,7 +854,7 @@ This also looks good.
 
 Another way to look at these posterior predictions might be as a scatterplot matrix. `gather_pairs()` makes it easy to generate long-format data frames suitable for creating custom scatterplot matrices (or really, arbitrary matrix-style small multiples plots) in ggplot using `ggplot2::facet_grid()`:
 
-```{r fig.width = med_width, fig.height = med_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 set.seed(12345)
 
 mtcars_clean %>%
@@ -899,7 +882,7 @@ mtcars_clean %>%
 
 Here's an ordinal model with a categorical predictor:
 
-```{r m_esoph_brm, cache = TRUE}
+```{r m_esoph_brm, results = "hide", message = FALSE, cache = TRUE}
 data(esoph)
 m_esoph_brm = brm(
   tobgp ~ agegp, 
@@ -912,7 +895,7 @@ m_esoph_brm = brm(
 
 Then we can plot predicted probabilities for each outcome category within each level of the predictor:
 
-```{r fig.width = med_width, fig.height = med_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 esoph %>%
   data_grid(agegp) %>%
   add_epred_draws(m_esoph_brm, dpar = TRUE, category = "tobgp") %>%
@@ -924,7 +907,7 @@ esoph %>%
 
 It is hard to see the changes in categories in the above plot; let's try something that gives a better gist of the distribution within each year:
 
-```{r fig.width = large_width, fig.height = large_height/2}
+```{r fig.width = med_width, fig.height = med_height/2}
 esoph_plot = esoph %>%
   data_grid(agegp) %>%
   add_epred_draws(m_esoph_brm, category = "tobgp") %>%
@@ -943,7 +926,7 @@ esoph_plot +
 
 The bars in this case might present a false sense of precision, so we could also try CCDF barplots instead:
 
-```{r fig.width = large_width, fig.height = large_height/2}
+```{r fig.width = med_width, fig.height = med_height/2}
 esoph_plot +
   stat_ccdfinterval() +
   expand_limits(x = 0) #ensure bars go to 0

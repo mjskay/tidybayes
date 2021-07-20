@@ -73,7 +73,6 @@ library(cowplot)
 library(rstan)
 library(rstanarm)
 library(RColorBrewer)
-library(gganimate)
 
 theme_set(theme_tidybayes() + panel_border())
 ```
@@ -318,22 +317,9 @@ m %>%
   median_qi(condition_mean = `(Intercept)` + b)
 ```
 
-## Plotting points and intervals
+## Plotting intervals with multiple probability levels
 
-Plotting point summaries and with one interval is straightforward using `ggdist::geom_pointinterval()`:
-
-```{r fig.width = tiny_width, fig.height = tiny_height}
-m %>%
-  spread_draws(`(Intercept)`, b[,group]) %>%
-  median_qi(condition_mean = `(Intercept)` + b) %>%
-  ggplot(aes(y = group, x = condition_mean, xmin = .lower, xmax = .upper)) +
-  geom_pointinterval()
-```
-
-
-## Intervals with multiple probability levels
-
-`median_qi()` and its sister functions can also produce an arbitrary number of probability intervals by setting the `.width =` argument:
+`median_qi()` and its sister functions can produce an arbitrary number of probability intervals by setting the `.width =` argument:
 
 ```{r}
 m %>%
@@ -414,7 +400,7 @@ Intervals are nice if the alpha level happens to line up with whatever decision 
 
 Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `ggdist::stat_dotsinterval()` is the horizontal variant designed for use on samples:
 
-```{r fig.width = med_width, fig.height = med_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
   data_grid(condition) %>%
   add_epred_draws(m) %>%
@@ -429,31 +415,9 @@ The idea is to get away from thinking about the posterior as indicating one cano
 
 Where `add_epred_draws()` is analogous to `rstanarm::posterior_epred()`, `add_predicted_draws()` is analogous to `rstanarm::posterior_predict()`, giving draws from the posterior predictive distribution.
 
-Here is an example of posterior predictive distributions plotted using `ggdist::stat_slab()`:
+We could use `tidybayes::stat_interval()` to plot predictive bands alongside the data and posterior distributions of the means:
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
-ABC %>%
-  data_grid(condition) %>%
-  add_predicted_draws(m) %>%
-  ggplot(aes(x = .prediction, y = condition)) +
-  stat_slab()
-```
-
-We could also use `tidybayes::stat_interval()` to plot predictive bands alongside the data:
-
-```{r fig.width = tiny_width, fig.height = tiny_height}
-ABC %>%
-  data_grid(condition) %>%
-  add_predicted_draws(m) %>%
-  ggplot(aes(y = condition, x = .prediction)) +
-  stat_interval() +
-  geom_point(aes(x = response), data = ABC) +
-  scale_color_brewer()
-```
-
-Altogether, data, posterior predictions, and posterior distributions of the means:
-
-```{r fig.width = small_width, fig.height = small_height}
 grid = ABC %>%
   data_grid(condition)
 
@@ -481,7 +445,7 @@ m_mpg = stan_glm(mpg ~ hp * cyl, data = mtcars)
 
 We can plot fit curves with probability bands:
 
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 51)) %>%
@@ -495,7 +459,7 @@ mtcars %>%
 
 Or we can sample a reasonable number of fit lines (say 100) and overplot them:
 
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
@@ -509,32 +473,10 @@ mtcars %>%
   scale_color_brewer(palette = "Dark2")
 ```
 
-Or we can create animated [hypothetical outcome plots (HOPs)](https://mucollective.northwestern.edu/project/hops-trends) of fit lines:
+Or we could plot posterior predictions (instead of means). For this example
+we'll also use `alpha` to make it easier to see overlapping bands:
 
-```{r}
-set.seed(123456)
-ndraws = 50
-
-p = mtcars %>%
-  group_by(cyl) %>%
-  data_grid(hp = seq_range(hp, n = 101)) %>%
-  # NOTE: this shows the use of ndraws to subsample within add_epred_draws()
-  # ONLY do this IF you are planning to make spaghetti plots, etc.
-  # NEVER subsample to a small sample to plot intervals, densities, etc.
-  add_epred_draws(m_mpg, ndraws = ndraws) %>%
-  ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-  geom_line(aes(y = .epred, group = paste(cyl, .draw))) +
-  geom_point(data = mtcars) +
-  scale_color_brewer(palette = "Dark2") +
-  transition_states(.draw, 0, 1) +
-  shadow_mark(future = TRUE, color = "gray50", alpha = 1/20)
-
-animate(p, nframes = ndraws, fps = 2.5, width = 432, height = 288, res = 96, dev = "png", type = "cairo")
-```
-
-Or, for posterior predictions (instead of means), we can go back to probability bands:
-
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 mtcars %>%
   group_by(cyl) %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
@@ -546,39 +488,18 @@ mtcars %>%
   scale_color_brewer(palette = "Dark2")
 ```
 
-This can get difficult to judge by group, so could be better to facet into multiple plots. Fortunately, since we are using ggplot, that functionality is built in:
-
-```{r fig.width = small_width, fig.height = small_height}
-mtcars %>%
-  group_by(cyl) %>%
-  data_grid(hp = seq_range(hp, n = 101)) %>%
-  add_predicted_draws(m_mpg) %>%
-  ggplot(aes(x = hp, y = mpg)) +
-  stat_lineribbon(aes(y = .prediction), .width = c(.99, .95, .8, .5), color = brewer.pal(5, "Blues")[[5]]) +
-  geom_point(data = mtcars) +
-  scale_fill_brewer() +
-  facet_grid(. ~ cyl, space = "free_x", scales = "free_x")
-```
-
+See `vignette("tidy-brms")` for additional examples of fit lines, including 
+animated [hypothetical outcome plots (HOPs)](https://mucollective.northwestern.edu/project/hops-trends).
 
 
 ## Comparing levels of a factor
 
 If we wish compare the means from each condition, `compare_levels()` facilitates comparisons of the value of some variable across levels of a factor. By default it computes all pairwise differences. 
 
-Let's demonstrate `compare_levels()` with `ggdist::stat_halfeye()`:
+Let's demonstrate `compare_levels()` with `ggdist::stat_halfeye()`. We'll also
+re-order by the mean of the difference:
 
-```{r fig.width = small_width, fig.height = small_height}
-m %>%
-  spread_draws(b[,,condition], sep = "[, :]") %>%
-  compare_levels(b, by = condition) %>%
-  ggplot(aes(y = condition, x = b)) +
-  stat_halfeye()
-```
-
-If you prefer "caterpillar" plots, ordered by something like the mean of the difference, you can reorder the factor before plotting:
-
-```{r fig.width = small_width, fig.height = small_height}
+```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_draws(b[,,condition], sep = "[, :]") %>%
   compare_levels(b, by = condition) %>%
@@ -681,7 +602,7 @@ esoph %>%
 
 It is hard to see the changes in categories in the above plot; let's try something that gives a better gist of the distribution within each year:
 
-```{r fig.width = large_width, fig.height = large_height/2}
+```{r fig.width = med_width, fig.height = med_height/2}
 esoph_plot = esoph %>%
   data_grid(agegp) %>%
   add_linpred_draws(m_esoph_rs) %>%
@@ -708,7 +629,7 @@ esoph_plot +
 
 The bars in this case might present a false sense of precision, so we could also try CCDF barplots instead:
 
-```{r fig.width = large_width, fig.height = large_height/2}
+```{r fig.width = med_width, fig.height = med_height/2}
 esoph_plot +
   stat_ccdfinterval() +
   expand_limits(x = 0) #ensure bars go to 0

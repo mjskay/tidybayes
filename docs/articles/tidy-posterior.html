@@ -54,7 +54,7 @@
 <li>
   <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li>
@@ -66,7 +66,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -92,7 +92,7 @@
 <li>
   <a href="https://github.com/mjskay/tidybayes/">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -103,23 +103,23 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><script src="tidy-posterior_files/header-attrs-2.9.3/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using tidybayes with the posterior package</h1>
                         <h4 class="author">Matthew Kay</h4>
-            
+
             <h4 class="date">2021-07-19</h4>
-      
+
       <small class="dont-index">Source: <a href="https://github.com/mjskay/tidybayes/blob/master/vignettes/tidy-posterior.Rmd"><code>vignettes/tidy-posterior.Rmd</code></a></small>
       <div class="hidden name"><code>tidy-posterior.Rmd</code></div>
 
     </div>
 
-    
-    
+
+
 <style type="text/css">
 .kable-table table {
   margin-left: 0;
@@ -180,13 +180,13 @@ img {
 ##    condition response
 ##    &lt;chr&gt;        &lt;dbl&gt;
 ##  1 A           -0.420
-##  2 B            1.69 
-##  3 C            1.37 
-##  4 D            1.04 
+##  2 B            1.69
+##  3 C            1.37
+##  4 D            1.04
 ##  5 E           -0.144
 ##  6 A           -0.301
 ##  7 B            0.764
-##  8 C            1.68 
+##  8 C            1.68
 ##  9 D            0.857
 ## 10 E           -0.931</code></pre>
 <p>This is a typical tidy format data frame: one observation per row. Graphically:</p>
@@ -202,15 +202,15 @@ img {
 <p>Let’s fit a hierarchical model with shrinkage towards a global mean:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
-  <span class="va">response</span> <span class="op">~</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">condition</span><span class="op">)</span>, 
-  data <span class="op">=</span> <span class="va">ABC</span>, 
+  <span class="va">response</span> <span class="op">~</span> <span class="op">(</span><span class="fl">1</span><span class="op">|</span><span class="va">condition</span><span class="op">)</span>,
+  data <span class="op">=</span> <span class="va">ABC</span>,
   prior <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
     <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="va">Intercept</span><span class="op">)</span>,
     <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu"><a href="http://mjskay.github.io/ggdist/reference/student_t.html">student_t</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="va">sd</span><span class="op">)</span>,
     <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html">prior</a></span><span class="op">(</span><span class="fu"><a href="http://mjskay.github.io/ggdist/reference/student_t.html">student_t</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="va">sigma</span><span class="op">)</span>
   <span class="op">)</span>,
   control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">.99</span><span class="op">)</span>,
-  
+
   file <span class="op">=</span> <span class="st">"models/tidy-brms_m.rds"</span> <span class="co"># cache model (can be removed)  </span>
 <span class="op">)</span></code></pre></div>
 <p>The format returned by <code><a href="../reference/tidy_draws.html">tidybayes::tidy_draws()</a></code> is compatible with the <code><a href="https://mc-stan.org/posterior/reference/draws_df.html">posterior::draws_df()</a></code> format, so <code><a href="https://mc-stan.org/posterior/reference/draws_summary.html">posterior::summarise_draws()</a></code> supports it. Thus, we can use <code><a href="https://mc-stan.org/posterior/reference/draws_summary.html">posterior::summarise_draws()</a></code> to get a quick look at draws from the model:</p>
@@ -229,10 +229,10 @@ img {
 ##  8 r_condition[E,Interc~  -1.39    -1.40    0.500  4.68e-1  -2.17    -0.535   1.00    990.     1392.
 ##  9 lp__                  -51.9    -51.6     2.41   2.33e+0 -56.3    -48.7     1.00    977.     1634.
 ## 10 accept_stat__           0.988    0.995   0.0211 6.66e-3   0.952    1.00    1.05     59.5     192.
-## 11 stepsize__              0.0544   0.0549  0.0119 1.62e-2   0.0393   0.0684 NA        NA        NA 
-## 12 treedepth__             5.31     5       1.01   1.48e+0   4        7       1.07     40.9      NA 
-## 13 n_leapfrog__           65.9     63      42.8    4.74e+1  15      127       1.07     41.6      NA 
-## 14 divergent__             0        0       0      0         0        0      NA        NA        NA 
+## 11 stepsize__              0.0544   0.0549  0.0119 1.62e-2   0.0393   0.0684 NA        NA        NA
+## 12 treedepth__             5.31     5       1.01   1.48e+0   4        7       1.07     40.9      NA
+## 13 n_leapfrog__           65.9     63      42.8    4.74e+1  15      127       1.07     41.6      NA
+## 14 divergent__             0        0       0      0         0        0      NA        NA        NA
 ## 15 energy__               55.9     55.6     3.14   3.03e+0  51.6     61.7     1.00   1040.     1772.</code></pre>
 </div>
 <div id="extracting-draws-from-a-fit-in-tidy-format-using-spread_rvars" class="section level2">
@@ -242,10 +242,10 @@ img {
 <p>Now that we have our results, the fun begins: getting the variables out in a tidy format! First, we’ll use the <code><a href="../reference/get_variables.html">get_variables()</a></code> function to get a list of raw model variable names so that we know what variables we can extract from the model:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/get_variables.html">get_variables</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] "b_Intercept"              "sd_condition__Intercept"  "sigma"                   
+<pre><code>##  [1] "b_Intercept"              "sd_condition__Intercept"  "sigma"
 ##  [4] "r_condition[A,Intercept]" "r_condition[B,Intercept]" "r_condition[C,Intercept]"
-##  [7] "r_condition[D,Intercept]" "r_condition[E,Intercept]" "lp__"                    
-## [10] "accept_stat__"            "stepsize__"               "treedepth__"             
+##  [7] "r_condition[D,Intercept]" "r_condition[E,Intercept]" "lp__"
+## [10] "accept_stat__"            "stepsize__"               "treedepth__"
 ## [13] "n_leapfrog__"             "divergent__"              "energy__"</code></pre>
 <p>Here, <code>b_Intercept</code> is the global mean, and the <code>r_condition[]</code> variables are offsets from that mean for each condition. Given these variables:</p>
 <ul>
@@ -341,7 +341,7 @@ img {
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">sigma</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 9
 ##   b_Intercept b_Intercept.lower b_Intercept.upper sigma sigma.lower sigma.upper .width .point
-##         &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; 
+##         &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;
 ## 1       0.526            -0.490              1.41 0.557       0.456       0.696   0.95 median
 ## # ... with 1 more variable: .interval &lt;chr&gt;</code></pre>
 <p>We can specify the columns we want to get medians and intervals from, as above, or if we omit the list of columns, <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi()</a></code> will use every column that is not a grouping column. Thus in the above example, <code>b_Intercept</code> and <code>sigma</code> are redundant arguments to <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi()</a></code> because they are also the only columns we gathered from the model. So we can simplify this to:</p>
@@ -351,7 +351,7 @@ img {
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 9
 ##   b_Intercept b_Intercept.lower b_Intercept.upper sigma sigma.lower sigma.upper .width .point
-##         &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; 
+##         &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;
 ## 1       0.526            -0.490              1.41 0.557       0.456       0.696   0.95 median
 ## # ... with 1 more variable: .interval &lt;chr&gt;</code></pre>
 <p>If you would rather have a long-format list, use <code><a href="../reference/gather_rvars.html">gather_rvars()</a></code> instead:</p>
@@ -370,8 +370,8 @@ img {
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span><span class="va">.value</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 7
 ##   .variable   .value .lower .upper .width .point .interval
-##   &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    
-## 1 b_Intercept  0.526 -0.490  1.41    0.95 median qi       
+##   &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;
+## 1 b_Intercept  0.526 -0.490  1.41    0.95 median qi
 ## 2 sigma        0.557  0.456  0.696   0.95 median qi</code></pre>
 </div>
 <div id="with-indexed-model-variables" class="section level3">
@@ -384,11 +384,11 @@ img {
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span><span class="va">r_condition</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 7
 ##   condition r_condition .lower .upper .width .point .interval
-##   &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    
-## 1 A              -0.336 -1.23   0.734   0.95 median qi       
-## 2 B               0.480 -0.441  1.54    0.95 median qi       
-## 3 C               1.32   0.406  2.38    0.95 median qi       
-## 4 D               0.498 -0.443  1.55    0.95 median qi       
+##   &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;
+## 1 A              -0.336 -1.23   0.734   0.95 median qi
+## 2 B               0.480 -0.441  1.54    0.95 median qi
+## 3 C               1.32   0.406  2.38    0.95 median qi
+## 4 D               0.498 -0.443  1.55    0.95 median qi
 ## 5 E              -1.40  -2.36  -0.396   0.95 median qi</code></pre>
 <p><strong>Note for existing users of <code><a href="../reference/gather_draws.html">spread_draws()</a></code></strong>: you may notice that <code><a href="../reference/gather_rvars.html">spread_rvars()</a></code> requires us to be a bit more explicit in passing column names to <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi()</a></code>. This is because <code><a href="../reference/gather_rvars.html">spread_rvars()</a></code> does not return pre-grouped data frames, unlike <code><a href="../reference/gather_draws.html">spread_draws()</a></code> — since every row would always be its own group in the output from <code><a href="../reference/gather_rvars.html">spread_rvars()</a></code>, returning a pre-grouped data frame would be redundant.</p>
 <p>You can also use <code><a href="https://mc-stan.org/posterior/reference/draws_summary.html">posterior::summarise_draws()</a></code> on an <code>rvar</code> column to generate summaries with convergence diagnostics. That function returns a data frame, which can be passed directly into the <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate()</a></code> function:</p>
@@ -412,7 +412,7 @@ img {
 <p><code><a href="../reference/gather_rvars.html">spread_rvars()</a></code> and <code><a href="../reference/gather_rvars.html">gather_rvars()</a></code> support extracting variables that have different indices into the same data frame. Indices with the same name are automatically matched up, and values are duplicated as necessary to produce one row for every combination of levels of all indices. For example, we might want to calculate the mean within each condition (call this <code>condition_mean</code>). In this model, that mean is the intercept (<code>b_Intercept</code>) plus the effect for a given condition (<code>r_condition</code>).</p>
 <p>We can gather draws from <code>b_Intercept</code> and <code>r_condition</code> together in a single data frame:</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">r_condition</span><span class="op">[</span><span class="va">condition</span>,<span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 3
 ##   b_Intercept condition r_condition[,1]
@@ -465,21 +465,21 @@ img {
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span>condition_mean <span class="op">=</span> <span class="va">b_Intercept</span> <span class="op">+</span> <span class="va">r_condition</span>, .width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.95</span>, <span class="fl">.8</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 15 x 9
 ##    b_Intercept condition r_condition[,1] condition_mean  .lower .upper .width .point .interval
-##         &lt;rvar&gt; &lt;chr&gt;          &lt;rvar[,1]&gt;          &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    
-##  1  0.5 ± 0.48 A             -0.31 ± 0.5          0.190 -0.146   0.536   0.95 median qi       
-##  2  0.5 ± 0.48 B              0.49 ± 0.5          0.998  0.640   1.33    0.95 median qi       
-##  3  0.5 ± 0.48 C              1.33 ± 0.5          1.84   1.49    2.18    0.95 median qi       
-##  4  0.5 ± 0.48 D              0.51 ± 0.5          1.02   0.670   1.36    0.95 median qi       
-##  5  0.5 ± 0.48 E             -1.39 ± 0.5         -0.884 -1.24   -0.528   0.95 median qi       
-##  6  0.5 ± 0.48 A             -0.31 ± 0.5          0.190 -0.0340  0.421   0.8  median qi       
-##  7  0.5 ± 0.48 B              0.49 ± 0.5          0.998  0.766   1.22    0.8  median qi       
-##  8  0.5 ± 0.48 C              1.33 ± 0.5          1.84   1.61    2.06    0.8  median qi       
-##  9  0.5 ± 0.48 D              0.51 ± 0.5          1.02   0.786   1.24    0.8  median qi       
-## 10  0.5 ± 0.48 E             -1.39 ± 0.5         -0.884 -1.11   -0.656   0.8  median qi       
-## 11  0.5 ± 0.48 A             -0.31 ± 0.5          0.190  0.0778  0.307   0.5  median qi       
-## 12  0.5 ± 0.48 B              0.49 ± 0.5          0.998  0.881   1.11    0.5  median qi       
-## 13  0.5 ± 0.48 C              1.33 ± 0.5          1.84   1.72    1.95    0.5  median qi       
-## 14  0.5 ± 0.48 D              0.51 ± 0.5          1.02   0.898   1.13    0.5  median qi       
+##         &lt;rvar&gt; &lt;chr&gt;          &lt;rvar[,1]&gt;          &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;
+##  1  0.5 ± 0.48 A             -0.31 ± 0.5          0.190 -0.146   0.536   0.95 median qi
+##  2  0.5 ± 0.48 B              0.49 ± 0.5          0.998  0.640   1.33    0.95 median qi
+##  3  0.5 ± 0.48 C              1.33 ± 0.5          1.84   1.49    2.18    0.95 median qi
+##  4  0.5 ± 0.48 D              0.51 ± 0.5          1.02   0.670   1.36    0.95 median qi
+##  5  0.5 ± 0.48 E             -1.39 ± 0.5         -0.884 -1.24   -0.528   0.95 median qi
+##  6  0.5 ± 0.48 A             -0.31 ± 0.5          0.190 -0.0340  0.421   0.8  median qi
+##  7  0.5 ± 0.48 B              0.49 ± 0.5          0.998  0.766   1.22    0.8  median qi
+##  8  0.5 ± 0.48 C              1.33 ± 0.5          1.84   1.61    2.06    0.8  median qi
+##  9  0.5 ± 0.48 D              0.51 ± 0.5          1.02   0.786   1.24    0.8  median qi
+## 10  0.5 ± 0.48 E             -1.39 ± 0.5         -0.884 -1.11   -0.656   0.8  median qi
+## 11  0.5 ± 0.48 A             -0.31 ± 0.5          0.190  0.0778  0.307   0.5  median qi
+## 12  0.5 ± 0.48 B              0.49 ± 0.5          0.998  0.881   1.11    0.5  median qi
+## 13  0.5 ± 0.48 C              1.33 ± 0.5          1.84   1.72    1.95    0.5  median qi
+## 14  0.5 ± 0.48 D              0.51 ± 0.5          1.02   0.898   1.13    0.5  median qi
 ## 15  0.5 ± 0.48 E             -1.39 ± 0.5         -0.884 -1.01   -0.767   0.5  median qi</code></pre>
 <p>The results are in a tidy format: one row per group and uncertainty interval width (<code>.width</code>). This facilitates plotting, and is essentially what <code><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html">ggdist::stat_dist_pointinterval()</a></code> is doing for you under the hood above. For example, assigning <code>-.width</code> to the <code>size</code> aesthetic will show all intervals, making thicker lines correspond to smaller intervals.</p>
 <p>While using <code><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html">stat_dist_pointinterval()</a></code> is usually easier, if you wish to manually construct the above plot by using <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi()</a></code> first, the <code><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">ggdist::geom_pointinterval()</a></code> geom automatically sets the <code>size</code> aesthetic appropriately based on the <code>.width</code> column in the data to produce plots of points with multiple probability levels:</p>
@@ -494,7 +494,7 @@ img {
 <div id="intervals-with-densities" class="section level2">
 <h2 class="hasAnchor">
 <a href="#intervals-with-densities" class="anchor"></a>Intervals with densities</h2>
-<p>To see the density along with the intervals, we can use <code>ggdist::stat__dist_eye()</code> (“eye plots”, which combine intervals with violin plots), or <code><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html">ggdist::stat_dist_halfeye()</a></code> (interval + density plots):</p>
+<p>To see the density along with the intervals, we can use <code>ggdist::stat_dist_eye()</code> (“eye plots”, which combine intervals with violin plots), or <code><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html">ggdist::stat_dist_halfeye()</a></code> (interval + density plots):</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">r_condition</span><span class="op">[</span><span class="va">condition</span>,<span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -621,7 +621,7 @@ img {
   <span class="fu"><a href="../reference/sample_draws.html">sample_draws</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">condition</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html">stat_dist_slab</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="fu"><a href="https://pkg.mitchelloharawild.com/distributional/reference/dist_normal.html">dist_normal</a></span><span class="op">(</span><span class="va">mu</span>, <span class="va">sigma</span><span class="op">)</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="fu"><a href="https://pkg.mitchelloharawild.com/distributional/reference/dist_normal.html">dist_normal</a></span><span class="op">(</span><span class="va">mu</span>, <span class="va">sigma</span><span class="op">)</span><span class="op">)</span>,
     color <span class="op">=</span> <span class="st">"gray65"</span>, alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">10</span>, fill <span class="op">=</span> <span class="cn">NA</span>
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">response</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">ABC</span>, shape <span class="op">=</span> <span class="fl">21</span>, fill <span class="op">=</span> <span class="st">"#9ECAE1"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
@@ -634,14 +634,14 @@ img {
   <span class="fu"><a href="../reference/add_epred_rvars.html">add_epred_rvars</a></span><span class="op">(</span><span class="va">m</span>, dpar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mu"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">condition</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html">stat_dist_slab</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="fu"><a href="https://pkg.mitchelloharawild.com/distributional/reference/dist_normal.html">dist_normal</a></span><span class="op">(</span><span class="va">mu</span>, <span class="va">sigma</span><span class="op">)</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="fu"><a href="https://pkg.mitchelloharawild.com/distributional/reference/dist_normal.html">dist_normal</a></span><span class="op">(</span><span class="va">mu</span>, <span class="va">sigma</span><span class="op">)</span><span class="op">)</span>,
     color <span class="op">=</span> <span class="st">"gray65"</span>, alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">10</span>, fill <span class="op">=</span> <span class="cn">NA</span>,
     data <span class="op">=</span> <span class="va">.</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/nest_rvars.html">unnest_rvars</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/sample_draws.html">sample_draws</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">.5</span>
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html">stat_dist_halfeye</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="va">.epred</span><span class="op">)</span>, side <span class="op">=</span> <span class="st">"left"</span>, scale <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">response</span><span class="op">)</span>, 
-    data <span class="op">=</span> <span class="va">ABC</span>, shape <span class="op">=</span> <span class="fl">21</span>, fill <span class="op">=</span> <span class="st">"#9ECAE1"</span>, size <span class="op">=</span> <span class="fl">2</span>, 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">response</span><span class="op">)</span>,
+    data <span class="op">=</span> <span class="va">ABC</span>, shape <span class="op">=</span> <span class="fl">21</span>, fill <span class="op">=</span> <span class="st">"#9ECAE1"</span>, size <span class="op">=</span> <span class="fl">2</span>,
     position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_nudge.html">position_nudge</a></span><span class="op">(</span>x <span class="op">=</span> <span class="op">-</span><span class="fl">.2</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
 <p><img src="tidy-posterior_files/figure-html/unnamed-chunk-35-1.png" width="648"></p>
@@ -653,9 +653,9 @@ img {
 <p>To demonstrate drawing fit curves with uncertainty, let’s fit a slightly naive model to part of the <code>mtcars</code> dataset:</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_mpg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
-  <span class="va">mpg</span> <span class="op">~</span> <span class="va">hp</span> <span class="op">*</span> <span class="va">cyl</span>, 
-  data <span class="op">=</span> <span class="va">mtcars</span>, 
-  
+  <span class="va">mpg</span> <span class="op">~</span> <span class="va">hp</span> <span class="op">*</span> <span class="va">cyl</span>,
+  data <span class="op">=</span> <span class="va">mtcars</span>,
+
   file <span class="op">=</span> <span class="st">"models/tidy-brms_m_mpg.rds"</span>  <span class="co"># cache model (can be removed)</span>
 <span class="op">)</span></code></pre></div>
 <p>We can draw fit curves with probability bands:</p>
@@ -727,8 +727,8 @@ img {
   <span class="fu"><a href="../reference/add_epred_rvars.html">add_predicted_rvars</a></span><span class="op">(</span><span class="va">m_mpg</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">hp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_lineribbon.html">stat_dist_lineribbon</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="va">.prediction</span><span class="op">)</span>, 
-    .width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.99</span>, <span class="fl">.95</span>, <span class="fl">.8</span>, <span class="fl">.5</span><span class="op">)</span>, 
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="va">.prediction</span><span class="op">)</span>,
+    .width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.99</span>, <span class="fl">.95</span>, <span class="fl">.8</span>, <span class="fl">.5</span><span class="op">)</span>,
     color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">5</span>, <span class="st">"Blues"</span><span class="op">)</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span>
   <span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span> <span class="op">+</span>
@@ -759,7 +759,7 @@ img {
     <span class="va">sigma</span> <span class="op">~</span> <span class="va">group</span>
   <span class="op">)</span>,
   data <span class="op">=</span> <span class="va">AB</span>,
-  
+
   file <span class="op">=</span> <span class="st">"models/tidy-brms_m_ab.rds"</span>  <span class="co"># cache model (can be removed)</span>
 <span class="op">)</span></code></pre></div>
 <p>We can plot the posterior distribution of the mean <code>response</code> alongside posterior predictive intervals and the data:</p>
@@ -835,11 +835,11 @@ img {
 <p>Then we’ll fit an ordinal regression model:</p>
 <div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_cyl</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
-  <span class="va">cyl</span> <span class="op">~</span> <span class="va">mpg</span>, 
-  data <span class="op">=</span> <span class="va">mtcars_clean</span>, 
+  <span class="va">cyl</span> <span class="op">~</span> <span class="va">mpg</span>,
+  data <span class="op">=</span> <span class="va">mtcars_clean</span>,
   family <span class="op">=</span> <span class="va">cumulative</span>,
   seed <span class="op">=</span> <span class="fl">58393</span>,
-  
+
   file <span class="op">=</span> <span class="st">"models/tidy-brms_m_cyl.rds"</span>  <span class="co"># cache model (can be removed)</span>
 <span class="op">)</span></code></pre></div>
 <p><code><a href="../reference/add_epred_rvars.html">add_epred_rvars()</a></code> will now return a matrix instead of a vector for the <code>.epred</code> column, where the nested columns of <code>.epred</code> are the probability that the response is in that category. For example, here is the fit for two values of <code>mpg</code> in the dataset:</p>
@@ -941,7 +941,7 @@ img {
 ## 2    22          0.72 ± 0.16  0.27 ± 0.16  0.008 ± 0.015  4.6 ± 0.34</code></pre>
 <p>Altogether, followed by <code><a href="../reference/nest_rvars.html">unnest_rvars()</a></code> so we can create spaghetti plots:</p>
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">label_data_function</span> <span class="op">=</span> <span class="va">.</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">label_data_function</span> <span class="op">=</span> <span class="va">.</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fl">.47</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarise_if</a></span><span class="op">(</span><span class="va">is.numeric</span>, <span class="va">mean</span><span class="op">)</span>
@@ -976,29 +976,29 @@ img {
 <span class="va">draws_cyl</span></code></pre></div>
 <pre><code>## # A draws_rvars: 1000 iterations, 4 chains, and 10 variables
 ## $b_Intercept: rvar&lt;1000,4&gt;[2] mean ± sd:
-## [1] -38 ± 12  -33 ± 11 
-## 
+## [1] -38 ± 12  -33 ± 11
+##
 ## $b_mpg: rvar&lt;1000,4&gt;[1] mean ± sd:
-## [1] -1.8 ± 0.57 
-## 
+## [1] -1.8 ± 0.57
+##
 ## $disc: rvar&lt;1000,4&gt;[1] mean ± sd:
-## [1] 1 ± 0 
-## 
+## [1] 1 ± 0
+##
 ## $lp__: rvar&lt;1000,4&gt;[1] mean ± sd:
-## [1] -13 ± 1.3 
-## 
+## [1] -13 ± 1.3
+##
 ## $accept_stat__: rvar&lt;1000,4&gt;[1] mean ± sd:
-## [1] 0.94 ± 0.081 
-## 
+## [1] 0.94 ± 0.081
+##
 ## $stepsize__: rvar&lt;1000,4&gt;[1] mean ± sd:
-## [1] 0.31 ± 0.043 
-## 
+## [1] 0.31 ± 0.043
+##
 ## $treedepth__: rvar&lt;1000,4&gt;[1] mean ± sd:
-## [1] 2.7 ± 0.66 
-## 
+## [1] 2.7 ± 0.66
+##
 ## $n_leapfrog__: rvar&lt;1000,4&gt;[1] mean ± sd:
-## [1] 9.1 ± 5.1 
-## 
+## [1] 9.1 ± 5.1
+##
 ## # ... with 2 more variables</code></pre>
 <p>We’re really interested in the <code>b_Intercept</code> parameter, which represents thresholds on the latent linear predictor:</p>
 <div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
@@ -1034,7 +1034,7 @@ img {
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_lineribbon.html">stat_dist_lineribbon</a></span><span class="op">(</span>
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>dist <span class="op">=</span> <span class="va">beta</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">beta</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,
-    color <span class="op">=</span> <span class="va">beta_2_color</span>, fill <span class="op">=</span> <span class="va">beta_2_color</span>, 
+    color <span class="op">=</span> <span class="va">beta_2_color</span>, fill <span class="op">=</span> <span class="va">beta_2_color</span>,
     alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">30</span>, .width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/ppoints.html">ppoints</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span>,
     size <span class="op">=</span> <span class="fl">1</span>, linetype <span class="op">=</span> <span class="st">"21"</span>
   <span class="op">)</span> <span class="op">+</span>
@@ -1044,7 +1044,7 @@ img {
     fill <span class="op">=</span> <span class="st">"black"</span>, color <span class="op">=</span> <span class="st">"black"</span>,
     alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">30</span>, .width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/ppoints.html">ppoints</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span>
   <span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="st">"linear predictor"</span> <span class="op">-</span> <span class="va">beta</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="st">"linear predictor"</span> <span class="op">-</span> <span class="va">beta</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span><span class="op">(</span><span class="st">"label"</span>,
     label <span class="op">=</span> <span class="st">"beta[1]"</span>, parse <span class="op">=</span> <span class="cn">TRUE</span>,
     x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">mtcars_clean</span><span class="op">$</span><span class="va">mpg</span><span class="op">)</span>, y <span class="op">=</span> <span class="fl">0</span>, hjust <span class="op">=</span> <span class="fl">0.8</span>,
@@ -1073,11 +1073,11 @@ img {
 <div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">esoph</span><span class="op">)</span>
 <span class="va">m_esoph_brm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
-  <span class="va">tobgp</span> <span class="op">~</span> <span class="va">agegp</span>, 
-  data <span class="op">=</span> <span class="va">esoph</span>, 
+  <span class="va">tobgp</span> <span class="op">~</span> <span class="va">agegp</span>,
+  data <span class="op">=</span> <span class="va">esoph</span>,
   family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brmsfamily.html">cumulative</a></span><span class="op">(</span><span class="op">)</span>,
 
-  file <span class="op">=</span> <span class="st">"models/tidy-brms_m_esoph_brm.rds"</span>  
+  file <span class="op">=</span> <span class="st">"models/tidy-brms_m_esoph_brm.rds"</span>
 <span class="op">)</span></code></pre></div>
 <p>Then we can plot predicted probabilities for each outcome category within each level of the predictor:</p>
 <div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
@@ -1138,7 +1138,7 @@ img {
       </footer>
 </div>
 
-  
+
 
 
   </body>
