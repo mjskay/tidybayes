@@ -281,108 +281,8 @@ model {
 <p>This makes it easy to skip right to running the model without munging the data yourself:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">=</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html">sampling</a></span><span class="op">(</span><span class="va">ABC_stan</span>, data <span class="op">=</span> <span class="fu"><a href="../reference/compose_data.html">compose_data</a></span><span class="op">(</span><span class="va">ABC</span><span class="op">)</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
-## Chain 1: 
-## Chain 1: Gradient evaluation took 2.6e-05 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.26 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 1: 
-## Chain 1:  Elapsed Time: 0.416 seconds (Warm-up)
-## Chain 1:                0.407 seconds (Sampling)
-## Chain 1:                0.823 seconds (Total)
-## Chain 1: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
-## Chain 2: 
-## Chain 2: Gradient evaluation took 6e-06 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.06 seconds.
-## Chain 2: Adjust your expectations accordingly!
-## Chain 2: 
-## Chain 2: 
-## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 2: 
-## Chain 2:  Elapsed Time: 0.428 seconds (Warm-up)
-## Chain 2:                0.583 seconds (Sampling)
-## Chain 2:                1.011 seconds (Total)
-## Chain 2: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
-## Chain 3: 
-## Chain 3: Gradient evaluation took 7e-06 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.07 seconds.
-## Chain 3: Adjust your expectations accordingly!
-## Chain 3: 
-## Chain 3: 
-## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 3: 
-## Chain 3:  Elapsed Time: 0.456 seconds (Warm-up)
-## Chain 3:                0.465 seconds (Sampling)
-## Chain 3:                0.921 seconds (Total)
-## Chain 3: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
-## Chain 4: 
-## Chain 4: Gradient evaluation took 8e-06 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.08 seconds.
-## Chain 4: Adjust your expectations accordingly!
-## Chain 4: 
-## Chain 4: 
-## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 4: 
-## Chain 4:  Elapsed Time: 0.476 seconds (Warm-up)
-## Chain 4:                0.933 seconds (Sampling)
-## Chain 4:                1.409 seconds (Total)
-## Chain 4:</code></pre>
 <p>The results look like this:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span></code></pre></div>
 <pre><code>## Inference for Stan model: anon_model.
 ## 4 chains, each with iter=2000; warmup=1000; thin=1; 
@@ -404,7 +304,7 @@ model {
 ## condition_mean[5]    -0.89    0.00 0.18 -1.23 -1.01 -0.89 -0.77 -0.53  4725    1
 ## lp__                  0.30    0.08 2.34 -5.02 -1.08  0.63  2.06  3.79   915    1
 ## 
-## Samples were drawn using NUTS(diag_e) at Mon Jul 19 16:40:26 2021.
+## Samples were drawn using NUTS(diag_e) at Mon Jul 19 21:00:39 2021.
 ## For each parameter, n_eff is a crude measure of effective sample size,
 ## and Rhat is the potential scale reduction factor on split chains (at 
 ## convergence, Rhat=1).</code></pre>
@@ -417,7 +317,7 @@ model {
 <h3 class="hasAnchor">
 <a href="#extracting-model-variable-indices-into-a-separate-column-in-a-tidy-format-data-frame" class="anchor"></a>Extracting model variable indices into a separate column in a tidy format data frame</h3>
 <p>Now that we have our results, the fun begins: getting the draws out in a tidy format! The default methods in Stan for extracting draws from the model do so in a nested format:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu">rstan</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html">extract</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## List of 6
 ##  $ overall_mean     : num [1:4000(1d)] 1.113 0.818 0.432 0.794 0.528 ...
@@ -442,7 +342,7 @@ model {
 ##   .. ..$ iterations: NULL</code></pre>
 <p>There are also methods for extracting draws as matrices or data frames in Stan (and other model types, such as JAGS and MCMCglmm, have their own formats).</p>
 <p>The <code>spread_draws</code> method yields a common format for all model types supported by <code>tidybayes</code>. It lets us instead extract draws into a data frame in tidy format, with a <code>.chain</code> and <code>.iteration</code> column storing the chain and iteration for each row (if available), a <code>.draw</code> column that uniquely indexes each draw, and the remaining columns corresponding to model variables or variable indices. The <code>spread_draws</code> method accepts any number of column specifications, which can include names for variables and names for variable indices. For example, we can extract the <code>condition_mean</code> variable as a tidy data frame, and put the value of its first (and only) index into the <code>condition</code> column, using a syntax that directly echoes how we would specify indices of the <code>condition_mean</code> variable in the model itself:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></code></pre></div>
@@ -466,7 +366,7 @@ model {
 <a href="#automatically-converting-columns-and-indices-back-into-their-original-data-types" class="anchor"></a>Automatically converting columns and indices back into their original data types</h3>
 <p>As-is, the resulting variables don’t know anything about where their indices came from. The index of the <code>condition_mean</code> variable was originally derived from the <code>condition</code> factor in the <code>ABC</code> data frame. But Stan doesn’t know this: it is just a numeric index to Stan, so the <code>condition</code> column just contains numbers (<code>1, 2, 3, 4, 5</code>) instead of the factor levels these numbers correspond to (<code>"A", "B", "C", "D", "E"</code>).</p>
 <p>We can recover this missing type information by passing the model through <code>recover_types</code> before using <code>spread_draws</code>. In itself <code>recover_types</code> just returns a copy of the model, with some additional attributes that store the type information from the data frame (or other objects) that you pass to it. This doesn’t have any useful effect by itself, but functions like <code>spread_draws</code> use this information to convert any column or index back into the data type of the column with the same name in the original data frame. In this example, <code>spread_draws</code> recognizes that the <code>condition</code> column was a factor with five levels (<code>"A", "B", "C", "D", "E"</code>) in the original data frame, and automatically converts it back into a factor:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/recover_types.html">recover_types</a></span><span class="op">(</span><span class="va">ABC</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -486,7 +386,7 @@ model {
 ##  9 A                0.152        1          9     9
 ## 10 A                0.192        1         10    10</code></pre>
 <p>Because we often want to make multiple separate calls to <code>spread_draws</code>, it is often convenient to decorate the original model using <code>recover_types</code> immediately after it has been fit, so we only have to call it once:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&lt;&gt;%</span> <span class="fu"><a href="../reference/recover_types.html">recover_types</a></span><span class="op">(</span><span class="va">ABC</span><span class="op">)</span></code></pre></div>
 <p>Now we can omit the <code>recover_types</code> call before subsequent calls to <code>spread_draws</code>.</p>
 </div>
@@ -500,7 +400,7 @@ model {
 <a href="#with-simple-variables-wide-format" class="anchor"></a>With simple variables, wide format</h3>
 <p><code>tidybayes</code> provides a family of functions for generating point summaries and intervals from draws in a tidy format. These functions follow the naming scheme <code>[median|mean|mode]_[qi|hdi]</code>, for example, <code>median_qi</code>, <code>mean_qi</code>, <code>mode_hdi</code>, and so on. The first name (before the <code>_</code>) indicates the type of point summary, and the second name indicates the type of interval. <code>qi</code> yields a quantile interval (a.k.a. equi-tailed interval, central interval, or percentile interval) and <code>hdi</code> yields a highest density interval. Custom point or interval functions can also be applied using the <code>point_interval</code> function.</p>
 <p>For example, we might extract the draws corresponding to the overall mean and standard deviation of observations:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">overall_mean</span>, <span class="va">response_sd</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></code></pre></div>
@@ -518,7 +418,7 @@ model {
 ##  9      1          9     9       0.225        0.609
 ## 10      1         10    10      -0.0395       0.521</code></pre>
 <p>Like with <code>condition_mean[condition]</code>, this gives us a tidy data frame. If we want the median and 95% quantile interval of the variables, we can apply <code>median_qi</code>:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">overall_mean</span>, <span class="va">response_sd</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span><span class="va">overall_mean</span>, <span class="va">response_sd</span><span class="op">)</span></code></pre></div>
@@ -528,7 +428,7 @@ model {
 ## 1        0.633            -0.546              1.87       0.558            0.456            0.698   0.95 median qi</code></pre>
 <p><code>median_qi</code> summarizes each input column using its median. If there are multiple columns to summarize, each gets its own <code>x.lower</code> and <code>x.upper</code> column (for each column <code>x</code>) corresponding to the bounds of the <code>.width</code>% interval. If there is only one column, the names <code>.lower</code> and <code>.upper</code> are used for the interval bounds.</p>
 <p>We can specify the columns we want to get medians and intervals from, as above, or if we omit the list of columns, <code>median_qi</code> will use every column that is not a grouping column or a special column (like <code>.chain</code>, <code>.iteration</code>, or <code>.draw</code>). Thus in the above example, <code>overall_mean</code> and <code>response_sd</code> are redundant arguments to <code>median_qi</code> because they are also the only columns we gathered from the model. So we can simplify the previous code to the following:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">overall_mean</span>, <span class="va">response_sd</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -541,7 +441,7 @@ model {
 <h3 class="hasAnchor">
 <a href="#with-indexed-variables" class="anchor"></a>With indexed variables</h3>
 <p>When we have a variable with one or more indices, such as <code>condition_mean</code>, we can apply <code>median_qi</code> (or other functions in the <code>point_interval</code> family) as we did before:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -554,7 +454,7 @@ model {
 ## 4 D                  1.02   0.681  1.37    0.95 median qi       
 ## 5 E                 -0.890 -1.23  -0.529   0.95 median qi</code></pre>
 <p>How did <code>median_qi</code> know what to aggregate? Data frames returned by <code>spread_draws</code> are automatically grouped by all index variables you pass to it; in this case, that means it groups by <code>condition</code>. <code>median_qi</code> respects groups, and calculates the point summaries and intervals within all groups. Then, because no columns were passed to <code>median_qi</code>, it acts on the only non-special (<code>.</code>-prefixed) and non-group column, <code>condition_mean</code>. So the above shortened syntax is equivalent to this more verbose call:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span>    <span class="co"># this line not necessary (done automatically by spread_draws)</span>
@@ -569,7 +469,7 @@ model {
 ## 5 E                 -0.890 -1.23  -0.529   0.95 median qi</code></pre>
 <p>When given only a single column, <code>median_qi</code> will use the names <code>.lower</code> and <code>.upper</code> for the lower and upper ends of the intervals.</p>
 <p><code>tidybayes</code> also provides an implementation of <code><a href="https://mc-stan.org/posterior/reference/draws_summary.html">posterior::summarise_draws()</a></code> for grouped data frames (<code>tidybayes::summaries_draws.grouped_df()</code>), which you can use to quickly get convergence diagnostics:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html">summarise_draws</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -591,59 +491,35 @@ model {
 <h3 class="hasAnchor">
 <a href="#using-geom_pointinterval" class="anchor"></a>Using <code>geom_pointinterval</code>
 </h3>
-<p>Plotting medians and intervals is straightforward using <code><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">ggdist::geom_pointinterval()</a></code>, which is similar to <code><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html">ggplot2::geom_pointrange()</a></code> but with sensible defaults for multiple intervals (functionality we will use later):</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">condition_mean</span>, xmin <span class="op">=</span> <span class="va">.lower</span>, xmax <span class="op">=</span> <span class="va">.upper</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">geom_pointinterval</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-18-1.png" width="648"></p>
-</div>
-<div id="using-stat_pointinterval" class="section level3">
-<h3 class="hasAnchor">
-<a href="#using-stat_pointinterval" class="anchor"></a>Using `stat_pointinterval``</h3>
-<p>Rather than summarizing the posterior before calling ggplot, we could also use <code><a href="http://mjskay.github.io/ggdist/reference/stat_pointinterval.html">ggdist::stat_pointinterval()</a></code> to perform the summary within ggplot:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<p>Plotting medians and intervals is straightforward using <code><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">ggdist::geom_pointinterval()</a></code> or <code><a href="http://mjskay.github.io/ggdist/reference/stat_pointinterval.html">ggdist::stat_pointinterval()</a></code>, which are similar to <code><a href="https://ggplot2.tidyverse.org/reference/geom_linerange.html">ggplot2::geom_pointrange()</a></code> but with sensible defaults for multiple intervals. For example:</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">condition_mean</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_pointinterval.html">stat_pointinterval</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-19-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-18-1.png" width="648"></p>
 <p>These functions have <code>.width = c(.66, .95)</code> by default (showing 66% and 95% intervals), but this can be changed by passing a <code>.width</code> argument to <code><a href="http://mjskay.github.io/ggdist/reference/stat_pointinterval.html">ggdist::stat_pointinterval()</a></code>.</p>
 </div>
 <div id="intervals-with-posterior-violins-eye-plots-stat_eye" class="section level3">
 <h3 class="hasAnchor">
 <a href="#intervals-with-posterior-violins-eye-plots-stat_eye" class="anchor"></a>Intervals with posterior violins (“eye plots”): <code>stat_eye</code>
 </h3>
-<p>The <code><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">ggdist::stat_eye()</a></code> geom provides a shortcut to generating “eye plots” (combinations of intervals and densities, drawn as violin plots):</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">condition_mean</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">stat_eye</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-20-1.png" width="648"></p>
-</div>
-<div id="intervals-with-posterior-densities-half-eye-plots-stat_halfeye" class="section level3">
-<h3 class="hasAnchor">
-<a href="#intervals-with-posterior-densities-half-eye-plots-stat_halfeye" class="anchor"></a>Intervals with posterior densities (“half-eye plots”): <code>stat_halfeye</code>
-</h3>
-<p>If you prefer densities over violins, you can use <code><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">ggdist::stat_halfeye()</a></code>. This example also demonstrates how to change the interval probability (here, to 90% and 50% intervals):</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<p>The <code><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">ggdist::stat_halfeye()</a></code> geom provides a shortcut to generating “half-eye plots” (combinations of intervals and densities). This example also demonstrates how to change the interval probability (here, to 90% and 50% intervals):</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">condition_mean</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">stat_halfeye</a></span><span class="op">(</span>.width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.90</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-21-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-19-1.png" width="648"></p>
 <p>Or say you want to annotate portions of the densities in color; the <code>fill</code> aesthetic can vary within a slab in all geoms and stats in the <code><a href="http://mjskay.github.io/ggdist/reference/geom_slabinterval.html">ggdist::geom_slabinterval()</a></code> family, including <code><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">ggdist::stat_halfeye()</a></code>. For example, if you want to annotate a domain-specific region of practical equivalence (ROPE), you could do something like this:</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">condition_mean</span>, fill <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html">stat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">.8</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">stat_halfeye</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.8</span>, <span class="fl">.8</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"gray80"</span>, <span class="st">"skyblue"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-22-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-20-1.png" width="648"></p>
 </div>
 <div id="other-visualizations-of-distributions-stat_slabinterval" class="section level3">
 <h3 class="hasAnchor">
@@ -656,8 +532,8 @@ model {
 <div id="intervals-with-multiple-probability-levels-the--width-argument" class="section level3">
 <h3 class="hasAnchor">
 <a href="#intervals-with-multiple-probability-levels-the--width-argument" class="anchor"></a>Intervals with multiple probability levels: the <code>.width =</code> argument</h3>
-<p><code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi()</a></code> and its sister functions can also produce an arbitrary number of probability intervals by setting the <code>.width =</code> argument:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<p>If you wish to summarise the data before plotting (sometimes useful for large samples), <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi()</a></code> and its sister functions can also produce an arbitrary number of probability intervals by setting the <code>.width =</code> argument:</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span>.width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.95</span>, <span class="fl">.8</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -680,42 +556,32 @@ model {
 ## 14 D                  1.02   0.904   1.14    0.5  median qi       
 ## 15 E                 -0.890 -1.01   -0.765   0.5  median qi</code></pre>
 <p>The results are in a tidy format: one row per index (<code>condition</code>) and probability level (<code>.width</code>). This facilitates plotting. For example, assigning <code>-.width</code> to the <code>size</code> aesthetic will show all intervals, making thicker lines correspond to smaller intervals:</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span>.width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.95</span>, <span class="fl">.66</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">condition_mean</span>, xmin <span class="op">=</span> <span class="va">.lower</span>, xmax <span class="op">=</span> <span class="va">.upper</span>,
-    size <span class="op">=</span> <span class="op">-</span><span class="va">.width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>               <span class="co"># smaller probability interval =&gt; thicker line</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>
+    y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">condition_mean</span>, xmin <span class="op">=</span> <span class="va">.lower</span>, xmax <span class="op">=</span> <span class="va">.upper</span>,
+    <span class="co"># size = -.width means smaller probability interval =&gt; thicker line</span>
+    <span class="co"># this can be omitted, geom_pointinterval includes it automatically</span>
+    <span class="co"># if a .width column is in the input data.</span>
+    size <span class="op">=</span> <span class="op">-</span><span class="va">.width</span>
+  <span class="op">)</span><span class="op">)</span> <span class="op">+</span>  
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">geom_pointinterval</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-24-1.png" width="648"></p>
-<p><code><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">ggdist::geom_pointinterval()</a></code> includes <code>size = -.width</code> as a default aesthetic mapping to facilitate exactly this usage. This, the above can be simplified to:</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span>.width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.95</span>, <span class="fl">.66</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">condition_mean</span>, xmin <span class="op">=</span> <span class="va">.lower</span>, xmax <span class="op">=</span> <span class="va">.upper</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">geom_pointinterval</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-25-1.png" width="648"></p>
-<p>Just as the <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">point_interval()</a></code> functions can generate an arbitrary number of intervals per distribution, so too can <code><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">ggdist::geom_pointinterval()</a></code> draw an arbitrary number of intervals, though in most cases this starts to get pretty silly (and will require the use of <code>interval_size_range =</code>, which determines the minimum and maximum line thickness, to make it legible). Here it is with 3:</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span>.width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.95</span>, <span class="fl">.8</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">condition_mean</span>, xmin <span class="op">=</span> <span class="va">.lower</span>, xmax <span class="op">=</span> <span class="va">.upper</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">geom_pointinterval</a></span><span class="op">(</span>interval_size_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-26-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-22-1.png" width="648"></p>
+<p><code><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">ggdist::geom_pointinterval()</a></code> includes <code>size = -.width</code> as a default aesthetic mapping to facilitate exactly this usage.</p>
 </div>
 <div id="plotting-posteriors-as-quantile-dotplots" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plotting-posteriors-as-quantile-dotplots" class="anchor"></a>Plotting posteriors as quantile dotplots</h3>
 <p>Intervals are nice if the alpha level happens to line up with whatever decision you are trying to make, but getting a shape of the posterior is better (hence eye plots, above). On the other hand, making inferences from density plots is imprecise (estimating the area of one shape as a proportion of another is a hard perceptual task). Reasoning about probability in frequency formats is easier, motivating <a href="https://github.com/mjskay/when-ish-is-my-bus/blob/master/quantile-dotplots.md">quantile dotplots</a> (<a href="https://doi.org/10.1145/2858036.2858558">Kay et al. 2016</a>, <a href="https://doi.org/10.1145/3173574.3173718">Fernandes et al. 2018</a>), which also allow precise estimation of arbitrary intervals (down to the dot resolution of the plot, 100 in the example below).</p>
 <p>Within the slabinterval family of geoms in tidybayes is the <code>dots</code> and <code>dotsinterval</code> family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. <code><a href="http://mjskay.github.io/ggdist/reference/geom_dotsinterval.html">ggdist::stat_dots()</a></code> is the variant designed for use on samples:</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">condition_mean</span>, y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/geom_dotsinterval.html">stat_dots</a></span><span class="op">(</span>quantiles <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-27-1.png" width="648"></p>
+  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/geom_dotsinterval.html">stat_dotsinterval</a></span><span class="op">(</span>quantiles <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-23-1.png" width="648"></p>
 <p>The idea is to get away from thinking about the posterior as indicating one canonical point or interval, but instead to represent it as (say) 100 approximately equally likely points.</p>
 </div>
 <div id="alternative-point-summaries-and-intervals-median-mean-mode-qi-hdi-hdci" class="section level3">
@@ -723,13 +589,13 @@ model {
 <a href="#alternative-point-summaries-and-intervals-median-mean-mode-qi-hdi-hdci" class="anchor"></a>Alternative point summaries and intervals: median, mean, mode; qi, hdi, hdci</h3>
 <p>The <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">point_interval()</a></code> family of functions follow the naming scheme <code>[median|mean|mode]_[qi|hdi|hdci]</code>, and all work in the same way as <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi()</a></code>: they take a series of names (or expressions calculated on columns) and summarize those columns with the corresponding point summary function (median, mean, or mode) and interval (qi, hdi, or hdci). <code>qi</code> yields a quantile interval (a.k.a. equi-tailed interval, central interval, or percentile interval), <code>hdi</code> yields one or more highest (posterior) density interval(s), and <code>hdci</code> yields a single (possibly) highest-density continuous interval. These can be used in any combination desired.</p>
 <p>The <code>*_hdi</code> functions have an additional difference: In the case of multimodal distributions, they may return multiple intervals for each probability level. Here are some draws from a multimodal normal mixture:</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="va">multimodal_draws</span> <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
   x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">5000</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">2500</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>Passed through <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">mode_hdi()</a></code>, we get multiple intervals at the 80% probability level:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">multimodal_draws</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">mode_hdi</a></span><span class="op">(</span><span class="va">x</span>, .width <span class="op">=</span> <span class="fl">.80</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 6
@@ -738,7 +604,7 @@ model {
 ## 1 -0.0153  -1.52   1.60    0.8 mode   hdi      
 ## 2 -0.0153   3.04   5.00    0.8 mode   hdi</code></pre>
 <p>This is easier to see when plotted:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">multimodal_draws</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">stat_slab</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -748,14 +614,14 @@ model {
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span><span class="op">(</span><span class="st">"text"</span>, label <span class="op">=</span> <span class="st">"mode, 80% and 95% highest-density intervals"</span>, x <span class="op">=</span> <span class="fl">6</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.25</span>, hjust <span class="op">=</span> <span class="fl">0</span>, vjust <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3.25</span>, <span class="fl">18</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-30-1.png" width="768"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-26-1.png" width="768"></p>
 </div>
 </div>
 <div id="combining-variables-with-different-indices-in-a-single-tidy-format-data-frame" class="section level2">
 <h2 class="hasAnchor">
 <a href="#combining-variables-with-different-indices-in-a-single-tidy-format-data-frame" class="anchor"></a>Combining variables with different indices in a single tidy format data frame</h2>
 <p><code><a href="../reference/gather_draws.html">spread_draws()</a></code> supports extracting variables that have different indices. It automatically matches up indices with the same name, and duplicates values as necessary to produce one row per all combination of levels of all indices. For example, we might want to calculate the difference between each condition mean and the overall mean. To do that, we can extract draws from the overall mean and all condition means:</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">overall_mean</span>, <span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></code></pre></div>
@@ -774,7 +640,7 @@ model {
 ##  9      1          2     2       0.0361 D                1.12   
 ## 10      1          2     2       0.0361 E               -0.884</code></pre>
 <p>Within each draw, <code>overall_mean</code> is repeated as necessary to correspond to every index of <code>condition_mean</code>. Thus, the <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">dplyr::mutate()</a></code> function can be used to take the differences over all rows, then we can summarize with <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi()</a></code>:</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">overall_mean</span>, <span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>condition_offset <span class="op">=</span> <span class="va">condition_mean</span> <span class="op">-</span> <span class="va">overall_mean</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -791,16 +657,8 @@ model {
 <div id="posterior-predictions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#posterior-predictions" class="anchor"></a>Posterior predictions</h2>
-<p>We can use combinations of variables with difference indices to generate predictions from the model. In this case, we can combine the condition means with the residual standard deviation to generate predictive distributions from the model, then show the distributions using <code><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">ggdist::stat_slab()</a></code>:</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span>, <span class="va">response_sd</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>y_rep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">condition_mean</span>, <span class="va">response_sd</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">y_rep</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">stat_slab</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-33-1.png" width="648"></p>
-<p>And even summarize these as predictive intervals and compare them to the data:</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<p>We can use combinations of variables with difference indices to generate predictions from the model. In this case, we can combine the condition means with the residual standard deviation to generate predictive distributions from the model, then show the distributions using <code><a href="http://mjskay.github.io/ggdist/reference/stat_interval.html">ggdist::stat_interval()</a></code> and compare them to the data:</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span>, <span class="va">response_sd</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>y_rep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">condition_mean</span>, <span class="va">response_sd</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -809,13 +667,13 @@ model {
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/geom_interval.html">geom_interval</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">.lower</span>, xmax <span class="op">=</span> <span class="va">.upper</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co">#auto-sets aes(color = fct_rev(ordered(.width)))</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">response</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">ABC</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-34-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-29-1.png" width="648"></p>
 <p>If this model is well-calibrated, about 95% of the data should be within the outer intervals, 80% in the next-smallest intervals, and 50% in the smallest intervals.</p>
 <div id="posterior-predictions-with-posterior-distributions-of-means" class="section level3">
 <h3 class="hasAnchor">
 <a href="#posterior-predictions-with-posterior-distributions-of-means" class="anchor"></a>Posterior predictions with posterior distributions of means</h3>
 <p>Altogether, data, posterior predictions, and posterior distributions of the means:</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">draws</span> <span class="op">=</span> <span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span>, <span class="va">response_sd</span><span class="op">)</span>
 
@@ -828,20 +686,20 @@ model {
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_pointinterval.html">stat_pointinterval</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">condition_mean</span><span class="op">)</span>, .width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.95</span>, <span class="fl">.66</span><span class="op">)</span>, position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_nudge.html">position_nudge</a></span><span class="op">(</span>y <span class="op">=</span> <span class="op">-</span><span class="fl">0.3</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">draws</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">response</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-35-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-30-1.png" width="648"></p>
 </div>
 </div>
 <div id="comparing-levels-of-a-factor" class="section level2">
 <h2 class="hasAnchor">
 <a href="#comparing-levels-of-a-factor" class="anchor"></a>Comparing levels of a factor</h2>
 <p><code><a href="../reference/compare_levels.html">compare_levels()</a></code> allows us to compare the value of some variable across levels of some factor. By default it computes all pairwise differences, though this can be changed using the <code>comparison =</code> argument:</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/compare_levels.html">compare_levels</a></span><span class="op">(</span><span class="va">condition_mean</span>, by <span class="op">=</span> <span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">condition</span>, x <span class="op">=</span> <span class="va">condition_mean</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">stat_halfeye</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-36-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-31-1.png" width="648"></p>
 </div>
 <div id="gathering-all-model-variable-names-into-a-single-column-gather_draws-and-gather_variables" class="section level2">
 <h2 class="hasAnchor">
@@ -849,7 +707,7 @@ model {
 </h2>
 <p>We might also prefer all model variable names to be in a single column (long-format) instead of as column names. There are two methods for obtaining long-format data frames with <code>tidybayes</code>, whose use depends on where and how in the data processing chain you might want to transform into long-format: <code><a href="../reference/gather_draws.html">gather_draws()</a></code> and <code><a href="../reference/gather_variables.html">gather_variables()</a></code>. There are also two methods for wide (or semi-wide) format data frame, <code><a href="../reference/gather_draws.html">spread_draws()</a></code> (described previously) and <code><a href="../reference/tidy_draws.html">tidy_draws()</a></code>.</p>
 <p><code><a href="../reference/gather_draws.html">gather_draws()</a></code> is the counterpart to <code><a href="../reference/gather_draws.html">spread_draws()</a></code>, except it puts all variable names in a <code>.variable</code> column and all draws in a <code>.value</code> column:</p>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">gather_draws</a></span><span class="op">(</span><span class="va">overall_mean</span>, <span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -864,7 +722,7 @@ model {
 ## 6 overall_mean   &lt;NA&gt;       0.633 -0.546  1.87    0.95 median qi</code></pre>
 <p>Note that <code>condition = NA</code> for the <code>overall_mean</code> row, because it does not have an index with that name in the specification passed to <code><a href="../reference/gather_draws.html">gather_draws()</a></code>.</p>
 <p>While this works well if we do not need to perform computations that involve multiple columns, the semi-wide format returned by <code><a href="../reference/gather_draws.html">spread_draws()</a></code> is very useful for computations that involve multiple columns names, such as the calculation of the <code>condition_offset</code> above. If we want to make intermediate computations on the format returned by <code>spread_draws</code> and <em>then</em> gather variables into one column, we can use <code><a href="../reference/gather_variables.html">gather_variables()</a></code>, which will gather all non-grouped variables that are not special columns (like <code>.chain</code>, <code>.iteration</code>, or <code>.draw</code>):</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">overall_mean</span>, <span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>condition_offset <span class="op">=</span> <span class="va">condition_mean</span> <span class="op">-</span> <span class="va">overall_mean</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -890,7 +748,7 @@ model {
 ## 15 E         overall_mean      0.633 -0.546   1.87    0.95 median qi</code></pre>
 <p>Note how <code>overall_mean</code> is now repeated here for each condition, because we have performed the gather after spreading model variables across columns.</p>
 <p>Finally, if we want raw model variable names as columns names instead of having indices split out as their own column names, we can use <code><a href="../reference/tidy_draws.html">tidy_draws()</a></code>. Generally speaking <code><a href="../reference/gather_draws.html">spread_draws()</a></code> and <code><a href="../reference/gather_draws.html">gather_draws()</a></code> are typically more useful than <code><a href="../reference/tidy_draws.html">tidy_draws()</a></code>, but it is provided as a common method for generating data frames from many types of Bayesian models, and is used internally by <code><a href="../reference/gather_draws.html">gather_draws()</a></code> and <code><a href="../reference/gather_draws.html">spread_draws()</a></code>:</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/tidy_draws.html">tidy_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></code></pre></div>
@@ -912,7 +770,7 @@ model {
 ## #   condition_mean[5] &lt;dbl&gt;, lp__ &lt;dbl&gt;, accept_stat__ &lt;dbl&gt;, stepsize__ &lt;dbl&gt;, treedepth__ &lt;dbl&gt;, n_leapfrog__ &lt;dbl&gt;,
 ## #   divergent__ &lt;dbl&gt;, energy__ &lt;dbl&gt;</code></pre>
 <p>Combining <code><a href="../reference/tidy_draws.html">tidy_draws()</a></code> with <code><a href="../reference/gather_variables.html">gather_variables()</a></code> also allows us to derive similar output to <code>ggmcmc::ggs()</code>, if desired:</p>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/tidy_draws.html">tidy_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_variables.html">gather_variables</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -937,7 +795,7 @@ model {
 <h2 class="hasAnchor">
 <a href="#selecting-variables-using-regular-expressions" class="anchor"></a>Selecting variables using regular expressions</h2>
 <p>You can use regular expressions in the specifications passed to <code><a href="../reference/gather_draws.html">spread_draws()</a></code> and <code><a href="../reference/gather_draws.html">gather_draws()</a></code> to match multiple columns by passing <code>regex = TRUE</code>. Our example fit contains variables named <code>condition_mean[i]</code> and <code>condition_zoffset[i]</code>. We could extract both using a single regular expression:</p>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">`condition_.*`</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span>, regex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></code></pre></div>
@@ -961,7 +819,7 @@ model {
 <h2 class="hasAnchor">
 <a href="#drawing-fit-curves-with-uncertainty" class="anchor"></a>Drawing fit curves with uncertainty</h2>
 <p>To demonstrate drawing fit curves with uncertainty, let’s fit a slightly naive model to part of the <code>mtcars</code> dataset using <code><a href="https://rdrr.io/pkg/brms/man/brm.html">brms::brm()</a></code>:</p>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_mpg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html">brm</a></span><span class="op">(</span>
   <span class="va">mpg</span> <span class="op">~</span> <span class="va">hp</span> <span class="op">*</span> <span class="va">cyl</span>, 
   data <span class="op">=</span> <span class="va">mtcars</span>, 
@@ -969,7 +827,7 @@ model {
   file <span class="op">=</span> <span class="st">"models/tidybayes_m_mpg.rds"</span>  <span class="co"># cache model (can be removed)</span>
 <span class="op">)</span></code></pre></div>
 <p>We can draw fit curves with probability bands using <code><a href="../reference/add_epred_draws.html">add_epred_draws()</a></code> and <code><a href="http://mjskay.github.io/ggdist/reference/stat_lineribbon.html">ggdist::stat_lineribbon()</a></code>:</p>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span><span class="op">(</span>hp <span class="op">=</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range</a></span><span class="op">(</span><span class="va">hp</span>, n <span class="op">=</span> <span class="fl">51</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -979,9 +837,9 @@ model {
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Greys"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set2"</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-42-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-37-1.png" width="648"></p>
 <p>Or we can sample a reasonable number of fit lines (say 100) and overplot them:</p>
-<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtcars</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span><span class="op">(</span>hp <span class="op">=</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range</a></span><span class="op">(</span><span class="va">hp</span>, n <span class="op">=</span> <span class="fl">101</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -993,20 +851,20 @@ model {
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">.epred</span>, group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="va">.draw</span><span class="op">)</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-43-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-38-1.png" width="648"></p>
 <p>For more examples of fit line uncertainty, see the corresponding sections in <code><a href="../articles/tidy-brms.html">vignette("tidy-brms")</a></code> or <code><a href="../articles/tidy-rstanarm.html">vignette("tidy-rstanarm")</a></code>.</p>
 </div>
 <div id="compatibility-with-other-packages" class="section level2">
 <h2 class="hasAnchor">
 <a href="#compatibility-with-other-packages" class="anchor"></a>Compatibility with other packages</h2>
-<div id="compatibility-of-point_interval-with-broomtidy-and-dotwhiskerdwplot-a-model-comparison-example" class="section level3">
+<div id="compatibility-of-point_interval-with-broomtidy-a-model-comparison-example" class="section level3">
 <h3 class="hasAnchor">
-<a href="#compatibility-of-point_interval-with-broomtidy-and-dotwhiskerdwplot-a-model-comparison-example" class="anchor"></a>Compatibility of <code>point_interval</code> with <code>broom::tidy</code> and <code>dotwhisker::dwplot</code>: A model comparison example</h3>
+<a href="#compatibility-of-point_interval-with-broomtidy-a-model-comparison-example" class="anchor"></a>Compatibility of <code>point_interval</code> with <code>broom::tidy</code>: A model comparison example</h3>
 <p>Combining <code><a href="http://mjskay.github.io/ggdist/reference/tidy-format-translators.html">to_broom_names()</a></code> with <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi()</a></code> (or more generally, the <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">point_interval()</a></code> family of functions) makes it easy to compare results against models supported by <code><a href="https://generics.r-lib.org/reference/tidy.html">broom::tidy()</a></code>. For example, let’s compare our model’s fits for conditional means against an ordinary least squares (OLS) regression:</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_linear</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">condition</span>, data <span class="op">=</span> <span class="va">ABC</span><span class="op">)</span></code></pre></div>
 <p>Combining <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans::emmeans</a></code> with <code><a href="https://generics.r-lib.org/reference/tidy.html">broom::tidy</a></code>, we can generate tidy-format summaries of conditional means from the above model:</p>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">linear_results</span> <span class="op">=</span> <span class="va">m_linear</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span>conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1022,7 +880,7 @@ model {
 ## 4 D            1.03      0.173    45    0.678     1.38       5.93 3.97e- 7 OLS  
 ## 5 E           -0.935     0.173    45   -1.28     -0.586     -5.40 2.41e- 6 OLS</code></pre>
 <p>We can derive corresponding fits from our model:</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bayes_results</span> <span class="op">=</span> <span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html">median_qi</a></span><span class="op">(</span>estimate <span class="op">=</span> <span class="va">condition_mean</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1039,18 +897,12 @@ model {
 ## 4 D            1.02     0.681     1.37    0.95 median qi        Bayes
 ## 5 E           -0.890   -1.23     -0.529   0.95 median qi        Bayes</code></pre>
 <p>Here, <code><a href="http://mjskay.github.io/ggdist/reference/tidy-format-translators.html">to_broom_names()</a></code> will convert <code>.lower</code> and <code>.upper</code> into <code>conf.low</code> and <code>conf.high</code> so the names of the columns we need to make the comparison (<code>condition</code>, <code>estimate</code>, <code>conf.low</code>, and <code>conf.high</code>) all line up easily. This makes it simple to combine the two tidy data frames together using <code>bind_rows</code>, and plot them:</p>
-<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">linear_results</span>, <span class="va">bayes_results</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>condition <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html">fct_rev</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">condition</span>, x <span class="op">=</span> <span class="va">estimate</span>, xmin <span class="op">=</span> <span class="va">conf.low</span>, xmax <span class="op">=</span> <span class="va">conf.high</span>, color <span class="op">=</span> <span class="va">model</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html">geom_pointinterval</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">.3</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-47-1.png" width="648"></p>
-<p>Compatibility with <code><a href="https://generics.r-lib.org/reference/tidy.html">broom::tidy()</a></code> also gives compatibility with <code><a href="https://rdrr.io/pkg/dotwhisker/man/dwplot.html">dotwhisker::dwplot()</a></code>:</p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">linear_results</span>, <span class="va">bayes_results</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>term <span class="op">=</span> <span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">dotwhisker</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/dotwhisker/man/dwplot.html">dwplot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-48-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-42-1.png" width="648"></p>
 <p>Observe the shrinkage towards the overall mean in the Bayesian model compared to the OLS model.</p>
 </div>
 <div id="compatibility-with-bayesplot-using-unspread_draws-and-ungather_draws" class="section level3">
@@ -1060,7 +912,7 @@ model {
 <p>Functions from other packages might expect draws in the form of a data frame or matrix with variables as columns and draws as rows. That is the format returned by <code><a href="../reference/tidy_draws.html">tidy_draws()</a></code>, but not by <code><a href="../reference/gather_draws.html">gather_draws()</a></code> or <code><a href="../reference/gather_draws.html">spread_draws()</a></code>, which split indices from variables out into columns.</p>
 <p>It may be desirable to use the <code><a href="../reference/gather_draws.html">spread_draws()</a></code> or <code><a href="../reference/gather_draws.html">gather_draws()</a></code> functions to transform your draws in some way, and then convert them <em>back</em> into the draw <span class="math inline">\(\times\)</span> variable format to pass them into functions from other packages, like <code>bayesplot</code>. The <code><a href="../reference/ungather_draws.html">unspread_draws()</a></code> and <code><a href="../reference/ungather_draws.html">ungather_draws()</a></code> functions invert <code><a href="../reference/gather_draws.html">spread_draws()</a></code> and <code><a href="../reference/gather_draws.html">gather_draws()</a></code> to return a data frame with variable column names that include indices in them and draws as rows.</p>
 <p>As an example, let’s re-do the previous example of <code><a href="../reference/compare_levels.html">compare_levels()</a></code>, but use <code><a href="https://mc-stan.org/bayesplot/reference/MCMC-intervals.html">bayesplot::mcmc_areas()</a></code> to plot the results instead of <code><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">ggdist::stat_eye()</a></code>. First, the result of <code><a href="../reference/compare_levels.html">compare_levels()</a></code> looks like this:</p>
-<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/compare_levels.html">compare_levels</a></span><span class="op">(</span><span class="va">condition_mean</span>, by <span class="op">=</span> <span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1080,7 +932,7 @@ model {
 ##  9      1          9     9 B - A              0.750
 ## 10      1         10    10 B - A              0.794</code></pre>
 <p>To get a version we can pass to <code><a href="https://mc-stan.org/bayesplot/reference/MCMC-intervals.html">bayesplot::mcmc_areas()</a></code>, all we need to do is invert the <code><a href="../reference/gather_draws.html">spread_draws()</a></code> call we started with:</p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/compare_levels.html">compare_levels</a></span><span class="op">(</span><span class="va">condition_mean</span>, by <span class="op">=</span> <span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1102,13 +954,13 @@ model {
 ## # ... with 5 more variables: condition_mean[D - C] &lt;dbl&gt;, condition_mean[E - A] &lt;dbl&gt;, condition_mean[E - B] &lt;dbl&gt;,
 ## #   condition_mean[E - C] &lt;dbl&gt;, condition_mean[E - D] &lt;dbl&gt;</code></pre>
 <p>We can pass that into <code><a href="https://mc-stan.org/bayesplot/reference/MCMC-intervals.html">bayesplot::mcmc_areas()</a></code> directly. The <code>drop_indices = TRUE</code> argument to <code><a href="../reference/ungather_draws.html">unspread_draws()</a></code> indicates that <code>.chain</code>, <code>.iteration</code>, and <code>.draw</code> should not be included in the output:</p>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/compare_levels.html">compare_levels</a></span><span class="op">(</span><span class="va">condition_mean</span>, by <span class="op">=</span> <span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/ungather_draws.html">unspread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span>, drop_indices <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">bayesplot</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/bayesplot/reference/MCMC-intervals.html">mcmc_areas</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-51-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-45-1.png" width="648"></p>
 <p>If you are instead working with tidy draws generated by <code><a href="../reference/gather_draws.html">gather_draws()</a></code> or <code><a href="../reference/gather_variables.html">gather_variables()</a></code>, the <code><a href="../reference/ungather_draws.html">ungather_draws()</a></code> function will transform those draws into the draw <span class="math inline">\(\times\)</span> variable format. It has the same syntax as <code><a href="../reference/ungather_draws.html">unspread_draws()</a></code>.</p>
 </div>
 <div id="compatibility-with-emmeans-formerly-lsmeans" class="section level3">
@@ -1122,110 +974,10 @@ model {
 </h4>
 <p>Both <code>rstanarm</code> and <code>brms</code> behave similarly when used with <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans::emmeans()</a></code>. The example below uses <code>rstanarm</code>, but should work similarly for <code>brms</code>.</p>
 <p>Given this <code>rstanarm</code> model:</p>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_rst</span> <span class="op">=</span> <span class="fu"><a href="https://mc-stan.org/rstanarm/reference/stan_glm.html">stan_glm</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">condition</span>, data <span class="op">=</span> <span class="va">ABC</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## SAMPLING FOR MODEL 'continuous' NOW (CHAIN 1).
-## Chain 1: 
-## Chain 1: Gradient evaluation took 0 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 1: 
-## Chain 1:  Elapsed Time: 0.047 seconds (Warm-up)
-## Chain 1:                0.056 seconds (Sampling)
-## Chain 1:                0.103 seconds (Total)
-## Chain 1: 
-## 
-## SAMPLING FOR MODEL 'continuous' NOW (CHAIN 2).
-## Chain 2: 
-## Chain 2: Gradient evaluation took 0 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
-## Chain 2: Adjust your expectations accordingly!
-## Chain 2: 
-## Chain 2: 
-## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 2: 
-## Chain 2:  Elapsed Time: 0.055 seconds (Warm-up)
-## Chain 2:                0.051 seconds (Sampling)
-## Chain 2:                0.106 seconds (Total)
-## Chain 2: 
-## 
-## SAMPLING FOR MODEL 'continuous' NOW (CHAIN 3).
-## Chain 3: 
-## Chain 3: Gradient evaluation took 0 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
-## Chain 3: Adjust your expectations accordingly!
-## Chain 3: 
-## Chain 3: 
-## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 3: 
-## Chain 3:  Elapsed Time: 0.049 seconds (Warm-up)
-## Chain 3:                0.043 seconds (Sampling)
-## Chain 3:                0.092 seconds (Total)
-## Chain 3: 
-## 
-## SAMPLING FOR MODEL 'continuous' NOW (CHAIN 4).
-## Chain 4: 
-## Chain 4: Gradient evaluation took 0 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
-## Chain 4: Adjust your expectations accordingly!
-## Chain 4: 
-## Chain 4: 
-## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-## Chain 4: 
-## Chain 4:  Elapsed Time: 0.051 seconds (Warm-up)
-## Chain 4:                0.047 seconds (Sampling)
-## Chain 4:                0.098 seconds (Total)
-## Chain 4:</code></pre>
 <p>We can use <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans::emmeans()</a></code> to get conditional means with uncertainty:</p>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_rst</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_emmeans_draws.html">gather_emmeans_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1233,13 +985,13 @@ model {
 <pre><code>## # A tibble: 5 x 7
 ##   condition .value .lower .upper .width .point .interval
 ##   &lt;fct&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    
-## 1 A          0.177 -0.177  0.528   0.95 median qi       
-## 2 B          1.01   0.674  1.36    0.95 median qi       
-## 3 C          1.88   1.52   2.23    0.95 median qi       
-## 4 D          1.02   0.680  1.38    0.95 median qi       
-## 5 E         -0.938 -1.27  -0.603   0.95 median qi</code></pre>
+## 1 A          0.177 -0.170  0.537   0.95 median qi       
+## 2 B          1.02   0.668  1.37    0.95 median qi       
+## 3 C          1.87   1.53   2.21    0.95 median qi       
+## 4 D          1.03   0.673  1.38    0.95 median qi       
+## 5 E         -0.935 -1.29  -0.581   0.95 median qi</code></pre>
 <p>Or <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans::emmeans()</a></code> with <code><a href="https://rdrr.io/pkg/emmeans/man/contrast.html">emmeans::contrast()</a></code> to do all pairwise comparisons:</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_rst</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html">contrast</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1248,28 +1000,28 @@ model {
 <pre><code>## # A tibble: 10 x 7
 ##    contrast  .value .lower .upper .width .point .interval
 ##    &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    
-##  1 A - B    -0.832  -1.33  -0.351   0.95 median qi       
-##  2 A - C    -1.70   -2.18  -1.20    0.95 median qi       
-##  3 A - D    -0.842  -1.36  -0.371   0.95 median qi       
-##  4 A - E     1.12    0.611  1.61    0.95 median qi       
-##  5 B - C    -0.865  -1.34  -0.367   0.95 median qi       
-##  6 B - D    -0.0104 -0.500  0.466   0.95 median qi       
-##  7 B - E     1.95    1.47   2.42    0.95 median qi       
-##  8 C - D     0.851   0.368  1.35    0.95 median qi       
-##  9 C - E     2.81    2.33   3.29    0.95 median qi       
-## 10 D - E     1.96    1.47   2.46    0.95 median qi</code></pre>
+##  1 A - B    -0.842  -1.34  -0.335   0.95 median qi       
+##  2 A - C    -1.70   -2.20  -1.21    0.95 median qi       
+##  3 A - D    -0.848  -1.34  -0.344   0.95 median qi       
+##  4 A - E     1.11    0.624  1.64    0.95 median qi       
+##  5 B - C    -0.859  -1.33  -0.362   0.95 median qi       
+##  6 B - D    -0.0144 -0.502  0.491   0.95 median qi       
+##  7 B - E     1.95    1.47   2.47    0.95 median qi       
+##  8 C - D     0.845   0.359  1.32    0.95 median qi       
+##  9 C - E     2.81    2.31   3.31    0.95 median qi       
+## 10 D - E     1.95    1.45   2.49    0.95 median qi</code></pre>
 <p>See the documentation for <code><a href="https://rdrr.io/pkg/emmeans/man/emmc-functions.html">emmeans::pairwise.emmc()</a></code> for a list of the numerous contrast types supported by <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans::emmeans()</a></code>.</p>
 <p>As before, we can plot the results instead of using a table:</p>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_rst</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html">contrast</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_emmeans_draws.html">gather_emmeans_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.value</span>, y <span class="op">=</span> <span class="va">contrast</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html">stat_halfeye</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="tidybayes_files/figure-html/unnamed-chunk-55-1.png" width="648"></p>
+<p><img src="tidybayes_files/figure-html/unnamed-chunk-49-1.png" width="648"></p>
 <p><code><a href="../reference/gather_emmeans_draws.html">gather_emmeans_draws()</a></code> also supports <code>emm_list</code> objects, which contain estimates from different reference grids (see <code><a href="https://rdrr.io/pkg/emmeans/man/ref_grid.html">emmeans::ref_grid()</a></code> for more information on reference grids). An additional column with the default name of <code>.grid</code> is added to indicate the reference grid for each row in the output:</p>
-<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_rst</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">pairwise</span> <span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gather_emmeans_draws.html">gather_emmeans_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -1277,21 +1029,21 @@ model {
 <pre><code>## # A tibble: 15 x 9
 ##    condition contrast .grid      .value .lower .upper .width .point .interval
 ##    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    
-##  1 A         &lt;NA&gt;     emmeans    0.177  -0.177  0.528   0.95 median qi       
-##  2 B         &lt;NA&gt;     emmeans    1.01    0.674  1.36    0.95 median qi       
-##  3 C         &lt;NA&gt;     emmeans    1.88    1.52   2.23    0.95 median qi       
-##  4 D         &lt;NA&gt;     emmeans    1.02    0.680  1.38    0.95 median qi       
-##  5 E         &lt;NA&gt;     emmeans   -0.938  -1.27  -0.603   0.95 median qi       
-##  6 &lt;NA&gt;      A - B    contrasts -0.832  -1.33  -0.351   0.95 median qi       
-##  7 &lt;NA&gt;      A - C    contrasts -1.70   -2.18  -1.20    0.95 median qi       
-##  8 &lt;NA&gt;      A - D    contrasts -0.842  -1.36  -0.371   0.95 median qi       
-##  9 &lt;NA&gt;      A - E    contrasts  1.12    0.611  1.61    0.95 median qi       
-## 10 &lt;NA&gt;      B - C    contrasts -0.865  -1.34  -0.367   0.95 median qi       
-## 11 &lt;NA&gt;      B - D    contrasts -0.0104 -0.500  0.466   0.95 median qi       
-## 12 &lt;NA&gt;      B - E    contrasts  1.95    1.47   2.42    0.95 median qi       
-## 13 &lt;NA&gt;      C - D    contrasts  0.851   0.368  1.35    0.95 median qi       
-## 14 &lt;NA&gt;      C - E    contrasts  2.81    2.33   3.29    0.95 median qi       
-## 15 &lt;NA&gt;      D - E    contrasts  1.96    1.47   2.46    0.95 median qi</code></pre>
+##  1 A         &lt;NA&gt;     emmeans    0.177  -0.170  0.537   0.95 median qi       
+##  2 B         &lt;NA&gt;     emmeans    1.02    0.668  1.37    0.95 median qi       
+##  3 C         &lt;NA&gt;     emmeans    1.87    1.53   2.21    0.95 median qi       
+##  4 D         &lt;NA&gt;     emmeans    1.03    0.673  1.38    0.95 median qi       
+##  5 E         &lt;NA&gt;     emmeans   -0.935  -1.29  -0.581   0.95 median qi       
+##  6 &lt;NA&gt;      A - B    contrasts -0.842  -1.34  -0.335   0.95 median qi       
+##  7 &lt;NA&gt;      A - C    contrasts -1.70   -2.20  -1.21    0.95 median qi       
+##  8 &lt;NA&gt;      A - D    contrasts -0.848  -1.34  -0.344   0.95 median qi       
+##  9 &lt;NA&gt;      A - E    contrasts  1.11    0.624  1.64    0.95 median qi       
+## 10 &lt;NA&gt;      B - C    contrasts -0.859  -1.33  -0.362   0.95 median qi       
+## 11 &lt;NA&gt;      B - D    contrasts -0.0144 -0.502  0.491   0.95 median qi       
+## 12 &lt;NA&gt;      B - E    contrasts  1.95    1.47   2.47    0.95 median qi       
+## 13 &lt;NA&gt;      C - D    contrasts  0.845   0.359  1.32    0.95 median qi       
+## 14 &lt;NA&gt;      C - E    contrasts  2.81    2.31   3.31    0.95 median qi       
+## 15 &lt;NA&gt;      D - E    contrasts  1.95    1.45   2.49    0.95 median qi</code></pre>
 </div>
 <div id="using-mcmcglmm" class="section level4">
 <h4 class="hasAnchor">
@@ -1299,12 +1051,12 @@ model {
 </h4>
 <p>Let’s do the same example as above again, this time using <code><a href="https://rdrr.io/pkg/MCMCglmm/man/MCMCglmm.html">MCMCglmm::MCMCglmm()</a></code> instead of <code>rstanarm</code>. The only different when using <code><a href="https://rdrr.io/pkg/MCMCglmm/man/MCMCglmm.html">MCMCglmm()</a></code> is that to use <code><a href="https://rdrr.io/pkg/MCMCglmm/man/MCMCglmm.html">MCMCglmm()</a></code> with <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans()</a></code> you must also pass the original data used to fit the model to the <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans()</a></code> call (see <code>vignette("models", package = "emmeans"))</code> for more information).</p>
 <p>First, we’ll fit the model:</p>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># MCMCglmm does not support tibbles directly,</span>
 <span class="co"># so we convert ABC to a data.frame on the way in</span>
 <span class="va">m_glmm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/MCMCglmm/man/MCMCglmm.html">MCMCglmm</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">condition</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">ABC</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Now we can use <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans()</a></code> and <code><a href="../reference/gather_emmeans_draws.html">gather_emmeans_draws()</a></code> exactly as we did with <code>rstanarm</code>, but we need to include a <code>data</code> argument in the <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans()</a></code> call:</p>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_glmm</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">condition</span>, data <span class="op">=</span> <span class="va">ABC</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html">contrast</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span> <span class="op">%&gt;%</span>

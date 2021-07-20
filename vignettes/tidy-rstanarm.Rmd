@@ -129,7 +129,7 @@ ABC %>%
 
 Let's fit a hierarchical model with shrinkage towards a global mean:
 
-```{r}
+```{r message = FALSE, results = 'hide'}
 m = stan_lmer(response ~ (1|condition), data = ABC, 
   prior = normal(0, 1, autoscale = FALSE),
   prior_aux = student_t(3, 0, 1, autoscale = FALSE),
@@ -516,7 +516,7 @@ m %>%
 
 Here's an ordinal model with a categorical predictor:
 
-```{r m_esoph_rs_stan_polr, cache = TRUE}
+```{r m_esoph_rs_stan_polr, cache = TRUE, message = FALSE, results = "hide"}
 data(esoph)
 m_esoph_rs = stan_polr(tobgp ~ agegp, data = esoph, prior = R2(0.25), prior_counts = rstanarm::dirichlet(1))
 ```
