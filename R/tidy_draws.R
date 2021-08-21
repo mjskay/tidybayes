@@ -226,6 +226,7 @@ tidy_draws.jagsUI = function(model, ...) {
 }
 
 #' @rdname tidy_draws
+#' @importFrom dplyr everything
 #' @export
 tidy_draws.brmsfit = function(model, ...) {
   draws = as_tibble(as_draws_df(model))
