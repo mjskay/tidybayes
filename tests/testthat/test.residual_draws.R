@@ -24,9 +24,9 @@ test_that("[add_]residual_draws works on a simple brms model", {
   skip_if_not_installed("brms")
   m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
 
-  make_ref = function(nsamples = NULL) {
+  make_ref = function(ndraws = NULL) {
     set.seed(1234)
-    resids = residuals(m_hp, mtcars_tbl, summary = FALSE, nsamples = nsamples) %>%
+    resids = residuals(m_hp, mtcars_tbl, summary = FALSE, ndraws = ndraws) %>%
       as.data.frame() %>%
       set_names(seq_len(ncol(.))) %>%
       mutate(
@@ -50,7 +50,7 @@ test_that("[add_]residual_draws works on a simple brms model", {
 
   # subsetting to test `ndraws`
   set.seed(1234)
-  filtered_ref = make_ref(nsamples = 10)
+  filtered_ref = make_ref(ndraws = 10)
   expect_equal(residual_draws(m_hp, mtcars_tbl, ndraws = 10, seed = 1234), filtered_ref)
   expect_equal(add_residual_draws(mtcars_tbl, m_hp, ndraws = 10, seed = 1234), filtered_ref)
   expect_warning(

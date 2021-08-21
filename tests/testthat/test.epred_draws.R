@@ -106,8 +106,8 @@ test_that("[add_]epred_draws works on brms models without dpar", {
   skip_if_not_installed("brms")
   m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
 
-  make_ref = function(nsamples = NULL) {
-    fits = rstantools::posterior_epred(m_hp, mtcars_tbl, nsamples = nsamples) %>%
+  make_ref = function(ndraws = NULL) {
+    fits = rstantools::posterior_epred(m_hp, mtcars_tbl, ndraws = ndraws) %>%
       as.data.frame() %>%
       set_names(seq_len(ncol(.))) %>%
       mutate(
@@ -139,7 +139,7 @@ test_that("[add_]epred_draws works on brms models without dpar", {
 
   #subsetting to test the `ndraws` argument
   set.seed(1234)
-  filtered_ref = make_ref(nsamples = 10)
+  filtered_ref = make_ref(ndraws = 10)
 
   expect_equal(add_epred_draws(mtcars_tbl, m_hp, ndraws = 10, seed = 1234), filtered_ref)
 })
@@ -149,9 +149,9 @@ test_that("[add_]epred_draws works on brms models with dpar", {
   skip_if_not_installed("brms")
   m_hp_sigma = readRDS(test_path("../models/models.brms.m_hp_sigma.rds"))
 
-  make_ref = function(seed = 1234, nsamples = NULL) {
+  make_ref = function(seed = 1234, ndraws = NULL) {
     set.seed(seed)
-    fits = rstantools::posterior_epred(m_hp_sigma, mtcars_tbl, nsamples = nsamples) %>%
+    fits = rstantools::posterior_epred(m_hp_sigma, mtcars_tbl, ndraws = ndraws) %>%
       as.data.frame() %>%
       set_names(seq_len(ncol(.))) %>%
       mutate(
@@ -163,13 +163,13 @@ test_that("[add_]epred_draws works on brms models with dpar", {
       as_tibble()
 
     set.seed(seed)
-    fits$mu = rstantools::posterior_epred(m_hp_sigma, mtcars_tbl, nsamples = nsamples, dpar = "mu") %>%
+    fits$mu = rstantools::posterior_epred(m_hp_sigma, mtcars_tbl, ndraws = ndraws, dpar = "mu") %>%
       as.data.frame() %>%
       gather(.row, mu) %$%
       mu
 
     set.seed(seed)
-    fits$sigma = rstantools::posterior_epred(m_hp_sigma, mtcars_tbl, nsamples = nsamples, dpar = "sigma") %>%
+    fits$sigma = rstantools::posterior_epred(m_hp_sigma, mtcars_tbl, ndraws = ndraws, dpar = "sigma") %>%
       as.data.frame() %>%
       gather(.row, sigma) %$%
       sigma
@@ -192,7 +192,7 @@ test_that("[add_]epred_draws works on brms models with dpar", {
 
 
   #subsetting to test the `ndraws` argument
-  filtered_ref = make_ref(seed = 1234, nsamples = 10)
+  filtered_ref = make_ref(seed = 1234, ndraws = 10)
 
   expect_equal(add_epred_draws(mtcars_tbl, m_hp_sigma, ndraws = 10, seed = 1234, dpar = TRUE), filtered_ref)
 })
@@ -270,8 +270,8 @@ test_that("[add_]epred_draws works on brms models with ordinal outcomes (respons
   skip_if_not_installed("brms")
   m_cyl_mpg = readRDS(test_path("../models/models.brms.m_cyl_mpg.rds"))
 
-  make_ref = function(nsamples = NULL) {
-    fits = rstantools::posterior_epred(m_cyl_mpg, mtcars_tbl, nsamples = nsamples) %>%
+  make_ref = function(ndraws = NULL) {
+    fits = rstantools::posterior_epred(m_cyl_mpg, mtcars_tbl, ndraws = ndraws) %>%
       array2df(list(.draw = NA, .row = NA, .category = TRUE), label.x = ".epred") %>%
       mutate(
         .chain = NA_integer_,
@@ -293,7 +293,7 @@ test_that("[add_]epred_draws works on brms models with ordinal outcomes (respons
 
   #subsetting to test the `ndraws` argument
   set.seed(1234)
-  filtered_ref = make_ref(nsamples = 10)
+  filtered_ref = make_ref(ndraws = 10)
 
   expect_equal(add_epred_draws(mtcars_tbl, m_cyl_mpg, ndraws = 10, seed = 1234), filtered_ref)
 
@@ -354,20 +354,6 @@ test_that("[add_]epred_draws allows extraction of dpar on brms models with categ
   expect_equal(add_epred_draws(mtcars_tbl, m_cyl_mpg, dpar = "mu"), ref)
 })
 
-
-test_that("[add_]epred_draws throws an error when nsamples is called instead of ndraws in brms", {
-  skip_if_not_installed("brms")
-  m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
-
-  expect_error(
-    m_hp %>% epred_draws(newdata = mtcars_tbl, nsamples = 10),
-    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
-  )
-  expect_error(
-    m_hp %>% add_epred_draws(newdata = mtcars_tbl, nsamples = 10),
-    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
-  )
-})
 
 test_that("[add_]predicted_draws throws an error when re.form is called instead of re_formula in rstanarm", {
   skip_if_not_installed("rstanarm")

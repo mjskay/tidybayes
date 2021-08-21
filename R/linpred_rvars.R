@@ -70,13 +70,9 @@ linpred_rvars.brmsfit = function(
   object, newdata, ...,
   value = ".linpred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
 ) {
-  stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]linpred_rvars", ndraws = "nsamples"
-  )
-
   pred_rvars_(
     .f = rstantools::posterior_linpred, ...,
     object = object, newdata = newdata, output_name = value,
-    nsamples = ndraws, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
+    ndraws = ndraws, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
   )
 }

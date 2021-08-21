@@ -98,7 +98,7 @@ test_that("[add_]predicted_draws works on a simple brms model", {
   m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
 
   set.seed(123)
-  preds = predict(m_hp, mtcars_tbl, summary = FALSE, nsamples = 10) %>%
+  preds = predict(m_hp, mtcars_tbl, summary = FALSE, ndraws = 10) %>%
     as.data.frame() %>%
     set_names(seq_len(ncol(.))) %>%
     mutate(
@@ -124,7 +124,7 @@ test_that("[add_]predicted_draws works on brms models with categorical outcomes"
   m_cyl_mpg = readRDS(test_path("../models/models.brms.m_cyl_mpg.rds"))
 
   set.seed(1234)
-  raw_preds = predict(m_cyl_mpg, mtcars_tbl, summary = FALSE, nsamples = 10)
+  raw_preds = predict(m_cyl_mpg, mtcars_tbl, summary = FALSE, ndraws = 10)
   preds = raw_preds %>%
     array2df(list(.draw = NA, .row = NA), label.x = ".prediction") %>%
     mutate(
@@ -157,7 +157,7 @@ test_that("[add_]predicted_draws works on brms models with dirichlet responses",
 
   set.seed(1234)
   grid = tibble(x = c("A", "B"))
-  preds = predict(m_dirich, grid, summary = FALSE, nsamples = 10) %>%
+  preds = predict(m_dirich, grid, summary = FALSE, ndraws = 10) %>%
     array2df(list(.draw = NA, .row = NA, .category = TRUE), label.x = ".prediction") %>%
     mutate(
       .chain = NA_integer_,
@@ -182,7 +182,7 @@ test_that("[add_]predicted_draws works on brms models with multinomial responses
   set.seed(1234)
   # use a low number for total so there are some 0s
   grid = tibble(total = c(10, 20))
-  preds = predict(m_multinom, grid, summary = FALSE, nsamples = 10) %>%
+  preds = predict(m_multinom, grid, summary = FALSE, ndraws = 10) %>%
     array2df(list(.draw = NA, .row = NA, .category = TRUE), label.x = ".prediction") %>%
     mutate(
       .chain = NA_integer_,
@@ -198,20 +198,6 @@ test_that("[add_]predicted_draws works on brms models with multinomial responses
     group_by(total, .row, .category)
 
   expect_equal(predicted_draws(m_multinom, grid, seed = 1234, ndraws = 10), ref)
-})
-
-test_that("[add_]predicted_draws throws an error when nsamples is called instead of ndraws in brms", {
-  skip_if_not_installed("brms")
-  m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
-
-  expect_error(
-    m_hp %>% predicted_draws(newdata = mtcars_tbl, nsamples = 10),
-    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
-  )
-  expect_error(
-    mtcars_tbl %>% add_predicted_draws(m_hp, nsamples = 10),
-    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
-  )
 })
 
 test_that("[add_]predicted_draws throws an error when draws is called instead of ndraws in rstanarm", {

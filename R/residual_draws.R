@@ -55,14 +55,10 @@ residual_draws.brmsfit = function(
   object, newdata, ...,
   value = ".residual", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category"
 ) {
-  stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]residual_draws", ndraws = "nsamples"
-  )
-
   pred_draws_(
     .f = residuals, ...,
     object = object, newdata = newdata, output_name = value,
-    seed = seed, nsamples = ndraws, re_formula = re_formula, category = category,
+    seed = seed, ndraws = ndraws, re_formula = re_formula, category = category,
     summary = FALSE
   )
 }

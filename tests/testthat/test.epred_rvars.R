@@ -206,21 +206,6 @@ test_that("[add_]epred_rvars allows extraction of dpar on brms models with categ
 
 # non-generic argument tests ----------------------------------------------
 
-test_that("[add_]epred_rvars throws an error when nsamples is called instead of ndraws in brms", {
-  skip_if_not_installed("brms")
-  m_hp = readRDS(test_path("../models/models.brms.m_hp.rds"))
-
-  expect_error(
-    m_hp %>% epred_rvars(mtcars_tbl, nsamples = 10),
-    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
-  )
-  expect_error(
-    mtcars_tbl %>% add_epred_rvars(m_hp, nsamples = 10),
-    "`nsamples.*.`ndraws`.*.See the documentation for additional details."
-  )
-})
-
-
 test_that("[add_]epred_rvars throws an error when re.form is called instead of re_formula in rstanarm", {
   skip_if_not_installed("rstanarm")
   m_hp_wt = readRDS(test_path("../models/models.rstanarm.m_hp_wt.rds"))

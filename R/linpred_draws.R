@@ -100,13 +100,9 @@ linpred_draws.brmsfit = function(
   value = ".linpred", ndraws = NULL, seed = NULL, re_formula = NULL,
   category = ".category", dpar = NULL
 ) {
-  stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]linpred_draws", ndraws = "nsamples"
-  )
-
   pred_draws_(
     .f = rstantools::posterior_linpred, ...,
     object = object, newdata = newdata, output_name = value,
-    nsamples = ndraws, seed = seed, re_formula = re_formula, category = category, dpar = dpar
+    ndraws = ndraws, seed = seed, re_formula = re_formula, category = category, dpar = dpar
   )
 }

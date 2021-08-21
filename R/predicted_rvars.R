@@ -171,14 +171,10 @@ predicted_rvars.brmsfit = function(
   object, newdata, ...,
   value = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, columns_to = NULL
 ) {
-  stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]predicted_rvars", ndraws = "nsamples"
-  )
-
   pred_rvars_(
     .f = rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = value,
-    nsamples = ndraws, seed = seed, re_formula = re_formula,
+    ndraws = ndraws, seed = seed, re_formula = re_formula,
     dpar = NULL, # posterior_predict does not support dpar
     columns_to = columns_to
   )

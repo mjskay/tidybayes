@@ -70,13 +70,9 @@ epred_rvars.brmsfit = function(
   object, newdata, ...,
   value = ".epred", ndraws = NULL, seed = NULL, re_formula = NULL, dpar = NULL, columns_to = NULL
 ) {
-  stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]epred_rvars", ndraws = "nsamples"
-  )
-
   pred_rvars_(
     .f = rstantools::posterior_epred, ...,
     object = object, newdata = newdata, output_name = value,
-    nsamples = ndraws, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
+    ndraws = ndraws, seed = seed, re_formula = re_formula, dpar = dpar, columns_to = columns_to
   )
 }

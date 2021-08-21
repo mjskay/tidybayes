@@ -200,14 +200,10 @@ predicted_draws.brmsfit = function(
   object, newdata, ...,
   value = ".prediction", ndraws = NULL, seed = NULL, re_formula = NULL, category = ".category"
 ) {
-  stop_on_non_generic_arg_(
-    names(enquos(...)), "[add_]predicted_draws", ndraws = "nsamples"
-  )
-
   pred_draws_(
     .f = rstantools::posterior_predict, ...,
     object = object, newdata = newdata, output_name = value,
-    nsamples = ndraws, seed = seed, re_formula = re_formula, category = category
+    ndraws = ndraws, seed = seed, re_formula = re_formula, category = category
   )
 }
 
