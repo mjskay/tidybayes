@@ -161,7 +161,7 @@ multinom_df <- tribble(
   ~a,   ~b,   ~c, ~total,
   3000, 3000, 7000,  13000,
 )
-multinom_df$counts <- with(data, cbind(a, b, c))
+multinom_df$counts <- with(multinom_df, cbind(a, b, c))
 brms.m_multinom = brm(counts | trials(total) ~ 1, family = multinomial(), data = multinom_df,
   warmup = 950, iter = 1000, chains = 2,
   save_warmup = FALSE, stan_model_args = list(save_dso = FALSE)
