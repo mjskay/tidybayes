@@ -1,13 +1,10 @@
 ## Submission comments
-This submission includes various new features and bugfixes (see NEWS.md)
+This submission fixes failures on CRAN caused by a recent update to the brms package.
 
 ## Test environments
 * Windows (local), R-release 4.1.0
-* MacOs (github), R-release 4.1.0
-* Linux (github), R-release 4.1.0
-* Windows (winbuilder), R-devel 2021-07-16 r80636
-* Windows (winbuilder), R-release 4.1.0
-* Windows (winbuilder), R-oldrelease 4.0.5
+* Linux (github), R-release 4.1.1
+* Windows (winbuilder), R-devel 2021-08-20 r80804
 
 ## R CMD check results
 0 errors | 0 warnings | 0 notes
