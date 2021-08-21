@@ -68,15 +68,13 @@ test_that("[add_]linpred_rvars works on brms models with dpar", {
 
 
   #subsetting to test the `ndraws` argument
-  set.seed(1234)
-  draw_subset = sample.int(ndraws(ref$.linpred), 10)
   filtered_ref = ref
-  draws_of(filtered_ref$.linpred) = draws_of(filtered_ref$.linpred)[draw_subset,]
-  dimnames(draws_of(filtered_ref$.linpred))[[1]] = 1:10
-  draws_of(filtered_ref$mu) = draws_of(filtered_ref$mu)[draw_subset,]
-  dimnames(draws_of(filtered_ref$mu))[[1]] = 1:10
-  draws_of(filtered_ref$sigma) = draws_of(filtered_ref$sigma)[draw_subset,]
-  dimnames(draws_of(filtered_ref$sigma))[[1]] = 1:10
+  set.seed(1234)
+  filtered_ref$.linpred = rvar(rstantools::posterior_linpred(m_hp_sigma, newdata = mtcars_tbl, ndraws = 10))
+  set.seed(1234)
+  filtered_ref$mu = rvar(rstantools::posterior_linpred(m_hp_sigma, newdata = mtcars_tbl, dpar = "mu", ndraws = 10))
+  set.seed(1234)
+  filtered_ref$sigma = rvar(rstantools::posterior_linpred(m_hp_sigma, newdata = mtcars_tbl, dpar = "sigma", ndraws = 10))
 
   expect_equal(add_linpred_rvars(mtcars_tbl, m_hp_sigma, ndraws = 10, seed = 1234, dpar = TRUE), filtered_ref)
 })
