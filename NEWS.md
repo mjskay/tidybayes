@@ -1,3 +1,8 @@
+# tidybayes 3.0.1
+
+Minor update for compatibility with brms 2.16.0.
+
+
 # tidybayes 3.0.0
 
 Breaking changes and deprecations:
