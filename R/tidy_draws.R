@@ -228,7 +228,8 @@ tidy_draws.jagsUI = function(model, ...) {
 #' @rdname tidy_draws
 #' @export
 tidy_draws.brmsfit = function(model, ...) {
-  draws = tidy_draws(brms::as.mcmc(model), ...)
+  draws = as_tibble(as_draws_df(model))
+  draws = select(draws, all_of(c(".chain", ".iteration", ".draw")), everything())
   draws = add_rstan_sampler_param_draws(draws, model$fit)
 
   attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")

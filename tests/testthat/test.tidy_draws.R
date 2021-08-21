@@ -20,13 +20,7 @@ test_that("tidy_draws works with brms", {
   m_ranef = readRDS(test_path("../models/models.brms.m_ranef.rds"))
 
   draws_tidy =
-    brms::posterior_samples(m_ranef, add_chain = TRUE) %>%
-    select(.chain = chain, .iteration = iter, everything()) %>%
-    mutate(
-      .chain = as.integer(.chain),
-      .iteration = as.integer(.iteration - min(.iteration) + 1),
-      .draw = as.integer((.chain - 1) * max(.iteration) + .iteration)
-    ) %>%
+    posterior::as_draws_df(m_ranef) %>%
     as_tibble() %>%
     select(.chain, .iteration, .draw, everything()) %>%
     bind_cols(bind_rows(lapply(rstan::get_sampler_params(m_ranef$fit, inc_warmup = FALSE), as_tibble)))
