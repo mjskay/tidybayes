@@ -194,7 +194,7 @@ globalVariables(c(".lower", ".upper", ".width"))
 #' @import ggplot2
 #' @export
 ggeye = function(data = NULL, mapping = NULL, ...) {
-  .Deprecated("geom_eyeh", package = "tidybayes")
+  .Deprecated("stat_eye", package = "tidybayes")
   ggplot(data = data, mapping = mapping) + geom_eye(...) + coord_flip()
 }
 
@@ -442,6 +442,50 @@ parameters = function(model) {
 }
 
 
+# layer_geom_slabinterval -------------------------------------------------
+
+# internal helper function for geom creation from ggdist removed in ggdist 3.1
+# (replaced by the AbstractGeom / make_geom() framework)
+layer_geom_slabinterval = function(
+  mapping = NULL,
+  default_mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = "identity",
+  geom = GeomSlabinterval,
+  ...,
+
+  show.legend = NA,
+  inherit.aes = TRUE
+) {
+
+  .Deprecated_arguments(
+    c("size_domain", "size_range"), ..., which = -2,
+    message = "Use the interval_size_domain and interval_size_range arguments instead."
+  )
+
+  l = layer(
+    data = data,
+    mapping = mapping,
+    stat = stat,
+    geom = geom,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+
+    params = list(
+      ...
+    )
+  )
+
+  if (!is.null(default_mapping)) {
+    ggdist:::add_default_computed_aesthetics(l, default_mapping)
+  } else {
+    l
+  }
+}
+
+
 # eye geom aliases -------------------------------------------
 
 #' @rdname tidybayes-deprecated
@@ -535,7 +579,7 @@ geom_intervalh = function(
 ) {
   .Deprecated("geom_interval", package = "tidybayes")
 
-  ggdist:::layer_geom_slabinterval(
+  layer_geom_slabinterval(
     data = data,
     mapping = mapping,
     default_mapping = aes(xmin = .lower, xmax = .upper, color = fct_rev_(ordered(.width))),
@@ -597,7 +641,7 @@ geom_pointintervalh = function(
 ) {
   .Deprecated("geom_pointinterval", package = "tidybayes")
 
-  ggdist:::layer_geom_slabinterval(
+  layer_geom_slabinterval(
     data = data,
     mapping = mapping,
     default_mapping = aes(xmin = .lower, xmax = .upper, size = -.width),
