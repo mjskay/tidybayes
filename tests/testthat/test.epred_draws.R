@@ -302,6 +302,8 @@ test_that("[add_]epred_draws works on brms models with ordinal outcomes (respons
 
 test_that("[add_]epred_draws works on brms models with dirichlet outcomes (response scale)", {
   skip_if_not_installed("brms")
+  skip_if_not(getRversion() >= "4")
+
   m_dirich = readRDS(test_path("../models/models.brms.m_dirich.rds"))
 
   grid = tibble(x = c("A", "B"))

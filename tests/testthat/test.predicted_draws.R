@@ -153,6 +153,8 @@ test_that("[add_]predicted_draws works on brms models with categorical outcomes"
 
 test_that("[add_]predicted_draws works on brms models with dirichlet responses", {
   skip_if_not_installed("brms")
+  skip_if_not(getRversion() >= "4")
+
   m_dirich = readRDS(test_path("../models/models.brms.m_dirich.rds"))
 
   set.seed(1234)
@@ -177,6 +179,8 @@ test_that("[add_]predicted_draws works on brms models with dirichlet responses",
 
 test_that("[add_]predicted_draws works on brms models with multinomial responses", {
   skip_if_not_installed("brms")
+  skip_if_not(getRversion() >= "4")
+
   m_multinom = readRDS(test_path("../models/models.brms.m_multinom.rds"))
 
   set.seed(1234)
