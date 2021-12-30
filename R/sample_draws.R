@@ -23,36 +23,33 @@
 #' @param draw The name of the column indexing the draws; default `".draw"`.
 #' @author Matthew Kay
 #' @keywords manip
-#' @examples
+#' @examplesIf requireNamespace("brms", quietly = TRUE) && requireNamespace("modelr", quietly = TRUE)
 #' \donttest{
 #'
 #' library(ggplot2)
 #' library(dplyr)
+#' library(brms)
+#' library(modelr)
 #'
-#' if (
-#'   require("brms", quietly = TRUE) &&
-#'   require("modelr", quietly = TRUE)
-#' ) {
+#' theme_set(theme_light())
 #'
-#'   theme_set(theme_light())
+#' m_mpg = brm(mpg ~ hp * cyl, data = mtcars,
+#'   # 1 chain / few iterations just so example runs quickly
+#'   # do not use in practice
+#'   chains = 1, iter = 500)
 #'
-#'   m_mpg = brm(mpg ~ hp * cyl, data = mtcars,
-#'     # 1 chain / few iterations just so example runs quickly
-#'     # do not use in practice
-#'     chains = 1, iter = 500)
+#' # draw 100 fit lines from the posterior and overplot them
+#' mtcars %>%
+#'   group_by(cyl) %>%
+#'   data_grid(hp = seq_range(hp, n = 101)) %>%
+#'   add_epred_draws(m_mpg) %>%
+#'   # NOTE: only use sample_draws here when making spaghetti plots; for
+#'   # plotting intervals it is always best to use all draws
+#'   sample_draws(100) %>%
+#'   ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
+#'   geom_line(aes(y = .epred, group = paste(cyl, .draw)), alpha = 0.25) +
+#'   geom_point(data = mtcars)
 #'
-#'   # draw 100 fit lines from the posterior and overplot them
-#'   mtcars %>%
-#'     group_by(cyl) %>%
-#'     data_grid(hp = seq_range(hp, n = 101)) %>%
-#'     add_epred_draws(m_mpg) %>%
-#'     # NOTE: only use sample_draws here when making spaghetti plots; for
-#'     # plotting intervals it is always best to use all draws
-#'     sample_draws(100) %>%
-#'     ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-#'     geom_line(aes(y = .epred, group = paste(cyl, .draw)), alpha = 0.25) +
-#'     geom_point(data = mtcars)
-#' }
 #' }
 #' @importFrom dplyr filter
 #' @export

@@ -36,36 +36,35 @@ model types (like handling ordinal responses and distributional parameters in br
 that \code{add_predicted_draws} standardizes argument names and values across packages.
 }
 \examples{
+\dontshow{if (requireNamespace("brms", quietly = TRUE) && requireNamespace("modelr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
 
 library(ggplot2)
 library(dplyr)
+library(brms)
+library(modelr)
 
-if (
-  require("brms", quietly = TRUE) &&
-  require("modelr", quietly = TRUE)
-) {
+theme_set(theme_light())
 
-  theme_set(theme_light())
+m_mpg = brm(mpg ~ hp * cyl, data = mtcars,
+  # 1 chain / few iterations just so example runs quickly
+  # do not use in practice
+  chains = 1, iter = 500)
 
-  m_mpg = brm(mpg ~ hp * cyl, data = mtcars,
-    # 1 chain / few iterations just so example runs quickly
-    # do not use in practice
-    chains = 1, iter = 500)
+# plot posterior predictive intervals
+mtcars \%>\%
+  group_by(cyl) \%>\%
+  data_grid(hp = seq_range(hp, n = 101)) \%>\%
+  # the line below is roughly equivalent to add_epred_draws(m_mpg), except
+  # that it does not standardize arguments across model types.
+  add_draws(posterior_epred(m_mpg, newdata = .)) \%>\%
+  ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
+  stat_lineribbon(aes(y = .value), alpha = 0.25) +
+  geom_point(data = mtcars) +
+  scale_fill_brewer(palette = "Greys")
 
-  # plot posterior predictive intervals
-  mtcars \%>\%
-    group_by(cyl) \%>\%
-    data_grid(hp = seq_range(hp, n = 101)) \%>\%
-    # the line below is roughly equivalent to add_epred_draws(m_mpg), except
-    # that it does not standardize arguments across model types.
-    add_draws(posterior_epred(m_mpg, newdata = .)) \%>\%
-    ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-    stat_lineribbon(aes(y = .value), alpha = 0.25) +
-    geom_point(data = mtcars) +
-    scale_fill_brewer(palette = "Greys")
 }
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=add_predicted_draws]{add_predicted_draws()}}, \code{\link[=add_draws]{add_draws()}}

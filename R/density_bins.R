@@ -36,36 +36,33 @@
 #' @seealso See [add_predicted_draws()] and [stat_lineribbon()] for a better approach. These
 #' functions may be deprecated in the future.
 #' @keywords manip
-#' @examples
+#' @examplesIf requireNamespace("brms", quietly = TRUE) && requireNamespace("modelr", quietly = TRUE)
 #' \donttest{
 #'
 #' library(ggplot2)
 #' library(dplyr)
+#' library(brms)
+#' library(modelr)
 #'
-#' if (
-#'   require("brms", quietly = TRUE) &&
-#'   require("modelr", quietly = TRUE)
-#' ) {
+#' theme_set(theme_light())
 #'
-#'   theme_set(theme_light())
+#' m_mpg = brm(mpg ~ hp * cyl, data = mtcars)
 #'
-#'   m_mpg = brm(mpg ~ hp * cyl, data = mtcars)
+#' step = 1
+#' mtcars %>%
+#'   group_by(cyl) %>%
+#'   data_grid(hp = seq_range(hp, by = step)) %>%
+#'   add_predicted_draws(m_mpg) %>%
+#'   summarise(density_bins(.prediction), .groups = "drop") %>%
+#'   ggplot() +
+#'   geom_rect(aes(
+#'     xmin = hp - step/2, ymin = lower, ymax = upper, xmax = hp + step/2,
+#'     fill = ordered(cyl), alpha = density
+#'   )) +
+#'   geom_point(aes(x = hp, y = mpg, fill = ordered(cyl)), shape = 21, data = mtcars) +
+#'   scale_alpha_continuous(range = c(0, 1)) +
+#'   scale_fill_brewer(palette = "Set2")
 #'
-#'   step = 1
-#'   mtcars %>%
-#'     group_by(cyl) %>%
-#'     data_grid(hp = seq_range(hp, by = step)) %>%
-#'     add_predicted_draws(m_mpg) %>%
-#'     summarise(density_bins(.prediction), .groups = "drop") %>%
-#'     ggplot() +
-#'     geom_rect(aes(
-#'       xmin = hp - step/2, ymin = lower, ymax = upper, xmax = hp + step/2,
-#'       fill = ordered(cyl), alpha = density
-#'     )) +
-#'     geom_point(aes(x = hp, y = mpg, fill = ordered(cyl)), shape = 21, data = mtcars) +
-#'     scale_alpha_continuous(range = c(0, 1)) +
-#'     scale_fill_brewer(palette = "Set2")
-#' }
 #' }
 #' @importFrom stats density
 #' @export

@@ -268,60 +268,56 @@ Given equal choice between the two, the spellings prefixed with \code{add_}
 are preferred.
 }
 \examples{
+\dontshow{if (requireNamespace("brms", quietly = TRUE) && requireNamespace("modelr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
 
 library(ggplot2)
 library(dplyr)
 library(posterior)
+library(brms)
+library(modelr)
 
-if (
-  require("brms", quietly = TRUE) &&
-  require("modelr", quietly = TRUE)
-) {
+theme_set(theme_light())
 
-  theme_set(theme_light())
+m_mpg = brm(mpg ~ hp * cyl, data = mtcars, family = lognormal(),
+  # 1 chain / few iterations just so example runs quickly
+  # do not use in practice
+  chains = 1, iter = 500)
 
-  m_mpg = brm(mpg ~ hp * cyl, data = mtcars, family = lognormal(),
-    # 1 chain / few iterations just so example runs quickly
-    # do not use in practice
-    chains = 1, iter = 500)
+# Look at mean predictions for some cars (epred) and compare to
+# the exponeniated mu parameter of the lognormal distribution (linpred).
+# Notice how they are NOT the same. This is because exp(mu) for a
+# lognormal distribution is equal to its median, not its mean.
+mtcars \%>\%
+  select(hp, cyl, mpg) \%>\%
+  add_epred_rvars(m_mpg) \%>\%
+  add_linpred_rvars(m_mpg, value = "mu") \%>\%
+  mutate(expmu = exp(mu), .epred - expmu)
 
-  # Look at mean predictions for some cars (epred) and compare to
-  # the exponeniated mu parameter of the lognormal distribution (linpred).
-  # Notice how they are NOT the same. This is because exp(mu) for a
-  # lognormal distribution is equal to its median, not its mean.
-  mtcars \%>\%
-    select(hp, cyl, mpg) \%>\%
-    add_epred_rvars(m_mpg) \%>\%
-    add_linpred_rvars(m_mpg, value = "mu") \%>\%
-    mutate(expmu = exp(mu), .epred - expmu) \%>\%
-    print()
+# plot intervals around conditional means (epred_rvars)
+mtcars \%>\%
+  group_by(cyl) \%>\%
+  data_grid(hp = seq_range(hp, n = 101)) \%>\%
+  add_epred_rvars(m_mpg) \%>\%
+  ggplot(aes(x = hp, color = ordered(cyl), fill = ordered(cyl))) +
+  stat_dist_lineribbon(aes(dist = .epred), .width = c(.95, .8, .5), alpha = 1/3) +
+  geom_point(aes(y = mpg), data = mtcars) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2")
 
-  # plot intervals around conditional means (epred_rvars)
-  print(mtcars \%>\%
-    group_by(cyl) \%>\%
-    data_grid(hp = seq_range(hp, n = 101)) \%>\%
-    add_epred_rvars(m_mpg) \%>\%
-    ggplot(aes(x = hp, color = ordered(cyl), fill = ordered(cyl))) +
-    stat_dist_lineribbon(aes(dist = .epred), .width = c(.95, .8, .5), alpha = 1/3) +
-    geom_point(aes(y = mpg), data = mtcars) +
-    scale_color_brewer(palette = "Dark2") +
-    scale_fill_brewer(palette = "Set2")
-  )
+# plot posterior predictive intervals (predicted_rvars)
+mtcars \%>\%
+  group_by(cyl) \%>\%
+  data_grid(hp = seq_range(hp, n = 101)) \%>\%
+  add_predicted_rvars(m_mpg) \%>\%
+  ggplot(aes(x = hp, color = ordered(cyl), fill = ordered(cyl))) +
+  stat_dist_lineribbon(aes(dist = .prediction), .width = c(.95, .8, .5), alpha = 1/3) +
+  geom_point(aes(y = mpg), data = mtcars) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2")
 
-  # plot posterior predictive intervals (predicted_rvars)
-  print(mtcars \%>\%
-    group_by(cyl) \%>\%
-    data_grid(hp = seq_range(hp, n = 101)) \%>\%
-    add_predicted_rvars(m_mpg) \%>\%
-    ggplot(aes(x = hp, color = ordered(cyl), fill = ordered(cyl))) +
-    stat_dist_lineribbon(aes(dist = .prediction), .width = c(.95, .8, .5), alpha = 1/3) +
-    geom_point(aes(y = mpg), data = mtcars) +
-    scale_color_brewer(palette = "Dark2") +
-    scale_fill_brewer(palette = "Set2")
-  )
 }
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=add_predicted_draws]{add_predicted_draws()}} for the analogous functions that use a long-data-frame-of-draws

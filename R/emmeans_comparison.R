@@ -32,31 +32,28 @@
 #' @seealso [compare_levels()], [emmeans::contrast-methods].
 #' See [gather_emmeans_draws()] for a different approach to using `emmeans` with
 #' `tidybayes`.
-#' @examples
+#' @examplesIf requireNamespace("emmeans", quietly = TRUE)
 #'
-#' if (requireNamespace("emmeans", quietly = TRUE)) {
+#' library(dplyr)
+#' library(ggplot2)
 #'
-#'   library(dplyr)
-#'   library(ggplot2)
+#' data(RankCorr, package = "ggdist")
 #'
-#'   data(RankCorr, package = "ggdist")
+#' # emmeans contrast methods return matrices. E.g. the "eff" comparison
+#' # compares each level to the average of all levels:
+#' emmeans:::eff.emmc(c("a","b","c","d"))
 #'
-#'   # emmeans contrast methods return matrices. E.g. the "eff" comparison
-#'   # compares each level to the average of all levels:
-#'   print(emmeans:::eff.emmc(c("a","b","c","d")))
+#' # tidybayes::compare_levels() can't use a contrast matrix like this
+#' # directly; it takes arbitrary expressions of factor levels. But
+#' # we can use `emmeans_comparison` to generate the equivalent expressions:
+#' emmeans_comparison("eff")(c("a","b","c","d"))
 #'
-#'   # tidybayes::compare_levels() can't use a contrast matrix like this
-#'   # directly; it takes arbitrary expressions of factor levels. But
-#'   # we can use `emmeans_comparison` to generate the equivalent expressions:
-#'   print(emmeans_comparison("eff")(c("a","b","c","d")))
-#'
-#'   # We can use the "eff" comparison type with `compare_levels()` as follows:
-#'   RankCorr %>%
-#'     spread_draws(b[i,j]) %>%
-#'     filter(j == 1) %>%
-#'     compare_levels(b, by = i, comparison = emmeans_comparison("eff")) %>%
-#'     median_qi()
-#' }
+#' # We can use the "eff" comparison type with `compare_levels()` as follows:
+#' RankCorr %>%
+#'   spread_draws(b[i,j]) %>%
+#'   filter(j == 1) %>%
+#'   compare_levels(b, by = i, comparison = emmeans_comparison("eff")) %>%
+#'   median_qi()
 #'
 #' @export
 emmeans_comparison = function(method, ...) {

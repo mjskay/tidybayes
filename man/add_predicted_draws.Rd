@@ -338,47 +338,44 @@ Given equal choice between the two, the spellings prefixed with \code{add_}
 are preferred.
 }
 \examples{
+\dontshow{if (requireNamespace("brms", quietly = TRUE) && requireNamespace("modelr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
 
 library(ggplot2)
 library(dplyr)
+library(brms)
+library(modelr)
 
-if (
-  require("brms", quietly = TRUE) &&
-  require("modelr", quietly = TRUE)
-) {
+theme_set(theme_light())
 
-  theme_set(theme_light())
+m_mpg = brm(mpg ~ hp * cyl, data = mtcars,
+  # 1 chain / few iterations just so example runs quickly
+  # do not use in practice
+  chains = 1, iter = 500)
 
-  m_mpg = brm(mpg ~ hp * cyl, data = mtcars,
-    # 1 chain / few iterations just so example runs quickly
-    # do not use in practice
-    chains = 1, iter = 500)
+# draw 100 lines from the posterior means and overplot them
+mtcars \%>\%
+  group_by(cyl) \%>\%
+  data_grid(hp = seq_range(hp, n = 101)) \%>\%
+  # NOTE: only use ndraws here when making spaghetti plots; for
+  # plotting intervals it is always best to use all draws (omit ndraws)
+  add_epred_draws(m_mpg, ndraws = 100) \%>\%
+  ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
+  geom_line(aes(y = .epred, group = paste(cyl, .draw)), alpha = 0.25) +
+  geom_point(data = mtcars)
 
-  # draw 100 lines from the posterior means and overplot them
-  print(mtcars \%>\%
-    group_by(cyl) \%>\%
-    data_grid(hp = seq_range(hp, n = 101)) \%>\%
-    # NOTE: only use ndraws here when making spaghetti plots; for
-    # plotting intervals it is always best to use all draws (omit ndraws)
-    add_epred_draws(m_mpg, ndraws = 100) \%>\%
-    ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-    geom_line(aes(y = .epred, group = paste(cyl, .draw)), alpha = 0.25) +
-    geom_point(data = mtcars)
-  )
+# plot posterior predictive intervals
+mtcars \%>\%
+  group_by(cyl) \%>\%
+  data_grid(hp = seq_range(hp, n = 101)) \%>\%
+  add_predicted_draws(m_mpg) \%>\%
+  ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
+  stat_lineribbon(aes(y = .prediction), .width = c(.99, .95, .8, .5), alpha = 0.25) +
+  geom_point(data = mtcars) +
+  scale_fill_brewer(palette = "Greys")
 
-  # plot posterior predictive intervals
-  print(mtcars \%>\%
-    group_by(cyl) \%>\%
-    data_grid(hp = seq_range(hp, n = 101)) \%>\%
-    add_predicted_draws(m_mpg) \%>\%
-    ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-    stat_lineribbon(aes(y = .prediction), .width = c(.99, .95, .8, .5), alpha = 0.25) +
-    geom_point(data = mtcars) +
-    scale_fill_brewer(palette = "Greys")
-  )
 }
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=add_draws]{add_draws()}} for the variant of these functions for use with packages that do not have
