@@ -76,9 +76,12 @@ unnest_rvars = function(data) {
     constants = d[!rvar_cols]
     rvars = as.list(d[rvar_cols])
     draws_df = as_draws_df(as_draws_rvars(rvars))
-    # convert from draws_df to plain tibble to avoid
+    # convert from draws_df to plain data.frame to avoid
     # warning about meta-data being dropped
     class(draws_df) = "data.frame"
+    # convert from tibble to plain data.frame to fix
+    # incorrect binding in cbind() in R < 4
+    class(constants) = "data.frame"
     cbind(constants, draws_df)
   }))
 
