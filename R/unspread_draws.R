@@ -85,7 +85,7 @@ unspread_draws_ = function(data, variable_spec, draw_indices = c(".chain", ".ite
   wide_dimension_name = spec[[3]]
 
   if (!is.null(wide_dimension_name)) {
-    stop("unspread_draws does not support the wide dimension syntax (`|`).")
+    stop0("unspread_draws does not support the wide dimension syntax (`|`).")
   }
 
   # generate the subset of the data that has just the variable names and indices in question

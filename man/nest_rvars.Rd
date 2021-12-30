@@ -16,7 +16,7 @@ unnest_rvars(data)
 format; i.e. it should contain a \code{.draw} column (and optionally \code{.chain}
 and \code{.iteration} columns) indexing draws. It should be a grouped by any
 columns that are not intended to be nested.
-\item For \code{unnest_rvars()}, the data frame should have at least one row that
+\item For \code{unnest_rvars()}, the data frame should have at least one column that
 is an \code{\link{rvar}}; all \code{rvar} columns will be unnested.
 }}
 }

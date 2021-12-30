@@ -67,6 +67,12 @@ test_that("[add_]linpred_draws works on a simple rstanarm model", {
   expect_equal(linpred_draws(m_hp_wt, mtcars_tbl, ndraws = 10, seed = 1234), filtered_ref)
   expect_equal(add_linpred_draws(mtcars_tbl, m_hp_wt, ndraws = 10, seed = 1234), filtered_ref)
 
+  # test deprecation of `n` for `ndraws`
+  expect_warning(
+    expect_equal(linpred_draws(m_hp_wt, mtcars_tbl, n = 10, seed = 1234), filtered_ref),
+    "The `n` argument is a deprecated alias for `ndraws`"
+  )
+
   # default implementation should still work here
   expect_equal(linpred_draws.default(m_hp_wt, mtcars_tbl, draws = 10, seed = 1234), filtered_ref)
 })

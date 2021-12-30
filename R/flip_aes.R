@@ -47,8 +47,3 @@ flip_aes.function = function(x, lookup = flip_aes_lookup) {
     flip_aes(x(...), lookup = lookup)
   }
 }
-
-
-horizontal_aes = function(x) flip_aes(x, lookup = horizontal_aes_lookup)
-
-vertical_aes = function(x) flip_aes(x, lookup = vertical_aes_lookup)

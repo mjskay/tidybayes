@@ -368,3 +368,11 @@ test_that("[add_]predicted_draws throws an error when re.form is called instead 
     "`re.form.*.`re_formula`.*.See the documentation for additional details."
   )
 })
+
+
+# unknown model type tests ------------------------------------------------
+
+test_that("rethinking model usage refers user to tidybayes.rethinking", {
+  m = structure(list(), class = "map2stan")
+  expect_error(epred_draws(m), "tidybayes.rethinking")
+})

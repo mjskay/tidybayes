@@ -71,6 +71,14 @@ test_that("spread_draws works on a simple variable with no dimensions", {
 })
 
 
+test_that("spread_draws(seed = ) works", {
+  set.seed(1234)
+  ref = spread_draws(RankCorr_s, typical_r, ndraws = 2)
+
+  expect_equivalent(spread_draws(RankCorr_s, typical_r, ndraws = 2, seed = 1234), ref)
+})
+
+
 test_that("spread_draws works on two variables with no dimensions and multiple chains", {
   data(line, package = "coda")
 

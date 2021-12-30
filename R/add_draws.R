@@ -91,7 +91,7 @@ draws_list_ = function(draws, value = ".value") {
   .value = as.name(value)
 
   if (length(dim(draws)) != 2) {
-    stop("`draws` must have exactly two dimensions. It has", length(dim(draws)))
+    stop0("`draws` must have exactly two dimensions. It has ", length(dim(draws)))
   }
 
   tibble(

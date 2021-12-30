@@ -219,4 +219,7 @@ test_that("[add_]epred_rvars throws an error when re.form is called instead of r
 
 # unknown model type tests ------------------------------------------------
 
-
+test_that("rethinking model usage refers user to tidybayes.rethinking", {
+  m = structure(list(), class = "map2stan")
+  expect_error(epred_rvars(m), "tidybayes.rethinking")
+})

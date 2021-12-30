@@ -68,7 +68,7 @@ Language: en-US
 BugReports: https://github.com/mjskay/tidybayes/issues/new
 URL: https://mjskay.github.io/tidybayes/, https://github.com/mjskay/tidybayes/
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 LazyData: true
 Encoding: UTF-8
 Collate:

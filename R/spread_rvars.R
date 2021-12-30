@@ -164,7 +164,7 @@ spread_rvars_ = function(draws, spec) {
   wide_dimension_name = spec[[3]]
 
   if (!is.null(wide_dimension_name)) {
-    stop(
+    stop0(
       "spread_rvars does not currently support wide dimensions (`|` syntax).\n",
       "Try leaving the index you would like to be wide blank instead."
     )
@@ -179,11 +179,11 @@ spread_rvars_ = function(draws, spec) {
   for (variable_name in variable_names) {
     var = draws[[variable_name]]
     if (is.null(var)) {
-      stop(
+      stop0(
         "The variable `", variable_name, "` was not found in the model."
       )
     } else if (!all(dim(var) == var1_dim)) {
-      stop(
+      stop0(
         "All variables under the same subscript must have the same shape.\n",
         "`", variable_name, "` has shape [", paste0(dim(var), collapse = ","), "] but\n",
         "`", variable_names[[1]], "` has shape [", paste0(var1_dim, collapse = ","), "]."
@@ -194,7 +194,7 @@ spread_rvars_ = function(draws, spec) {
   #ensure variables have same number of dimensions as requested (since we
   #already checked they are all equal we only have to check one here)
   if (length(var1_dim) != length(dimension_names)) {
-    stop("`", variable_names[[1]], "` has ", length(var1_dim), " dimensions, not ", length(dimension_names))
+    stop0("`", variable_names[[1]], "` has ", length(var1_dim), " dimensions, not ", length(dimension_names))
   }
 
   # determine which indices we are flattening and which we aren't

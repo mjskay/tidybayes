@@ -70,7 +70,7 @@ tidy_draws.default = function(model, ...) {
   } else if (has_method("as.mcmc.list", signature)) {
     draws = tidy_draws(as.mcmc.list(model))
   } else {
-    stop(
+    stop0(
       "Don't know how to convert an object of class ", deparse0(signature), "\n",
       "into a tidy data frame of draws. See help(\"tidybayes-models\") for a list\n",
       "of models supported by tidy_draws()."
@@ -120,14 +120,14 @@ tidy_draws.data.frame = function(model, ...) {
 
   failed_cols = check_cols[!passed]
   if (length(failed_cols) > 0) {
-    stop(stop_message,
+    stop0(stop_message,
       "  The following columns are not integer-like (or are missing):\n",
       "    ", paste0("`", failed_cols, "`", collapse = ", ")
     )
   }
 
   if (length(unique(model[[".draw"]])) != nrow(model)) {
-    stop(stop_message,
+    stop0(stop_message,
       "  The `.draw` column in the input data frame has more than one row per draw\n",
       "  (its values are not unique)."
     )

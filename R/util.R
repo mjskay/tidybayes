@@ -14,6 +14,10 @@ stop0 = function(...) {
   stop(..., call. = FALSE)
 }
 
+warning0 = function(...) {
+  warning(..., call. = FALSE)
+}
+
 # Based on https://stackoverflow.com/a/14838753
 # Escapes a string for inclusion in a regex
 escape_regex = function(string) {
@@ -49,8 +53,7 @@ all_names = function(x) {
     children = lapply(x[-1], all_names)
     unique(unlist(children))
   } else {
-    stop("Don't know how to handle type `", typeof(x), "`",
-      call. = FALSE)
+    stop0("Don't know how to handle type `", typeof(x), "`")
   }
 }
 
@@ -81,11 +84,9 @@ has_method = function(f, signature) {
   deprecated_args = intersect(old_names, names(enexprs(...)))
 
   if (length(deprecated_args) > 0) {
-    stop(
+    stop0(
       "\nIn ", fun, "(): The `", deprecated_args[[1]], "` argument is deprecated.\n",
-      message,
-
-      call. = FALSE
+      message
     )
   }
 }
@@ -97,13 +98,11 @@ has_method = function(f, signature) {
     new_name = quo_name(enquo(new_arg))
     old_name = quo_name(enquo(old_arg))
 
-    warning(
+    warning0(
       "\nIn ", fun, "(): The `", old_name, "` argument is a deprecated alias for `",
       new_name, "`.\n",
       "Use the `", new_name, "` argument instead.\n",
-      "See help(\"tidybayes-deprecated\").\n",
-
-      call. = FALSE
+      "See help(\"tidybayes-deprecated\").\n"
     )
 
     old_arg
@@ -117,16 +116,14 @@ stop_on_non_generic_arg_ = function(parent_dot_args, method_type, ..., which = -
     non_generic_args_passed = intersect(parent_dot_args, old_args)
     non_generic_arg_passed = non_generic_args_passed[[1]]
 
-    stop(
+    stop0(
       "In ", fun, "(): ",
       "The argument `", non_generic_arg_passed,
       "` is not supported in `",
       method_type,
       "`. Please use the generic argument `",
       names(old_args)[old_args == non_generic_arg_passed],
-      "`. See the documentation for additional details.\n",
-
-      call. = FALSE
+      "`. See the documentation for additional details.\n"
     )
   }
 }

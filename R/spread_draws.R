@@ -279,7 +279,7 @@ spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
   if (!is.null(wide_dimension_name)) {
     #wide dimension requested by name
     if (length(variable_names) != 1) {
-      stop("Cannot extract draws from multiple variables in wide format.")
+      stop0("Cannot extract draws from multiple variables in wide format.")
     }
     spread_(long_draws, wide_dimension_name, variable_names)
   }
@@ -287,7 +287,7 @@ spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
     #a column named ".." is present, use it to form a wide version of the data
     #with numbered names based on the variable name
     if (length(variable_names) != 1) {
-      stop("Cannot extract draws from multiple variables in wide format.")
+      stop0("Cannot extract draws from multiple variables in wide format.")
     }
     long_draws %>%
       #the ".." column will have been set as a grouping column because it was
@@ -320,7 +320,7 @@ spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FA
     variable_names_index = grepl(variable_regex, colnames(draws))
 
     if (!any(variable_names_index)) {
-      stop("No variables found matching spec: ",
+      stop0("No variables found matching spec: ",
         printable_variable_names(variable_names)
       )
     }
@@ -342,7 +342,7 @@ spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FA
     )
     variable_names_index = grepl(variable_regex, colnames(draws))
     if (!any(variable_names_index)) {
-      stop("No variables found matching spec: ",
+      stop0("No variables found matching spec: ",
         printable_variable_names(variable_names),
         "[", paste0(dimension_names, collapse = ","), "]"
       )
@@ -646,10 +646,10 @@ parse_variable_spec = function(variable_spec) {
       `|` = function(spec, by) {
         wide_dimension_name = by[[1]]
         if (!is.null(spec[[3]])) {
-          stop("Left-hand side of `|` cannot contain `|`")
+          stop0("Left-hand side of `|` cannot contain `|`")
         }
         if (length(wide_dimension_name) != 1) {
-          stop("Right-hand side of `|` must be exactly one name")
+          stop0("Right-hand side of `|` must be exactly one name")
         }
 
         list(

@@ -18,7 +18,7 @@ ungather_draws = function(
   variable_specs = enquos(...)
 
   if (length(variable_specs) == 0) {
-    stop("You must supply at least one variable to ungather.")
+    stop0("You must supply at least one variable to ungather.")
   }
 
   result =
@@ -47,7 +47,7 @@ ungather_draws_ = function(
   wide_dimension_name = spec[[3]]
 
   if (!is.null(wide_dimension_name)) {
-    stop("ungather_draws does not support the wide dimension syntax (`|`).")
+    stop0("ungather_draws does not support the wide dimension syntax (`|`).")
   }
 
   # filter to desired rows and columns, removing duplicates (which may have been

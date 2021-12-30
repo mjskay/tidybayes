@@ -53,10 +53,10 @@ x_at_y = function(x, y, missing = NA) {
     slice(1)
 
   if (nrow(distinct(data)) != nrow(index)) {
-    stop(paste0(
+    stop0(
       y_label, " does not appear to be nested in ", x_label,
       ": there are multiple values of ", x_label, " for at least one value of ", y_label
-    ))
+    )
   }
 
   # fill in all values of y: if an integer, we want missing indices;
@@ -66,14 +66,14 @@ x_at_y = function(x, y, missing = NA) {
       factor(levels(y), levels = levels(y))
     } else if (is_integerish(y)) {
       if (min(y) < 1) {
-        stop(paste0("All values of ", y_label, " must be >= 1. Got min(", y_label, ") == ", min(y)))
+        stop0("All values of ", y_label, " must be >= 1. Got min(", y_label, ") == ", min(y))
       }
       seq_len(max(y))
     } else {
-      stop(paste0(
+      stop0(
         "Cannot generate a lookup table for non-numeric / non-factor variable: ",
         y_label, " is of type ", deparse0(class(y))
-      ))
+      )
     }
 
   #fill in any NAs

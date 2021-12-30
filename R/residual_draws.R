@@ -46,7 +46,7 @@ residual_draws = function(
 #' @rdname add_predicted_draws
 #' @export
 residual_draws.default = function(object, newdata, ...) {
-  stop(paste0("Models of type ", deparse0(class(object)), " are not currently supported by `residual_draws`"))
+  stop0(paste0("Models of type ", deparse0(class(object)), " are not currently supported by `residual_draws`"))
 }
 
 #' @rdname add_predicted_draws

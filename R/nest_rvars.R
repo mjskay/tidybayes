@@ -14,7 +14,7 @@
 #'    format; i.e. it should contain a `.draw` column (and optionally `.chain`
 #'    and `.iteration` columns) indexing draws. It should be a grouped by any
 #'    columns that are not intended to be nested.
-#'  - For `unnest_rvars()`, the data frame should have at least one row that
+#'  - For `unnest_rvars()`, the data frame should have at least one column that
 #'    is an [`rvar`]; all `rvar` columns will be unnested.
 #'
 #' @return
@@ -55,10 +55,10 @@
 #' @export
 nest_rvars = function(data) {
   group_modify(data, function(d, keys) {
-    if (all(is.na(d[[".chain"]]))) {
+    if (all(is.na(d[[".chain"]])) || all(is.na(d[[".iteration"]]))) {
+      # if either of chain or iteration information is missing, we must treat
+      # both as missing (since we can't use one without the other)
       d[[".chain"]] = 1
-    }
-    if (all(is.na(d[[".iteration"]]))) {
       d[[".iteration"]] = d[[".draw"]]
     }
     as_tibble(as_draws_rvars(as_draws_df(d)))
