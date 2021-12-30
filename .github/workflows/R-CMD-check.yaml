@@ -19,13 +19,13 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: 'release', suffix: 'quick', not_cran: 'false', vignettes: '"--no-build-vignettes"'}
-          - {os: windows-latest, r: 'release', suffix: '', not_cran: 'true', vignettes: 'NULL'}
-          - {os: windows-latest, r: 'devel', suffix: '', not_cran: 'true', vignettes: 'NULL'}
-          - {os: macOS-latest, r: 'release', suffix: 'quick', not_cran: 'false', vignettes: '"--no-build-vignettes"'}
-#          - {os: macOS-latest, r: 'devel', suffix: 'quick', not_cran: 'false', vignettes: '"--no-build-vignettes"'}
-          - {os: ubuntu-18.04, r: 'release', suffix: 'quick', not_cran: 'false', vignettes: '"--no-build-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-18.04, r: 'oldrel', suffix: 'quick', not_cran: 'false', vignettes: '"--no-build-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+# running Windows and Mac with --no-examples to avoid spurious Stan crashes in examples
+          - {os: windows-latest, r: 'release', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--no-examples"'}
+          - {os: macOS-latest, r: 'release', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--no-examples"'}
+          - {os: ubuntu-18.04, r: 'devel', suffix: '', not_cran: 'true', check_options: 'NULL'}
+          - {os: ubuntu-18.04, r: 'release', suffix: '', not_cran: 'true', check_options: 'NULL'}
+          - {os: ubuntu-18.04, r: 'release', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+          - {os: ubuntu-18.04, r: 'oldrel', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -79,7 +79,7 @@ jobs:
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
           NOT_CRAN: ${{ matrix.config.not_cran }}
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", ${{ matrix.config.vignettes }}), error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", ${{ matrix.config.check_options }}), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: Upload check results
