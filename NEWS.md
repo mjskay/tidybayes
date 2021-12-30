@@ -1,3 +1,10 @@
+# tidybayes 3.0.1.9000
+
+* Future-proof against changes coming in ggdist 3.1 (unification of `stat_...` and `stat_dist_...`)
+* Minor fixes for R 3.5/3.6 compatibility
+* Use `@examplesIf` for conditional examples (#294)
+
+
 # tidybayes 3.0.1
 
 Minor update for compatibility with brms 2.16.0.
