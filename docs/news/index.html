@@ -76,10 +76,11 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="3.0.2" id="tidybayes-302">tidybayes 3.0.2<a class="anchor" aria-label="anchor" href="#tidybayes-302"></a></h2>
+<h2 class="page-header" data-toc-text="3.0.2" id="tidybayes-302">tidybayes 3.0.2<small>2022-01-05</small><a class="anchor" aria-label="anchor" href="#tidybayes-302"></a></h2>
 <ul><li>Future-proof against changes coming in ggdist 3.1 (unification of <code>stat_...</code> and <code>stat_dist_...</code>)</li>
 <li>Minor fixes for R 3.5/3.6 compatibility</li>
 <li>Use <code>@examplesIf</code> for conditional examples (<a href="https://github.com/mjskay/tidybayes/issues/294" class="external-link">#294</a>)</li>
+<li>Warn when input names in <code><a href="../reference/compose_data.html">compose_data()</a></code> are overwritten by generated names (<a href="https://github.com/mjskay/tidybayes/issues/295" class="external-link">#295</a>)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="3.0.1" id="tidybayes-301">tidybayes 3.0.1<small>2021-08-22</small><a class="anchor" aria-label="anchor" href="#tidybayes-301"></a></h2>
@@ -93,7 +94,7 @@
 <code><a href="../reference/tidybayes-deprecated.html">add_fitted_draws()</a></code> and <code><a href="../reference/tidybayes-deprecated.html">fitted_draws()</a></code> are now deprecated, along with the <code>scale</code> argument. Several years’ teaching experience has demonstrated that “fitted” is a very confusing name for students. Use the more-specific [<code>add_</code>]<code><a href="../reference/add_predicted_draws.html">linpred_draws()</a></code> if you want draws from the linear predictor or the new [<code>add_</code>]<code><a href="../reference/add_predicted_draws.html">epred_draws()</a></code> if you want draws from the expectation of the posterior predictive (which is what <code><a href="../reference/tidybayes-deprecated.html">fitted_draws()</a></code> was most typically used for).</li>
 <li>Arguments for renaming output columns are now all called <code>value</code>, but retain function-specific default column names. E.g. the <code>prediction</code> argument for <code><a href="../reference/add_predicted_draws.html">predicted_draws()</a></code> is now spelled <code>value</code> but has a default of <code>".prediction"</code>. One breaking change is that the default output column for <code><a href="../reference/add_predicted_draws.html">linpred_draws()</a></code> is now <code>".linpred"</code> instead of <code>".value"</code>. This should make it easier to combine outputs across multiple functions while also making it easier to remember the name of the argument that changes the output column name.</li>
 <li>The <code>n</code> argument is now spelled <code>ndraws</code> to be more consistent with terminology in the <code>posterior</code> package and to prevent partial argument name matching bugs with <code>newdata</code>.</li>
-<li>The first argument to all of these functions is now <code>object</code> instead of <code>model</code>, in order to match with argument names in <code><a href="https://rdrr.io/pkg/brms/man/posterior_predict.brmsfit.html" class="external-link">posterior_predict()</a></code>, etc. This was necessary to prevent partial argument name matching bugs with certain model types in <code>rstanarm</code> that have an <code>m</code> argument to their prediction functions.</li>
+<li>The first argument to all of these functions is now <code>object</code> instead of <code>model</code>, in order to match with argument names in <code>posterior_predict()</code>, etc. This was necessary to prevent partial argument name matching bugs with certain model types in <code>rstanarm</code> that have an <code>m</code> argument to their prediction functions.</li>
 </ul></li>
 </ul><p>New features:</p>
 <ul><li>Support for the new <code>posterior</code> package:
@@ -106,7 +107,7 @@
 <li>
 <code><a href="../reference/compare_levels.html">compare_levels()</a></code> now supports data frames of <code><a href="https://mc-stan.org/posterior/reference/rvar.html" class="external-link">posterior::rvar()</a></code>s.</li>
 </ul></li>
-<li>The <code><a href="../reference/add_predicted_draws.html">epred_draws()</a></code>, <code><a href="../reference/add_predicted_draws.html">linpred_draws()</a></code>, and <code><a href="../reference/add_predicted_draws.html">predicted_draws()</a></code> functions should now support any models that implement <code><a href="https://rdrr.io/pkg/brms/man/posterior_epred.brmsfit.html" class="external-link">posterior_epred()</a></code>, <code><a href="https://rdrr.io/pkg/brms/man/posterior_linpred.brmsfit.html" class="external-link">posterior_linpred()</a></code>, and <code><a href="https://rdrr.io/pkg/brms/man/posterior_predict.brmsfit.html" class="external-link">posterior_predict()</a></code> so long as they take a <code>newdata</code> argument.</li>
+<li>The <code><a href="../reference/add_predicted_draws.html">epred_draws()</a></code>, <code><a href="../reference/add_predicted_draws.html">linpred_draws()</a></code>, and <code><a href="../reference/add_predicted_draws.html">predicted_draws()</a></code> functions should now support any models that implement <code>posterior_epred()</code>, <code>posterior_linpred()</code>, and <code>posterior_predict()</code> so long as they take a <code>newdata</code> argument.</li>
 <li>Several dependencies have been removed or demoted to <em>Suggests</em>, including <code>forcats</code>, <code>plyr</code>, and <code>purrr</code>.</li>
 <li>Added the option to set the <code>seed</code> when subsampling to several functions (<a href="https://github.com/mjskay/tidybayes/issues/276" class="external-link">#276</a>).</li>
 </ul><p>New documentation:</p>

@@ -34,3 +34,4 @@
 ^vignettes/models$
 ^README_models$
 ^\.github$
+^CRAN-SUBMISSION$
