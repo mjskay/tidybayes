@@ -73,16 +73,19 @@ data_list = function(...) {
 }
 #' @export
 c.data_list = function(x, ..., recursive=FALSE) {
-  class(x) = class(x)[-which(class(x) == "data_list")]
-  x = c(x, ..., recursive = recursive)
-  class(x) = c("data_list", class(x))
-  x
+  result = NextMethod()
+  class(result) = c("data_list", "list")
+  attr(result, "generated_names") = unique(unlist(
+    lapply(list(x, ...), attr, "generated_names"),
+    recursive = FALSE
+  ))
+  result
 }
 #' @export
 print.data_list = function(x, ...) {
   cat("data_list:\n\n")
   class(x) = class(x)[-which(class(x) == "data_list")]
-  print(x, ...)
+  NextMethod(x, ...)
 }
 
 
@@ -120,7 +123,10 @@ as_data_list.factor = function(object, name = "", .n_name = n_prefix("n"), ...) 
     warning("Some levels of factor ", deparse0(name),
       " are unused. This may cause issues if you are using it as the dimension for a variable in a model.")
   }
-  data[[.n_name(name)]] = length(levels(object))
+  n_name = .n_name(name)
+  warn_if_overwritten_names(intersect(n_name, names(data)))
+  data[[n_name]] = length(levels(object))
+  attr(data, "generated_names") = n_name
   data
 }
 #' @rdname data_list
@@ -137,10 +143,21 @@ as_data_list.list = function(object, name="", ...) {
     names(data) = name
   } else {
     #go through list and translate each variable
-    data = data_list()
-    for (i in seq_along(object)) {
-      data = c(data, as_data_list(object[[i]], name = names(object)[[i]], ...))
-    }
+    data_lists = lapply(seq_along(object), function(i)
+      as_data_list(object[[i]], name = names(object)[[i]], ...)
+    )
+    data = do.call(c, data_lists)
+
+    # check for variables overwritten by generated elements
+    nongenerated_names = unlist(lapply(seq_along(object), function(i)
+      setdiff(names(object)[[i]], attr(object[[i]], "generated_names"))
+    ), recursive = FALSE)
+    generated_names = unlist(
+      lapply(object, attr, "generated_names"),
+      recursive = FALSE
+    )
+    overwritten_names = intersect(nongenerated_names, generated_names)
+    warn_if_overwritten_names(overwritten_names)
   }
 
   data
@@ -152,12 +169,16 @@ as_data_list.data.frame = function(object, name="", .n_name = n_prefix("n"), ...
   data = as_data_list.list(object,
     name = name,
     .n_name = .n_name,
-    scalar_as_array = TRUE,     #when converting from a data frame with only one row, convert
+    #when converting from a data frame with only one row, convert
     #single scalars to arrays of length 1
-    ...)
+    scalar_as_array = TRUE,
+    ...
+  )
   #then add "n" column and return final list
   n_name = .n_name(name)
+  warn_if_overwritten_names(intersect(n_name, names(data)))
   data[[n_name]] = nrow(object)
+  attr(data, "generated_names") = union(attr(data, "generated_names"), n_name)
   data
 }
 #' @rdname data_list
@@ -267,6 +288,7 @@ compose_data = function(..., .n_name = n_prefix("n")) {
 
   #convert objects into a data list one by one, evaluating each argument in the
   #environment of the previous lists (to allow the user to refer to previously composed elements)
+  overwritten_names = character()
   data = list()
   for (i in seq_along(exprs)) {
     object_to_compose = eval_tidy(exprs[[i]], data)
@@ -277,9 +299,19 @@ compose_data = function(..., .n_name = n_prefix("n")) {
     if (is.null(object_to_compose)) {
       data[[name]] = NULL
     } else {
-      data %<>% modifyList(as_data_list(object_to_compose, name = name, .n_name = .n_name))
+      new_data = as_data_list(object_to_compose, name = name, .n_name = .n_name)
+
+      # check for existing names overwritten by generated names
+      overwritten_names = union(overwritten_names, intersect(
+        setdiff(names(data), attr(data, "generated_names")),
+        attr(new_data, "generated_names")
+      ))
+
+      data %<>% modifyList(new_data)
     }
   }
+
+  warn_if_overwritten_names(overwritten_names)
 
   data
 }
@@ -332,4 +364,22 @@ compose_data = function(..., .n_name = n_prefix("n")) {
 #' @export
 n_prefix = function(prefix) {
   function(name) if (name == "") prefix else paste0(prefix, "_", name)
+}
+
+
+# helpers -----------------------------------------------------------------
+
+#' Warn if any names were overwritten (if names is non-NULL)
+#' @noRd
+warn_if_overwritten_names = function(names) {
+  if (length(names) > 0) {
+    warning0(
+      "compose_data() automatically generated the following elements that\n",
+      "overwrote a pre-existing variable from its input: \n",
+      paste0('"', names, '"', collapse = ", "),
+      "\nRename these variables in the input data or change the `.n_name`\n",
+      "function to resolve the conflict. See help('compose_data')."
+    )
+  }
+
 }
