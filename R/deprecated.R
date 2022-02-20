@@ -229,14 +229,20 @@ fitted_draws.default = function(
   scale = match.arg(scale)
   deprecation_message_base = paste0(
     "`fitted_draws` and `add_fitted_draws` are deprecated as their names were confusing.\n",
-    "Use [add_]epred_draws() to get the expectation of the posterior predictive.\n",
-    "Use [add_]linpred_draws() to get the distribution of the linear predictor.\n"
+    "- Use [add_]epred_draws() to get the expectation of the posterior predictive.\n",
+    "- Use [add_]linpred_draws() to get the distribution of the linear predictor.\n"
+  )
+  arg_note = paste0(
+    "NOTE: When updating to the new functions, note that the `model` parameter is now\n",
+    "  named `object` and the `n` parameter is now named `ndraws`."
   )
   switch(scale,
     response = {
-      .Deprecated("epred_draws", "tidybayes", paste0(deprecation_message_base,
-        'For example, you used [add_]fitted_draws(..., scale = "response"), which\n',
-        'means you most likely want [add_]epred_draws(...).'
+      .Deprecated("epred_draws", "tidybayes", paste0(
+        deprecation_message_base,
+        '- For example, you used [add_]fitted_draws(..., scale = "response"), which\n',
+        '  means you most likely want [add_]epred_draws(...).\n',
+        arg_note
       ))
       epred_draws(
         object = model, newdata = newdata, ...,
@@ -244,9 +250,11 @@ fitted_draws.default = function(
       )
     },
     linear = {
-      .Deprecated("linpred_draws", "tidybayes", paste0(deprecation_message_base,
-        'For example, you used [add_]fitted_draws(..., scale = "linear"), which\n',
-        'means you most likely want [add_]linpred_draws(...).'
+      .Deprecated("linpred_draws", "tidybayes", paste0(
+        deprecation_message_base,
+        '- For example, you used [add_]fitted_draws(..., scale = "linear"), which\n',
+        '  means you most likely want [add_]linpred_draws(...).\n',
+        arg_note
       ))
       linpred_draws(
         object = model, newdata = newdata, ...,
