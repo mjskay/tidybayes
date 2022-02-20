@@ -258,7 +258,7 @@ spread_draws = function(model, ..., regex = FALSE, sep = "[, ]", ndraws = NULL, 
 }
 
 #' @importFrom dplyr mutate group_by_at
-#' @importFrom tidyr spread_
+#' @importFrom tidyr spread
 #' @importFrom rlang has_name
 spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
   #parse a variable spec in the form variable_name[dimension_name_1, dimension_name_2, ..] | wide_dimension
@@ -281,7 +281,7 @@ spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
     if (length(variable_names) != 1) {
       stop0("Cannot extract draws from multiple variables in wide format.")
     }
-    spread_(long_draws, wide_dimension_name, variable_names)
+    spread(long_draws, !!wide_dimension_name, !!variable_names)
   }
   else if (has_name(long_draws, "..")) {
     #a column named ".." is present, use it to form a wide version of the data
@@ -296,7 +296,7 @@ spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
       #allow you to modify grouping columns)
       group_by_at(setdiff(group_vars(.), "..")) %>%
       mutate(.. = paste0(variable_names, ".", ..)) %>%
-      spread_("..", variable_names)
+      spread("..", !!variable_names)
   }
   else {
     #no wide column => just return long version
@@ -307,7 +307,7 @@ spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
 ## draws: tidy draws, such as reutrned by tidy_draws()
 ## variable_names: a character vector of names of variables
 ## dimension_names: a character vector of dimension names
-#' @importFrom tidyr spread_ separate gather_
+#' @importFrom tidyr spread separate gather
 #' @importFrom dplyr summarise_all group_by_at
 spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FALSE, sep = "[, ]") {
   if (!regex) {
@@ -360,14 +360,14 @@ spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FA
     #replace them with the ".drop" placeholder and then drop those columns later.
     #TODO: probably a better way to do this.
     temp_dimension_names = dimension_names %>%
-      #must give each blank dimension column a unique name, otherwise spread_() won't work below
+      #must give each blank dimension column a unique name, otherwise spread() won't work below
       ifelse(. == "", paste0(".drop", seq_along(.)), .)
     dimension_names = dimension_names[dimension_names != ""]
 
     # similarly, for nested dimensions specified using '.' we internally convert these to
     # numeric values in order to get sensible ordering
     temp_dimension_names = temp_dimension_names %>%
-      #must give each blank dimension column a unique name, otherwise spread_() won't work below
+      #must give each blank dimension column a unique name, otherwise spread() won't work below
       ifelse(. == ".", as.character(seq_along(.)), .)
     nested_dimension_names = temp_dimension_names[!is.na(suppressWarnings(as.integer(temp_dimension_names)))]
     # sort nested dimension names so they are nested in the order the user desires
@@ -380,7 +380,7 @@ spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FA
     # for separate() depend on the number of parameters instead of number of parameters * number of draws
     nested_draws = draws[, variable_names] %>%
       summarise_all(list) %>%
-      gather_(".variable", ".value", variable_names)
+      gather(".variable", ".value", !!!variable_names)
 
     #next, split dimensions in variable names into columns
     nested_draws = separate(nested_draws, ".variable", c(".variable", ".dimensions"), sep = "\\[|\\]")

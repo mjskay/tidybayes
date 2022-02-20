@@ -143,7 +143,7 @@ comparison_types = within(list(), {
 #'   facet_grid(cols = vars(i))
 #'
 #' @importFrom tidyselect vars_pull
-#' @importFrom tidyr spread_
+#' @importFrom tidyr spread
 #' @importFrom tidyselect one_of
 #' @importFrom tibble as_tibble
 #' @importFrom rlang sym quo_name eval_tidy quo_get_expr
