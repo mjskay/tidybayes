@@ -247,21 +247,70 @@ the expectation of the posterior predictive, or the posterior predictive to
 the data frame.
 }
 \details{
-\code{add_epred_rvars()} adds \code{\link{rvar}}s containing draws from the \strong{expectation}
-of the posterior predictive distribution to the data.
-It corresponds to \code{\link[rstanarm:posterior_linpred.stanreg]{rstanarm::posterior_epred()}} or \code{\link[brms:posterior_epred.brmsfit]{brms::posterior_epred()}}.
+Consider a model like:
 
-\code{add_predicted_rvars()} adds \code{\link{rvar}}s containing draws from the
-posterior predictive distribution to the data.
+\deqn{\begin{eqnarray}
+y &\sim& \textrm{SomeDist}(\theta_1, \theta_2)\\
+f_1(\theta_1) &=& \alpha_1 + \beta_1 x\\
+f_2(\theta_2) &=& \alpha_2 + \beta_2 x
+\end{eqnarray}}{
+y ~ SomeDist(\theta_1, \theta_2),
+f_1(\theta_1) = \alpha_1 + \beta_1*x,
+f_2(\theta_2) = \alpha_2 + \beta_2*x
+}
+
+This model has:
+\itemize{
+\item an outcome variable, \eqn{y}
+\item a response distribution, \eqn{\textrm{SomeDist}}{SomeDist}, having parameters \eqn{\theta_1}
+(with link function \eqn{f_1}) and \eqn{\theta_2} (with link function \eqn{f_2})
+\item a single predictor, \eqn{x}
+\item coefficients \eqn{\alpha_1}, \eqn{\beta_1}, \eqn{\alpha_2}, and \eqn{\beta_2}
+}
+
+We fit this model to some observed data, \eqn{y_\textrm{obs}}{y_obs}, and predictors,
+\eqn{x_\textrm{obs}}{x_obs}. Given new values of predictors, \eqn{x_\textrm{new}}{x_new},
+supplied in the data frame \code{newdata}, the functions for posterior draws are
+defined as follows:
+\itemize{
+\item \code{add_predicted_rvars()} adds \code{\link{rvar}}s containing draws from the \strong{posterior predictive distribution},
+\eqn{p(y_\textrm{new} | x_\textrm{new}, y_\textrm{obs})}{p(y_new | x_new, y_obs)},
+to the data.
 It corresponds to \code{\link[rstanarm:posterior_predict.stanreg]{rstanarm::posterior_predict()}} or \code{\link[brms:posterior_predict.brmsfit]{brms::posterior_predict()}}.
-
-\code{add_linpred_rvars()} adds \code{\link{rvar}}s containing draws from the (possibly
-transformed) posterior \strong{linear} predictors (or "link-level" predictors) to the data.
+\item \code{add_epred_rvars()} adds \code{\link{rvar}}s containing draws from the \strong{expectation of the posterior predictive
+distribution}, aka the conditional expectation,
+\eqn{E(y_\textrm{new} | x_\textrm{new}, y_\textrm{obs})}{E(y_new | x_new, y_obs)},
+to the data.
+It corresponds to \code{\link[rstanarm:posterior_linpred.stanreg]{rstanarm::posterior_epred()}} or \code{\link[brms:posterior_epred.brmsfit]{brms::posterior_epred()}}.
+Not all models support this function.
+\item \code{add_linpred_rvars()} adds \code{\link{rvar}}s containing draws from the \strong{posterior linear predictors} to the data.
 It corresponds to \code{\link[rstanarm:posterior_linpred.stanreg]{rstanarm::posterior_linpred()}} or \code{\link[brms:posterior_linpred.brmsfit]{brms::posterior_linpred()}}.
+Depending on the model type and additional parameters passed, this may be:
+\itemize{
+\item The untransformed linear predictor, e.g.
+\eqn{p(f_1(\theta_1) | x_\textrm{new}, y_\textrm{obs})}{p(f_1(\theta_1) | x_new, y_obs)} =
+\eqn{p(\alpha_1 + \beta_1 x_\textrm{new} | x_\textrm{new}, y_\textrm{obs})}{p(\alpha_1 + \beta_1*x_new | x_new, y_obs)}.
+This is returned by \code{add_linpred_rvars(transform = FALSE)} for \pkg{brms} and \pkg{rstanarm} models.
+It is analogous to \code{type = "link"} in \code{\link[=predict.glm]{predict.glm()}}.
+\item The inverse-link transformed linear predictor, e.g.
+\eqn{p(\theta_1 | x_\textrm{new}, y_\textrm{obs})}{p(\theta_1 | x_new, y_obs)} =
+\eqn{p(f_1^{-1}(\alpha_1 + \beta_1 x_\textrm{new}) | x_\textrm{new}, y_\textrm{obs})}{p(f_1^-1(\alpha_1 + \beta_1*x_new) | x_new, y_obs)}.
+This is returned by \code{add_linpred_rvars(transform = TRUE)} for \pkg{brms} and \pkg{rstanarm} models.
+It is analogous to \code{type = "response"} in \code{\link[=predict.glm]{predict.glm()}}.
+}
+
+\strong{NOTE:} \code{add_linpred_rvars(transform = TRUE)} and \code{add_epred_rvars()} may be equivalent but
+are not guaranteed to be. They are equivalent when the expectation of the response
+distribution is equal to its first parameter, i.e. when \eqn{E(y) = \theta_1}. Many
+distributions have this property (e.g. Normal distributions, Bernoulli distributions),
+but not all. If you want the expectation of the posterior predictive, it is best to
+use \code{add_epred_rvars()} if available, and if not available, verify this property holds prior
+to using \code{add_linpred_rvars()}.
+}
 
 The corresponding functions without \code{add_} as a prefix are alternate spellings
-with the opposite order of the first two arguments: e.g. \code{add_predicted_rvars()}
-and \code{predicted_rvars()}. This facilitates use in data
+with the opposite order of the first two arguments: e.g. \code{add_predicted_rvars(newdata, object)}
+versus \code{predicted_rvars(object, newdata)}. This facilitates use in data
 processing pipelines that start either with a data frame or a model.
 
 Given equal choice between the two, the spellings prefixed with \code{add_}
