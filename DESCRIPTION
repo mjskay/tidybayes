@@ -52,7 +52,6 @@ Suggests:
     brms (>= 2.16.0),
     cowplot,
     covr,
-    gdtools,
     rmarkdown,
     ggrepel,
     bindrcpp,
