@@ -2,11 +2,11 @@
 #'
 #' Consider a model like:
 #'
-#' \deqn{\begin{eqnarray}
-#' y &\sim& \textrm{SomeDist}(\theta_1, \theta_2)\\
-#' f_1(\theta_1) &=& \alpha_1 + \beta_1 x\\
-#' f_2(\theta_2) &=& \alpha_2 + \beta_2 x
-#' \end{eqnarray}}{
+#' \deqn{\begin{aligned}
+#' y &\sim \textrm{SomeDist}(\theta_1, \theta_2)\\
+#' f_1(\theta_1) &= \alpha_1 + \beta_1 x\\
+#' f_2(\theta_2) &= \alpha_2 + \beta_2 x
+#' \end{aligned}}{
 #' y ~ SomeDist(\theta_1, \theta_2),
 #' f_1(\theta_1) = \alpha_1 + \beta_1*x,
 #' f_2(\theta_2) = \alpha_2 + \beta_2*x
