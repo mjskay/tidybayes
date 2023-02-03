@@ -581,10 +581,10 @@ the following:
 
 ``` r
   stat_summary(
-    aes(y = .prediction, fill = forcats::fct_rev(ordered(stat(.width))), group = -stat(.width)), 
+    aes(y = .prediction, fill = forcats::fct_rev(ordered(after_stat(.width))), group = -after_stat(.width)), 
     geom = "ribbon", point_interval = median_qi, fun.args = list(.width = c(.99, .95, .8, .5))
   ) +
-  stat_summary(aes(y = .prediction), fun.y = median, geom = "line", color = "red", size = 1.25)
+  stat_summary(aes(y = .prediction), fun.y = median, geom = "line", color = "red", linewidth = 1.25)
 ```
 
 Because this is all tidy data, if you wanted to build a model with

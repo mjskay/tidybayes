@@ -161,7 +161,7 @@ censored_plot = cens_df %>%
   geom_segment(
     aes(x = y + 0.5, xend = y + 0.5, y = 1.75, yend = 1.5, color = ordered(y)),
     data = data.frame(y = unique(cens_df$y_lower)), show.legend = FALSE,
-    arrow = arrow(type = "closed", length = unit(7, "points")), size = 1
+    arrow = arrow(type = "closed", length = unit(7, "points")), linewidth = 1
   ) +
   ylab(NULL) +
   xlab("interval-censored y") +
@@ -424,7 +424,7 @@ censored_plot = cens_df_t %>%
   geom_segment(
     aes(x = y + 0.5, xend = y + 0.5, y = 1.75, yend = 1.5, color = ordered(y)),
     data = data.frame(y = unique(cens_df_t$y_lower)), show.legend = FALSE,
-    arrow = arrow(type = "closed", length = unit(7, "points")), size = 1
+    arrow = arrow(type = "closed", length = unit(7, "points")), linewidth = 1
   ) +
   ylab(NULL) +
   xlab("interval-censored y") +

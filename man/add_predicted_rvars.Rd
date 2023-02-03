@@ -349,7 +349,7 @@ mtcars \%>\%
   data_grid(hp = seq_range(hp, n = 101)) \%>\%
   add_epred_rvars(m_mpg) \%>\%
   ggplot(aes(x = hp, color = ordered(cyl), fill = ordered(cyl))) +
-  stat_dist_lineribbon(aes(dist = .epred), .width = c(.95, .8, .5), alpha = 1/3) +
+  stat_lineribbon(aes(dist = .epred), .width = c(.95, .8, .5), alpha = 1/3) +
   geom_point(aes(y = mpg), data = mtcars) +
   scale_color_brewer(palette = "Dark2") +
   scale_fill_brewer(palette = "Set2")
@@ -360,7 +360,7 @@ mtcars \%>\%
   data_grid(hp = seq_range(hp, n = 101)) \%>\%
   add_predicted_rvars(m_mpg) \%>\%
   ggplot(aes(x = hp, color = ordered(cyl), fill = ordered(cyl))) +
-  stat_dist_lineribbon(aes(dist = .prediction), .width = c(.95, .8, .5), alpha = 1/3) +
+  stat_lineribbon(aes(dist = .prediction), .width = c(.95, .8, .5), alpha = 1/3) +
   geom_point(aes(y = mpg), data = mtcars) +
   scale_color_brewer(palette = "Dark2") +
   scale_fill_brewer(palette = "Set2")

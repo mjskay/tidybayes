@@ -322,14 +322,14 @@ m %>%
 
 ## Plotting point summaries and intervals
 
-Plotting point summaries and intervals is straightforward using `ggdist::stat_dist_pointinterval()`, which will produce visualizations with 66% and 95% intervals by default (this can be changed using the `.width` parameter, the default is `.width = c(.66, .95)`):
+Plotting point summaries and intervals is straightforward using `ggdist::stat_pointinterval()`, which will produce visualizations with 66% and 95% intervals by default (this can be changed using the `.width` parameter, the default is `.width = c(.66, .95)`):
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_rvars(b_Intercept, r_condition[condition,]) %>%
   mutate(condition_mean = b_Intercept + r_condition) %>%
-  ggplot(aes(y = condition, dist = condition_mean)) +
-  stat_dist_pointinterval()
+  ggplot(aes(y = condition, xdist = condition_mean)) +
+  stat_pointinterval()
 ```
 
 `median_qi()` and its sister functions can also produce an arbitrary number of probability intervals by setting the `.width =` argument:
@@ -340,40 +340,40 @@ m %>%
   median_qi(condition_mean = b_Intercept + r_condition, .width = c(.95, .8, .5))
 ```
 
-The results are in a tidy format: one row per group and uncertainty interval width (`.width`). This facilitates plotting, and is essentially what `ggdist::stat_dist_pointinterval()` is doing for you under the hood above. For example, assigning `-.width` to the `size` aesthetic will show all intervals, making thicker lines correspond to smaller intervals. 
+The results are in a tidy format: one row per group and uncertainty interval width (`.width`). This facilitates plotting, and is essentially what `ggdist::stat_pointinterval()` is doing for you under the hood above. For example, assigning `-.width` to the `linewidth` aesthetic will show all intervals, making thicker lines correspond to smaller intervals. 
 
 ## Intervals with densities
 
-To see the density along with the intervals, we can use `ggdist::stat_dist_eye()` ("eye plots", which combine intervals with violin plots), or `ggdist::stat_dist_halfeye()` (interval + density plots):
+To see the density along with the intervals, we can use `ggdist::stat_eye()` ("eye plots", which combine intervals with violin plots), or `ggdist::stat_halfeye()` (interval + density plots):
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_rvars(b_Intercept, r_condition[condition,]) %>%
   mutate(condition_mean = b_Intercept + r_condition) %>%
-  ggplot(aes(y = condition, dist = condition_mean)) +
-  stat_dist_halfeye()
+  ggplot(aes(y = condition, xdist = condition_mean)) +
+  stat_halfeye()
 ```
 
-Or say you want to annotate portions of the densities in color; the `fill` aesthetic can vary within a slab in all geoms and stats in the `ggdist::geom_slabinterval()` family, including `ggdist::stat_dist_halfeye()`. For example, if you want to annotate a domain-specific region of practical equivalence (ROPE), you could do something like this:
+Or say you want to annotate portions of the densities in color; the `fill` aesthetic can vary within a slab in all geoms and stats in the `ggdist::geom_slabinterval()` family, including `ggdist::stat_halfeye()`. For example, if you want to annotate a domain-specific region of practical equivalence (ROPE), you could do something like this:
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
 m %>%
   spread_rvars(b_Intercept, r_condition[condition,]) %>%
   mutate(condition_mean = b_Intercept + r_condition) %>%
-  ggplot(aes(y = condition, dist = condition_mean, fill = stat(abs(x) < .8))) +
-  stat_dist_halfeye() +
+  ggplot(aes(y = condition, xdist = condition_mean, fill = after_stat(abs(x) < .8))) +
+  stat_halfeye() +
   geom_vline(xintercept = c(-.8, .8), linetype = "dashed") +
   scale_fill_manual(values = c("gray80", "skyblue"))
 ```
 
 
-## Other visualizations of distributions: `stat_dist_slabinterval`
+## Other visualizations of distributions: `stat_slabinterval`
 
-There are a variety of additional stats for visualizing distributions in the `ggdist::stat_dist_slabinterval()` family of stats and geoms:
+There are a variety of additional stats for visualizing distributions in the `ggdist::stat_slabinterval()` family of stats and geoms:
 
 <img src="slabinterval_family.png" width="700" alt="The slabinterval family of geoms and stats" />
 
-See `vignette("slabinterval", package = "ggdist")` for an overview. All geoms that start with `stat_dist_...` support the use of `rvar` columns in the `dist` aesthetic.
+See `vignette("slabinterval", package = "ggdist")` for an overview. All geoms that start with `stat_...` support the use of `rvar` columns in the `xdist` and `ydist` aesthetics.
 
 ## Posterior means
 
@@ -390,14 +390,14 @@ ABC %>%
 
 Intervals are nice if the alpha level happens to line up with whatever decision you are trying to make, but getting a shape of the posterior is better (hence eye plots, above). On the other hand, making inferences from density plots is imprecise (estimating the area of one shape as a proportion of another is a hard perceptual task). Reasoning about probability in frequency formats is easier, motivating [quantile dotplots](https://github.com/mjskay/when-ish-is-my-bus/blob/master/quantile-dotplots.md) ([Kay et al. 2016](https://doi.org/10.1145/2858036.2858558), [Fernandes et al. 2018](https://doi.org/10.1145/3173574.3173718)), which also allow precise estimation of arbitrary intervals (down to the dot resolution of the plot, 100 in the example below). 
 
-Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `ggdist::stat_dist_dots()` and `ggdist::stat_dist_dotsinterval()` are the variants designed for use on `rvar`s:
+Within the slabinterval family of geoms in tidybayes is the `dots` and `dotsinterval` family, which automatically determine appropriate bin sizes for dotplots and can calculate quantiles from samples to construct quantile dotplots. `ggdist::stat_dots()` and `ggdist::stat_dotsinterval()` are the variants designed for use on `rvar`s:
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
   data_grid(condition) %>%
   add_epred_rvars(m) %>%
-  ggplot(aes(dist = .epred, y = condition)) +
-  stat_dist_dotsinterval(quantiles = 100)
+  ggplot(aes(xdist = .epred, y = condition)) +
+  stat_dotsinterval(quantiles = 100)
 ```
 
 The idea is to get away from thinking about the posterior as indicating one canonical point or interval, but instead to represent it as (say) 100 approximately equally likely points.
@@ -407,14 +407,14 @@ The idea is to get away from thinking about the posterior as indicating one cano
 
 Where `add_epred_rvars()` is analogous to `brms::posterior_epred()`, `add_predicted_rvars()` is analogous to `brms::posterior_predict()`, giving draws from the posterior predictive distribution.
 
-We could use `ggdist::stat_dist_interval()` to plot predictive bands alongside the data:
+We could use `ggdist::stat_interval()` to plot predictive bands alongside the data:
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
   data_grid(condition) %>%
   add_predicted_rvars(m) %>%
   ggplot(aes(y = condition)) +
-  stat_dist_interval(aes(dist = .prediction), .width = c(.50, .80, .95, .99)) +
+  stat_interval(aes(xdist = .prediction), .width = c(.50, .80, .95, .99)) +
   geom_point(aes(x = response), data = ABC) +
   scale_color_brewer()
 ```
@@ -429,8 +429,8 @@ ABC %>%
   add_epred_rvars(m) %>%
   add_predicted_rvars(m) %>%
   ggplot(aes(y = condition)) +
-  stat_dist_interval(aes(dist = .prediction)) +
-  stat_dist_pointinterval(aes(dist = .epred), position = position_nudge(y = -0.3)) +
+  stat_interval(aes(xdist = .prediction)) +
+  stat_pointinterval(aes(xdist = .epred), position = position_nudge(y = -0.3)) +
   geom_point(aes(x = response), data = ABC) +
   scale_color_brewer()
 ```
@@ -451,7 +451,7 @@ At this point, we will need to use the "long-data-frame-of-draws" format more ty
 tidybayes workflow. What we want to do is select a small number of draws from the joint distribution of
 `mu` and `sigma` to plot predictive densities from. We will use `unnest_rvars()` to "unnest" all the `rvar`s
 in the above output into a long-format data frame, sample 30 of the draws using `sample_draws()`, and then use 
-`ggdist::stat_dist_slab()` to visualize each predictive distribution implied by the values of `mu` and `sigma`:
+`ggdist::stat_slab()` to visualize each predictive distribution implied by the values of `mu` and `sigma`:
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
 ABC %>%
@@ -460,8 +460,8 @@ ABC %>%
   unnest_rvars() %>%
   sample_draws(30) %>%
   ggplot(aes(y = condition)) +
-  stat_dist_slab(
-    aes(dist = dist_normal(mu, sigma)), 
+  stat_slab(
+    aes(xdist = dist_normal(mu, sigma)), 
     color = "gray65", alpha = 1/10, fill = NA
   ) +
   geom_point(aes(x = response), data = ABC, shape = 21, fill = "#9ECAE1", size = 2)
@@ -496,7 +496,7 @@ mtcars %>%
   data_grid(hp = seq_range(hp, n = 51)) %>%
   add_epred_rvars(m_mpg) %>%
   ggplot(aes(x = hp, color = ordered(cyl))) +
-  stat_dist_lineribbon(aes(dist = .epred)) +
+  stat_lineribbon(aes(ydist = .epred)) +
   geom_point(aes(y = mpg), data = mtcars) +
   scale_fill_brewer(palette = "Greys") +
   scale_color_brewer(palette = "Set2")
@@ -511,7 +511,7 @@ mtcars %>%
   data_grid(hp = seq_range(hp, n = 101)) %>%
   add_predicted_rvars(m_mpg) %>%
   ggplot(aes(x = hp, color = ordered(cyl), fill = ordered(cyl))) +
-  stat_dist_lineribbon(aes(dist = .prediction), .width = c(.95, .80, .50), alpha = 1/4) +
+  stat_lineribbon(aes(ydist = .prediction), .width = c(.95, .80, .50), alpha = 1/4) +
   geom_point(aes(y = mpg), data = mtcars) +
   scale_fill_brewer(palette = "Set2") +
   scale_color_brewer(palette = "Dark2")
@@ -560,8 +560,8 @@ AB %>%
   add_epred_rvars(m_ab) %>%
   add_predicted_rvars(m_ab) %>%
   ggplot(aes(y = group)) +
-  stat_dist_halfeye(aes(dist = .epred), scale = 0.6, position = position_nudge(y = 0.175)) +
-  stat_dist_interval(aes(dist = .prediction)) +
+  stat_halfeye(aes(xdist = .epred), scale = 0.6, position = position_nudge(y = 0.175)) +
+  stat_interval(aes(xdist = .prediction)) +
   geom_point(aes(x = response), data = AB) +
   scale_color_brewer()
 ```
@@ -574,8 +574,8 @@ The predictive intervals in group `b` are larger than in group `a` because the m
 AB %>%
   data_grid(group) %>%
   add_epred_rvars(m_ab, dpar = TRUE) %>%
-  ggplot(aes(dist = sigma, y = group)) +
-  stat_dist_halfeye() +
+  ggplot(aes(xdist = sigma, y = group)) +
+  stat_halfeye() +
   geom_vline(xintercept = 0, linetype = "dashed")
 ```
 
@@ -586,7 +586,7 @@ By setting `dpar = TRUE`, all distributional parameters are added as additional 
 
 If we wish compare the means from each condition, `compare_levels()` facilitates comparisons of the value of some variable across levels of a factor. By default it computes all pairwise differences. 
 
-Let's demonstrate `compare_levels()` with `ggdist::stat_dist_halfeye()`. We'll also
+Let's demonstrate `compare_levels()` with `ggdist::stat_halfeye()`. We'll also
 re-order by the mean of the difference:
 
 ```{r fig.width = tiny_width, fig.height = tiny_height}
@@ -595,8 +595,8 @@ m %>%
   compare_levels(r_condition, by = condition) %>%
   ungroup() %>%
   mutate(condition = reorder(condition, r_condition)) %>%
-  ggplot(aes(y = condition, dist = r_condition)) +
-  stat_dist_halfeye() +
+  ggplot(aes(y = condition, xdist = r_condition)) +
+  stat_halfeye() +
   geom_vline(xintercept = 0, linetype = "dashed") 
 ```
 
@@ -662,7 +662,7 @@ fit_plot = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
   add_epred_rvars(m_cyl, value = "P(cyl | mpg)", columns_to = "cyl") %>%
   ggplot(aes(x = mpg, color = cyl)) +
-  stat_dist_lineribbon(aes(dist = `P(cyl | mpg)`, fill = cyl), alpha = 1/5) +
+  stat_lineribbon(aes(ydist = `P(cyl | mpg)`, fill = cyl), alpha = 1/5) +
   scale_color_brewer(palette = "Dark2") +
   scale_fill_brewer(palette = "Dark2") +
   labs(y = "P(cyl | mpg)")
@@ -705,7 +705,7 @@ data_plot_with_mean = mtcars_clean %>%
   # DOT NOT do this if you are making other chart types like intervals or densities
   add_epred_rvars(m_cyl, value = "P(cyl | mpg)", ndraws = 100) %>%
   # calculate expected cylinder value
-  mutate(cyl = `P(cyl | mpg)` %**% c(4,6,8)) %>%
+  mutate(cyl = drop(`P(cyl | mpg)` %**% c(4,6,8))) %>%
   # transform in long-data-frame-of-draws format for making spaghetti plots
   unnest_rvars() %>%
   ggplot(aes(x = mpg, y = cyl)) +
@@ -754,7 +754,7 @@ get the latent linear predictor. We'll combine this with the thresholds in `beta
 subtracting `beta[1]` from the linear predictor and from the other threshold, `beta[2]`,
 as these values are all highly correlated (thus are hard to visualize with
 uncertainty in a meaningful way without looking at their differences). We'll
-also demonstrate the use of `.width = ppoints(XXX)` with `stat_dist_lineribbon()` where `XXX` is a number
+also demonstrate the use of `.width = ppoints(XXX)` with `stat_lineribbon()` where `XXX` is a number
 like `30` or `50`, which combined with a low `alpha` value produces gradient-like
 lineribbons:
 
@@ -770,22 +770,22 @@ x_intercept_lines = geom_vline(
   xintercept = median(x_intercept),
   color = "gray50",
   alpha = 0.2,
-  size = 1
+  linewidth = 1
 )
 
 thresholds_plot = mtcars_clean %>%
   data_grid(mpg = seq_range(mpg, n = 101)) %>%
   add_linpred_rvars(m_cyl) %>%
   ggplot(aes(x = mpg)) +
-  stat_dist_lineribbon(
-    aes(dist = beta[2] - beta[1]),
+  stat_lineribbon(
+    aes(ydist = beta[2] - beta[1]),
     color = beta_2_color, fill = beta_2_color, 
     alpha = 1/30, .width = ppoints(30),
-    size = 1, linetype = "21"
+    linewidth = 1, linetype = "21"
   ) +
-  geom_line(aes(y = 0), size = 1, color = beta_1_color, linetype = "21") +
-  stat_dist_lineribbon(
-    aes(dist = .linpred - beta[1]),
+  geom_line(aes(y = 0), linewidth = 1, color = beta_1_color, linetype = "21") +
+  stat_lineribbon(
+    aes(ydist = .linpred - beta[1]),
     fill = "black", color = "black",
     alpha = 1/30, .width = ppoints(30)
   ) +

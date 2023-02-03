@@ -93,7 +93,7 @@ and visualization tasks common to many models:
   stats, including eye plots, half-eye plots, CCDF bar plots, gradient plots, dotplots, and histograms), 
   and visualizing fit lines with an arbitrary number of uncertainty bands (`ggdist::geom_lineribbon()` 
   and `ggdist::stat_lineribbon()`). Priors can also be visualized in the same way using the 
-  `ggdist::stat_dist_slabinterval()` family of stats. The `ggdist::geom_dotsinterval()` family also
+  `ggdist::stat_slabinterval()` family of stats. The `ggdist::geom_dotsinterval()` family also
   automatically finds good binning parameters for dotplots, and can be used to easily construct
   quantile dotplots of posteriors (see example in this document). For convenience, `tidybayes`
   re-exports the `ggdist` stats and geoms.
@@ -107,8 +107,8 @@ and visualization tasks common to many models:
   `XXX_draws` functions, such as `spread_rvars()`, `add_predicted_rvars()`, etc. 
   These functions instead return tidy data frames of `posterior::rvar()`s, a
   vectorized random variable data type (see `vignette("rvar", package = "posterior")`
-  for more about `rvar`s). Combined with the `ggdist::stat_dist_slabinterval()`
-  and `ggdist::stat_dist_lineribbon()` geometries, these functions make it
+  for more about `rvar`s). Combined with the `ggdist::stat_slabinterval()`
+  and `ggdist::stat_lineribbon()` geometries, these functions make it
   easy to extract samples from distributions, manipulate them, and visualize them;
   this format may have significant advantages in terms of memory required for 
   large models. See `vignette("tidy-posterior")` for examples.
@@ -435,10 +435,10 @@ mtcars %>%
 
 ```r
   stat_summary(
-    aes(y = .prediction, fill = forcats::fct_rev(ordered(stat(.width))), group = -stat(.width)), 
+    aes(y = .prediction, fill = forcats::fct_rev(ordered(after_stat(.width))), group = -after_stat(.width)), 
     geom = "ribbon", point_interval = median_qi, fun.args = list(.width = c(.99, .95, .8, .5))
   ) +
-  stat_summary(aes(y = .prediction), fun.y = median, geom = "line", color = "red", size = 1.25)
+  stat_summary(aes(y = .prediction), fun.y = median, geom = "line", color = "red", linewidth = 1.25)
 ```
 
 Because this is all tidy data, if you wanted to build a model with interactions among different categorical variables (say a different curve for automatic and manual transmissions), you can easily generate predictions faceted over that variable (say, different curves for different transmission types). Then you could use the existing faceting features built in to ggplot to plot them.
