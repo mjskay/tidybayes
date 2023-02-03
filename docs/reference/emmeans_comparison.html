@@ -24,7 +24,7 @@ suitable for use with compare_levels()."><meta property="og:image" content="http
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
       </span>
     </div>
 
@@ -36,7 +36,7 @@ suitable for use with compare_levels()."><meta property="og:image" content="http
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,7 +83,7 @@ suitable for use with <code><a href="compare_levels.html">compare_levels()</a></
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">emmeans_comparison</span><span class="op">(</span><span class="va">method</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">emmeans_comparison</span><span class="op">(</span><span class="va">method</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -95,12 +95,17 @@ the name of an <a href="https://rdrr.io/pkg/emmeans/man/emmc-functions.html" cla
 function itself, like <a href="https://rdrr.io/pkg/emmeans/man/emmc-functions.html" class="external-link">emmeans::pairwise.emmc</a>, <a href="https://rdrr.io/pkg/emmeans/man/emmc-functions.html" class="external-link">emmeans::trt.vs.ctrl.emmc</a>, etc,
 or a custom function that takes a vector of factor levels and returns a
 contrast matrix.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Arguments passed on to the contrast method.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A function that takes a single argument, <code>var</code>, containing a variable
+    
+
+<p>A function that takes a single argument, <code>var</code>, containing a variable
 to generate contrasts for (e.g., a factor or a character vector) and returns
 a function that generates a list of named unevaluated expressions representing
 different contrasts of that variable. This function is suitable to be used
@@ -127,25 +132,25 @@ See <code><a href="gather_emmeans_draws.html">gather_emmeans_draws()</a></code> 
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RankCorr</span>, package <span class="op">=</span> <span class="st">"ggdist"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># emmeans contrast methods return matrices. E.g. the "eff" comparison</span></span>
-<span class="r-in"><span class="co"># compares each level to the average of all levels:</span></span>
-<span class="r-in"><span class="fu">emmeans</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmc-functions.html" class="external-link">eff.emmc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>,<span class="st">"d"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RankCorr</span>, package <span class="op">=</span> <span class="st">"ggdist"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># emmeans contrast methods return matrices. E.g. the "eff" comparison</span></span></span>
+<span class="r-in"><span><span class="co"># compares each level to the average of all levels:</span></span></span>
+<span class="r-in"><span><span class="fu">emmeans</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmc-functions.html" class="external-link">eff.emmc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>,<span class="st">"d"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   a effect b effect c effect d effect</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a     0.75    -0.25    -0.25    -0.25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> b    -0.25     0.75    -0.25    -0.25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> c    -0.25    -0.25     0.75    -0.25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> d    -0.25    -0.25    -0.25     0.75</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># tidybayes::compare_levels() can't use a contrast matrix like this</span></span>
-<span class="r-in"><span class="co"># directly; it takes arbitrary expressions of factor levels. But</span></span>
-<span class="r-in"><span class="co"># we can use `emmeans_comparison` to generate the equivalent expressions:</span></span>
-<span class="r-in"><span class="fu">emmeans_comparison</span><span class="op">(</span><span class="st">"eff"</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>,<span class="st">"d"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># tidybayes::compare_levels() can't use a contrast matrix like this</span></span></span>
+<span class="r-in"><span><span class="co"># directly; it takes arbitrary expressions of factor levels. But</span></span></span>
+<span class="r-in"><span><span class="co"># we can use `emmeans_comparison` to generate the equivalent expressions:</span></span></span>
+<span class="r-in"><span><span class="fu">emmeans_comparison</span><span class="op">(</span><span class="st">"eff"</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>,<span class="st">"b"</span>,<span class="st">"c"</span>,<span class="st">"d"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`a effect`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.75 * a + -0.25 * b + -0.25 * c + -0.25 * d</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -158,14 +163,14 @@ See <code><a href="gather_emmeans_draws.html">gather_emmeans_draws()</a></code> 
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`d effect`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -0.25 * a + -0.25 * b + -0.25 * c + 0.75 * d</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># We can use the "eff" comparison type with `compare_levels()` as follows:</span></span>
-<span class="r-in"><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="va">j</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">j</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="compare_levels.html">compare_levels</a></span><span class="op">(</span><span class="va">b</span>, by <span class="op">=</span> <span class="va">i</span>, comparison <span class="op">=</span> <span class="fu">emmeans_comparison</span><span class="op">(</span><span class="st">"eff"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 x 8</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># We can use the "eff" comparison type with `compare_levels()` as follows:</span></span></span>
+<span class="r-in"><span><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="va">j</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">j</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="compare_levels.html">compare_levels</a></span><span class="op">(</span><span class="va">b</span>, by <span class="op">=</span> <span class="va">i</span>, comparison <span class="op">=</span> <span class="fu">emmeans_comparison</span><span class="op">(</span><span class="st">"eff"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   i            j       b .lower .upper .width .point .interval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 1 effect     1 -<span style="color: #BB0000;">0.361</span>  -<span style="color: #BB0000;">0.546</span> -<span style="color: #BB0000;">0.168</span>   0.95 median qi       </span>
@@ -185,7 +190,7 @@ See <code><a href="gather_emmeans_draws.html">gather_emmeans_draws()</a></code> 
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

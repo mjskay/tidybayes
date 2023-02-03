@@ -27,7 +27,7 @@ gather_draws() for functions that parse variable indices.'><meta property="og:im
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ gather_draws() for functions that parse variable indices.'><meta property="og:im
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -89,46 +89,46 @@ as columns. This function does not parse indices from variable names
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for draws</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for data.frame</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for mcmc.list</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for stanfit</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for stanreg</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for runjags</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for jagsUI</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for brmsfit</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for CmdStanFit</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for CmdStanMCMC</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for matrix</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for MCMCglmm</span>
-<span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for default</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for draws</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for data.frame</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for mcmc.list</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for stanfit</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for stanreg</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for runjags</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for jagsUI</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for brmsfit</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for CmdStanFit</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for CmdStanMCMC</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for matrix</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for MCMCglmm</span></span>
+<span><span class="fu">tidy_draws</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -136,12 +136,17 @@ as columns. This function does not parse indices from variable names
     <dl><dt>model</dt>
 <dd><p>A supported Bayesian model fit. Tidybayes supports a variety of model objects;
 for a full list of supported models, see <a href="tidybayes-models.html">tidybayes-models</a>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Further arguments passed to other methods (mostly unused).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data frame (actually, a <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a>) with a <code>.chain</code> column,
+    
+
+<p>A data frame (actually, a <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a>) with a <code>.chain</code> column,
 <code>.iteration</code> column, <code>.draw</code> column, and one column for every variable in <code>model</code>.</p>
     </div>
     <div id="details">
@@ -178,14 +183,14 @@ internally and provides a friendly interface for extracting tidy data frames fro
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">line</span>, package <span class="op">=</span> <span class="st">"coda"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">line</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">tidy_draws</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 400 x 6</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">line</span>, package <span class="op">=</span> <span class="st">"coda"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">line</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">tidy_draws</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 400 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    .chain .iteration .draw alpha   beta  sigma</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>      1          1     1  7.17 -<span style="color: #BB0000;">1.57</span>  11.2  </span>
@@ -198,8 +203,8 @@ internally and provides a friendly interface for extracting tidy data frames fro
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>      1          8     8  2.96  1.09   0.459</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>      1          9     9  3.53  1.07   0.634</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>      1         10    10  2.09  1.48   0.913</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ... with 390 more rows</span></span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 390 more rows</span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -214,7 +219,7 @@ internally and provides a friendly interface for extracting tidy data frames fro
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

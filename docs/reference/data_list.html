@@ -27,7 +27,7 @@ supported (see Details)."><meta property="og:image" content="http://mjskay.githu
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ supported (see Details)."><meta property="og:image" content="http://mjskay.githu
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -89,33 +89,33 @@ supported (see <em>Details</em>).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">data_list</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for numeric</span>
-<span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, scalar_as_array <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for logical</span>
-<span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for factor</span>
-<span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, .n_name <span class="op">=</span> <span class="fu"><a href="n_prefix.html">n_prefix</a></span><span class="op">(</span><span class="st">"n"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for character</span>
-<span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for list</span>
-<span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for data.frame</span>
-<span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, .n_name <span class="op">=</span> <span class="fu"><a href="n_prefix.html">n_prefix</a></span><span class="op">(</span><span class="st">"n"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for data_list</span>
-<span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">data_list</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for default</span></span>
+<span><span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for numeric</span></span>
+<span><span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, scalar_as_array <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for logical</span></span>
+<span><span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for factor</span></span>
+<span><span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, .n_name <span class="op">=</span> <span class="fu"><a href="n_prefix.html">n_prefix</a></span><span class="op">(</span><span class="st">"n"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for character</span></span>
+<span><span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for list</span></span>
+<span><span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for data.frame</span></span>
+<span><span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, .n_name <span class="op">=</span> <span class="fu"><a href="n_prefix.html">n_prefix</a></span><span class="op">(</span><span class="st">"n"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for data_list</span></span>
+<span><span class="fu">as_data_list</span><span class="op">(</span><span class="va">object</span>, name <span class="op">=</span> <span class="st">""</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -123,16 +123,24 @@ supported (see <em>Details</em>).</p>
     <dl><dt>...</dt>
 <dd><p>Additional arguments passed to other implementations of
 <code>as_data_list</code>, or for <code>data_list</code>, passed to <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>.</p></dd>
+
+
 <dt>object</dt>
 <dd><p>The object to convert (see <em>Details</em>).</p></dd>
+
+
 <dt>name</dt>
 <dd><p>The name of the element in the returned list corresponding to
 this object.</p></dd>
+
+
 <dt>scalar_as_array</dt>
 <dd><p>If <code>TRUE</code>, returns single scalars as an
 1-dimensional array with one element. This is used by
 <code>as_data_list.data.frame</code> to ensure that columns from a data frame with
 only one row are still returned as arrays instead of scalars.</p></dd>
+
+
 <dt>.n_name</dt>
 <dd><p>A function that is used to form variables storing the number of
 rows in data frames or the number of levels in factors in <code>...</code>). For
@@ -140,10 +148,13 @@ example, if a factor with <code>name = "foo"</code> (having three levels) is
 passed in, the list returned will include an element named
 <code>.n_name("foo")</code>, which by default would be "n_foo", containing the
 value 3.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An object of class <code>c("data_list", "list")</code>, where each element
+    
+
+<p>An object of class <code>c("data_list", "list")</code>, where each element
 is a translated variable as described above.</p>
     </div>
     <div id="details">
@@ -180,11 +191,11 @@ etc for examples.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co"># Typically these functions should not be used directly.</span></span>
-<span class="r-in"><span class="co"># See the compose_data function for examples of how to translate</span></span>
-<span class="r-in"><span class="co"># data in lists for input to Bayesian modeling functions.</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Typically these functions should not be used directly.</span></span></span>
+<span class="r-in"><span><span class="co"># See the compose_data function for examples of how to translate</span></span></span>
+<span class="r-in"><span><span class="co"># data in lists for input to Bayesian modeling functions.</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
@@ -200,7 +211,7 @@ etc for examples.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

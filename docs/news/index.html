@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
       </span>
     </div>
 
@@ -35,7 +35,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -76,6 +76,14 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="3.0.3" id="tidybayes-303">tidybayes 3.0.3<a class="anchor" aria-label="anchor" href="#tidybayes-303"></a></h2>
+<ul><li>Much improved documentation of the difference between <code>epred</code>, <code>linpred</code>, and <code>predicted</code> in <code>add_XXX_rvars()</code>.</li>
+<li>Fixes for compatibility with changes and deprecations in <code>dplyr</code> and <code>tidyr</code>.</li>
+<li>Add note about argument name changes to <code><a href="../reference/tidybayes-deprecated.html">fitted_draws()</a></code> deprecation warning (<a href="https://github.com/mjskay/tidybayes/issues/288" class="external-link">#288</a>).</li>
+<li>More correct error message for <code><a href="../reference/add_predicted_draws.html">epred_draws()</a></code> on rethinking models.</li>
+<li>Use <code><a href="https://mc-stan.org/posterior/reference/draws_df.html" class="external-link">posterior::as_draws_df()</a></code> instead of <code><a href="https://mc-stan.org/rstan/reference/As.mcmc.list.html" class="external-link">As.mcmc.list()</a></code> for <code>rstan</code> objects.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="3.0.2" id="tidybayes-302">tidybayes 3.0.2<small>2022-01-05</small><a class="anchor" aria-label="anchor" href="#tidybayes-302"></a></h2>
 <ul><li>Future-proof against changes coming in ggdist 3.1 (unification of <code>stat_...</code> and <code>stat_dist_...</code>)</li>
 <li>Minor fixes for R 3.5/3.6 compatibility</li>
@@ -94,7 +102,7 @@
 <code><a href="../reference/tidybayes-deprecated.html">add_fitted_draws()</a></code> and <code><a href="../reference/tidybayes-deprecated.html">fitted_draws()</a></code> are now deprecated, along with the <code>scale</code> argument. Several years’ teaching experience has demonstrated that “fitted” is a very confusing name for students. Use the more-specific [<code>add_</code>]<code><a href="../reference/add_predicted_draws.html">linpred_draws()</a></code> if you want draws from the linear predictor or the new [<code>add_</code>]<code><a href="../reference/add_predicted_draws.html">epred_draws()</a></code> if you want draws from the expectation of the posterior predictive (which is what <code><a href="../reference/tidybayes-deprecated.html">fitted_draws()</a></code> was most typically used for).</li>
 <li>Arguments for renaming output columns are now all called <code>value</code>, but retain function-specific default column names. E.g. the <code>prediction</code> argument for <code><a href="../reference/add_predicted_draws.html">predicted_draws()</a></code> is now spelled <code>value</code> but has a default of <code>".prediction"</code>. One breaking change is that the default output column for <code><a href="../reference/add_predicted_draws.html">linpred_draws()</a></code> is now <code>".linpred"</code> instead of <code>".value"</code>. This should make it easier to combine outputs across multiple functions while also making it easier to remember the name of the argument that changes the output column name.</li>
 <li>The <code>n</code> argument is now spelled <code>ndraws</code> to be more consistent with terminology in the <code>posterior</code> package and to prevent partial argument name matching bugs with <code>newdata</code>.</li>
-<li>The first argument to all of these functions is now <code>object</code> instead of <code>model</code>, in order to match with argument names in <code>posterior_predict()</code>, etc. This was necessary to prevent partial argument name matching bugs with certain model types in <code>rstanarm</code> that have an <code>m</code> argument to their prediction functions.</li>
+<li>The first argument to all of these functions is now <code>object</code> instead of <code>model</code>, in order to match with argument names in <code><a href="https://mc-stan.org/rstantools/reference/posterior_predict.html" class="external-link">posterior_predict()</a></code>, etc. This was necessary to prevent partial argument name matching bugs with certain model types in <code>rstanarm</code> that have an <code>m</code> argument to their prediction functions.</li>
 </ul></li>
 </ul><p>New features:</p>
 <ul><li>Support for the new <code>posterior</code> package:
@@ -107,7 +115,7 @@
 <li>
 <code><a href="../reference/compare_levels.html">compare_levels()</a></code> now supports data frames of <code><a href="https://mc-stan.org/posterior/reference/rvar.html" class="external-link">posterior::rvar()</a></code>s.</li>
 </ul></li>
-<li>The <code><a href="../reference/add_predicted_draws.html">epred_draws()</a></code>, <code><a href="../reference/add_predicted_draws.html">linpred_draws()</a></code>, and <code><a href="../reference/add_predicted_draws.html">predicted_draws()</a></code> functions should now support any models that implement <code>posterior_epred()</code>, <code>posterior_linpred()</code>, and <code>posterior_predict()</code> so long as they take a <code>newdata</code> argument.</li>
+<li>The <code><a href="../reference/add_predicted_draws.html">epred_draws()</a></code>, <code><a href="../reference/add_predicted_draws.html">linpred_draws()</a></code>, and <code><a href="../reference/add_predicted_draws.html">predicted_draws()</a></code> functions should now support any models that implement <code><a href="https://mc-stan.org/rstantools/reference/posterior_epred.html" class="external-link">posterior_epred()</a></code>, <code><a href="https://mc-stan.org/rstantools/reference/posterior_linpred.html" class="external-link">posterior_linpred()</a></code>, and <code><a href="https://mc-stan.org/rstantools/reference/posterior_predict.html" class="external-link">posterior_predict()</a></code> so long as they take a <code>newdata</code> argument.</li>
 <li>Several dependencies have been removed or demoted to <em>Suggests</em>, including <code>forcats</code>, <code>plyr</code>, and <code>purrr</code>.</li>
 <li>Added the option to set the <code>seed</code> when subsampling to several functions (<a href="https://github.com/mjskay/tidybayes/issues/276" class="external-link">#276</a>).</li>
 </ul><p>New documentation:</p>
@@ -159,9 +167,9 @@
 <li>Fill and color aesthetics can now be mapped within the slab part of eyes (and all slabintervals), allowing gradients to be made easily (<a href="https://github.com/mjskay/tidybayes/issues/136" class="external-link">#136</a>) and regions of practical equivalence (ROPEs) to be annotated easily. Examples of ROPEs have been added to the main vignettes (<a href="https://github.com/mjskay/tidybayes/issues/129" class="external-link">#129</a>).</li>
 <li>Intervals and eyes support <code>position = "dodge"</code> correctly (<a href="https://github.com/mjskay/tidybayes/issues/180" class="external-link">#180</a>)</li>
 <li>The new geoms (and replacements for old ones) have custom scales allowing fine-grained targeting of fill, color, and size aesthetics of all the component parts of the composite geoms.</li>
-<li>There is a new sub-family of auto-sizing Wilkinson dotplot stats and geoms, <code><a href="http://mjskay.github.io/ggdist/reference/geom_dotsinterval.html" class="external-link">geom_dots()</a></code> and <code><a href="http://mjskay.github.io/ggdist/reference/geom_dotsinterval.html" class="external-link">geom_dotsinterval()</a></code> (<a href="https://github.com/mjskay/tidybayes/issues/210" class="external-link">#210</a>). These include a <code>quantiles</code> parameter on the stats to make it easy to create quantile dotplots.</li>
+<li>There is a new sub-family of auto-sizing Wilkinson dotplot stats and geoms, <code><a href="http://mjskay.github.io/ggdist/reference/geom_dots.html" class="external-link">geom_dots()</a></code> and <code><a href="http://mjskay.github.io/ggdist/reference/geom_dotsinterval.html" class="external-link">geom_dotsinterval()</a></code> (<a href="https://github.com/mjskay/tidybayes/issues/210" class="external-link">#210</a>). These include a <code>quantiles</code> parameter on the stats to make it easy to create quantile dotplots.</li>
 </ul></li>
-<li>Analytical distributions can be visualized using the new <code>stat_dist_...</code> family of geoms for both the <code><a href="http://mjskay.github.io/ggdist/reference/geom_slabinterval.html" class="external-link">geom_slabinterval()</a></code> family and <code><a href="http://mjskay.github.io/ggdist/reference/geom_lineribbon.html" class="external-link">geom_lineribbon()</a></code> (see <code><a href="http://mjskay.github.io/ggdist/reference/stat_dist_slabinterval.html" class="external-link">stat_dist_slabinterval()</a></code> and <code><a href="http://mjskay.github.io/ggdist/reference/stat_lineribbon.html" class="external-link">stat_dist_lineribbon()</a></code>).</li>
+<li>Analytical distributions can be visualized using the new <code>stat_dist_...</code> family of geoms for both the <code><a href="http://mjskay.github.io/ggdist/reference/geom_slabinterval.html" class="external-link">geom_slabinterval()</a></code> family and <code><a href="http://mjskay.github.io/ggdist/reference/geom_lineribbon.html" class="external-link">geom_lineribbon()</a></code> (see <code><a href="http://mjskay.github.io/ggdist/reference/ggdist-deprecated.html" class="external-link">stat_dist_slabinterval()</a></code> and <code><a href="http://mjskay.github.io/ggdist/reference/ggdist-deprecated.html" class="external-link">stat_dist_lineribbon()</a></code>).</li>
 <li>The new <code><a href="http://mjskay.github.io/ggdist/reference/parse_dist.html" class="external-link">parse_dist()</a></code>, which parses distribution specifications (like <code>normal(0,1)</code>) into tidy columns, can be combined with the <code>stat_dist_...</code> family of geoms to easily to visualize priors (e.g. from <code>brms</code>).</li>
 <li>New distribution functions for the marginal LKJ distribution (<code><a href="http://mjskay.github.io/ggdist/reference/lkjcorr_marginal.html" class="external-link">dlkjcorr_marginal()</a></code> and company), combined with <code><a href="http://mjskay.github.io/ggdist/reference/parse_dist.html" class="external-link">parse_dist()</a></code> and the <code>stat_dist_...</code> family make it easy to visualize the marginal LKJ prior on a cell in a correlation matrix. (<a href="https://github.com/mjskay/tidybayes/issues/191" class="external-link">#191</a> <a href="https://github.com/mjskay/tidybayes/issues/192" class="external-link">#192</a>)</li>
 <li>There is a new vignette on frequentist uncertainty visualization, <code>vignette("freq-uncertainty-vis")</code>, also made possible by the new <code>stat_dist_...</code> family of geoms (<a href="https://github.com/mjskay/tidybayes/issues/188" class="external-link">#188</a>)</li>
@@ -171,7 +179,7 @@
 <li>
 <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">hdi()</a></code> now uses trimmed densities by default to avoid odd behavior with bounded distributions (<a href="https://github.com/mjskay/tidybayes/issues/165" class="external-link">#165</a>).</li>
 <li>
-<code>compare_levels(comparison = )</code> now uses a modern tidy approach to dealing with unevaluated expressions, so <code><a href="https://rlang.r-lib.org/reference/nse-defuse.html" class="external-link">rlang::exprs()</a></code> can be used in place of <code><a href="https://rdrr.io/pkg/plyr/man/quoted.html" class="external-link">plyr::.()</a></code> (<a href="https://github.com/mjskay/tidybayes/issues/174" class="external-link">#174</a>, <a href="https://github.com/mjskay/tidybayes/issues/175" class="external-link">#175</a>)</li>
+<code>compare_levels(comparison = )</code> now uses a modern tidy approach to dealing with unevaluated expressions, so <code><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">rlang::exprs()</a></code> can be used in place of <code><a href="https://rdrr.io/pkg/plyr/man/quoted.html" class="external-link">plyr::.()</a></code> (<a href="https://github.com/mjskay/tidybayes/issues/174" class="external-link">#174</a>, <a href="https://github.com/mjskay/tidybayes/issues/175" class="external-link">#175</a>)</li>
 <li>
 <code><a href="http://mjskay.github.io/ggdist/reference/geom_lineribbon.html" class="external-link">geom_lineribbon()</a></code> now works with <code>ggnewscale</code> (<a href="https://github.com/mjskay/tidybayes/issues/178" class="external-link">#178</a>)</li>
 <li>
@@ -233,7 +241,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

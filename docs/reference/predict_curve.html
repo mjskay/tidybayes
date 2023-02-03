@@ -24,7 +24,7 @@ prediction curve)."><meta property="og:image" content="http://mjskay.github.io/t
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
       </span>
     </div>
 
@@ -36,7 +36,7 @@ prediction curve)."><meta property="og:image" content="http://mjskay.github.io/t
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,15 +83,15 @@ prediction curve).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">predict_curve</span><span class="op">(</span><span class="va">data</span>, <span class="va">formula</span>, summary <span class="op">=</span> <span class="va">median</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">predict_curve_density</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">formula</span>,
-  summary <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="fu"><a href="density_bins.html">density_bins</a></span><span class="op">(</span><span class="va">...</span>, n <span class="op">=</span> <span class="va">n</span><span class="op">)</span>,
-  n <span class="op">=</span> <span class="fl">50</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">predict_curve</span><span class="op">(</span><span class="va">data</span>, <span class="va">formula</span>, summary <span class="op">=</span> <span class="va">median</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">predict_curve_density</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">formula</span>,</span>
+<span>  summary <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="fu"><a href="density_bins.html">density_bins</a></span><span class="op">(</span><span class="va">...</span>, n <span class="op">=</span> <span class="va">n</span><span class="op">)</span>,</span>
+<span>  n <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -101,35 +101,51 @@ prediction curve).</p>
 <a href="https://dplyr.tidyverse.org/reference/grouped_df.html" class="external-link">grouped_df</a> representing posteriors from a Bayesian model as
 might be obtained through <code><a href="spread_draws.html">spread_draws()</a></code>. Grouped data frames
 as returned by <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by()</a></code> are supported.</p></dd>
+
+
 <dt>formula</dt>
 <dd><p>A formula specifying the prediction curve. The left-hand side
 of the formula should be a name representing the name of the column that
 will hold the predicted response in the returned data frame. The right-hand
 side is an expression that may include numeric columns from <code>data</code> and
 variables passed into this function in <code>...</code>.</p></dd>
+
+
 <dt>summary</dt>
 <dd><p>The function to apply to summarize each predicted response.
 Useful functions (if you just want a curve) might be <code><a href="https://rdrr.io/r/stats/median.html" class="external-link">median()</a></code>,
 <code><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean()</a></code>, or <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">Mode()</a></code>. If you want predictive distribution
 at each point on the curve, try <code><a href="density_bins.html">density_bins()</a></code> or
 <code><a href="density_bins.html">histogram_bins()</a></code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Variables defining the curve. The right-hand side of
 <code>formula</code> is evaluated for every combination of values of variables in
 <code>...</code>.</p></dd>
+
+
 <dt>n</dt>
 <dd><p>For <code>predict_curve_density</code>, the number of bins to use to
 represent the distribution at each point on the curve.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>If <code>formula</code> is in the form <code>lhs ~ rhs</code> and <code>summary</code>is a function that returns a single value, such as <code>median</code> or
+    
+
+<p>If <code>formula</code> is in the form <code>lhs ~ rhs</code> and <code>summary</code></p>
+
+
+<p>is a function that returns a single value, such as <code>median</code> or
 <code>mode</code>, then <code>predict_curve</code> returns a <code>data.frame</code> with a
 column for each group in <code>data</code> (if it was grouped), a column for each
 variable in <code>...</code>, and a column named <code>lhs</code> with the value of
 <code>summary(rhs)</code> evaluated for every group in <code>data</code> and combination
-of variables in <code>...</code>.
-If <code>summary</code> is a function that returns a <code>data.frame</code>, such as
+of variables in <code>...</code>.</p>
+
+
+<p>If <code>summary</code> is a function that returns a <code>data.frame</code>, such as
 <code><a href="density_bins.html">density_bins()</a></code>, <code>predict_curve</code> has the same set of columns
 as above, except that in place of the <code>lhs</code> column is a set of columns
 named <code>lhs.x</code> for every column named <code>x</code> returned by
@@ -172,9 +188,9 @@ curve.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co"># Deprecated; see examples for density_bins</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Deprecated; see examples for density_bins</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
@@ -190,7 +206,7 @@ curve.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

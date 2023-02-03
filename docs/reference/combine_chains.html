@@ -26,7 +26,7 @@ do not provide such a column."><meta property="og:image" content="http://mjskay.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
       </span>
     </div>
 
@@ -38,7 +38,7 @@ do not provide such a column."><meta property="og:image" content="http://mjskay.
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -87,28 +87,37 @@ do not provide such a column.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">combine_chains</span><span class="op">(</span><span class="va">data</span>, chain <span class="op">=</span> <span class="va">.chain</span>, iteration <span class="op">=</span> <span class="va">.iteration</span>, into <span class="op">=</span> <span class="st">".draw"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">combine_chains</span><span class="op">(</span><span class="va">data</span>, chain <span class="op">=</span> <span class="va">.chain</span>, iteration <span class="op">=</span> <span class="va">.iteration</span>, into <span class="op">=</span> <span class="st">".draw"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>Tidy data frame of draws with columns representing the chain and iteration of each draw.</p></dd>
+
+
 <dt>chain</dt>
 <dd><p>Bare name of column in <code>data</code> indicating the chain of each row. The default (<code>.chain</code>) is
 the same as used by other functions in <code>tidybayes</code>.</p></dd>
+
+
 <dt>iteration</dt>
 <dd><p>Bare name of column in <code>data</code> indicating the iteration of each row. The default
 (<code>.iteration</code>) is the same as used by other functions in <code>tidybayes</code>.</p></dd>
+
+
 <dt>into</dt>
 <dd><p>Name (as a character vector) of the column to combine chains into. The default, <code>NULL</code>, replaces the
 <code>chain</code> column with <code>NA</code>s and writes the combined chain iteration numbers into <code>iteration</code>. If
 provided, <code>chain</code> and <code>iteration</code> will not be modified, and the combined iteration number will be written
 into a new column named <code>into</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data frame of tidy draws with a combined iteration column</p>
+    
+
+<p>A data frame of tidy draws with a combined iteration column</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -121,16 +130,16 @@ into a new column named <code>into</code>.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">coda</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">line</span>, package <span class="op">=</span> <span class="st">"coda"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The `line` posterior has two chains with 200 iterations each:</span></span>
-<span class="r-in"><span class="va">line</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tidy_draws.html">tidy_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">coda</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">line</span>, package <span class="op">=</span> <span class="st">"coda"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The `line` posterior has two chains with 200 iterations each:</span></span></span>
+<span class="r-in"><span><span class="va">line</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tidy_draws.html">tidy_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      .chain      .iteration         .draw           alpha      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Min.   :1.0   Min.   :  1.00   Min.   :  1.0   Min.   :0.858  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1st Qu.:1.0   1st Qu.: 50.75   1st Qu.:100.8   1st Qu.:2.732  </span>
@@ -145,12 +154,12 @@ into a new column named <code>into</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Mean   : 0.7992   Mean   : 0.9681  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.: 0.9925   3rd Qu.: 1.0752  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Max.   : 1.8320   Max.   :11.2331  </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># combine_chains combines the chain and iteration column into the .draw column.</span></span>
-<span class="r-in"><span class="va">line</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tidy_draws.html">tidy_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">combine_chains</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># combine_chains combines the chain and iteration column into the .draw column.</span></span></span>
+<span class="r-in"><span><span class="va">line</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tidy_draws.html">tidy_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">combine_chains</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      .chain      .iteration         .draw           alpha      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Min.   :1.0   Min.   :  1.00   Min.   :  1.0   Min.   :0.858  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1st Qu.:1.0   1st Qu.: 50.75   1st Qu.:100.8   1st Qu.:2.732  </span>
@@ -165,7 +174,7 @@ into a new column named <code>into</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Mean   : 0.7992   Mean   : 0.9681  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.: 0.9925   3rd Qu.: 1.0752  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Max.   : 1.8320   Max.   :11.2331  </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -180,7 +189,7 @@ into a new column named <code>into</code>.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

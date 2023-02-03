@@ -25,7 +25,7 @@ or emmeans::ref_grid() applied to a Bayesian model."><meta property="og:image" c
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
       </span>
     </div>
 
@@ -37,7 +37,7 @@ or emmeans::ref_grid() applied to a Bayesian model."><meta property="og:image" c
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -85,13 +85,13 @@ or <code><a href="https://rdrr.io/pkg/emmeans/man/ref_grid.html" class="external
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="va">object</span>, value <span class="op">=</span> <span class="st">".value"</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for default</span>
-<span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="va">object</span>, value <span class="op">=</span> <span class="st">".value"</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for emm_list</span>
-<span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="va">object</span>, value <span class="op">=</span> <span class="st">".value"</span>, grid <span class="op">=</span> <span class="st">".grid"</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="va">object</span>, value <span class="op">=</span> <span class="st">".value"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for default</span></span>
+<span><span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="va">object</span>, value <span class="op">=</span> <span class="st">".value"</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for emm_list</span></span>
+<span><span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="va">object</span>, value <span class="op">=</span> <span class="st">".value"</span>, grid <span class="op">=</span> <span class="st">".grid"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -99,21 +99,32 @@ or <code><a href="https://rdrr.io/pkg/emmeans/man/ref_grid.html" class="external
     <dl><dt>object</dt>
 <dd><p>An <code>emmGrid</code> object such as returned by
 <code><a href="https://rdrr.io/pkg/emmeans/man/ref_grid.html" class="external-link">emmeans::ref_grid()</a></code> or <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans::emmeans()</a></code>.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>The name of the output column to use to contain the values of draws. Defaults to <code>".value"</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments passed to the underlying method for the type of object given.</p></dd>
+
+
 <dt>grid</dt>
 <dd><p>If <code>object</code> is an <code><a href="https://rdrr.io/pkg/emmeans/man/emm_list-object.html" class="external-link">emmeans::emm_list()</a></code>, the name of the output column to use to contain the name of the
 reference grid that a given row corresponds to. Defaults to <code>".grid"</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A tidy data frame of draws. The columns of the reference grid are returned as-is, with an
+    
+
+<p>A tidy data frame of draws. The columns of the reference grid are returned as-is, with an
 additional column called <code>.value</code> (by default) containing marginal draws. The resulting data
 frame is grouped by the columns from the reference grid to make use of summary functions like
-<code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">point_interval()</a></code> straightforward.
-If <code>object</code> is an <code><a href="https://rdrr.io/pkg/emmeans/man/emm_list-object.html" class="external-link">emmeans::emm_list()</a></code>, which contains estimates from different reference grids,
+<code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">point_interval()</a></code> straightforward.</p>
+
+
+<p>If <code>object</code> is an <code><a href="https://rdrr.io/pkg/emmeans/man/emm_list-object.html" class="external-link">emmeans::emm_list()</a></code>, which contains estimates from different reference grids,
 an additional column with the default name of <code>".grid"</code> is added to indicate the reference grid for each row in the output.
 The name of this column is controlled by the <code>grid</code> argument.</p>
     </div>
@@ -137,38 +148,33 @@ the marginal posterior distributions generated by <code><a href="https://rdrr.io
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘magrittr’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:testthat’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     equals, is_less_than, not</span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms" class="external-link">brms</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rvlenth/emmeans" class="external-link">emmeans</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Here's an example dataset with a categorical predictor (`condition`) with several levels:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">n</span> <span class="op">=</span> <span class="fl">10</span></span>
-<span class="r-in"><span class="va">n_condition</span> <span class="op">=</span> <span class="fl">5</span></span>
-<span class="r-in"><span class="va">ABC</span> <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span class="r-in">  condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>,<span class="st">"D"</span>,<span class="st">"E"</span><span class="op">)</span>, <span class="va">n</span><span class="op">)</span>,</span>
-<span class="r-in">  response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">0.5</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">m</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html" class="external-link">brm</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">condition</span>, data <span class="op">=</span> <span class="va">ABC</span>,</span>
-<span class="r-in">  <span class="co"># 1 chain / few iterations just so example runs quickly</span></span>
-<span class="r-in">  <span class="co"># do not use in practice</span></span>
-<span class="r-in">  chains <span class="op">=</span> <span class="fl">1</span>, iter <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms" class="external-link">brms</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rvlenth/emmeans" class="external-link">emmeans</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Here's an example dataset with a categorical predictor (`condition`) with several levels:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">n</span> <span class="op">=</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span><span class="va">n_condition</span> <span class="op">=</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="va">ABC</span> <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>,<span class="st">"D"</span>,<span class="st">"E"</span><span class="op">)</span>, <span class="va">n</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html" class="external-link">brm</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">condition</span>, data <span class="op">=</span> <span class="va">ABC</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># 1 chain / few iterations just so example runs quickly</span></span></span>
+<span class="r-in"><span>  <span class="co"># do not use in practice</span></span></span>
+<span class="r-in"><span>  chains <span class="op">=</span> <span class="fl">1</span>, iter <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Compiling Stan program...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Start sampling</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SAMPLING FOR MODEL '42694db623b401afc3f1af679e2e9a25' NOW (CHAIN 1).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 3.3e-05 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.33 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
@@ -186,50 +192,59 @@ the marginal posterior distributions generated by <code><a href="https://rdrr.io
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 500 / 500 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.009 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.007 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.016 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.006 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.015 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Once we've fit the model, we can use emmeans() (and functions</span></span>
-<span class="r-in"><span class="co"># from that package) to get whatever marginal distributions we want.</span></span>
-<span class="r-in"><span class="co"># For example, we can get marginal means by condition:</span></span>
-<span class="r-in"><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 x 7</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 1.06, indicating chains have not mixed.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#r-hat</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#bulk-ess</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#tail-ess</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Once we've fit the model, we can use emmeans() (and functions</span></span></span>
+<span class="r-in"><span><span class="co"># from that package) to get whatever marginal distributions we want.</span></span></span>
+<span class="r-in"><span><span class="co"># For example, we can get marginal means by condition:</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   condition .value .lower .upper .width .point .interval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> A          0.199 -<span style="color: #BB0000;">0.170</span>  0.567   0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> B          1.00   0.653  1.33    0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> C          1.87   1.50   2.23    0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> D          1.04   0.606  1.39    0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> E         -<span style="color: #BB0000;">0.936</span> -<span style="color: #BB0000;">1.28</span>  -<span style="color: #BB0000;">0.543</span>   0.95 median qi       </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># or we could get pairwise differences:</span></span>
-<span class="r-in"><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html" class="external-link">contrast</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 x 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> A          0.184 -<span style="color: #BB0000;">0.164</span>  0.533   0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> B          1.00   0.717  1.30    0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> C          1.86   1.45   2.26    0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> D          1.05   0.671  1.37    0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> E         -<span style="color: #BB0000;">0.945</span> -<span style="color: #BB0000;">1.30</span>  -<span style="color: #BB0000;">0.603</span>   0.95 median qi       </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># or we could get pairwise differences:</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html" class="external-link">contrast</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">gather_emmeans_draws</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    contrast  .value .lower .upper .width .point .interval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> A - B    -<span style="color: #BB0000;">0.815</span>  -<span style="color: #BB0000;">1.28</span>  -<span style="color: #BB0000;">0.255</span>   0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> A - C    -<span style="color: #BB0000;">1.68</span>   -<span style="color: #BB0000;">2.17</span>  -<span style="color: #BB0000;">1.24</span>    0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> A - D    -<span style="color: #BB0000;">0.826</span>  -<span style="color: #BB0000;">1.38</span>  -<span style="color: #BB0000;">0.347</span>   0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> A - E     1.14    0.644  1.54    0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> B - C    -<span style="color: #BB0000;">0.856</span>  -<span style="color: #BB0000;">1.33</span>  -<span style="color: #BB0000;">0.421</span>   0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> B - D    -<span style="color: #BB0000;">0.029</span><span style="color: #BB0000; text-decoration: underline;">4</span> -<span style="color: #BB0000;">0.550</span>  0.479   0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> B - E     1.95    1.44   2.40    0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> C - D     0.819   0.373  1.37    0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> C - E     2.81    2.27   3.28    0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> D - E     1.95    1.43   2.51    0.95 median qi       </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># see the documentation of emmeans() for more examples of types of</span></span>
-<span class="r-in"><span class="co"># contrasts supported by that packge.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># }</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> A - B    -<span style="color: #BB0000;">0.846</span>  -<span style="color: #BB0000;">1.34</span>  -<span style="color: #BB0000;">0.311</span>   0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> A - C    -<span style="color: #BB0000;">1.70</span>   -<span style="color: #BB0000;">2.23</span>  -<span style="color: #BB0000;">1.11</span>    0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> A - D    -<span style="color: #BB0000;">0.872</span>  -<span style="color: #BB0000;">1.34</span>  -<span style="color: #BB0000;">0.291</span>   0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> A - E     1.13    0.625  1.62    0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> B - C    -<span style="color: #BB0000;">0.863</span>  -<span style="color: #BB0000;">1.32</span>  -<span style="color: #BB0000;">0.386</span>   0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> B - D    -<span style="color: #BB0000;">0.052</span><span style="color: #BB0000; text-decoration: underline;">1</span> -<span style="color: #BB0000;">0.544</span>  0.432   0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> B - E     1.96    1.42   2.40    0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> C - D     0.826   0.287  1.36    0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> C - E     2.80    2.22   3.40    0.95 median qi       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> D - E     2.00    1.42   2.49    0.95 median qi       </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># see the documentation of emmeans() for more examples of types of</span></span></span>
+<span class="r-in"><span><span class="co"># contrasts supported by that packge.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -244,7 +259,7 @@ the marginal posterior distributions generated by <code><a href="https://rdrr.io
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

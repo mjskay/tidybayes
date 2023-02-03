@@ -359,7 +359,7 @@ cens_df %>%
 
 Looks decent. However, our residuals are now subject to noise---we actually have a distribution of possible QQ plots. So, let's check on some of them to make sure this nice-looking one is not just a fluke. We'll employ [HOPs](https://mucollective.co/project/hops-trends) to do that:
 
-```{r, fig.width = tiny_height, fig.height = tiny_height}
+```{r resid_hops_1, fig.width = tiny_height, fig.height = tiny_height, results='hide'}
 # NOTE: ordinarily I would use a large number of frames (k), 
 # say 50 or 100, but I am keeping it small for the sake of 
 # keeping these examples small
@@ -383,6 +383,13 @@ p = cens_df %>%
 
 animate(p, nframes = k, width = 384, height = 384, res = 96, dev = "png", type = "cairo")
 ```
+
+```{r include=FALSE}
+# animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
+anim_save("tidy-residuals_resid_hops_1.gif")
+```
+
+![](tidy-residuals_resid_hops_1.gif)
 
 Looks good.
 
@@ -690,7 +697,7 @@ bin_df %>%
 
 Randomized quantile residuals help us see that the fit is probably reasonable. In this case (just to switch it up), we'll look at the probability residuals instead, comparing them against a uniform distribution, like so:
 
-```{r, fig.width = tiny_height, fig.height = tiny_height}
+```{r resid_hops_2, fig.width = tiny_height, fig.height = tiny_height, results = "hide"}
 # NOTE: ordinarily I would use a large number of frames (k), 
 # say 50 or 100, but I am keeping it small for the sake of 
 # keeping these examples small
@@ -706,3 +713,10 @@ p = bin_df %>%
 
 animate(p, nframes = k, width = 384, height = 384, res = 96, dev = "png", type = "cairo")
 ```
+
+```{r include=FALSE}
+# animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
+anim_save("tidy-residuals_resid_hops_2.gif")
+```
+
+![](tidy-residuals_resid_hops_2.gif)

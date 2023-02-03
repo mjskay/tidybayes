@@ -530,7 +530,7 @@ mtcars %>%
 
 Or we can create animated [hypothetical outcome plots (HOPs)](https://mucollective.northwestern.edu/project/hops-trends) of fit lines:
 
-```{r}
+```{r hops_lines, results='hide'}
 set.seed(123456)
 # NOTE: using a small number of draws to keep this example
 # small, but in practice you probably want 50 or 100
@@ -549,6 +549,13 @@ p = mtcars %>%
 
 animate(p, nframes = ndraws, fps = 2.5, width = 432, height = 288, res = 96, dev = "png", type = "cairo")
 ```
+
+```{r include=FALSE}
+# animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
+anim_save("tidy-brms_hops_lines.gif")
+```
+
+![](tidy-brms_hops_lines.gif)
 
 Or we could plot posterior predictions (instead of means). For this example
 we'll also use `alpha` to make it easier to see overlapping bands:
@@ -732,7 +739,7 @@ The above display does not let you see the correlation between `P(cyl|mpg)` for 
 One way to see this correlation might be to employ [hypothetical outcome plots (HOPs)](https://doi.org/10.1371/journal.pone.0142444) just for the fit line, "detaching" it from the ribbon (another alternative would be to use HOPs on top of line ensembles, as demonstrated earlier in this document). By employing animation, you can see how the lines move in tandem or opposition to each other, revealing some patterns in how they are correlated:
 
 
-```{r}
+```{r hops_ordinal_ribbon_lines, results='hide'}
 # NOTE: using a small number of draws to keep this example
 # small, but in practice you probably want 50 or 100
 ndraws = 20
@@ -753,6 +760,13 @@ p = mtcars_clean %>%
 
 animate(p, nframes = ndraws, fps = 2.5, width = 576, height = 192, res = 96, dev = "png", type = "cairo")
 ```
+
+```{r include=FALSE}
+# animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
+anim_save("tidy-brms_hops_ordinal_ribbon_lines.gif")
+```
+
+![](tidy-brms_hops_ordinal_ribbon_lines.gif)
 
 Notice how the lines move together, and how they move up or down together or in opposition. We could take a slice through these lines at an x position in the above chart (say, `mpg = 20`) and look at the correlation between them using a scatterplot matrix:
 

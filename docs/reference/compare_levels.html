@@ -27,7 +27,7 @@ across different paired combinations of levels of a factor."><meta property="og:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ across different paired combinations of levels of a factor."><meta property="og:
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -88,15 +88,15 @@ across different paired combinations of levels of a factor.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">compare_levels</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">variable</span>,
-  <span class="va">by</span>,
-  fun <span class="op">=</span> <span class="va">`-`</span>,
-  comparison <span class="op">=</span> <span class="st">"default"</span>,
-  draw_indices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span><span class="op">)</span>,
-  ignore_groups <span class="op">=</span> <span class="st">".row"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">compare_levels</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">variable</span>,</span>
+<span>  <span class="va">by</span>,</span>
+<span>  fun <span class="op">=</span> <span class="va">`-`</span>,</span>
+<span>  comparison <span class="op">=</span> <span class="st">"default"</span>,</span>
+<span>  draw_indices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span><span class="op">)</span>,</span>
+<span>  ignore_groups <span class="op">=</span> <span class="st">".row"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -108,18 +108,26 @@ is a grouped data frame, comparisons will be made within groups (if
 one of the groups in the data frame is the <code>by</code> column, that specific
 group will be ignored, as it is not possible to make comparisons both
 within some variable and across it simultaneously).</p></dd>
+
+
 <dt>variable</dt>
 <dd><p>Bare (unquoted) name of a column in data representing the
 variable to compare across levels. Can be a numeric variable (as in
 long-data-frame-of-draws format) or a <code><a href="https://mc-stan.org/posterior/reference/rvar.html" class="external-link">posterior::rvar</a></code>.</p></dd>
+
+
 <dt>by</dt>
 <dd><p>Bare (unquoted) name of a column in data that is a
 <code>factor</code> or <code>ordered</code>. The value of <code>variable</code> will be
 compared across pairs of levels of this <code>factor</code>.</p></dd>
+
+
 <dt>fun</dt>
 <dd><p>Binary function to use for comparison. For each pair of levels of
 <code>by</code> we are comparing (as determined by <code>comparison</code>), compute the
 result of this function.</p></dd>
+
+
 <dt>comparison</dt>
 <dd><p>One of (a) the comparison types <code>ordered</code>,
 <code>control</code>, <code>pairwise</code>, or <code>default</code> (may also be given as
@@ -138,6 +146,8 @@ include more than two levels or other columns in <code>data</code>. Types (b) an
 in the output <code>variable</code> column instead converting the unevaluated
 expression to a string. You can also use <code><a href="emmeans_comparison.html">emmeans_comparison()</a></code> to generate
 a comparison function based on contrast methods from the <code>emmeans</code> package.</p></dd>
+
+
 <dt>draw_indices</dt>
 <dd><p>Character vector of column names in <code>data</code> that
 should be treated as indices when making the comparison (i.e. values of
@@ -148,16 +158,21 @@ which are the same names used for chain/iteration/draw indices returned by
 <code><a href="spread_draws.html">spread_draws()</a></code> or <code><a href="spread_draws.html">gather_draws()</a></code>; thus if you are using <code>compare_levels</code>
 with <code><a href="spread_draws.html">spread_draws()</a></code> or <code><a href="spread_draws.html">gather_draws()</a></code> you generally should not need to change this
 value.</p></dd>
+
+
 <dt>ignore_groups</dt>
 <dd><p>character vector of names of groups to ignore by
 default in the input grouping. This is primarily provided to make it
 easier to pipe output of <code><a href="add_predicted_draws.html">add_epred_draws()</a></code> into this function,
 as that function provides a <code>".row"</code> output column that is grouped,
 but which is virtually never desired to group by when using <code>compare_levels</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>data.frame</code> with the same columns as <code>data</code>, except
+    
+
+<p>A <code>data.frame</code> with the same columns as <code>data</code>, except
 that the <code>by</code> column contains a symbolic representation of the
 comparison of pairs of levels of <code>by</code> in <code>data</code>, and
 <code>variable</code> contains the result of that comparison.</p>
@@ -193,45 +208,45 @@ first apply <code><a href="https://rdrr.io/r/stats/relevel.html" class="external
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RankCorr</span>, package <span class="op">=</span> <span class="st">"ggdist"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Let's do all pairwise comparisons of b[i,1]:</span></span>
-<span class="r-in"><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="va">j</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">j</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">compare_levels</span><span class="op">(</span><span class="va">b</span>, by <span class="op">=</span> <span class="va">i</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 x 8</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RankCorr</span>, package <span class="op">=</span> <span class="st">"ggdist"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Let's do all pairwise comparisons of b[i,1]:</span></span></span>
+<span class="r-in"><span><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="va">j</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">j</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">compare_levels</span><span class="op">(</span><span class="va">b</span>, by <span class="op">=</span> <span class="va">i</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   i         j     b   .lower .upper .width .point .interval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2 - 1     1 0.343 -<span style="color: #BB0000;">0.009</span><span style="color: #BB0000; text-decoration: underline;">37</span>  0.684   0.95 median qi       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 3 - 1     1 0.734  0.416    1.08    0.95 median qi       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 3 - 2     1 0.402 -<span style="color: #BB0000;">0.013</span><span style="color: #BB0000; text-decoration: underline;">3</span>   0.791   0.95 median qi       </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Or let's plot all comparisons against the first level (control):</span></span>
-<span class="r-in"><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="va">j</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">j</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">compare_levels</span><span class="op">(</span><span class="va">b</span>, by <span class="op">=</span> <span class="va">i</span>, comparison <span class="op">=</span> <span class="va">control</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">b</span>, y <span class="op">=</span> <span class="va">i</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html" class="external-link">stat_halfeye</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Or let's plot all comparisons against the first level (control):</span></span></span>
+<span class="r-in"><span><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="va">j</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">j</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">compare_levels</span><span class="op">(</span><span class="va">b</span>, by <span class="op">=</span> <span class="va">i</span>, comparison <span class="op">=</span> <span class="va">control</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">b</span>, y <span class="op">=</span> <span class="va">i</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_halfeye.html" class="external-link">stat_halfeye</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="compare_levels-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Or let's plot comparisons of all levels of j within</span></span>
-<span class="r-in"><span class="co"># all levels of i</span></span>
-<span class="r-in"><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="va">j</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">compare_levels</span><span class="op">(</span><span class="va">b</span>, by <span class="op">=</span> <span class="va">j</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">b</span>, y <span class="op">=</span> <span class="va">j</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_sample_slabinterval.html" class="external-link">stat_halfeye</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Or let's plot comparisons of all levels of j within</span></span></span>
+<span class="r-in"><span><span class="co"># all levels of i</span></span></span>
+<span class="r-in"><span><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="va">j</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">compare_levels</span><span class="op">(</span><span class="va">b</span>, by <span class="op">=</span> <span class="va">j</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">b</span>, y <span class="op">=</span> <span class="va">j</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_halfeye.html" class="external-link">stat_halfeye</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="compare_levels-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -246,7 +261,7 @@ first apply <code><a href="https://rdrr.io/r/stats/relevel.html" class="external
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

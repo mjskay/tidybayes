@@ -25,7 +25,7 @@ objects."><meta property="og:image" content="http://mjskay.github.io/tidybayes/l
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
       </span>
     </div>
 
@@ -37,7 +37,7 @@ objects."><meta property="og:image" content="http://mjskay.github.io/tidybayes/l
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -85,9 +85,9 @@ objects.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">nest_rvars</span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
-
-<span class="fu">unnest_rvars</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">nest_rvars</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">unnest_rvars</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -98,45 +98,50 @@ format; i.e. it should contain a <code>.draw</code> column (and optionally <code
 and <code>.iteration</code> columns) indexing draws. It should be a grouped by any
 columns that are not intended to be nested.</p></li>
 <li><p>For <code>unnest_rvars()</code>, the data frame should have at least one column that
-is an <code>rvar</code>; all <code>rvar</code> columns will be unnested.</p></li>
+is an <code><a href="https://mc-stan.org/posterior/reference/rvar.html" class="external-link">rvar</a></code>; all <code>rvar</code> columns will be unnested.</p></li>
 </ul></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>For <code>nest_rvars()</code>, returns a data frame without <code>.chain</code>, <code>.iteration</code>, and
-<code>.draw</code> columns, where all non-grouped columns have been converted to <code>rvar</code>s.
-For <code>unnest_rvars()</code>, returns a data frame with <code>.chain</code>, <code>.iteration</code>, and
-<code>.draw</code> columns added, where every <code>rvar</code> column in the input has been
-converted to (one or more) columns containing draws from those <code>rvar</code>s
-in long format. The result is grouped by all non-<code>rvar</code> columns in the
+    
+
+<p>For <code>nest_rvars()</code>, returns a data frame without <code>.chain</code>, <code>.iteration</code>, and
+<code>.draw</code> columns, where all non-grouped columns have been converted to <code><a href="https://mc-stan.org/posterior/reference/rvar.html" class="external-link">rvar</a></code>s.</p>
+
+
+<p>For <code>unnest_rvars()</code>, returns a data frame with <code>.chain</code>, <code>.iteration</code>, and
+<code>.draw</code> columns added, where every <code><a href="https://mc-stan.org/posterior/reference/rvar.html" class="external-link">rvar</a></code> column in the input has been
+converted to (one or more) columns containing draws from those <code><a href="https://mc-stan.org/posterior/reference/rvar.html" class="external-link">rvar</a></code>s
+in long format. The result is grouped by all non-<code><a href="https://mc-stan.org/posterior/reference/rvar.html" class="external-link">rvar</a></code> columns in the
 input; this ensures that <code>nest_rvars(unnest_rvars(x))</code> returns <code>x</code>.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RankCorr</span>, package <span class="op">=</span> <span class="st">"ggdist"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># here's a data frame with some rvars</span></span>
-<span class="r-in"><span class="va">rvar_df</span> <span class="op">=</span> <span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span>, <span class="va">tau</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">rvar_df</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 x 3</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RankCorr</span>, package <span class="op">=</span> <span class="st">"ggdist"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># here's a data frame with some rvars</span></span></span>
+<span class="r-in"><span><span class="va">rvar_df</span> <span class="op">=</span> <span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span>, <span class="va">tau</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rvar_df</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       i          b[,1]          [,2]            [,3]           [,4]         tau</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;rvar&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1  -1.08 <span style="color: #949494;">± 0.095</span>  -1.82 <span style="color: #949494;">± 0.14</span>   0.176 <span style="color: #949494;">± 0.071</span>  -0.101 <span style="color: #949494;">± 0.12</span>  6.0 <span style="color: #949494;">± 0.53</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2  -0.74 <span style="color: #949494;">± 0.146</span>   0.10 <span style="color: #949494;">± 0.25</span>  -0.178 <span style="color: #949494;">± 0.120</span>   0.268 <span style="color: #949494;">± 0.22</span>  3.3 <span style="color: #949494;">± 0.53</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3  -0.34 <span style="color: #949494;">± 0.144</span>  -0.73 <span style="color: #949494;">± 0.23</span>   0.069 <span style="color: #949494;">± 0.121</span>   0.084 <span style="color: #949494;">± 0.21</span>  3.7 <span style="color: #949494;">± 0.52</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># we can unnest it into long format.</span></span>
-<span class="r-in"><span class="co"># note how the result is grouped by all non-rvar input columns,</span></span>
-<span class="r-in"><span class="co"># and nested indices in `b` are converted into columns.</span></span>
-<span class="r-in"><span class="va">draws_df</span> <span class="op">=</span> <span class="va">rvar_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">unnest_rvars</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">draws_df</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3,000 x 9</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># we can unnest it into long format.</span></span></span>
+<span class="r-in"><span><span class="co"># note how the result is grouped by all non-rvar input columns,</span></span></span>
+<span class="r-in"><span><span class="co"># and nested indices in `b` are converted into columns.</span></span></span>
+<span class="r-in"><span><span class="va">draws_df</span> <span class="op">=</span> <span class="va">rvar_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">unnest_rvars</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">draws_df</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3,000 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   i [3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        i `b[1,1]` `b[1,2]` `b[1,3]`  `b[1,4]`   tau .chain .iteration .draw</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
@@ -150,19 +155,19 @@ input; this ensures that <code>nest_rvars(unnest_rvars(x))</code> returns <code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     1   -<span style="color: #BB0000;">1.06</span>     -<span style="color: #BB0000;">1.94</span>   0.060<span style="text-decoration: underline;">0</span>  0.043<span style="text-decoration: underline;">8</span>    5.98      1          8     8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     1   -<span style="color: #BB0000;">0.831</span>    -<span style="color: #BB0000;">2.19</span>   0.353  -<span style="color: #BB0000;">0.413</span>     6.75      1          9     9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>     1   -<span style="color: #BB0000;">0.986</span>    -<span style="color: #BB0000;">1.86</span>   0.082<span style="text-decoration: underline;">7</span>  0.059<span style="text-decoration: underline;">1</span>    6.76      1         10    10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ... with 2,990 more rows</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># calling nest_rvars() again on the result of unnest_rvars()</span></span>
-<span class="r-in"><span class="co"># recovers the original data frame</span></span>
-<span class="r-in"><span class="fu">nest_rvars</span><span class="op">(</span><span class="va">draws_df</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 x 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2,990 more rows</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># calling nest_rvars() again on the result of unnest_rvars()</span></span></span>
+<span class="r-in"><span><span class="co"># recovers the original data frame</span></span></span>
+<span class="r-in"><span><span class="fu">nest_rvars</span><span class="op">(</span><span class="va">draws_df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   i [3]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       i          b[,1]          [,2]            [,3]           [,4]         tau</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;rvar&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1  -1.08 <span style="color: #949494;">± 0.095</span>  -1.82 <span style="color: #949494;">± 0.14</span>   0.176 <span style="color: #949494;">± 0.071</span>  -0.101 <span style="color: #949494;">± 0.12</span>  6.0 <span style="color: #949494;">± 0.53</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2  -0.74 <span style="color: #949494;">± 0.146</span>   0.10 <span style="color: #949494;">± 0.25</span>  -0.178 <span style="color: #949494;">± 0.120</span>   0.268 <span style="color: #949494;">± 0.22</span>  3.3 <span style="color: #949494;">± 0.53</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3  -0.34 <span style="color: #949494;">± 0.144</span>  -0.73 <span style="color: #949494;">± 0.23</span>   0.069 <span style="color: #949494;">± 0.121</span>   0.084 <span style="color: #949494;">± 0.21</span>  3.7 <span style="color: #949494;">± 0.52</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -177,7 +182,7 @@ input; this ensures that <code>nest_rvars(unnest_rvars(x))</code> returns <code>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

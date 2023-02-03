@@ -24,7 +24,7 @@ gather variables and their values from that data frame into a ".variable" and ".
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
       </span>
     </div>
 
@@ -36,7 +36,7 @@ gather variables and their values from that data frame into a ".variable" and ".
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,7 +83,7 @@ gather variables and their values from that data frame into a <code>".variable"<
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gather_variables</span><span class="op">(</span><span class="va">data</span>, exclude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>, <span class="st">".row"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gather_variables</span><span class="op">(</span><span class="va">data</span>, exclude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">".chain"</span>, <span class="st">".iteration"</span>, <span class="st">".draw"</span>, <span class="st">".row"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -91,13 +91,18 @@ gather variables and their values from that data frame into a <code>".variable"<
     <dl><dt>data</dt>
 <dd><p>A data frame with variable names spread across columns, such as one returned by
 <code><a href="tidy_draws.html">tidy_draws()</a></code> or <code><a href="spread_draws.html">spread_draws()</a></code>.</p></dd>
+
+
 <dt>exclude</dt>
 <dd><p>A character vector of names of columns to be excluded from the gather. Default
 ignores several meta-data column names used in tidybayes.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data frame.</p>
+    
+
+<p>A data frame.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -121,12 +126,12 @@ data frame (grouped by <code>i</code> and <code>v</code>), with:</p><ul><li><p>c
 repeated for every value of <code>"v"</code>) or <code>"b[i,v]"</code> (when <code>".variable"</code> is
 <code>"b"</code>) for draw number <code>".draw"</code></p></li>
 </ul><p>In this example, this call:</p>
-<div class="sourceCode"><pre><code><span class="fu"><a href="../reference/gather_variables.html">gather_variables</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode"><pre><code><span><span class="fu"><a href="../reference/gather_variables.html">gather_variables</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
 
 <p>Is roughly equivalent to:</p>
-<div class="sourceCode"><pre><code><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">gather</span><span class="op">(</span><span class="va">.variable</span>, <span class="va">.value</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">.chain</span>, <span class="va">.iteration</span>, <span class="va">.draw</span>, <span class="va">i</span>, <span class="va">v</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">.variable</span>, .add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode"><pre><code><span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">gather</span><span class="op">(</span><span class="va">.variable</span>, <span class="va">.value</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">.chain</span>, <span class="va">.iteration</span>, <span class="va">.draw</span>, <span class="va">i</span>, <span class="va">v</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">.variable</span>, .add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 
     </div>
     <div id="see-also">
@@ -140,17 +145,17 @@ repeated for every value of <code>"v"</code>) or <code>"b[i,v]"</code> (when <co
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RankCorr</span>, package <span class="op">=</span> <span class="st">"ggdist"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="va">v</span><span class="op">]</span>, <span class="va">tau</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">gather_variables</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 24 x 9</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RankCorr</span>, package <span class="op">=</span> <span class="st">"ggdist"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>,<span class="va">v</span><span class="op">]</span>, <span class="va">tau</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">gather_variables</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 24 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        i     v .variable .value  .lower .upper .width .point .interval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1     1 b         -<span style="color: #BB0000;">1.08</span>  -<span style="color: #BB0000;">1.27</span>   -<span style="color: #BB0000;">0.897</span>   0.95 median qi       </span>
@@ -163,14 +168,14 @@ repeated for every value of <code>"v"</code>) or <code>"b[i,v]"</code> (when <co
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     1     4 tau        6.03   5.03    7.11    0.95 median qi       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     2     1 b         -<span style="color: #BB0000;">0.739</span> -<span style="color: #BB0000;">1.01</span>   -<span style="color: #BB0000;">0.430</span>   0.95 median qi       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>     2     1 tau        3.30   2.41    4.46    0.95 median qi       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ... with 14 more rows</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># the first three lines below are roughly equivalent to ggmcmc::ggs(RankCorr)</span></span>
-<span class="r-in"><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="tidy_draws.html">tidy_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">gather_variables</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 19 x 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 14 more rows</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># the first three lines below are roughly equivalent to ggmcmc::ggs(RankCorr)</span></span></span>
+<span class="r-in"><span><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="tidy_draws.html">tidy_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">gather_variables</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 19 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    .variable  .value  .lower  .upper .width .point .interval</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> b[1,1]    -<span style="color: #BB0000;">1.08</span>   -<span style="color: #BB0000;">1.27</span>   -<span style="color: #BB0000;">0.897</span>    0.95 median qi       </span>
@@ -192,8 +197,8 @@ repeated for every value of <code>"v"</code>) or <code>"b[i,v]"</code> (when <co
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> u_tau[1]   5.62    3.86    8.03     0.95 median qi       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span> u_tau[2]   5.48    3.46    9.07     0.95 median qi       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span> u_tau[3]   4.96    3.10    7.86     0.95 median qi       </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># }</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -208,7 +213,7 @@ repeated for every value of <code>"v"</code>) or <code>"b[i,v]"</code> (when <co
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
