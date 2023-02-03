@@ -1,11 +1,11 @@
-# tidybayes 3.0.2.9000
+# tidybayes 3.0.3
 
-* Much improved documentation of the difference between epred, linpred, and 
-  predictions in `add_XXX_rvars()`.
-* Fixes for compatibility with changes and deprecations in *dplyr* and *tidyr*.
-* Add note about arg name changes to `fitted_draws()` deprecation warning (#288).
+* Much improved documentation of the difference between `epred`, `linpred`, and 
+  `predicted` in `add_XXX_rvars()`.
+* Fixes for compatibility with changes and deprecations in `dplyr` and `tidyr`.
+* Add note about argument name changes to `fitted_draws()` deprecation warning (#288).
 * More correct error message for `epred_draws()` on rethinking models.
-* Use `posterior::as_draws_df()` instead of `As.mcmc.list()` for *rstan* objects.
+* Use `posterior::as_draws_df()` instead of `As.mcmc.list()` for `rstan` objects.
 
 
 # tidybayes 3.0.2
