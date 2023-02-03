@@ -110,7 +110,6 @@ library(rstan)
 library(rstanarm)
 library(brms)
 library(bayesplot)
-library(MCMCglmm)
 library(RColorBrewer)
 
 theme_set(theme_tidybayes() + panel_border())
@@ -783,7 +782,7 @@ First, we'll fit the model:
 ```r
 # MCMCglmm does not support tibbles directly,
 # so we convert ABC to a data.frame on the way in
-m_glmm = MCMCglmm(response ~ condition, data = as.data.frame(ABC))
+m_glmm = MCMCglmm::MCMCglmm(response ~ condition, data = as.data.frame(ABC))
 ```
 
 Now we can use `emmeans()` and `gather_emmeans_draws()` exactly as we did with `rstanarm`, but we need to include a `data` argument in the `emmeans()` call:
