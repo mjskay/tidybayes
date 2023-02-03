@@ -467,8 +467,6 @@ ABC %>%
   geom_point(aes(x = response), data = ABC, shape = 21, fill = "#9ECAE1", size = 2)
 ```
 
-For a more detailed description of these charts (and some useful variations on them), see [Solomon Kurz's excellent blog post on the topic](https://solomonkurz.netlify.app/post/2018-12-20-make-rotated-gaussians-kruschke-style/).
-
 The use of `unnest_rvars()` after `add_epred_rvars()` is essentially equivalent to
 just using the `_draws()` instead of `_rvars()` form of the prediction functions 
 (e.g. `add_epred_draws()`), which may be faster and/or more convenient depending
