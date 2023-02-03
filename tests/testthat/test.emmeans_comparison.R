@@ -7,6 +7,7 @@
 
 
 test_that("basic conversion of emmeans contrasts works", {
+  skip_if_not_installed("emmeans")
 
   pairwise_ref = list(
     `a - b` = quote(1 * a + -1 * b +  0 * c),
