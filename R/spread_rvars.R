@@ -149,7 +149,7 @@ spread_rvars = function(model, ..., ndraws = NULL, seed = NULL) {
 
   out = reduce_(list_of_rvar_tibbles, function(tibble1, tibble2) {
     by_ = intersect(names(tibble1), names(tibble2))
-    inner_join(tibble1, tibble2, by = by_)
+    inner_join(tibble1, tibble2, by = by_, multiple = "all")
   })
 
   out[[".stub"]] = NULL

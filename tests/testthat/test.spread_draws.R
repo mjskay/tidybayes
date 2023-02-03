@@ -224,7 +224,7 @@ test_that("spread_draws does not allow extraction of two variables simultaneousl
 test_that("spread_draws correctly extracts multiple variables simultaneously", {
   expect_equal(spread_draws(RankCorr_i, c(tau, u_tau)[i]),
     spread_draws(RankCorr_i, tau[i]) %>%
-      inner_join(spread_draws(RankCorr_i, u_tau[i]), by = c(".chain", ".iteration", ".draw", "i")) %>%
+      inner_join(spread_draws(RankCorr_i, u_tau[i]), by = c(".chain", ".iteration", ".draw", "i"), multiple = "all") %>%
           select(i, tau, u_tau, everything())
   )
   expect_equal(spread_draws(RankCorr_i, cbind(tau)[i]),
@@ -241,14 +241,14 @@ test_that("spread_draws correctly extracts multiple variables simultaneously whe
   expect_equal(spread_draws(RankCorr_t, c(typical_r)), ref1)
 
   ref2 = spread_draws(RankCorr_t, tr2) %>%
-    inner_join(spread_draws(RankCorr_t, typical_r), by = c(".chain", ".iteration", ".draw"))
+    inner_join(spread_draws(RankCorr_t, typical_r), by = c(".chain", ".iteration", ".draw"), multiple = "all")
   expect_equal(spread_draws(RankCorr_t, c(tr2, typical_r)), ref2)
 })
 
 test_that("spread_draws multispec syntax joins results correctly", {
   ref = spread_draws(RankCorr_s, typical_r) %>%
-    inner_join(spread_draws(RankCorr_s, tau[i]), by = c(".chain", ".iteration", ".draw")) %>%
-    inner_join(spread_draws(RankCorr_s, b[i, v]), by = c(".chain", ".iteration", ".draw", "i")) %>%
+    inner_join(spread_draws(RankCorr_s, tau[i]), by = c(".chain", ".iteration", ".draw"), multiple = "all") %>%
+    inner_join(spread_draws(RankCorr_s, b[i, v]), by = c(".chain", ".iteration", ".draw", "i"), multiple = "all") %>%
     group_by(i, v)
 
   expect_equal(spread_draws(RankCorr_s, typical_r, tau[i], b[i, v]), ref)

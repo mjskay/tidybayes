@@ -188,8 +188,10 @@ is roughly equivalent to this:
 The main difference between using the \code{|} syntax instead of the
 \code{..} syntax is that the \code{|} syntax respects prototypes applied to
 dimensions with \code{\link[=recover_types]{recover_types()}}, and thus can be used to get
-columns with nicer names. For example:\preformatted{model \%>\% recover_types(data) \%>\% spread_draws(b[i,v] | v)
-}
+columns with nicer names. For example:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{model \%>\% recover_types(data) \%>\% spread_draws(b[i,v] | v)
+}\if{html}{\out{</div>}}
 
 would return a grouped data frame
 (grouped by \code{i}), with:

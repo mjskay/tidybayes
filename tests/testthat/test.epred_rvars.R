@@ -164,7 +164,7 @@ test_that("[add_]epred_rvars works on brms models with ordinal outcomes (respons
   column_ref = ref %>%
     mutate(.row = 1:n()) %>%
     group_by(across(-.epred)) %>%
-    summarise(cyl_pred = colnames(.epred), .epred = t(.epred), .groups = "drop") %>%
+    reframe(cyl_pred = colnames(.epred), .epred = t(.epred)) %>%
     arrange(cyl_pred, .row)
   dim(column_ref$.epred) = length(column_ref$.epred)
   expect_equal(add_epred_rvars(mtcars_tbl, m_cyl_mpg, columns_to = "cyl_pred"), column_ref)

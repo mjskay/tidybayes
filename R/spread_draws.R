@@ -252,7 +252,7 @@ spread_draws = function(model, ..., regex = FALSE, sep = "[, ]", ndraws = NULL, 
   tidysamples %>%
     reduce_(function(tidysample1, tidysample2) {
       by_ = intersect(names(tidysample1), names(tidysample2))
-      inner_join(tidysample1, tidysample2, by = by_)
+      inner_join(tidysample1, tidysample2, by = by_, multiple = "all")
     }) %>%
     group_by_at(groups_)
 }

@@ -364,7 +364,7 @@ pred_draws_one_var_ = function(
       .chain = NA_integer_,
       .iteration = NA_integer_
     ) %>%
-    inner_join(fits_preds_df, by = ".row") %>%
+    inner_join(fits_preds_df, by = ".row", multiple = "all") %>%
     select(-!!sym(output_name), !!sym(output_name)) %>%
     group_by_at(groups)
 }

@@ -39,7 +39,7 @@ test_that("[add_]residual_draws works on a simple brms model", {
 
     mtcars_tbl %>%
       mutate(.row = rownames(.)) %>%
-      inner_join(resids, by = ".row") %>%
+      inner_join(resids, by = ".row", multiple = "all") %>%
       mutate(.row = as.integer(.row)) %>%
       group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
   }

@@ -18,7 +18,7 @@ Depends:
 Imports:
     methods,
     ggdist (>= 3.0.0),
-    dplyr (>= 0.8.0),
+    dplyr (>= 1.1.0),
     tidyr (>= 1.0.0),
     ggplot2 (>= 3.3.5),
     coda,
@@ -68,7 +68,7 @@ Language: en-US
 BugReports: https://github.com/mjskay/tidybayes/issues/new
 URL: https://mjskay.github.io/tidybayes/, https://github.com/mjskay/tidybayes/
 VignetteBuilder: knitr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 LazyData: true
 Encoding: UTF-8
 Collate:

@@ -586,7 +586,7 @@ We can combine those thresholds (the $\alpha_j$ values from the above formula) w
 esoph %>%
   data_grid(agegp) %>%
   add_linpred_draws(m_esoph_rs) %>%
-  inner_join(thresholds, by = ".draw") %>%
+  inner_join(thresholds, by = ".draw", multiple = "all") %>%
   mutate(`P(Y = category)` = map2(threshold, .linpred, function(alpha, beta_x)
       # this part is logit^-1(alpha_j - beta*x) - logit^-1(alpha_j-1 - beta*x)
       plogis(alpha - beta_x) - 
@@ -606,7 +606,7 @@ It is hard to see the changes in categories in the above plot; let's try somethi
 esoph_plot = esoph %>%
   data_grid(agegp) %>%
   add_linpred_draws(m_esoph_rs) %>%
-  inner_join(thresholds, by = ".draw") %>%
+  inner_join(thresholds, by = ".draw", multiple = "all") %>%
   mutate(`P(Y = category)` = map2(threshold, .linpred, function(alpha, beta_x)
       # this part is logit^-1(alpha_j - beta*x) - logit^-1(alpha_j-1 - beta*x)
       plogis(alpha - beta_x) - 

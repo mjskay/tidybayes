@@ -38,7 +38,7 @@ test_that("gather_emmeans_draws works on a simple rstanarm model", {
 
   ref = as_tibble(estimate_grid) %>%
     mutate(.row = rownames(.)) %>%
-    inner_join(fits, by = ".row") %>%
+    inner_join(fits, by = ".row", multiple = "all") %>%
     select(-.row) %>%
     group_by(hp, wt)
 

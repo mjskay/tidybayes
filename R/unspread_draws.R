@@ -66,7 +66,7 @@ unspread_draws = function(data, ..., draw_indices = c(".chain", ".iteration", ".
     lapply(enquos(...), function(variable_spec) {
       unspread_draws_(data, variable_spec, draw_indices = draw_indices)
     }) %>%
-    reduce_(inner_join, by = draw_indices) %>%
+    reduce_(inner_join, by = draw_indices, multiple = "all") %>%
     as_tibble()
 
   if (drop_indices) {
@@ -112,5 +112,5 @@ unspread_draws_ = function(data, variable_spec, draw_indices = c(".chain", ".ite
       select(-..dimension_values) %>%
       spread("..variable", !!variable_name)
   }) %>%
-    reduce_(inner_join, by = draw_indices)
+    reduce_(inner_join, by = draw_indices, multiple = "all")
 }

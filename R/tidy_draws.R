@@ -285,7 +285,7 @@ tidy_draws.MCMCglmm = function(model, ...) {
   draws = sol_draws %>%
     list() %>%
     c(other_draws) %>%
-    reduce_(inner_join, by = c(".chain", ".iteration", ".draw"))
+    reduce_(inner_join, by = c(".chain", ".iteration", ".draw"), multiple = "all")
 
   attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
   draws

@@ -212,16 +212,14 @@ pred_rvars_ = function(
 
   # get the rvars for the primary parameter
   out = if (is_tibble(newdata)) newdata else as_tibble(newdata)
-  out[[output_name]] = withr::with_seed(seed, rvar(.f(
-    object = object, newdata = newdata, ...
-  )))
+  draws = withr::with_seed(seed, .f(object = object, newdata = newdata, ...))
+  out[[output_name]] = rvar(draws)
 
   # get rvars for the dpars
   for (i in seq_along(dpars)) {
     varname = names(dpars)[[i]]
-    out[[varname]] = withr::with_seed(seed, rvar(.f(
-      object = object, newdata = newdata, ..., dpar = dpars[[i]]
-    )))
+    draws = withr::with_seed(seed, .f(object = object, newdata = newdata, ..., dpar = dpars[[i]]))
+    out[[varname]] = rvar(draws)
   }
 
   rvar_pred_columns_to(out, output_name, columns_to)

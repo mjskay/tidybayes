@@ -49,7 +49,7 @@ test_that("add_draws works on fit from a simple rstanarm model", {
 
   ref = mtcars_tbl %>%
     mutate(.row = rownames(.)) %>%
-    inner_join(fits, by = ".row") %>%
+    inner_join(fits, by = ".row", multiple = "all") %>%
     mutate(.row = as.integer(.row)) %>%
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
 

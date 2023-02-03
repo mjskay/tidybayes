@@ -106,7 +106,7 @@ test_that("[add_]linpred_rvars works on brms models with dirichlet outcomes", {
   column_ref = ref %>%
     mutate(.row = 1:n()) %>%
     group_by(across(-.linpred)) %>%
-    summarise(g_pred = colnames(.linpred) %||% 1:ncol(.linpred), .linpred = t(.linpred), .groups = "drop") %>%
+    reframe(g_pred = colnames(.linpred) %||% 1:ncol(.linpred), .linpred = t(.linpred)) %>%
     arrange(g_pred, .row)
   dim(column_ref$.linpred) = length(column_ref$.linpred)
   expect_equal(add_linpred_rvars(grid, m_dirich, columns_to = "g_pred"), column_ref)

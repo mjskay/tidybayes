@@ -48,7 +48,7 @@ test_that("[add_]predicted_draws and basic arguments works on a simple rstanarm 
 
   ref = mtcars_tbl %>%
     mutate(.row = rownames(.)) %>%
-    inner_join(preds, by = ".row") %>%
+    inner_join(preds, by = ".row", multiple = "all") %>%
     mutate(.row = as.integer(.row)) %>%
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
 
@@ -84,7 +84,7 @@ test_that("[add_]predicted_draws and basic arguments works on an rstanarm model 
 
   ref = mtcars_tbl %>%
     mutate(.row = rownames(.)) %>%
-    inner_join(preds, by = ".row") %>%
+    inner_join(preds, by = ".row", multiple = "all") %>%
     mutate(.row = as.integer(.row)) %>%
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
 
@@ -111,7 +111,7 @@ test_that("[add_]predicted_draws works on a simple brms model", {
 
   ref = mtcars_tbl %>%
     mutate(.row = rownames(.)) %>%
-    inner_join(preds, by = ".row") %>%
+    inner_join(preds, by = ".row", multiple = "all") %>%
     mutate(.row = as.integer(.row)) %>%
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
 
@@ -142,7 +142,7 @@ test_that("[add_]predicted_draws works on brms models with categorical outcomes"
 
   ref = mtcars_tbl %>%
     mutate(.row = rownames(.)) %>%
-    inner_join(preds, by = ".row") %>%
+    inner_join(preds, by = ".row", multiple = "all") %>%
     mutate(.row = as.integer(.row)) %>%
     select(mpg:.row, .chain, .iteration, .draw, everything()) %>%
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
@@ -170,7 +170,7 @@ test_that("[add_]predicted_draws works on brms models with dirichlet responses",
 
   ref = grid %>%
     mutate(.row = as.integer(rownames(.))) %>%
-    inner_join(preds, by = ".row") %>%
+    inner_join(preds, by = ".row", multiple = "all") %>%
     select(x, .row, .chain, .iteration, .draw, .category, everything()) %>%
     group_by(x, .row, .category)
 
@@ -197,7 +197,7 @@ test_that("[add_]predicted_draws works on brms models with multinomial responses
 
   ref = grid %>%
     mutate(.row = as.integer(rownames(.))) %>%
-    inner_join(preds, by = ".row") %>%
+    inner_join(preds, by = ".row", multiple = "all") %>%
     select(total, .row, .chain, .iteration, .draw, .category, everything()) %>%
     group_by(total, .row, .category)
 

@@ -50,7 +50,7 @@ test_that("[add_]epred_draws works on a simple rstanarm model", {
 
     mtcars_tbl %>%
       mutate(.row = rownames(.)) %>%
-      inner_join(fits, by = ".row") %>%
+      inner_join(fits, by = ".row", multiple = "all") %>%
       mutate(.row = as.integer(.row)) %>%
       group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
   }
@@ -93,7 +93,7 @@ test_that("[add_]epred_draws works on an rstanarm model with grouped newdata", {
 
   ref = mtcars_tbl %>%
     mutate(.row = rownames(.)) %>%
-    inner_join(fits, by = ".row") %>%
+    inner_join(fits, by = ".row", multiple = "all") %>%
     mutate(.row = as.integer(.row)) %>%
     group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
 
@@ -120,7 +120,7 @@ test_that("[add_]epred_draws works on brms models without dpar", {
 
     mtcars_tbl %>%
       mutate(.row = rownames(.)) %>%
-      inner_join(fits, by = ".row") %>%
+      inner_join(fits, by = ".row", multiple = "all") %>%
       mutate(.row = as.integer(.row)) %>%
       group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
   }
@@ -176,7 +176,7 @@ test_that("[add_]epred_draws works on brms models with dpar", {
 
     mtcars_tbl %>%
       mutate(.row = rownames(.)) %>%
-      inner_join(fits, by = ".row") %>%
+      inner_join(fits, by = ".row", multiple = "all") %>%
       mutate(.row = as.integer(.row)) %>%
       group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row)
   }
@@ -216,7 +216,7 @@ test_that("[add_]epred_draws works on simple brms models with nlpars", {
 
   ref = df_nlpar %>%
     mutate(.row = rownames(.)) %>%
-    inner_join(fits, by = ".row") %>%
+    inner_join(fits, by = ".row", multiple = "all") %>%
     mutate(.row = as.integer(.row)) %>%
     group_by(y, x, .row)
 
@@ -254,7 +254,7 @@ test_that("[add_]epred_draws works on simple brms models with multiple dpars", {
 
   ref = df_dpars %>%
     mutate(.row = rownames(.)) %>%
-    inner_join(fits, by = ".row") %>%
+    inner_join(fits, by = ".row", multiple = "all") %>%
     mutate(.row = as.integer(.row)) %>%
     group_by(count, Age, visit, .row)
 
@@ -280,8 +280,9 @@ test_that("[add_]epred_draws works on brms models with ordinal outcomes (respons
         .draw = as.integer(.draw)
       )
 
-    inner_join(mtcars_tbl %>%
-      mutate(.row = as.integer(rownames(.))), fits, by = ".row") %>%
+    mtcars_tbl %>%
+      mutate(.row = as.integer(rownames(.))) %>%
+      inner_join(fits, by = ".row", multiple = "all") %>%
       select(mpg:.row, .chain, .iteration, .draw, .category, .epred) %>%
       group_by(mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, .row, .category)
   }
@@ -316,7 +317,9 @@ test_that("[add_]epred_draws works on brms models with dirichlet outcomes (respo
       .draw = as.integer(.draw)
     )
 
-  ref = inner_join(grid %>% mutate(.row = as.integer(rownames(.))), fits, by = ".row") %>%
+  ref = grid %>%
+    mutate(.row = as.integer(rownames(.))) %>%
+    inner_join(fits, by = ".row", multiple = "all") %>%
     select(x, .row, .chain, .iteration, .draw, .category, .epred) %>%
     group_by(x, .row, .category)
 
@@ -338,7 +341,7 @@ test_that("[add_]epred_draws allows extraction of dpar on brms models with categ
     array2df(list(.draw = NA, .row = NA), label.x = "disc")
 
   ref = mtcars_tbl %>% mutate(.row = as.integer(rownames(.))) %>%
-    inner_join(fits, by = ".row") %>%
+    inner_join(fits, by = ".row", multiple = "all") %>%
     left_join(mu_fits, by = c(".row", ".draw")) %>%
     left_join(disc_fits, by = c(".row", ".draw")) %>%
     mutate(
