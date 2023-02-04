@@ -550,12 +550,11 @@ p = mtcars %>%
 animate(p, nframes = ndraws, fps = 2.5, width = 432, height = 288, res = 96, dev = "png", type = "cairo")
 ```
 
-```{r include=FALSE}
+```{r echo=FALSE, results='asis'}
 # animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
 anim_save("tidy-brms_hops_lines.gif")
+cat("![](tidy-brms_hops_lines.gif)\n")
 ```
-
-![](tidy-brms_hops_lines.gif)
 
 Or we could plot posterior predictions (instead of means). For this example
 we'll also use `alpha` to make it easier to see overlapping bands:
@@ -761,12 +760,11 @@ p = mtcars_clean %>%
 animate(p, nframes = ndraws, fps = 2.5, width = 576, height = 192, res = 96, dev = "png", type = "cairo")
 ```
 
-```{r include=FALSE}
+```{r echo=FALSE, results='asis'}
 # animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
 anim_save("tidy-brms_hops_ordinal_ribbon_lines.gif")
+cat("![](tidy-brms_hops_ordinal_ribbon_lines.gif)\n")
 ```
-
-![](tidy-brms_hops_ordinal_ribbon_lines.gif)
 
 Notice how the lines move together, and how they move up or down together or in opposition. We could take a slice through these lines at an x position in the above chart (say, `mpg = 20`) and look at the correlation between them using a scatterplot matrix:
 

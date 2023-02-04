@@ -384,12 +384,11 @@ p = cens_df %>%
 animate(p, nframes = k, width = 384, height = 384, res = 96, dev = "png", type = "cairo")
 ```
 
-```{r include=FALSE}
+```{r echo=FALSE, results='asis'}
 # animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
-anim_save("tidy-residuals_resid_hops_1.gif")
+anim_save("tidybayes-residuals_resid_hops_1.gif")
+cat("![](tidybayes-residuals_resid_hops_1.gif)\n")
 ```
-
-![](tidy-residuals_resid_hops_1.gif)
 
 Looks good.
 
@@ -634,7 +633,7 @@ make_probability_residuals = function(data, prediction, y, y_upper = NA, n = 1) 
     data = mutate(data, !!.prediction := ordered(!!.prediction, levels = levels(!!.prediction)))
   }
   
-  if (is.na(enquo(y_upper)[[2]])) {
+  if (is.na(get_expr(.y_upper))) {
     #no y_upper provided, use y as y_upper
     data = summarise(data,
       .p_lower = mean(!!.prediction < !!.y),
@@ -668,7 +667,7 @@ Consider a simple dataset with a single binary outcome:
 set.seed(51919)
 
 bin_df = tibble(
-  y = rbernoulli(100, .7)
+  y = runif(100) > 0.3
 )
 ```
 
@@ -714,9 +713,8 @@ p = bin_df %>%
 animate(p, nframes = k, width = 384, height = 384, res = 96, dev = "png", type = "cairo")
 ```
 
-```{r include=FALSE}
+```{r echo=FALSE, results='asis'}
 # animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
-anim_save("tidy-residuals_resid_hops_2.gif")
+anim_save("tidybayes-residuals_resid_hops_2.gif")
+cat("![](tidybayes-residuals_resid_hops_2.gif)\n")
 ```
-
-![](tidy-residuals_resid_hops_2.gif)

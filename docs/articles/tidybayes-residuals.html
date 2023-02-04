@@ -516,7 +516,7 @@ that:</p>
 <span>  <span class="fu"><a href="https://gganimate.com/reference/transition_manual.html" class="external-link">transition_manual</a></span><span class="op">(</span><span class="va">residual_draw</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://gganimate.com/reference/animate.html" class="external-link">animate</a></span><span class="op">(</span><span class="va">p</span>, nframes <span class="op">=</span> <span class="va">k</span>, width <span class="op">=</span> <span class="fl">384</span>, height <span class="op">=</span> <span class="fl">384</span>, res <span class="op">=</span> <span class="fl">96</span>, dev <span class="op">=</span> <span class="st">"png"</span>, type <span class="op">=</span> <span class="st">"cairo"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tidy-residuals_resid_hops_1.gif"></p>
+<p><img src="tidybayes-residuals_resid_hops_1.gif"></p>
 <p>Looks good.</p>
 </div>
 </div>
@@ -683,7 +683,7 @@ parameters a bit to get it to converge:</p>
 <span>  <span class="va">y_factor</span> <span class="op">~</span> <span class="fl">1</span>, </span>
 <span>  data <span class="op">=</span> <span class="va">cens_df_o</span>, </span>
 <span>  family <span class="op">=</span> <span class="va">cumulative</span>, </span>
-<span>  prior <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu"><a href="https://mc-stan.org/rstanarm/reference/priors.html" class="external-link">normal</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, class <span class="op">=</span> <span class="va">Intercept</span><span class="op">)</span>, </span>
+<span>  prior <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, class <span class="op">=</span> <span class="va">Intercept</span><span class="op">)</span>, </span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span>,</span>
 <span>  </span>
 <span>  file <span class="op">=</span> <span class="st">"models/tidybayes-residuals_m_o.rds"</span>  <span class="co"># cache model (can be removed)</span></span>
@@ -782,7 +782,7 @@ have not folded it into the main package yet. Use at your own risk:</p>
 <span>    <span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">data</span>, <span class="op">!</span><span class="op">!</span><span class="va">.prediction</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">ordered</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.prediction</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.prediction</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span>  </span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu"><a href="https://rlang.r-lib.org/reference/enquo.html" class="external-link">enquo</a></span><span class="op">(</span><span class="va">y_upper</span><span class="op">)</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="fu"><a href="https://rlang.r-lib.org/reference/set_expr.html" class="external-link">get_expr</a></span><span class="op">(</span><span class="va">.y_upper</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="co">#no y_upper provided, use y as y_upper</span></span>
 <span>    <span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">data</span>,</span>
 <span>      .p_lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.prediction</span> <span class="op">&lt;</span> <span class="op">!</span><span class="op">!</span><span class="va">.y</span><span class="op">)</span>,</span>
@@ -815,11 +815,10 @@ have not folded it into the main package yet. Use at your own risk:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">51919</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">bin_df</span> <span class="op">=</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span>  y <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/rbernoulli.html" class="external-link">rbernoulli</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">.7</span><span class="op">)</span></span>
+<span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0.3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: `rbernoulli()` was deprecated in purrr 1.0.0.</span></span></code></pre>
 <p>A model for this might be the following:</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m_bin</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/brms/man/brm.html" class="external-link">brm</a></span><span class="op">(</span></span>
 <span>  <span class="va">y</span> <span class="op">~</span> <span class="fl">1</span>, </span>
 <span>  data <span class="op">=</span> <span class="va">bin_df</span>, </span>
@@ -828,7 +827,7 @@ have not folded it into the main package yet. Use at your own risk:</p>
 <span>  file <span class="op">=</span> <span class="st">"models/tidybayes-residuals_m_bin.rds"</span>  <span class="co"># cache model (can be removed)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Again, standard residuals are hard to interpret:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bin_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/add_predicted_draws.html">add_residual_draws</a></span><span class="op">(</span><span class="va">m_bin</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -840,7 +839,7 @@ have not folded it into the main package yet. Use at your own risk:</p>
 reasonable. In this case (just to switch it up), we’ll look at the
 probability residuals instead, comparing them against a uniform
 distribution, like so:</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># NOTE: ordinarily I would use a large number of frames (k), </span></span>
 <span><span class="co"># say 50 or 100, but I am keeping it small for the sake of </span></span>
 <span><span class="co"># keeping these examples small</span></span>
@@ -852,13 +851,10 @@ distribution, like so:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">.p_residual</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_qq.html" class="external-link">geom_qq</a></span><span class="op">(</span>distribution <span class="op">=</span> <span class="va">qunif</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_abline</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://gganimate.com/reference/transition_manual.html" class="external-link">transition_manual</a></span><span class="op">(</span><span class="va">.residual_draw</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Subsetting quosures with `[[` is deprecated as of rlang 0.4.0</span></span>
-<span><span class="co">## Please use `quo_get_expr()` instead.</span></span>
-<span><span class="co">## <span style="color: #555555;">This warning is displayed once per session.</span></span></span></code></pre>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://gganimate.com/reference/animate.html" class="external-link">animate</a></span><span class="op">(</span><span class="va">p</span>, nframes <span class="op">=</span> <span class="va">k</span>, width <span class="op">=</span> <span class="fl">384</span>, height <span class="op">=</span> <span class="fl">384</span>, res <span class="op">=</span> <span class="fl">96</span>, dev <span class="op">=</span> <span class="st">"png"</span>, type <span class="op">=</span> <span class="st">"cairo"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="tidy-residuals_resid_hops_2.gif"></p>
+<span>  <span class="fu"><a href="https://gganimate.com/reference/transition_manual.html" class="external-link">transition_manual</a></span><span class="op">(</span><span class="va">.residual_draw</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://gganimate.com/reference/animate.html" class="external-link">animate</a></span><span class="op">(</span><span class="va">p</span>, nframes <span class="op">=</span> <span class="va">k</span>, width <span class="op">=</span> <span class="fl">384</span>, height <span class="op">=</span> <span class="fl">384</span>, res <span class="op">=</span> <span class="fl">96</span>, dev <span class="op">=</span> <span class="st">"png"</span>, type <span class="op">=</span> <span class="st">"cairo"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="tidybayes-residuals_resid_hops_2.gif"></p>
 </div>
   </div>
 
