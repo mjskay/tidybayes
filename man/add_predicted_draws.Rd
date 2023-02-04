@@ -316,11 +316,11 @@ the data frame in a long format.
 \details{
 Consider a model like:
 
-\deqn{\begin{aligned}
-y &\sim \textrm{SomeDist}(\theta_1, \theta_2)\\
-f_1(\theta_1) &= \alpha_1 + \beta_1 x\\
-f_2(\theta_2) &= \alpha_2 + \beta_2 x
-\end{aligned}}{
+\deqn{\begin{array}{rcl}
+y &\sim& \textrm{SomeDist}(\theta_1, \theta_2)\\
+f_1(\theta_1) &=& \alpha_1 + \beta_1 x\\
+f_2(\theta_2) &=& \alpha_2 + \beta_2 x
+\end{array}}{
 y ~ SomeDist(\theta_1, \theta_2),
 f_1(\theta_1) = \alpha_1 + \beta_1*x,
 f_2(\theta_2) = \alpha_2 + \beta_2*x
