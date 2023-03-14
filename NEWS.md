@@ -1,3 +1,11 @@
+# tidybayes 3.0.4
+
+Bug fixes:
+
+* Fix test for `summarise_draws.grouped_df()` due to changes in how 
+  `posterior::summarise_draws()` handles the `num_args` argument.
+
+
 # tidybayes 3.0.3
 
 * Much improved documentation of the difference between `epred`, `linpred`, and 

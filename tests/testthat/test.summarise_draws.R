@@ -16,6 +16,7 @@ test_that("summarise_draws.grouped_df works", {
     mutate(variable = "theta") %>%
     add_column(i = 1:3, .before = 1) %>%
     group_by(i)
+  attr(ref, "num_args") = NULL
 
   expect_equal(d %>% spread_draws(theta[i]) %>% summarise_draws(), ref)
 })
