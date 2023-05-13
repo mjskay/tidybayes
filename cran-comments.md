@@ -1,5 +1,5 @@
 ## Submission comments
-This submission contains minor fixes, documentation improvements, and compatibility fixes for new versions of {tidyr} and {dplyr}.
+This submission fixes a minor test case failure caused by the next version of posterior (1.4.1).
 
 ## Test environments
 * MacOS (github), R-release
