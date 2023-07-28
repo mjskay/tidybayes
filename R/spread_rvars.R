@@ -276,6 +276,7 @@ sample_draws_from_rvars_ = function(model, ndraws = NULL, seed = NULL) {
     draws = resample_draws(draws, ndraws = ndraws, weights = weights)
   }
 
+  attr(draws, "tidybayes_constructors") = attr(model, "tidybayes_constructors")
   draws
 }
 
