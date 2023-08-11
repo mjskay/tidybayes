@@ -4,6 +4,9 @@
     <loc>http://mjskay.github.io/tidybayes/404.html</loc>
   </url>
   <url>
+    <loc>http://mjskay.github.io/tidybayes/LICENSE-text.html</loc>
+  </url>
+  <url>
     <loc>http://mjskay.github.io/tidybayes/articles/index.html</loc>
   </url>
   <url>
@@ -26,9 +29,6 @@
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/index.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/LICENSE-text.html</loc>
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/news/index.html</loc>
@@ -76,10 +76,10 @@
     <loc>http://mjskay.github.io/tidybayes/reference/index.html</loc>
   </url>
   <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/nest_rvars.html</loc>
+    <loc>http://mjskay.github.io/tidybayes/reference/n_prefix.html</loc>
   </url>
   <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/n_prefix.html</loc>
+    <loc>http://mjskay.github.io/tidybayes/reference/nest_rvars.html</loc>
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/reference/predict_curve.html</loc>
@@ -103,6 +103,9 @@
     <loc>http://mjskay.github.io/tidybayes/reference/summarise_draws.grouped_df.html</loc>
   </url>
   <url>
+    <loc>http://mjskay.github.io/tidybayes/reference/tidy_draws.html</loc>
+  </url>
+  <url>
     <loc>http://mjskay.github.io/tidybayes/reference/tidybayes-deprecated.html</loc>
   </url>
   <url>
@@ -110,9 +113,6 @@
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/reference/tidybayes-package.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/tidy_draws.html</loc>
   </url>
   <url>
     <loc>http://mjskay.github.io/tidybayes/reference/unspread_draws.html</loc>

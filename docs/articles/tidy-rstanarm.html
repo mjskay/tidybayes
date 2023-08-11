@@ -47,7 +47,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.5</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@ rstanarm models</h1>
                         <h4 data-toc-skip class="author">Matthew
 Kay</h4>
             
-            <h4 data-toc-skip class="date">2023-02-03</h4>
+            <h4 data-toc-skip class="date">2023-08-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mjskay/tidybayes/blob/HEAD/vignettes/tidy-rstanarm.Rmd" class="external-link"><code>vignettes/tidy-rstanarm.Rmd</code></a></small>
       <div class="hidden name"><code>tidy-rstanarm.Rmd</code></div>
@@ -544,7 +544,7 @@ use to quickly get convergence diagnostics:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 11</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># Groups:   group [5]</span></span></span>
 <span><span class="co">##   group       variable   mean median    sd   mad     q5    q95  rhat ess_bulk ess_tail</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span></span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> condition:A b        -<span style="color: #BB0000;">0.416</span> -<span style="color: #BB0000;">0.410</span> 0.513 0.476 -<span style="color: #BB0000;">1.23</span>   0.408  1.00    <span style="text-decoration: underline;">1</span>014.    <span style="text-decoration: underline;">1</span>168.</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> condition:B b         0.387  0.385 0.516 0.471 -<span style="color: #BB0000;">0.427</span>  1.22   1.00    <span style="text-decoration: underline;">1</span>024.    <span style="text-decoration: underline;">1</span>350.</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> condition:C b         1.22   1.20  0.513 0.468  0.428  2.06   1.00    <span style="text-decoration: underline;">1</span>004.    <span style="text-decoration: underline;">1</span>212.</span></span>
@@ -979,7 +979,7 @@ category):</p>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">thresholds</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">$</span><span class="va">threshold</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
-<span><span class="co">## [1] -0.8200002  0.6020005  1.4201284        Inf</span></span></code></pre>
+<span><span class="co">## [1] -0.9705395  0.1546626  1.0081490        Inf</span></span></code></pre>
 <p>We can combine those thresholds (the <span class="math inline">\(\alpha_j\)</span> values from the above formula)
 with the <code>.linpred</code> column from
 <code><a href="../reference/add_predicted_draws.html">add_linpred_draws()</a></code> (<span class="math inline">\(\beta

@@ -47,7 +47,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.5</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@
                         <h4 data-toc-skip class="author">Matthew
 Kay</h4>
             
-            <h4 data-toc-skip class="date">2023-02-03</h4>
+            <h4 data-toc-skip class="date">2023-08-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mjskay/tidybayes/blob/HEAD/vignettes/tidybayes.Rmd" class="external-link"><code>vignettes/tidybayes.Rmd</code></a></small>
       <div class="hidden name"><code>tidybayes.Rmd</code></div>
@@ -276,7 +276,7 @@ with 10 observations from 5 conditions each:</p>
 <span><span class="va">n_condition</span> <span class="op">=</span> <span class="fl">5</span></span>
 <span><span class="va">ABC</span> <span class="op">=</span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span>    condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>,<span class="st">"D"</span>,<span class="st">"E"</span><span class="op">)</span>, <span class="va">n</span><span class="op">)</span>,</span>
+<span>    condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>,<span class="st">"D"</span>,<span class="st">"E"</span><span class="op">)</span>, <span class="va">n</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">0.5</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>A snapshot of the data looks like this:</p>
@@ -284,7 +284,7 @@ with 10 observations from 5 conditions each:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ABC</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 2</span></span></span>
 <span><span class="co">##    condition response</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A           -<span style="color: #BB0000;">0.420</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 2</span> B            1.69 </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 3</span> C            1.37 </span></span>
@@ -318,31 +318,31 @@ deviation of the condition means (<code>condition_mean_sd</code>), the
 mean within each condition (<code>condition_mean[condition]</code>) and
 the standard deviation of the responses given a condition mean
 (<code>response_sd</code>):</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n;</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_condition;</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=n_condition&gt; condition[n];</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> response[n];</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> overall_mean;</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n_condition] condition_zoffset;</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; response_sd;</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; condition_mean_sd;</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n_condition] condition_mean;</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  condition_mean = overall_mean + condition_zoffset * condition_mean_sd;</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  response_sd ~ cauchy(<span class="dv">0</span>, <span class="dv">1</span>);         <span class="co">// =&gt; half-cauchy(0, 1)</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  condition_mean_sd ~ cauchy(<span class="dv">0</span>, <span class="dv">1</span>);   <span class="co">// =&gt; half-cauchy(0, 1)</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  overall_mean ~ normal(<span class="dv">0</span>, <span class="dv">5</span>);</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  condition_zoffset ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);   <span class="co">// =&gt; condition_mean ~ normal(overall_mean, condition_mean_sd)</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:n) {</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    response[i] ~ normal(condition_mean[condition[i]], response_sd);</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n;</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_condition;</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=n_condition&gt; condition[n];</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="dt">real</span> response[n];</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>}</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="dt">real</span> overall_mean;</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  <span class="dt">vector</span>[n_condition] condition_zoffset;</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; response_sd;</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; condition_mean_sd;</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>  <span class="dt">vector</span>[n_condition] condition_mean;</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>  condition_mean = overall_mean + condition_zoffset * condition_mean_sd;</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>}</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>  response_sd ~ cauchy(<span class="dv">0</span>, <span class="dv">1</span>);         <span class="co">// =&gt; half-cauchy(0, 1)</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>  condition_mean_sd ~ cauchy(<span class="dv">0</span>, <span class="dv">1</span>);   <span class="co">// =&gt; half-cauchy(0, 1)</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>  overall_mean ~ normal(<span class="dv">0</span>, <span class="dv">5</span>);</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>  condition_zoffset ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);   <span class="co">// =&gt; condition_mean ~ normal(overall_mean, condition_mean_sd)</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:n) {</span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a>    response[i] ~ normal(condition_mean[condition[i]], response_sd);</span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a>  }</span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a>}</span></code></pre></div>
 <p>We have compiled and loaded this model into the variable
 <code>ABC_stan</code>.</p>
 <p>This model expects these variables as input:</p>
@@ -392,27 +392,27 @@ the data yourself:</p>
 <p>The results look like this:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span></span></code></pre></div>
-<pre><code><span><span class="co">## Inference for Stan model: anon_model.</span></span>
+<pre><code><span><span class="co">## Inference for Stan model: 150269bbfe815db848542eb814742386.</span></span>
 <span><span class="co">## 4 chains, each with iter=2000; warmup=1000; thin=1; </span></span>
 <span><span class="co">## post-warmup draws per chain=1000, total post-warmup draws=4000.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##                       mean se_mean   sd  2.5%   25%   50%   75% 97.5% n_eff Rhat</span></span>
-<span><span class="co">## overall_mean          0.63    0.02 0.62 -0.55  0.28  0.63  0.95  1.87   915    1</span></span>
-<span><span class="co">## condition_zoffset[1] -0.39    0.02 0.49 -1.41 -0.71 -0.39 -0.05  0.58   973    1</span></span>
-<span><span class="co">## condition_zoffset[2]  0.35    0.02 0.49 -0.62  0.04  0.33  0.66  1.31   902    1</span></span>
-<span><span class="co">## condition_zoffset[3]  1.11    0.02 0.59 -0.02  0.70  1.11  1.50  2.30   868    1</span></span>
-<span><span class="co">## condition_zoffset[4]  0.37    0.02 0.49 -0.62  0.04  0.36  0.69  1.31   905    1</span></span>
-<span><span class="co">## condition_zoffset[5] -1.39    0.02 0.65 -2.74 -1.81 -1.36 -0.94 -0.23  1031    1</span></span>
-<span><span class="co">## response_sd           0.56    0.00 0.06  0.46  0.52  0.56  0.60  0.70  1793    1</span></span>
-<span><span class="co">## condition_mean_sd     1.23    0.02 0.51  0.62  0.90  1.12  1.43  2.50   997    1</span></span>
-<span><span class="co">## condition_mean[1]     0.20    0.00 0.17 -0.14  0.09  0.20  0.32  0.55  4885    1</span></span>
-<span><span class="co">## condition_mean[2]     1.00    0.00 0.18  0.65  0.89  1.01  1.12  1.34  4606    1</span></span>
-<span><span class="co">## condition_mean[3]     1.84    0.00 0.18  1.48  1.72  1.84  1.95  2.19  4893    1</span></span>
-<span><span class="co">## condition_mean[4]     1.02    0.00 0.18  0.68  0.90  1.02  1.14  1.37  4274    1</span></span>
-<span><span class="co">## condition_mean[5]    -0.89    0.00 0.18 -1.23 -1.01 -0.89 -0.77 -0.53  4725    1</span></span>
-<span><span class="co">## lp__                  0.30    0.08 2.34 -5.02 -1.08  0.63  2.06  3.79   915    1</span></span>
+<span><span class="co">## overall_mean          0.66    0.02 0.58 -0.45  0.30  0.63  1.00  1.84   805 1.01</span></span>
+<span><span class="co">## condition_zoffset[1] -0.43    0.02 0.49 -1.41 -0.76 -0.41 -0.08  0.47   885 1.00</span></span>
+<span><span class="co">## condition_zoffset[2]  0.32    0.02 0.48 -0.61 -0.01  0.34  0.65  1.26   958 1.01</span></span>
+<span><span class="co">## condition_zoffset[3]  1.10    0.02 0.58 -0.02  0.69  1.10  1.49  2.23   855 1.01</span></span>
+<span><span class="co">## condition_zoffset[4]  0.33    0.02 0.48 -0.60  0.01  0.35  0.65  1.27   956 1.01</span></span>
+<span><span class="co">## condition_zoffset[5] -1.43    0.02 0.65 -2.76 -1.86 -1.40 -0.97 -0.25   810 1.00</span></span>
+<span><span class="co">## response_sd           0.56    0.00 0.06  0.46  0.52  0.55  0.59  0.70  1718 1.00</span></span>
+<span><span class="co">## condition_mean_sd     1.22    0.02 0.50  0.60  0.88  1.11  1.43  2.51   785 1.00</span></span>
+<span><span class="co">## condition_mean[1]     0.19    0.00 0.18 -0.16  0.07  0.19  0.31  0.54  4750 1.00</span></span>
+<span><span class="co">## condition_mean[2]     1.00    0.00 0.18  0.65  0.88  1.00  1.12  1.34  4466 1.00</span></span>
+<span><span class="co">## condition_mean[3]     1.83    0.00 0.18  1.47  1.71  1.84  1.95  2.19  4673 1.00</span></span>
+<span><span class="co">## condition_mean[4]     1.01    0.00 0.18  0.66  0.90  1.02  1.14  1.36  4358 1.00</span></span>
+<span><span class="co">## condition_mean[5]    -0.89    0.00 0.18 -1.25 -1.02 -0.89 -0.78 -0.53  4298 1.00</span></span>
+<span><span class="co">## lp__                  0.25    0.08 2.34 -5.17 -1.09  0.55  2.00  3.88   936 1.01</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Samples were drawn using NUTS(diag_e) at Fri Feb  3 15:11:49 2023.</span></span>
+<span><span class="co">## Samples were drawn using NUTS(diag_e) at Fri Aug 11 13:53:57 2023.</span></span>
 <span><span class="co">## For each parameter, n_eff is a crude measure of effective sample size,</span></span>
 <span><span class="co">## and Rhat is the potential scale reduction factor on split chains (at </span></span>
 <span><span class="co">## convergence, Rhat=1).</span></span></code></pre>
@@ -431,24 +431,24 @@ the model do so in a nested format:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">rstan</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## List of 6</span></span>
-<span><span class="co">##  $ overall_mean     : num [1:4000(1d)] 1.113 0.818 0.432 0.794 0.528 ...</span></span>
+<span><span class="co">##  $ overall_mean     : num [1:4000(1d)] 0.343 0.287 0.731 0.706 1.612 ...</span></span>
 <span><span class="co">##   ..- attr(*, "dimnames")=List of 1</span></span>
 <span><span class="co">##   .. ..$ iterations: NULL</span></span>
-<span><span class="co">##  $ condition_zoffset: num [1:4000, 1:5] -0.9652 -0.4328 -0.0276 -0.4277 -0.0597 ...</span></span>
+<span><span class="co">##  $ condition_zoffset: num [1:4000, 1:5] -0.219 -0.295 -0.321 -0.115 -0.962 ...</span></span>
 <span><span class="co">##   ..- attr(*, "dimnames")=List of 2</span></span>
 <span><span class="co">##   .. ..$ iterations: NULL</span></span>
 <span><span class="co">##   .. ..$           : NULL</span></span>
-<span><span class="co">##  $ response_sd      : num [1:4000(1d)] 0.696 0.587 0.651 0.571 0.566 ...</span></span>
+<span><span class="co">##  $ response_sd      : num [1:4000(1d)] 0.553 0.594 0.525 0.584 0.452 ...</span></span>
 <span><span class="co">##   ..- attr(*, "dimnames")=List of 1</span></span>
 <span><span class="co">##   .. ..$ iterations: NULL</span></span>
-<span><span class="co">##  $ condition_mean_sd: num [1:4000(1d)] 0.974 1.068 0.53 1.456 0.951 ...</span></span>
+<span><span class="co">##  $ condition_mean_sd: num [1:4000(1d)] 1.04 1.38 1.24 1.17 1.46 ...</span></span>
 <span><span class="co">##   ..- attr(*, "dimnames")=List of 1</span></span>
 <span><span class="co">##   .. ..$ iterations: NULL</span></span>
-<span><span class="co">##  $ condition_mean   : num [1:4000, 1:5] 0.173 0.356 0.417 0.171 0.472 ...</span></span>
+<span><span class="co">##  $ condition_mean   : num [1:4000, 1:5] 0.115 -0.122 0.332 0.571 0.21 ...</span></span>
 <span><span class="co">##   ..- attr(*, "dimnames")=List of 2</span></span>
 <span><span class="co">##   .. ..$ iterations: NULL</span></span>
 <span><span class="co">##   .. ..$           : NULL</span></span>
-<span><span class="co">##  $ lp__             : num [1:4000(1d)] -1.598 0.887 -5.352 3.171 0.319 ...</span></span>
+<span><span class="co">##  $ lp__             : num [1:4000(1d)] -1.346 2.398 3.44 -3.327 -0.585 ...</span></span>
 <span><span class="co">##   ..- attr(*, "dimnames")=List of 1</span></span>
 <span><span class="co">##   .. ..$ iterations: NULL</span></span></code></pre>
 <p>There are also methods for extracting draws as matrices or data
@@ -476,16 +476,16 @@ the model itself:</p>
 <span><span class="co">## <span style="color: #949494;"># Groups:   condition [1]</span></span></span>
 <span><span class="co">##    condition condition_mean .chain .iteration .draw</span></span>
 <span><span class="co">##        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>         1        0.005<span style="text-decoration: underline;">44</span>      1          1     1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>         1       -<span style="color: #BB0000;">0.083</span><span style="color: #BB0000; text-decoration: underline;">6</span>       1          2     2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>         1        0.032<span style="text-decoration: underline;">4</span>       1          3     3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>         1        0.113        1          4     4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>         1        0.157        1          5     5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>         1        0.218        1          6     6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>         1        0.276        1          7     7</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>         1        0.013<span style="text-decoration: underline;">0</span>       1          8     8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>         1        0.152        1          9     9</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>         1        0.192        1         10    10</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>         1         0.406       1          1     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>         1         0.040<span style="text-decoration: underline;">5</span>      1          2     2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>         1         0.149       1          3     3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>         1         0.217       1          4     4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>         1         0.187       1          5     5</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>         1         0.161       1          6     6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>         1         0.260       1          7     7</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>         1         0.513       1          8     8</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>         1         0.245       1          9     9</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>         1        -<span style="color: #BB0000;">0.100</span>       1         10    10</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="automatically-converting-columns-and-indices-back-into-their-original-data-types">Automatically converting columns and indices back into their
@@ -519,17 +519,17 @@ frame, and automatically converts it back into a factor:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 5</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># Groups:   condition [1]</span></span></span>
 <span><span class="co">##    condition condition_mean .chain .iteration .draw</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A                0.005<span style="text-decoration: underline;">44</span>      1          1     1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A               -<span style="color: #BB0000;">0.083</span><span style="color: #BB0000; text-decoration: underline;">6</span>       1          2     2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A                0.032<span style="text-decoration: underline;">4</span>       1          3     3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> A                0.113        1          4     4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> A                0.157        1          5     5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> A                0.218        1          6     6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> A                0.276        1          7     7</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> A                0.013<span style="text-decoration: underline;">0</span>       1          8     8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> A                0.152        1          9     9</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> A                0.192        1         10    10</span></span></code></pre>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A                 0.406       1          1     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A                 0.040<span style="text-decoration: underline;">5</span>      1          2     2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A                 0.149       1          3     3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> A                 0.217       1          4     4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> A                 0.187       1          5     5</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> A                 0.161       1          6     6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> A                 0.260       1          7     7</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> A                 0.513       1          8     8</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> A                 0.245       1          9     9</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> A                -<span style="color: #BB0000;">0.100</span>       1         10    10</span></span></code></pre>
 <p>Because we often want to make multiple separate calls to
 <code>spread_draws</code>, it is often convenient to decorate the
 original model using <code>recover_types</code> immediately after it has
@@ -567,16 +567,16 @@ mean and standard deviation of observations:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 5</span></span></span>
 <span><span class="co">##    .chain .iteration .draw overall_mean response_sd</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1       0.067<span style="text-decoration: underline;">2</span>       0.576</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          2     2       0.036<span style="text-decoration: underline;">1</span>       0.576</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          3     3       1.17         0.551</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          4     4       0.378        0.576</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          5     5       0.359        0.583</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          6     6       0.332        0.621</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          7     7       0.226        0.641</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          8     8       0.107        0.637</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          9     9       0.225        0.609</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1         10    10      -<span style="color: #BB0000;">0.039</span><span style="color: #BB0000; text-decoration: underline;">5</span>       0.521</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1       0.982        0.507</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          2     2       0.798        0.504</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          3     3       0.863        0.533</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          4     4       0.764        0.552</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          5     5      -<span style="color: #BB0000;">0.038</span><span style="color: #BB0000; text-decoration: underline;">6</span>       0.532</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          6     6      -<span style="color: #BB0000;">0.270</span>        0.531</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          7     7      -<span style="color: #BB0000;">0.077</span><span style="color: #BB0000; text-decoration: underline;">7</span>       0.542</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          8     8       1.28         0.616</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          9     9       1.11         0.560</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1         10    10       0.844        0.539</span></span></code></pre>
 <p>Like with <code>condition_mean[condition]</code>, this gives us a
 tidy data frame. If we want the median and 95% quantile interval of the
 variables, we can apply <code>median_qi</code>:</p>
@@ -585,10 +585,10 @@ variables, we can apply <code>median_qi</code>:</p>
 <span>  <span class="fu"><a href="../reference/spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">overall_mean</span>, <span class="va">response_sd</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="va">overall_mean</span>, <span class="va">response_sd</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 9</span></span></span>
-<span><span class="co">##   overall_mean overall_mean.lower overall_mean.upper response_sd response_sd.lower response_sd.u…¹ .width .point .inte…²</span></span>
-<span><span class="co">##          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>        0.633             -<span style="color: #BB0000;">0.546</span>               1.87       0.558             0.456           0.698   0.95 median qi     </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​response_sd.upper, ²​.interval</span></span></span></code></pre>
+<span><span class="co">##   overall_mean overall_mean.lower overall_mean.upper response_sd response_sd.lower response_sd.upper .width .point</span></span>
+<span><span class="co">##          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>        0.625             -<span style="color: #BB0000;">0.449</span>               1.84       0.554             0.459             0.696   0.95 median</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: .interval &lt;chr&gt;</span></span></span></code></pre>
 <p><code>median_qi</code> summarizes each input column using its median.
 If there are multiple columns to summarize, each gets its own
 <code>x.lower</code> and <code>x.upper</code> column (for each column
@@ -609,10 +609,10 @@ following:</p>
 <span>  <span class="fu"><a href="../reference/spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">overall_mean</span>, <span class="va">response_sd</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 9</span></span></span>
-<span><span class="co">##   overall_mean overall_mean.lower overall_mean.upper response_sd response_sd.lower response_sd.u…¹ .width .point .inte…²</span></span>
-<span><span class="co">##          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>        0.633             -<span style="color: #BB0000;">0.546</span>               1.87       0.558             0.456           0.698   0.95 median qi     </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​response_sd.upper, ²​.interval</span></span></span></code></pre>
+<span><span class="co">##   overall_mean overall_mean.lower overall_mean.upper response_sd response_sd.lower response_sd.upper .width .point</span></span>
+<span><span class="co">##          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>        0.625             -<span style="color: #BB0000;">0.449</span>               1.84       0.554             0.459             0.696   0.95 median</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: .interval &lt;chr&gt;</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="with-indexed-variables">With indexed variables<a class="anchor" aria-label="anchor" href="#with-indexed-variables"></a>
@@ -627,12 +627,12 @@ before:</p>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
 <span><span class="co">##   condition condition_mean .lower .upper .width .point .interval</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A                  0.199 -<span style="color: #BB0000;">0.142</span>  0.549   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B                  1.01   0.651  1.34    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C                  1.84   1.48   2.19    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D                  1.02   0.681  1.37    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E                 -<span style="color: #BB0000;">0.890</span> -<span style="color: #BB0000;">1.23</span>  -<span style="color: #BB0000;">0.529</span>   0.95 median qi</span></span></code></pre>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A                  0.192 -<span style="color: #BB0000;">0.156</span>  0.541   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B                  1.00   0.649  1.34    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C                  1.84   1.47   2.19    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D                  1.02   0.661  1.36    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E                 -<span style="color: #BB0000;">0.892</span> -<span style="color: #BB0000;">1.25</span>  -<span style="color: #BB0000;">0.529</span>   0.95 median qi</span></span></code></pre>
 <p>How did <code>median_qi</code> know what to aggregate? Data frames
 returned by <code>spread_draws</code> are automatically grouped by all
 index variables you pass to it; in this case, that means it groups by
@@ -649,12 +649,12 @@ to this more verbose call:</p>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
 <span><span class="co">##   condition condition_mean .lower .upper .width .point .interval</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A                  0.199 -<span style="color: #BB0000;">0.142</span>  0.549   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B                  1.01   0.651  1.34    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C                  1.84   1.48   2.19    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D                  1.02   0.681  1.37    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E                 -<span style="color: #BB0000;">0.890</span> -<span style="color: #BB0000;">1.23</span>  -<span style="color: #BB0000;">0.529</span>   0.95 median qi</span></span></code></pre>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A                  0.192 -<span style="color: #BB0000;">0.156</span>  0.541   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B                  1.00   0.649  1.34    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C                  1.84   1.47   2.19    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D                  1.02   0.661  1.36    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E                 -<span style="color: #BB0000;">0.892</span> -<span style="color: #BB0000;">1.25</span>  -<span style="color: #BB0000;">0.529</span>   0.95 median qi</span></span></code></pre>
 <p>When given only a single column, <code>median_qi</code> will use the
 names <code>.lower</code> and <code>.upper</code> for the lower and
 upper ends of the intervals.</p>
@@ -668,13 +668,13 @@ use to quickly get convergence diagnostics:</p>
 <span>  <span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarise_draws</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 11</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># Groups:   condition [5]</span></span></span>
-<span><span class="co">##   condition variable         mean median    sd   mad      q5    q95  rhat ess_bulk ess_tail</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A         condition_mean  0.201  0.199 0.172 0.171 -<span style="color: #BB0000;">0.084</span><span style="color: #BB0000; text-decoration: underline;">7</span>  0.481  1.00    <span style="text-decoration: underline;">4</span>779.    <span style="text-decoration: underline;">3</span>172.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B         condition_mean  1.00   1.01  0.176 0.173  0.711   1.28   1.00    <span style="text-decoration: underline;">4</span>660.    <span style="text-decoration: underline;">3</span>492.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C         condition_mean  1.84   1.84  0.178 0.174  1.54    2.12   1.00    <span style="text-decoration: underline;">4</span>794.    <span style="text-decoration: underline;">3</span>601.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D         condition_mean  1.02   1.02  0.177 0.178  0.738   1.31   1.00    <span style="text-decoration: underline;">4</span>303.    <span style="text-decoration: underline;">3</span>060.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E         condition_mean -<span style="color: #BB0000;">0.888</span> -<span style="color: #BB0000;">0.890</span> 0.180 0.177 -<span style="color: #BB0000;">1.18</span>   -<span style="color: #BB0000;">0.593</span>  1.00    <span style="text-decoration: underline;">4</span>758.    <span style="text-decoration: underline;">3</span>248.</span></span></code></pre>
+<span><span class="co">##   condition variable         mean median    sd   mad     q5    q95  rhat ess_bulk ess_tail</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A         condition_mean  0.191  0.192 0.175 0.175 -<span style="color: #BB0000;">0.101</span>  0.480  1.00    <span style="text-decoration: underline;">4</span>678.    <span style="text-decoration: underline;">3</span>583.</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B         condition_mean  1.00   1.00  0.177 0.174  0.708  1.29   1.00    <span style="text-decoration: underline;">4</span>518.    <span style="text-decoration: underline;">3</span>320.</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C         condition_mean  1.83   1.84  0.183 0.178  1.53   2.14   1.00    <span style="text-decoration: underline;">4</span>652.    <span style="text-decoration: underline;">3</span>517.</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D         condition_mean  1.01   1.02  0.178 0.176  0.714  1.31   1.00    <span style="text-decoration: underline;">4</span>382.    <span style="text-decoration: underline;">3</span>010.</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E         condition_mean -<span style="color: #BB0000;">0.893</span> -<span style="color: #BB0000;">0.892</span> 0.180 0.179 -<span style="color: #BB0000;">1.19</span>  -<span style="color: #BB0000;">0.590</span>  1.00    <span style="text-decoration: underline;">4</span>330.    <span style="text-decoration: underline;">3</span>440.</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -753,22 +753,22 @@ the <code>.width =</code> argument:</p>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span>.width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.95</span>, <span class="fl">.8</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 15 × 7</span></span></span>
 <span><span class="co">##    condition condition_mean  .lower .upper .width .point .interval</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A                  0.199 -<span style="color: #BB0000;">0.142</span>   0.549   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> B                  1.01   0.651   1.34    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> C                  1.84   1.48    2.19    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> D                  1.02   0.681   1.37    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> E                 -<span style="color: #BB0000;">0.890</span> -<span style="color: #BB0000;">1.23</span>   -<span style="color: #BB0000;">0.529</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> A                  0.199 -<span style="color: #BB0000;">0.014</span><span style="color: #BB0000; text-decoration: underline;">5</span>  0.421   0.8  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> B                  1.01   0.777   1.22    0.8  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> C                  1.84   1.61    2.06    0.8  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> D                  1.02   0.797   1.25    0.8  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> E                 -<span style="color: #BB0000;">0.890</span> -<span style="color: #BB0000;">1.11</span>   -<span style="color: #BB0000;">0.658</span>   0.8  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> A                  0.199  0.087<span style="text-decoration: underline;">0</span>  0.317   0.5  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> B                  1.01   0.887   1.12    0.5  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> C                  1.84   1.72    1.95    0.5  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> D                  1.02   0.904   1.14    0.5  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> E                 -<span style="color: #BB0000;">0.890</span> -<span style="color: #BB0000;">1.01</span>   -<span style="color: #BB0000;">0.765</span>   0.5  median qi</span></span></code></pre>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A                  0.192 -<span style="color: #BB0000;">0.156</span>   0.541   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> B                  1.00   0.649   1.34    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> C                  1.84   1.47    2.19    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> D                  1.02   0.661   1.36    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> E                 -<span style="color: #BB0000;">0.892</span> -<span style="color: #BB0000;">1.25</span>   -<span style="color: #BB0000;">0.529</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> A                  0.192 -<span style="color: #BB0000;">0.040</span><span style="color: #BB0000; text-decoration: underline;">6</span>  0.411   0.8  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> B                  1.00   0.774   1.23    0.8  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> C                  1.84   1.60    2.06    0.8  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> D                  1.02   0.783   1.24    0.8  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> E                 -<span style="color: #BB0000;">0.892</span> -<span style="color: #BB0000;">1.12</span>   -<span style="color: #BB0000;">0.667</span>   0.8  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> A                  0.192  0.074<span style="text-decoration: underline;">3</span>  0.310   0.5  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> B                  1.00   0.881   1.12    0.5  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> C                  1.84   1.71    1.95    0.5  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> D                  1.02   0.897   1.14    0.5  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> E                 -<span style="color: #BB0000;">0.892</span> -<span style="color: #BB0000;">1.02</span>   -<span style="color: #BB0000;">0.776</span>   0.5  median qi</span></span></code></pre>
 <p>The results are in a tidy format: one row per index
 (<code>condition</code>) and probability level (<code>.width</code>).
 This facilitates plotting. For example, assigning <code>-.width</code>
@@ -853,8 +853,8 @@ the 80% probability level:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
 <span><span class="co">##         x .lower .upper .width .point .interval</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">0.015</span><span style="color: #BB0000; text-decoration: underline;">3</span>  -<span style="color: #BB0000;">1.52</span>   1.60    0.8 mode   hdi      </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.015</span><span style="color: #BB0000; text-decoration: underline;">3</span>   3.04   5.00    0.8 mode   hdi</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> -<span style="color: #BB0000;">0.060</span><span style="color: #BB0000; text-decoration: underline;">5</span>  -<span style="color: #BB0000;">1.46</span>   1.54    0.8 mode   hdi      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> -<span style="color: #BB0000;">0.060</span><span style="color: #BB0000; text-decoration: underline;">5</span>   3.11   5.01    0.8 mode   hdi</span></span></code></pre>
 <p>This is easier to see when plotted:</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">multimodal_draws</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -887,17 +887,17 @@ condition means:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 6</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># Groups:   condition [5]</span></span></span>
 <span><span class="co">##    .chain .iteration .draw overall_mean condition condition_mean</span></span>
-<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1       0.067<span style="text-decoration: underline;">2</span> A                0.005<span style="text-decoration: underline;">44</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          1     1       0.067<span style="text-decoration: underline;">2</span> B                1.03   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          1     1       0.067<span style="text-decoration: underline;">2</span> C                1.84   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          1     1       0.067<span style="text-decoration: underline;">2</span> D                1.25   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          1     1       0.067<span style="text-decoration: underline;">2</span> E               -<span style="color: #BB0000;">0.724</span>  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          2     2       0.036<span style="text-decoration: underline;">1</span> A               -<span style="color: #BB0000;">0.083</span><span style="color: #BB0000; text-decoration: underline;">6</span> </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          2     2       0.036<span style="text-decoration: underline;">1</span> B                0.873  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          2     2       0.036<span style="text-decoration: underline;">1</span> C                1.78   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          2     2       0.036<span style="text-decoration: underline;">1</span> D                1.12   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1          2     2       0.036<span style="text-decoration: underline;">1</span> E               -<span style="color: #BB0000;">0.884</span></span></span></code></pre>
+<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1        0.982 A                 0.406 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          1     1        0.982 B                 1.31  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          1     1        0.982 C                 1.94  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          1     1        0.982 D                 0.903 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          1     1        0.982 E                -<span style="color: #BB0000;">0.852</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          2     2        0.798 A                 0.040<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          2     2        0.798 B                 0.680 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          2     2        0.798 C                 1.71  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          2     2        0.798 D                 1.36  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1          2     2        0.798 E                -<span style="color: #BB0000;">0.779</span></span></span></code></pre>
 <p>Within each draw, <code>overall_mean</code> is repeated as necessary
 to correspond to every index of <code>condition_mean</code>. Thus, the
 <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">dplyr::mutate()</a></code> function can be used to take the
@@ -910,12 +910,12 @@ differences over all rows, then we can summarize with
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="va">condition_offset</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
 <span><span class="co">##   condition condition_offset  .lower .upper .width .point .interval</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A                   -<span style="color: #BB0000;">0.420</span> -<span style="color: #BB0000;">1.69</span>    0.754   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B                    0.363 -<span style="color: #BB0000;">0.863</span>   1.59    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C                    1.20  -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">3</span>  2.44    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D                    0.397 -<span style="color: #BB0000;">0.885</span>   1.61    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E                   -<span style="color: #BB0000;">1.50</span>  -<span style="color: #BB0000;">2.85</span>   -<span style="color: #BB0000;">0.340</span>   0.95 median qi</span></span></code></pre>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A                   -<span style="color: #BB0000;">0.440</span> -<span style="color: #BB0000;">1.68</span>    0.682   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B                    0.371 -<span style="color: #BB0000;">0.862</span>   1.50    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C                    1.19  -<span style="color: #BB0000;">0.026</span><span style="color: #BB0000; text-decoration: underline;">9</span>  2.33    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D                    0.377 -<span style="color: #BB0000;">0.845</span>   1.53    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E                   -<span style="color: #BB0000;">1.52</span>  -<span style="color: #BB0000;">2.75</span>   -<span style="color: #BB0000;">0.422</span>   0.95 median qi</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="posterior-predictions">Posterior predictions<a class="anchor" aria-label="anchor" href="#posterior-predictions"></a>
@@ -997,13 +997,13 @@ column:</p>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 8</span></span></span>
 <span><span class="co">##   .variable      condition .value .lower .upper .width .point .interval</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> condition_mean A          0.199 -<span style="color: #BB0000;">0.142</span>  0.549   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> condition_mean B          1.01   0.651  1.34    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> condition_mean C          1.84   1.48   2.19    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> condition_mean D          1.02   0.681  1.37    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> condition_mean E         -<span style="color: #BB0000;">0.890</span> -<span style="color: #BB0000;">1.23</span>  -<span style="color: #BB0000;">0.529</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> overall_mean   <span style="color: #BB0000;">NA</span>         0.633 -<span style="color: #BB0000;">0.546</span>  1.87    0.95 median qi</span></span></code></pre>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> condition_mean A          0.192 -<span style="color: #BB0000;">0.156</span>  0.541   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> condition_mean B          1.00   0.649  1.34    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> condition_mean C          1.84   1.47   2.19    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> condition_mean D          1.02   0.661  1.36    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> condition_mean E         -<span style="color: #BB0000;">0.892</span> -<span style="color: #BB0000;">1.25</span>  -<span style="color: #BB0000;">0.529</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> overall_mean   <span style="color: #BB0000;">NA</span>         0.625 -<span style="color: #BB0000;">0.449</span>  1.84    0.95 median qi</span></span></code></pre>
 <p>Note that <code>condition = NA</code> for the
 <code>overall_mean</code> row, because it does not have an index with
 that name in the specification passed to
@@ -1026,22 +1026,22 @@ variables that are not special columns (like <code>.chain</code>,
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 15 × 8</span></span></span>
 <span><span class="co">##    condition .variable        .value  .lower .upper .width .point .interval</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A         condition_mean    0.199 -<span style="color: #BB0000;">0.142</span>   0.549   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A         condition_offset -<span style="color: #BB0000;">0.420</span> -<span style="color: #BB0000;">1.69</span>    0.754   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A         overall_mean      0.633 -<span style="color: #BB0000;">0.546</span>   1.87    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> B         condition_mean    1.01   0.651   1.34    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> B         condition_offset  0.363 -<span style="color: #BB0000;">0.863</span>   1.59    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> B         overall_mean      0.633 -<span style="color: #BB0000;">0.546</span>   1.87    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> C         condition_mean    1.84   1.48    2.19    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> C         condition_offset  1.20  -<span style="color: #BB0000;">0.033</span><span style="color: #BB0000; text-decoration: underline;">3</span>  2.44    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> C         overall_mean      0.633 -<span style="color: #BB0000;">0.546</span>   1.87    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> D         condition_mean    1.02   0.681   1.37    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> D         condition_offset  0.397 -<span style="color: #BB0000;">0.885</span>   1.61    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> D         overall_mean      0.633 -<span style="color: #BB0000;">0.546</span>   1.87    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> E         condition_mean   -<span style="color: #BB0000;">0.890</span> -<span style="color: #BB0000;">1.23</span>   -<span style="color: #BB0000;">0.529</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> E         condition_offset -<span style="color: #BB0000;">1.50</span>  -<span style="color: #BB0000;">2.85</span>   -<span style="color: #BB0000;">0.340</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> E         overall_mean      0.633 -<span style="color: #BB0000;">0.546</span>   1.87    0.95 median qi</span></span></code></pre>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A         condition_mean    0.192 -<span style="color: #BB0000;">0.156</span>   0.541   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A         condition_offset -<span style="color: #BB0000;">0.440</span> -<span style="color: #BB0000;">1.68</span>    0.682   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A         overall_mean      0.625 -<span style="color: #BB0000;">0.449</span>   1.84    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> B         condition_mean    1.00   0.649   1.34    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> B         condition_offset  0.371 -<span style="color: #BB0000;">0.862</span>   1.50    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> B         overall_mean      0.625 -<span style="color: #BB0000;">0.449</span>   1.84    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> C         condition_mean    1.84   1.47    2.19    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> C         condition_offset  1.19  -<span style="color: #BB0000;">0.026</span><span style="color: #BB0000; text-decoration: underline;">9</span>  2.33    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> C         overall_mean      0.625 -<span style="color: #BB0000;">0.449</span>   1.84    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> D         condition_mean    1.02   0.661   1.36    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> D         condition_offset  0.377 -<span style="color: #BB0000;">0.845</span>   1.53    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> D         overall_mean      0.625 -<span style="color: #BB0000;">0.449</span>   1.84    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> E         condition_mean   -<span style="color: #BB0000;">0.892</span> -<span style="color: #BB0000;">1.25</span>   -<span style="color: #BB0000;">0.529</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> E         condition_offset -<span style="color: #BB0000;">1.52</span>  -<span style="color: #BB0000;">2.75</span>   -<span style="color: #BB0000;">0.422</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> E         overall_mean      0.625 -<span style="color: #BB0000;">0.449</span>   1.84    0.95 median qi</span></span></code></pre>
 <p>Note how <code>overall_mean</code> is now repeated here for each
 condition, because we have performed the gather after spreading model
 variables across columns.</p>
@@ -1058,23 +1058,22 @@ and <code><a href="../reference/spread_draws.html">spread_draws()</a></code>:</p
 <span>  <span class="fu"><a href="../reference/tidy_draws.html">tidy_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 23</span></span></span>
-<span><span class="co">##    .chain .iteration .draw overall_m…¹ condi…² condi…³ condi…⁴ condit…⁵ condi…⁶ respo…⁷ condi…⁸ condit…⁹ condi…˟ condi…˟</span></span>
-<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1      0.067<span style="text-decoration: underline;">2</span> -<span style="color: #BB0000;">0.023</span><span style="color: #BB0000; text-decoration: underline;">7</span>   0.369   0.682  0.455    -<span style="color: #BB0000;">0.304</span>   0.576   2.60   0.005<span style="text-decoration: underline;">44</span>   1.03     1.84</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          2     2      0.036<span style="text-decoration: underline;">1</span> -<span style="color: #BB0000;">0.046</span><span style="color: #BB0000; text-decoration: underline;">8</span>   0.327   0.681  0.424    -<span style="color: #BB0000;">0.360</span>   0.576   2.56  -<span style="color: #BB0000;">0.083</span><span style="color: #BB0000; text-decoration: underline;">6</span>    0.873    1.78</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          3     3      1.17   -<span style="color: #BB0000;">0.827</span>   -<span style="color: #BB0000;">0.156</span>   0.454 -<span style="color: #BB0000;">0.001</span><span style="color: #BB0000; text-decoration: underline;">24</span>  -<span style="color: #BB0000;">1.22</span>    0.551   1.37   0.032<span style="text-decoration: underline;">4</span>    0.953    1.79</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          4     4      0.378  -<span style="color: #BB0000;">0.260</span>    0.603   1.66   0.646    -<span style="color: #BB0000;">1.40</span>    0.576   1.02   0.113     0.993    2.07</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          5     5      0.359  -<span style="color: #BB0000;">0.207</span>    0.483   1.78   0.716    -<span style="color: #BB0000;">1.34</span>    0.583   0.980  0.157     0.833    2.10</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          6     6      0.332  -<span style="color: #BB0000;">0.132</span>    0.563   1.89   0.672    -<span style="color: #BB0000;">1.29</span>    0.621   0.862  0.218     0.817    1.97</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          7     7      0.226   0.064<span style="text-decoration: underline;">2</span>   1.11    1.54   1.03     -<span style="color: #BB0000;">1.62</span>    0.641   0.778  0.276     1.09     1.42</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          8     8      0.107  -<span style="color: #BB0000;">0.082</span><span style="color: #BB0000; text-decoration: underline;">3</span>   0.737   1.32   0.794    -<span style="color: #BB0000;">0.916</span>   0.637   1.15   0.013<span style="text-decoration: underline;">0</span>    0.953    1.63</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          9     9      0.225  -<span style="color: #BB0000;">0.061</span><span style="color: #BB0000; text-decoration: underline;">1</span>   0.571   1.44   0.755    -<span style="color: #BB0000;">0.849</span>   0.609   1.19   0.152     0.903    1.93</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1         10    10     -<span style="color: #BB0000;">0.039</span><span style="color: #BB0000; text-decoration: underline;">5</span>  0.200    0.885   1.69   0.919    -<span style="color: #BB0000;">0.468</span>   0.521   1.16   0.192     0.986    1.91</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 9 more variables: `condition_mean[4]` &lt;dbl&gt;, `condition_mean[5]` &lt;dbl&gt;, lp__ &lt;dbl&gt;, accept_stat__ &lt;dbl&gt;,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   stepsize__ &lt;dbl&gt;, treedepth__ &lt;dbl&gt;, n_leapfrog__ &lt;dbl&gt;, divergent__ &lt;dbl&gt;, energy__ &lt;dbl&gt;, and abbreviated</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   variable names ¹​overall_mean, ²​`condition_zoffset[1]`, ³​`condition_zoffset[2]`, ⁴​`condition_zoffset[3]`,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   ⁵​`condition_zoffset[4]`, ⁶​`condition_zoffset[5]`, ⁷​response_sd, ⁸​condition_mean_sd, ⁹​`condition_mean[1]`,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   ˟​`condition_mean[2]`, ˟​`condition_mean[3]`</span></span></span></code></pre>
+<span><span class="co">##    .chain .iteration .draw overall_mean `condition_zoffset[1]` `condition_zoffset[2]` `condition_zoffset[3]`</span></span>
+<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1       0.982                  -<span style="color: #BB0000;">0.660</span>                 0.371                   1.10 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          2     2       0.798                  -<span style="color: #BB0000;">1.25</span>                 -<span style="color: #BB0000;">0.194</span>                   1.50 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          3     3       0.863                  -<span style="color: #BB0000;">0.960</span>                -<span style="color: #BB0000;">0.120</span>                   1.63 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          4     4       0.764                  -<span style="color: #BB0000;">0.309</span>                -<span style="color: #BB0000;">0.010</span><span style="color: #BB0000; text-decoration: underline;">1</span>                  0.636</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          5     5      -<span style="color: #BB0000;">0.038</span><span style="color: #BB0000; text-decoration: underline;">6</span>                  0.225                 1.11                    1.93 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          6     6      -<span style="color: #BB0000;">0.270</span>                   0.426                 1.49                    1.82 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          7     7      -<span style="color: #BB0000;">0.077</span><span style="color: #BB0000; text-decoration: underline;">7</span>                  0.347                 1.36                    1.82 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          8     8       1.28                   -<span style="color: #BB0000;">0.656</span>                -<span style="color: #BB0000;">0.176</span>                   0.441</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          9     9       1.11                   -<span style="color: #BB0000;">0.761</span>                 0.091<span style="text-decoration: underline;">9</span>                  0.820</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1         10    10       0.844                  -<span style="color: #BB0000;">0.885</span>                 0.216                   0.728</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 16 more variables: `condition_zoffset[4]` &lt;dbl&gt;, `condition_zoffset[5]` &lt;dbl&gt;, response_sd &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   condition_mean_sd &lt;dbl&gt;, `condition_mean[1]` &lt;dbl&gt;, `condition_mean[2]` &lt;dbl&gt;, `condition_mean[3]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   `condition_mean[4]` &lt;dbl&gt;, `condition_mean[5]` &lt;dbl&gt;, lp__ &lt;dbl&gt;, accept_stat__ &lt;dbl&gt;, stepsize__ &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   treedepth__ &lt;dbl&gt;, n_leapfrog__ &lt;dbl&gt;, divergent__ &lt;dbl&gt;, energy__ &lt;dbl&gt;</span></span></span></code></pre>
 <p>Combining <code><a href="../reference/tidy_draws.html">tidy_draws()</a></code> with
 <code><a href="../reference/gather_variables.html">gather_variables()</a></code> also allows us to derive similar output
 to <code>ggmcmc::ggs()</code>, if desired:</p>
@@ -1087,16 +1086,16 @@ to <code>ggmcmc::ggs()</code>, if desired:</p>
 <span><span class="co">## <span style="color: #949494;"># Groups:   .variable [1]</span></span></span>
 <span><span class="co">##    .chain .iteration .draw .variable     .value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1 overall_mean  0.067<span style="text-decoration: underline;">2</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          2     2 overall_mean  0.036<span style="text-decoration: underline;">1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          3     3 overall_mean  1.17  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          4     4 overall_mean  0.378 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          5     5 overall_mean  0.359 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          6     6 overall_mean  0.332 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          7     7 overall_mean  0.226 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          8     8 overall_mean  0.107 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          9     9 overall_mean  0.225 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1         10    10 overall_mean -<span style="color: #BB0000;">0.039</span><span style="color: #BB0000; text-decoration: underline;">5</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1 overall_mean  0.982 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          2     2 overall_mean  0.798 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          3     3 overall_mean  0.863 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          4     4 overall_mean  0.764 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          5     5 overall_mean -<span style="color: #BB0000;">0.038</span><span style="color: #BB0000; text-decoration: underline;">6</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          6     6 overall_mean -<span style="color: #BB0000;">0.270</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          7     7 overall_mean -<span style="color: #BB0000;">0.077</span><span style="color: #BB0000; text-decoration: underline;">7</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          8     8 overall_mean  1.28  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          9     9 overall_mean  1.11  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1         10    10 overall_mean  0.844</span></span></code></pre>
 <p>But again, this approach does not handle variable indices for us
 automatically, so using <code><a href="../reference/spread_draws.html">spread_draws()</a></code> and
 <code><a href="../reference/spread_draws.html">gather_draws()</a></code> is generally recommended unless you do not
@@ -1118,17 +1117,17 @@ regular expression:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 6</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># Groups:   condition [1]</span></span></span>
 <span><span class="co">##    condition condition_mean condition_zoffset .chain .iteration .draw</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A                0.005<span style="text-decoration: underline;">44</span>           -<span style="color: #BB0000;">0.023</span><span style="color: #BB0000; text-decoration: underline;">7</span>      1          1     1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A               -<span style="color: #BB0000;">0.083</span><span style="color: #BB0000; text-decoration: underline;">6</span>            -<span style="color: #BB0000;">0.046</span><span style="color: #BB0000; text-decoration: underline;">8</span>      1          2     2</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A                0.032<span style="text-decoration: underline;">4</span>            -<span style="color: #BB0000;">0.827</span>       1          3     3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> A                0.113             -<span style="color: #BB0000;">0.260</span>       1          4     4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> A                0.157             -<span style="color: #BB0000;">0.207</span>       1          5     5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> A                0.218             -<span style="color: #BB0000;">0.132</span>       1          6     6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> A                0.276              0.064<span style="text-decoration: underline;">2</span>      1          7     7</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> A                0.013<span style="text-decoration: underline;">0</span>            -<span style="color: #BB0000;">0.082</span><span style="color: #BB0000; text-decoration: underline;">3</span>      1          8     8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> A                0.152             -<span style="color: #BB0000;">0.061</span><span style="color: #BB0000; text-decoration: underline;">1</span>      1          9     9</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> A                0.192              0.200       1         10    10</span></span></code></pre>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A                 0.406             -<span style="color: #BB0000;">0.660</span>      1          1     1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A                 0.040<span style="text-decoration: underline;">5</span>            -<span style="color: #BB0000;">1.25</span>       1          2     2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A                 0.149             -<span style="color: #BB0000;">0.960</span>      1          3     3</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> A                 0.217             -<span style="color: #BB0000;">0.309</span>      1          4     4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> A                 0.187              0.225      1          5     5</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> A                 0.161              0.426      1          6     6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> A                 0.260              0.347      1          7     7</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> A                 0.513             -<span style="color: #BB0000;">0.656</span>      1          8     8</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> A                 0.245             -<span style="color: #BB0000;">0.761</span>      1          9     9</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> A                -<span style="color: #BB0000;">0.100</span>             -<span style="color: #BB0000;">0.885</span>      1         10    10</span></span></code></pre>
 <p>This result is equivalent in this case to
 <code>spread_draws(c(condition_mean, condition_zoffset)[condition])</code>,
 but does not require us to list each variable explicitly—this can be
@@ -1225,12 +1224,12 @@ conditional means from the above model:</p>
 <span><span class="va">bayes_results</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 8</span></span></span>
 <span><span class="co">##   condition estimate conf.low conf.high .width .point .interval model</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A            0.199   -<span style="color: #BB0000;">0.142</span>     0.549   0.95 median qi        Bayes</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B            1.01     0.651     1.34    0.95 median qi        Bayes</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C            1.84     1.48      2.19    0.95 median qi        Bayes</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D            1.02     0.681     1.37    0.95 median qi        Bayes</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E           -<span style="color: #BB0000;">0.890</span>   -<span style="color: #BB0000;">1.23</span>     -<span style="color: #BB0000;">0.529</span>   0.95 median qi        Bayes</span></span></code></pre>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A            0.192   -<span style="color: #BB0000;">0.156</span>     0.541   0.95 median qi        Bayes</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B            1.00     0.649     1.34    0.95 median qi        Bayes</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C            1.84     1.47      2.19    0.95 median qi        Bayes</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D            1.02     0.661     1.36    0.95 median qi        Bayes</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E           -<span style="color: #BB0000;">0.892</span>   -<span style="color: #BB0000;">1.25</span>     -<span style="color: #BB0000;">0.529</span>   0.95 median qi        Bayes</span></span></code></pre>
 <p>Here, <code><a href="http://mjskay.github.io/ggdist/reference/tidy-format-translators.html" class="external-link">to_broom_names()</a></code> will convert <code>.lower</code>
 and <code>.upper</code> into <code>conf.low</code> and
 <code>conf.high</code> so the names of the columns we need to make the
@@ -1278,16 +1277,16 @@ names that include indices in them and draws as rows.</p>
 <span><span class="co">## <span style="color: #949494;"># Groups:   condition [1]</span></span></span>
 <span><span class="co">##    .chain .iteration .draw condition condition_mean</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1 B - A              1.02 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          2     2 B - A              0.957</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          3     3 B - A              0.921</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          4     4 B - A              0.881</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          5     5 B - A              0.676</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          6     6 B - A              0.599</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          7     7 B - A              0.813</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          8     8 B - A              0.940</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          9     9 B - A              0.750</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1         10    10 B - A              0.794</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1 B - A              0.899</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          2     2 B - A              0.639</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          3     3 B - A              0.625</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          4     4 B - A              0.529</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          5     5 B - A              0.889</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          6     6 B - A              1.08 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          7     7 B - A              0.991</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          8     8 B - A              0.564</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          9     9 B - A              0.966</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1         10    10 B - A              1.17</span></span></code></pre>
 <p>To get a version we can pass to <code><a href="https://mc-stan.org/bayesplot/reference/MCMC-intervals.html" class="external-link">bayesplot::mcmc_areas()</a></code>,
 all we need to do is invert the <code><a href="../reference/spread_draws.html">spread_draws()</a></code> call we
 started with:</p>
@@ -1298,21 +1297,21 @@ started with:</p>
 <span>  <span class="fu"><a href="../reference/unspread_draws.html">unspread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 13</span></span></span>
-<span><span class="co">##    .chain .iteration .draw condition_mean[B - …¹ condi…² condi…³ condi…⁴ condi…⁵ condi…⁶ condi…⁷ condi…⁸ condi…⁹ condi…˟</span></span>
-<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1                 1.02     1.84   0.814   1.25   0.224   -<span style="color: #BB0000;">0.590</span>  -<span style="color: #BB0000;">0.729</span>   -<span style="color: #BB0000;">1.75</span>   -<span style="color: #BB0000;">2.57</span>   -<span style="color: #BB0000;">1.98</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          2     2                 0.957    1.86   0.906   1.20   0.248   -<span style="color: #BB0000;">0.658</span>  -<span style="color: #BB0000;">0.801</span>   -<span style="color: #BB0000;">1.76</span>   -<span style="color: #BB0000;">2.66</span>   -<span style="color: #BB0000;">2.01</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          3     3                 0.921    1.76   0.838   1.13   0.213   -<span style="color: #BB0000;">0.625</span>  -<span style="color: #BB0000;">0.539</span>   -<span style="color: #BB0000;">1.46</span>   -<span style="color: #BB0000;">2.30</span>   -<span style="color: #BB0000;">1.67</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          4     4                 0.881    1.96   1.08    0.925  0.044<span style="text-decoration: underline;">6</span>  -<span style="color: #BB0000;">1.04</span>   -<span style="color: #BB0000;">1.16</span>    -<span style="color: #BB0000;">2.04</span>   -<span style="color: #BB0000;">3.12</span>   -<span style="color: #BB0000;">2.08</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          5     5                 0.676    1.95   1.27    0.904  0.228   -<span style="color: #BB0000;">1.04</span>   -<span style="color: #BB0000;">1.11</span>    -<span style="color: #BB0000;">1.79</span>   -<span style="color: #BB0000;">3.06</span>   -<span style="color: #BB0000;">2.02</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          6     6                 0.599    1.75   1.15    0.693  0.094<span style="text-decoration: underline;">1</span>  -<span style="color: #BB0000;">1.05</span>   -<span style="color: #BB0000;">0.996</span>   -<span style="color: #BB0000;">1.60</span>   -<span style="color: #BB0000;">2.74</span>   -<span style="color: #BB0000;">1.69</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          7     7                 0.813    1.14   0.331   0.754 -<span style="color: #BB0000;">0.059</span><span style="color: #BB0000; text-decoration: underline;">4</span>  -<span style="color: #BB0000;">0.390</span>  -<span style="color: #BB0000;">1.31</span>    -<span style="color: #BB0000;">2.12</span>   -<span style="color: #BB0000;">2.45</span>   -<span style="color: #BB0000;">2.06</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          8     8                 0.940    1.61   0.673   1.01   0.065<span style="text-decoration: underline;">3</span>  -<span style="color: #BB0000;">0.608</span>  -<span style="color: #BB0000;">0.957</span>   -<span style="color: #BB0000;">1.90</span>   -<span style="color: #BB0000;">2.57</span>   -<span style="color: #BB0000;">1.96</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          9     9                 0.750    1.78   1.03    0.968  0.218   -<span style="color: #BB0000;">0.808</span>  -<span style="color: #BB0000;">0.935</span>   -<span style="color: #BB0000;">1.69</span>   -<span style="color: #BB0000;">2.71</span>   -<span style="color: #BB0000;">1.90</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1         10    10                 0.794    1.72   0.927   0.834  0.039<span style="text-decoration: underline;">3</span>  -<span style="color: #BB0000;">0.887</span>  -<span style="color: #BB0000;">0.773</span>   -<span style="color: #BB0000;">1.57</span>   -<span style="color: #BB0000;">2.49</span>   -<span style="color: #BB0000;">1.61</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​`condition_mean[B - A]`, ²​`condition_mean[C - A]`, ³​`condition_mean[C - B]`,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   ⁴​`condition_mean[D - A]`, ⁵​`condition_mean[D - B]`, ⁶​`condition_mean[D - C]`, ⁷​`condition_mean[E - A]`,</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   ⁸​`condition_mean[E - B]`, ⁹​`condition_mean[E - C]`, ˟​`condition_mean[E - D]`</span></span></span></code></pre>
+<span><span class="co">##    .chain .iteration .draw `condition_mean[B - A]` `condition_mean[C - A]` condition_mean[C - B…¹ condition_mean[D - A…²</span></span>
+<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>      1          1     1                   0.899                    1.54                  0.639                  0.497</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>      1          2     2                   0.639                    1.67                  1.03                   1.32 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>      1          3     3                   0.625                    1.93                  1.30                   0.845</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>      1          4     4                   0.529                    1.67                  1.14                   0.653</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>      1          5     5                   0.889                    1.71                  0.818                  0.845</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>      1          6     6                   1.08                     1.41                  0.330                  0.863</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>      1          7     7                   0.991                    1.44                  0.445                  0.908</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>      1          8     8                   0.564                    1.29                  0.723                  0.497</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>      1          9     9                   0.966                    1.79                  0.825                  1.07 </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>      1         10    10                   1.17                     1.72                  0.546                  0.912</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ abbreviated names: ¹​`condition_mean[C - B]`, ²​`condition_mean[D - A]`</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 6 more variables: `condition_mean[D - B]` &lt;dbl&gt;, `condition_mean[D - C]` &lt;dbl&gt;, `condition_mean[E - A]` &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   `condition_mean[E - B]` &lt;dbl&gt;, `condition_mean[E - C]` &lt;dbl&gt;, `condition_mean[E - D]` &lt;dbl&gt;</span></span></span></code></pre>
 <p>We can pass that into <code><a href="https://mc-stan.org/bayesplot/reference/MCMC-intervals.html" class="external-link">bayesplot::mcmc_areas()</a></code> directly.
 The <code>drop_indices = TRUE</code> argument to
 <code><a href="../reference/unspread_draws.html">unspread_draws()</a></code> indicates that <code>.chain</code>,
@@ -1366,46 +1365,52 @@ with uncertainty:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/gather_emmeans_draws.html">gather_emmeans_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: Model has 0 prior weights, but we recovered 50 rows of data.</span></span>
+<span><span class="co">## So prior weights were ignored.</span></span></code></pre>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
 <span><span class="co">##   condition .value .lower .upper .width .point .interval</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A          0.182 -<span style="color: #BB0000;">0.173</span>  0.546   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B          1.01   0.674  1.35    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C          1.88   1.52   2.24    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D          1.03   0.678  1.38    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E         -<span style="color: #BB0000;">0.928</span> -<span style="color: #BB0000;">1.28</span>  -<span style="color: #BB0000;">0.581</span>   0.95 median qi</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A          0.181 -<span style="color: #BB0000;">0.148</span>  0.533   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B          1.01   0.674  1.37    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C          1.88   1.53   2.23    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D          1.03   0.690  1.37    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E         -<span style="color: #BB0000;">0.931</span> -<span style="color: #BB0000;">1.27</span>  -<span style="color: #BB0000;">0.588</span>   0.95 median qi</span></span></code></pre>
 <p>Or <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans::emmeans()</a></code> with
 <code><a href="https://rdrr.io/pkg/emmeans/man/contrast.html" class="external-link">emmeans::contrast()</a></code> to do all pairwise comparisons:</p>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m_rst</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html" class="external-link">contrast</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/gather_emmeans_draws.html">gather_emmeans_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: Model has 0 prior weights, but we recovered 50 rows of data.</span></span>
+<span><span class="co">## So prior weights were ignored.</span></span></code></pre>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 7</span></span></span>
 <span><span class="co">##    contrast  .value .lower .upper .width .point .interval</span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A - B    -<span style="color: #BB0000;">0.839</span>  -<span style="color: #BB0000;">1.35</span>  -<span style="color: #BB0000;">0.339</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A - C    -<span style="color: #BB0000;">1.69</span>   -<span style="color: #BB0000;">2.19</span>  -<span style="color: #BB0000;">1.19</span>    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A - D    -<span style="color: #BB0000;">0.848</span>  -<span style="color: #BB0000;">1.36</span>  -<span style="color: #BB0000;">0.351</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> A - E     1.11    0.609  1.60    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> B - C    -<span style="color: #BB0000;">0.859</span>  -<span style="color: #BB0000;">1.37</span>  -<span style="color: #BB0000;">0.371</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> B - D    -<span style="color: #BB0000;">0.012</span><span style="color: #BB0000; text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.497</span>  0.478   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> B - E     1.95    1.47   2.41    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> C - D     0.846   0.355  1.34    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> C - E     2.80    2.30   3.30    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> D - E     1.96    1.46   2.44    0.95 median qi</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A - B    -<span style="color: #BB0000;">0.826</span>  -<span style="color: #BB0000;">1.31</span>  -<span style="color: #BB0000;">0.340</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> A - C    -<span style="color: #BB0000;">1.70</span>   -<span style="color: #BB0000;">2.18</span>  -<span style="color: #BB0000;">1.22</span>    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> A - D    -<span style="color: #BB0000;">0.850</span>  -<span style="color: #BB0000;">1.33</span>  -<span style="color: #BB0000;">0.375</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> A - E     1.11    0.627  1.60    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> B - C    -<span style="color: #BB0000;">0.857</span>  -<span style="color: #BB0000;">1.34</span>  -<span style="color: #BB0000;">0.381</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> B - D    -<span style="color: #BB0000;">0.014</span><span style="color: #BB0000; text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.519</span>  0.481   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> B - E     1.94    1.46   2.42    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> C - D     0.849   0.357  1.32    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> C - E     2.81    2.32   3.29    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> D - E     1.96    1.47   2.46    0.95 median qi</span></span></code></pre>
 <p>See the documentation for <code><a href="https://rdrr.io/pkg/emmeans/man/emmc-functions.html" class="external-link">emmeans::pairwise.emmc()</a></code> for a
 list of the numerous contrast types supported by
 <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans::emmeans()</a></code>.</p>
 <p>As before, we can plot the results instead of using a table:</p>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m_rst</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html" class="external-link">contrast</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/gather_emmeans_draws.html">gather_emmeans_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.value</span>, y <span class="op">=</span> <span class="va">contrast</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/stat_halfeye.html" class="external-link">stat_halfeye</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: Model has 0 prior weights, but we recovered 50 rows of data.</span></span>
+<span><span class="co">## So prior weights were ignored.</span></span></code></pre>
 <p><img src="tidybayes_files/figure-html/unnamed-chunk-49-1.png" width="648"></p>
 <p><code><a href="../reference/gather_emmeans_draws.html">gather_emmeans_draws()</a></code> also supports
 <code>emm_list</code> objects, which contain estimates from different
@@ -1413,29 +1418,31 @@ reference grids (see <code><a href="https://rdrr.io/pkg/emmeans/man/ref_grid.htm
 information on reference grids). An additional column with the default
 name of <code>.grid</code> is added to indicate the reference grid for
 each row in the output:</p>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m_rst</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span><span class="va">pairwise</span> <span class="op">~</span> <span class="va">condition</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/gather_emmeans_draws.html">gather_emmeans_draws</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: Model has 0 prior weights, but we recovered 50 rows of data.</span></span>
+<span><span class="co">## So prior weights were ignored.</span></span></code></pre>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 15 × 9</span></span></span>
 <span><span class="co">##    condition contrast .grid      .value .lower .upper .width .point .interval</span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A         <span style="color: #BB0000;">NA</span>       emmeans    0.182  -<span style="color: #BB0000;">0.173</span>  0.546   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> B         <span style="color: #BB0000;">NA</span>       emmeans    1.01    0.674  1.35    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> C         <span style="color: #BB0000;">NA</span>       emmeans    1.88    1.52   2.24    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> D         <span style="color: #BB0000;">NA</span>       emmeans    1.03    0.678  1.38    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> E         <span style="color: #BB0000;">NA</span>       emmeans   -<span style="color: #BB0000;">0.928</span>  -<span style="color: #BB0000;">1.28</span>  -<span style="color: #BB0000;">0.581</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> <span style="color: #BB0000;">NA</span>        A - B    contrasts -<span style="color: #BB0000;">0.839</span>  -<span style="color: #BB0000;">1.35</span>  -<span style="color: #BB0000;">0.339</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> <span style="color: #BB0000;">NA</span>        A - C    contrasts -<span style="color: #BB0000;">1.69</span>   -<span style="color: #BB0000;">2.19</span>  -<span style="color: #BB0000;">1.19</span>    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> <span style="color: #BB0000;">NA</span>        A - D    contrasts -<span style="color: #BB0000;">0.848</span>  -<span style="color: #BB0000;">1.36</span>  -<span style="color: #BB0000;">0.351</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> <span style="color: #BB0000;">NA</span>        A - E    contrasts  1.11    0.609  1.60    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> <span style="color: #BB0000;">NA</span>        B - C    contrasts -<span style="color: #BB0000;">0.859</span>  -<span style="color: #BB0000;">1.37</span>  -<span style="color: #BB0000;">0.371</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> <span style="color: #BB0000;">NA</span>        B - D    contrasts -<span style="color: #BB0000;">0.012</span><span style="color: #BB0000; text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.497</span>  0.478   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> <span style="color: #BB0000;">NA</span>        B - E    contrasts  1.95    1.47   2.41    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> <span style="color: #BB0000;">NA</span>        C - D    contrasts  0.846   0.355  1.34    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> <span style="color: #BB0000;">NA</span>        C - E    contrasts  2.80    2.30   3.30    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> <span style="color: #BB0000;">NA</span>        D - E    contrasts  1.96    1.46   2.44    0.95 median qi</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> A         <span style="color: #BB0000;">NA</span>       emmeans    0.181  -<span style="color: #BB0000;">0.148</span>  0.533   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> B         <span style="color: #BB0000;">NA</span>       emmeans    1.01    0.674  1.37    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> C         <span style="color: #BB0000;">NA</span>       emmeans    1.88    1.53   2.23    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> D         <span style="color: #BB0000;">NA</span>       emmeans    1.03    0.690  1.37    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> E         <span style="color: #BB0000;">NA</span>       emmeans   -<span style="color: #BB0000;">0.931</span>  -<span style="color: #BB0000;">1.27</span>  -<span style="color: #BB0000;">0.588</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> <span style="color: #BB0000;">NA</span>        A - B    contrasts -<span style="color: #BB0000;">0.826</span>  -<span style="color: #BB0000;">1.31</span>  -<span style="color: #BB0000;">0.340</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> <span style="color: #BB0000;">NA</span>        A - C    contrasts -<span style="color: #BB0000;">1.70</span>   -<span style="color: #BB0000;">2.18</span>  -<span style="color: #BB0000;">1.22</span>    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> <span style="color: #BB0000;">NA</span>        A - D    contrasts -<span style="color: #BB0000;">0.850</span>  -<span style="color: #BB0000;">1.33</span>  -<span style="color: #BB0000;">0.375</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> <span style="color: #BB0000;">NA</span>        A - E    contrasts  1.11    0.627  1.60    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> <span style="color: #BB0000;">NA</span>        B - C    contrasts -<span style="color: #BB0000;">0.857</span>  -<span style="color: #BB0000;">1.34</span>  -<span style="color: #BB0000;">0.381</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> <span style="color: #BB0000;">NA</span>        B - D    contrasts -<span style="color: #BB0000;">0.014</span><span style="color: #BB0000; text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.519</span>  0.481   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> <span style="color: #BB0000;">NA</span>        B - E    contrasts  1.94    1.46   2.42    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> <span style="color: #BB0000;">NA</span>        C - D    contrasts  0.849   0.357  1.32    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> <span style="color: #BB0000;">NA</span>        C - E    contrasts  2.81    2.32   3.29    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> <span style="color: #BB0000;">NA</span>        D - E    contrasts  1.96    1.47   2.46    0.95 median qi</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="using-mcmcglmm">Using <code>MCMCglmm</code><a class="anchor" aria-label="anchor" href="#using-mcmcglmm"></a>
@@ -1448,7 +1455,7 @@ the original data used to fit the model to the <code><a href="https://rdrr.io/pk
 call (see <code>vignette("models", package = "emmeans"))</code> for more
 information).</p>
 <p>First, we’ll fit the model:</p>
-<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># MCMCglmm does not support tibbles directly,</span></span>
 <span><span class="co"># so we convert ABC to a data.frame on the way in</span></span>
 <span><span class="va">m_glmm</span> <span class="op">=</span> <span class="fu">MCMCglmm</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MCMCglmm/man/MCMCglmm.html" class="external-link">MCMCglmm</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">condition</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">ABC</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -1456,7 +1463,7 @@ information).</p>
 <code><a href="../reference/gather_emmeans_draws.html">gather_emmeans_draws()</a></code> exactly as we did with
 <code>rstanarm</code>, but we need to include a <code>data</code>
 argument in the <code><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans()</a></code> call:</p>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m_glmm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">condition</span>, data <span class="op">=</span> <span class="va">ABC</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html" class="external-link">contrast</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>

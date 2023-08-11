@@ -25,7 +25,7 @@ the data frame."><meta property="og:image" content="http://mjskay.github.io/tidy
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.5</span>
       </span>
     </div>
 
@@ -340,11 +340,11 @@ additional columns added containing <code><a href="https://mc-stan.org/posterior
     <div id="details">
     <h2>Details</h2>
     <p>Consider a model like:</p>
-<p>$$\begin{aligned}
-y &amp;\sim \textrm{SomeDist}(\theta_1, \theta_2)\\
-f_1(\theta_1) &amp;= \alpha_1 + \beta_1 x\\
-f_2(\theta_2) &amp;= \alpha_2 + \beta_2 x
-\end{aligned}$$</p>
+<p>$$\begin{array}{rcl}
+y &amp;\sim&amp; \textrm{SomeDist}(\theta_1, \theta_2)\\
+f_1(\theta_1) &amp;=&amp; \alpha_1 + \beta_1 x\\
+f_2(\theta_2) &amp;=&amp; \alpha_2 + \beta_2 x
+\end{array}$$</p>
 <p>This model has:</p><ul><li><p>an outcome variable, \(y\)</p></li>
 <li><p>a response distribution, \(\textrm{SomeDist}\), having parameters \(\theta_1\)
 (with link function \(f_1\)) and \(\theta_2\) (with link function \(f_2\))</p></li>
@@ -406,16 +406,13 @@ format instead of a data-frame-of-<code>rvar</code>s format. See <code><a href="
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/posterior/" class="external-link">posterior</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> This is posterior version 1.3.1.9000</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This is posterior version 1.4.1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: 'posterior'</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from 'package:brms':</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     rhat</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from 'package:stats':</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘posterior’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     mad, sd, var</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from 'package:base':</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     %in%, match</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms" class="external-link">brms</a></span><span class="op">)</span></span></span>
@@ -430,10 +427,10 @@ format instead of a data-frame-of-<code>rvar</code>s format. See <code><a href="
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Compiling Stan program...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Start sampling</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SAMPLING FOR MODEL '6f4ceff95259e8a0d92166b10aa58207' NOW (CHAIN 1).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 4e-05 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.4 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 1.9e-05 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.19 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
@@ -450,16 +447,13 @@ format instead of a data-frame-of-<code>rvar</code>s format. See <code><a href="
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 500 / 500 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.337 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.23 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.567 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.208127 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.362387 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.570514 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#bulk-ess</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> https://mc-stan.org/misc/warnings.html#tail-ess</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Look at mean predictions for some cars (epred) and compare to</span></span></span>
 <span class="r-in"><span><span class="co"># the exponeniated mu parameter of the lognormal distribution (linpred).</span></span></span>
@@ -473,17 +467,17 @@ format instead of a data-frame-of-<code>rvar</code>s format. See <code><a href="
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 32 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       hp   cyl   mpg     .epred           mu      expmu `.epred - expmu`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   110     6  21    20 <span style="color: #949494;">± 0.89</span>  3.0 <span style="color: #949494;">± 0.044</span>  20 <span style="color: #949494;">± 0.87</span>     0.27 <span style="color: #949494;">± 0.093</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>   110     6  21    20 <span style="color: #949494;">± 0.89</span>  3.0 <span style="color: #949494;">± 0.044</span>  20 <span style="color: #949494;">± 0.87</span>     0.27 <span style="color: #949494;">± 0.093</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>    93     4  22.8  26 <span style="color: #949494;">± 1.26</span>  3.2 <span style="color: #949494;">± 0.048</span>  26 <span style="color: #949494;">± 1.22</span>     0.34 <span style="color: #949494;">± 0.120</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>   110     6  21.4  20 <span style="color: #949494;">± 0.89</span>  3.0 <span style="color: #949494;">± 0.044</span>  20 <span style="color: #949494;">± 0.87</span>     0.27 <span style="color: #949494;">± 0.093</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>   175     8  18.7  16 <span style="color: #949494;">± 0.75</span>  2.7 <span style="color: #949494;">± 0.048</span>  15 <span style="color: #949494;">± 0.74</span>     0.21 <span style="color: #949494;">± 0.070</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>   105     6  18.1  20 <span style="color: #949494;">± 0.91</span>  3.0 <span style="color: #949494;">± 0.044</span>  20 <span style="color: #949494;">± 0.89</span>     0.27 <span style="color: #949494;">± 0.093</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>   245     8  14.3  15 <span style="color: #949494;">± 0.78</span>  2.7 <span style="color: #949494;">± 0.052</span>  14 <span style="color: #949494;">± 0.76</span>     0.19 <span style="color: #949494;">± 0.066</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>    62     4  24.4  29 <span style="color: #949494;">± 1.86</span>  3.3 <span style="color: #949494;">± 0.065</span>  28 <span style="color: #949494;">± 1.84</span>     0.38 <span style="color: #949494;">± 0.126</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    95     4  22.8  26 <span style="color: #949494;">± 1.29</span>  3.2 <span style="color: #949494;">± 0.049</span>  26 <span style="color: #949494;">± 1.25</span>     0.34 <span style="color: #949494;">± 0.120</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>   123     6  19.2  20 <span style="color: #949494;">± 0.93</span>  3.0 <span style="color: #949494;">± 0.046</span>  19 <span style="color: #949494;">± 0.90</span>     0.26 <span style="color: #949494;">± 0.092</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 22 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   110     6  21    20 <span style="color: #949494;">± 0.84</span>  3.0 <span style="color: #949494;">± 0.041</span>  20 <span style="color: #949494;">± 0.82</span>     0.25 <span style="color: #949494;">± 0.065</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>   110     6  21    20 <span style="color: #949494;">± 0.84</span>  3.0 <span style="color: #949494;">± 0.041</span>  20 <span style="color: #949494;">± 0.82</span>     0.25 <span style="color: #949494;">± 0.065</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>    93     4  22.8  26 <span style="color: #949494;">± 1.16</span>  3.2 <span style="color: #949494;">± 0.044</span>  26 <span style="color: #949494;">± 1.14</span>     0.32 <span style="color: #949494;">± 0.085</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>   110     6  21.4  20 <span style="color: #949494;">± 0.84</span>  3.0 <span style="color: #949494;">± 0.041</span>  20 <span style="color: #949494;">± 0.82</span>     0.25 <span style="color: #949494;">± 0.065</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>   175     8  18.7  16 <span style="color: #949494;">± 0.68</span>  2.7 <span style="color: #949494;">± 0.044</span>  15 <span style="color: #949494;">± 0.67</span>     0.19 <span style="color: #949494;">± 0.049</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>   105     6  18.1  20 <span style="color: #949494;">± 0.84</span>  3.0 <span style="color: #949494;">± 0.041</span>  20 <span style="color: #949494;">± 0.83</span>     0.25 <span style="color: #949494;">± 0.065</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>   245     8  14.3  15 <span style="color: #949494;">± 0.74</span>  2.7 <span style="color: #949494;">± 0.051</span>  14 <span style="color: #949494;">± 0.73</span>     0.18 <span style="color: #949494;">± 0.047</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>    62     4  24.4  29 <span style="color: #949494;">± 1.75</span>  3.3 <span style="color: #949494;">± 0.061</span>  28 <span style="color: #949494;">± 1.74</span>     0.36 <span style="color: #949494;">± 0.090</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    95     4  22.8  26 <span style="color: #949494;">± 1.19</span>  3.2 <span style="color: #949494;">± 0.046</span>  26 <span style="color: #949494;">± 1.17</span>     0.32 <span style="color: #949494;">± 0.085</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>   123     6  19.2  20 <span style="color: #949494;">± 0.88</span>  3.0 <span style="color: #949494;">± 0.044</span>  19 <span style="color: #949494;">± 0.87</span>     0.25 <span style="color: #949494;">± 0.064</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 22 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># plot intervals around conditional means (epred_rvars)</span></span></span>
 <span class="r-in"><span><span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>

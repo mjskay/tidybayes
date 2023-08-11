@@ -52,7 +52,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.5</span>
       </span>
     </div>
 
@@ -112,10 +112,9 @@
 <div class="page-header"><h1 id="tidybayes-bayesian-analysis--tidy-data--geoms">tidybayes: Bayesian analysis + tidy data + geoms<a class="anchor" aria-label="anchor" href="#tidybayes-bayesian-analysis--tidy-data--geoms"></a>
 </h1></div>
 <p><a href="https://github.com/mjskay/tidybayes/actions" class="external-link"><img src="https://github.com/mjskay/tidybayes/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://codecov.io/github/mjskay/tidybayes?branch=master" class="external-link"><img src="https://codecov.io/gh/mjskay/tidybayes/branch/master/graph/badge.svg" alt="Coverage status"></a> <a href="https://cran.r-project.org/package=tidybayes" class="external-link"><img src="https://www.r-pkg.org/badges/version/tidybayes" alt="CRAN status"></a> <img src="https://cranlogs.r-pkg.org/badges/last-month/tidybayes" alt="Download count"><a href="https://zenodo.org/badge/latestdoi/33396684" class="external-link"><img src="https://zenodo.org/badge/33396684.svg" alt="DOI"></a></p>
-<div class="figure">
-<img src="reference/figures/preview.gif" alt=""><p class="caption">Preview of tidybayes plots</p>
-</div>
-<p><a href="https://mjskay.github.io/tidybayes/" class="external-link">tidybayes</a> is an R package that aims to make it easy to integrate popular Bayesian modeling methods into a tidy data + ggplot workflow. It builds on top of (and re-exports) several functions for visualizing uncertainty from its sister package, <a href="https://mjskay.github.io/ggdist/" class="external-link">ggdist</a></p>
+<figure><img src="reference/figures/preview.gif" alt="Preview of tidybayes plots"><figcaption aria-hidden="true">
+Preview of tidybayes plots
+</figcaption></figure><p><a href="https://mjskay.github.io/tidybayes/" class="external-link">tidybayes</a> is an R package that aims to make it easy to integrate popular Bayesian modeling methods into a tidy data + ggplot workflow. It builds on top of (and re-exports) several functions for visualizing uncertainty from its sister package, <a href="https://mjskay.github.io/ggdist/" class="external-link">ggdist</a></p>
 <p><a href="https://dx.doi.org/10.18637/jss.v059.i10" class="external-link">Tidy</a> data frames (one observation per row) are particularly convenient for use in a variety of R data manipulation and visualization packages. However, when using Bayesian modeling functions like JAGS or Stan in R, we often have to translate this data into a form the model understands, and then after running the model, translate the resulting sample (or predictions) into a more tidy format for use with other R functions. <code>tidybayes</code> aims to simplify these two common (often tedious) operations:</p>
 <ul>
 <li><p><strong>Composing data</strong> for use with the model. This often means translating data from a <code>data.frame</code> into a <code>list</code> , making sure <code>factors</code> are encoded as numerical data, adding variables to store the length of indices, etc. This package helps automate these operations using the <code><a href="reference/compose_data.html">compose_data()</a></code> function, which automatically handles data types like <code>numeric</code>, <code>logical</code>, <code>factor</code>, and <code>ordinal</code>, and allows easy extensions for converting other data types into a format the model understands by providing your own implementation of the generic <code><a href="reference/data_list.html">as_data_list()</a></code>.</p></li>
@@ -127,10 +126,9 @@
 <li><p><strong>Summarizing posterior distributions</strong> from models. <code>tidybayes</code> re-exports the <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">ggdist::point_interval()</a></code> family of functions (<code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi()</a></code>, <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">mean_qi()</a></code>, <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">mode_hdi()</a></code>, etc), which are methods for generating point summaries and intervals that are designed with tidy workflows in mind. They can generate point summaries plus an arbitrary number of probability intervals <em>from</em> tidy data frames of draws, they <em>return</em> tidy data frames, and they <strong>respect data frame groups</strong>. <code>tidybayes</code> also provides and implementation of <code><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">posterior::summarise_draws()</a></code> for use with grouped data frames, such as those returned by the <code>tidybayes::XXX_draws</code> functions.</p></li>
 <li>
 <p><strong>Visualizing priors and posteriors</strong>. The focus on tidy data makes the output from tidybayes easy to visualize using <code>ggplot</code>. While existing <code>geom</code>s (like <code>ggdist::geom_pointrange()</code> and <code>ggdist::geom_linerange()</code>) can give useful output, the output from <code>tidybayes</code> is designed to work well with several geoms and stats in its sister package, <code>ggdist</code>. These geoms have sensible defaults suitable for visualizing posterior point summaries and intervals (<code><a href="http://mjskay.github.io/ggdist/reference/geom_pointinterval.html" class="external-link">ggdist::geom_pointinterval()</a></code>, <code><a href="http://mjskay.github.io/ggdist/reference/stat_pointinterval.html" class="external-link">ggdist::stat_pointinterval()</a></code>), visualizing distributions with point summaries and intervals (the <code><a href="http://mjskay.github.io/ggdist/reference/ggdist-deprecated.html" class="external-link">ggdist::stat_sample_slabinterval()</a></code> family of stats, including eye plots, half-eye plots, CCDF bar plots, gradient plots, dotplots, and histograms), and visualizing fit lines with an arbitrary number of uncertainty bands (<code><a href="http://mjskay.github.io/ggdist/reference/geom_lineribbon.html" class="external-link">ggdist::geom_lineribbon()</a></code> and <code><a href="http://mjskay.github.io/ggdist/reference/stat_lineribbon.html" class="external-link">ggdist::stat_lineribbon()</a></code>). Priors can also be visualized in the same way using the <code><a href="http://mjskay.github.io/ggdist/reference/stat_slabinterval.html" class="external-link">ggdist::stat_slabinterval()</a></code> family of stats. The <code><a href="http://mjskay.github.io/ggdist/reference/geom_dotsinterval.html" class="external-link">ggdist::geom_dotsinterval()</a></code> family also automatically finds good binning parameters for dotplots, and can be used to easily construct quantile dotplots of posteriors (see example in this document). For convenience, <code>tidybayes</code> re-exports the <code>ggdist</code> stats and geoms.</p>
-<div class="figure">
-<img src="reference/figures/slabinterval_family.png" alt=""><p class="caption">The slabinterval family of geoms and stats</p>
-</div>
-<p>See <code><a href="http://mjskay.github.io/ggdist/articles/slabinterval.html" class="external-link">vignette("slabinterval", package = "ggdist")</a></code> for more information.</p>
+<figure><p><img src="reference/figures/slabinterval_family.png" alt="The slabinterval family of geoms and stats"></p>
+<figcaption aria-hidden="true"><p>The slabinterval family of geoms and stats</p>
+</figcaption></figure><p>See <code><a href="http://mjskay.github.io/ggdist/articles/slabinterval.html" class="external-link">vignette("slabinterval", package = "ggdist")</a></code> for more information.</p>
 </li>
 <li><p><strong>Extracting and visualizing data frames of random variables</strong> from models. <code>tidybayes</code> also provides <code>XXX_rvars</code> functions as alternatives to the <code>XXX_draws</code> functions, such as <code><a href="reference/spread_rvars.html">spread_rvars()</a></code>, <code><a href="reference/add_predicted_rvars.html">add_predicted_rvars()</a></code>, etc. These functions instead return tidy data frames of <code><a href="https://mc-stan.org/posterior/reference/rvar.html" class="external-link">posterior::rvar()</a></code>s, a vectorized random variable data type (see <code><a href="https://mc-stan.org/posterior/articles/rvar.html" class="external-link">vignette("rvar", package = "posterior")</a></code> for more about <code>rvar</code>s). Combined with the <code><a href="http://mjskay.github.io/ggdist/reference/stat_slabinterval.html" class="external-link">ggdist::stat_slabinterval()</a></code> and <code><a href="http://mjskay.github.io/ggdist/reference/stat_lineribbon.html" class="external-link">ggdist::stat_lineribbon()</a></code> geometries, these functions make it easy to extract samples from distributions, manipulate them, and visualize them; this format may have significant advantages in terms of memory required for large models. See <code><a href="articles/tidy-posterior.html">vignette("tidy-posterior")</a></code> for examples.</p></li>
 <li><p><strong>Comparing a variable across levels of a factor</strong>, which often means first generating pairs of levels of a factor (according to some desired set of comparisons) and then computing a function over the value of the comparison variable for those pairs of levels. Assuming your data is in the format returned by <code>spread_draws</code>, the <code>compare_levels</code> function allows comparison across levels to be made easily.</p></li>
@@ -185,7 +183,7 @@
 <span><span class="va">n_condition</span> <span class="op">=</span> <span class="fl">5</span></span>
 <span><span class="va">ABC</span> <span class="op">=</span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span>    condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>,<span class="st">"D"</span>,<span class="st">"E"</span><span class="op">)</span>, <span class="va">n</span><span class="op">)</span>,</span>
+<span>    condition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>,<span class="st">"D"</span>,<span class="st">"E"</span><span class="op">)</span>, <span class="va">n</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span> <span class="op">*</span> <span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">0.5</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
@@ -195,31 +193,31 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"condition"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README/make_data-1.png"><!-- --></p>
 <p>A hierarchical model of this data might fit an overall mean across the conditions (<code>overall_mean</code>), the standard deviation of the condition means (<code>condition_mean_sd</code>), the mean within each condition (<code>condition_mean[condition]</code>) and the standard deviation of the responses given a condition mean (<code>response_sd</code>):</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n;</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_condition;</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=n_condition&gt; condition[n];</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> response[n];</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> overall_mean;</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n_condition] condition_zoffset;</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; response_sd;</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; condition_mean_sd;</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[n_condition] condition_mean;</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  condition_mean = overall_mean + condition_zoffset * condition_mean_sd;</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  response_sd ~ cauchy(<span class="dv">0</span>, <span class="dv">1</span>);         <span class="co">// =&gt; half-cauchy(0, 1)</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  condition_mean_sd ~ cauchy(<span class="dv">0</span>, <span class="dv">1</span>);   <span class="co">// =&gt; half-cauchy(0, 1)</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  overall_mean ~ normal(<span class="dv">0</span>, <span class="dv">5</span>);</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  condition_zoffset ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);   <span class="co">// =&gt; condition_mean ~ normal(overall_mean, condition_mean_sd)</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:n) {</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    response[i] ~ normal(condition_mean[condition[i]], response_sd);</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode stan"><code class="sourceCode stan"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n;</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; n_condition;</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=n_condition&gt; condition[n];</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="dt">real</span> response[n];</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>}</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="dt">real</span> overall_mean;</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="dt">vector</span>[n_condition] condition_zoffset;</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; response_sd;</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; condition_mean_sd;</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>}</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="dt">vector</span>[n_condition] condition_mean;</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  condition_mean = overall_mean + condition_zoffset * condition_mean_sd;</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>}</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>  response_sd ~ cauchy(<span class="dv">0</span>, <span class="dv">1</span>);         <span class="co">// =&gt; half-cauchy(0, 1)</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>  condition_mean_sd ~ cauchy(<span class="dv">0</span>, <span class="dv">1</span>);   <span class="co">// =&gt; half-cauchy(0, 1)</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>  overall_mean ~ normal(<span class="dv">0</span>, <span class="dv">5</span>);</span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>  condition_zoffset ~ normal(<span class="dv">0</span>, <span class="dv">1</span>);   <span class="co">// =&gt; condition_mean ~ normal(overall_mean, condition_mean_sd)</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:n) {</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>    response[i] ~ normal(condition_mean[condition[i]], response_sd);</span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>  }</span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>}</span></code></pre></div>
 <div class="section level3">
 <h3 id="composing-data-for-input-to-model-compose_data">Composing data for input to model: <code>compose_data</code>
 <a class="anchor" aria-label="anchor" href="#composing-data-for-input-to-model-compose_data"></a>
@@ -251,25 +249,25 @@
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span>, <span class="va">response_sd</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">15</span><span class="op">)</span>  <span class="co"># just show the first few rows</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 15 × 6</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # Groups:   condition [1]</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">##    condition condition_mean .chain .iteration .draw response_sd</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;chr&gt;              &lt;dbl&gt;  &lt;int&gt;      &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 A                0.00544      1          1     1       0.576</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 A               -0.0836       1          2     2       0.576</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 A                0.0324       1          3     3       0.551</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 A                0.113        1          4     4       0.576</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 A                0.157        1          5     5       0.583</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 A                0.218        1          6     6       0.621</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 A                0.276        1          7     7       0.641</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 A                0.0130       1          8     8       0.637</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 A                0.152        1          9     9       0.609</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 A                0.192        1         10    10       0.521</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 11 A                0.154        1         11    11       0.558</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 12 A                0.298        1         12    12       0.552</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 13 A                0.349        1         13    13       0.531</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 14 A                0.471        1         14    14       0.566</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 15 A                0.313        1         15    15       0.568</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="do">## # A tibble: 15 × 6</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="do">## # Groups:   condition [1]</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="do">##    condition condition_mean .chain .iteration .draw response_sd</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="do">##    &lt;fct&gt;              &lt;dbl&gt;  &lt;int&gt;      &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="do">##  1 A                 0.234       1          1     1       0.640</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="do">##  2 A                 0.156       1          2     2       0.455</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="do">##  3 A                 0.0598      1          3     3       0.713</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="do">##  4 A                 0.426       1          4     4       0.681</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="do">##  5 A                 0.0164      1          5     5       0.626</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="do">##  6 A                 0.131       1          6     6       0.501</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="do">##  7 A                 0.397       1          7     7       0.537</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="do">##  8 A                 0.325       1          8     8       0.543</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="do">##  9 A                 0.363       1          9     9       0.504</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="do">## 10 A                 0.152       1         10    10       0.620</span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="do">## 11 A                 0.263       1         11    11       0.473</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="do">## 12 A                 0.328       1         12    12       0.463</span></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="do">## 13 A                -0.114       1         13    13       0.705</span></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="do">## 14 A                 0.486       1         14    14       0.564</span></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="do">## 15 A                 0.0881      1         15    15       0.492</span></span></code></pre></div>
 <p>The condition numbers are automatically turned back into text (“A”, “B”, “C”, …) and split into their own column. A long-format data frame is returned with a row for every draw <span class="math inline">×</span> every combination of indices across all variables given to <code>spread_draws</code>; for example, because <code>response_sd</code> here is not indexed by <code>condition</code>, within the same draw it has the same value for each row corresponding to a different <code>condition</code> (some other formats supported by <code>tidybayes</code> are discussed in <code><a href="articles/tidybayes.html">vignette("tidybayes")</a></code>; in particular, the format returned by <code>gather_draws</code>).</p>
 </div>
 <div class="section level3">
@@ -313,14 +311,14 @@
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/spread_draws.html">spread_draws</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">[</span><span class="va">condition</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="va">condition_mean</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 5 × 7</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="do">##   condition condition_mean .lower .upper .width .point .interval</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;              &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    </span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 A                  0.199 -0.142  0.549   0.95 median qi       </span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 B                  1.01   0.651  1.34    0.95 median qi       </span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 C                  1.84   1.48   2.19    0.95 median qi       </span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 D                  1.02   0.681  1.37    0.95 median qi       </span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 E                 -0.890 -1.23  -0.529   0.95 median qi</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="do">## # A tibble: 5 × 7</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="do">##   condition condition_mean .lower .upper .width .point .interval</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="do">##   &lt;fct&gt;              &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    </span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="do">## 1 A                  0.195 -0.141  0.540   0.95 median qi       </span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="do">## 2 B                  0.999  0.647  1.34    0.95 median qi       </span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="do">## 3 C                  1.84   1.48   2.19    0.95 median qi       </span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="do">## 4 D                  1.02   0.663  1.35    0.95 median qi       </span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="do">## 5 E                 -0.886 -1.23  -0.528   0.95 median qi</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="comparison-to-other-models-via-compatibility-with-broom">Comparison to other models via compatibility with <code>broom</code>
@@ -335,14 +333,14 @@
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span>conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"OLS"</span><span class="op">)</span></span>
 <span><span class="va">linear_results</span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 5 × 9</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="do">##   condition estimate std.error    df conf.low conf.high statistic  p.value model</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 A            0.182     0.173    45   -0.167     0.530      1.05 3.00e- 1 OLS  </span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 B            1.01      0.173    45    0.665     1.36       5.85 5.13e- 7 OLS  </span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 C            1.87      0.173    45    1.53      2.22      10.8  4.15e-14 OLS  </span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 D            1.03      0.173    45    0.678     1.38       5.93 3.97e- 7 OLS  </span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 E           -0.935     0.173    45   -1.28     -0.586     -5.40 2.41e- 6 OLS</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="do">## # A tibble: 5 × 9</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="do">##   condition estimate std.error    df conf.low conf.high statistic  p.value model</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="do">##   &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="do">## 1 A            0.182     0.173    45   -0.167     0.530      1.05 3.00e- 1 OLS  </span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="do">## 2 B            1.01      0.173    45    0.665     1.36       5.85 5.13e- 7 OLS  </span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="do">## 3 C            1.87      0.173    45    1.53      2.22      10.8  4.15e-14 OLS  </span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="do">## 4 D            1.03      0.173    45    0.678     1.38       5.93 3.97e- 7 OLS  </span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="do">## 5 E           -0.935     0.173    45   -1.28     -0.586     -5.40 2.41e- 6 OLS</span></span></code></pre></div>
 <p>Using <code><a href="http://mjskay.github.io/ggdist/reference/tidy-format-translators.html" class="external-link">ggdist::to_broom_names()</a></code>, we’ll convert the output from <code>median_qi</code> (which uses names <code>.lower</code> and <code>.upper</code>) to use names from <code>broom</code> (<code>conf.low</code> and <code>conf.high</code>) so that comparison with output from <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">broom::tidy</a></code> is easy:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bayes_results</span> <span class="op">=</span> <span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -351,14 +349,14 @@
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/tidy-format-translators.html" class="external-link">to_broom_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"Bayes"</span><span class="op">)</span></span>
 <span><span class="va">bayes_results</span></span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 5 × 8</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="do">##   condition estimate conf.low conf.high .width .point .interval model</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 A            0.199   -0.142     0.549   0.95 median qi        Bayes</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 B            1.01     0.651     1.34    0.95 median qi        Bayes</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 C            1.84     1.48      2.19    0.95 median qi        Bayes</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 D            1.02     0.681     1.37    0.95 median qi        Bayes</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 E           -0.890   -1.23     -0.529   0.95 median qi        Bayes</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="do">## # A tibble: 5 × 8</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="do">##   condition estimate conf.low conf.high .width .point .interval model</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="do">##   &lt;fct&gt;        &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="do">## 1 A            0.195   -0.141     0.540   0.95 median qi        Bayes</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="do">## 2 B            0.999    0.647     1.34    0.95 median qi        Bayes</span></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="do">## 3 C            1.84     1.48      2.19    0.95 median qi        Bayes</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="do">## 4 D            1.02     0.663     1.35    0.95 median qi        Bayes</span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="do">## 5 E           -0.886   -1.23     -0.528   0.95 median qi        Bayes</span></span></code></pre></div>
 <p>This makes it easy to bind the two results together and plot them:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">linear_results</span>, <span class="va">bayes_results</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -492,7 +490,7 @@
 <h2 id="citing-tidybayes">Citing <code>tidybayes</code>
 <a class="anchor" aria-label="anchor" href="#citing-tidybayes"></a>
 </h2>
-<p>Matthew Kay (2023). <em>tidybayes: Tidy Data and Geoms for Bayesian Models</em>. R package version 3.0.3, <a href="https://mjskay.github.io/tidybayes/" class="external-link uri">https://mjskay.github.io/tidybayes/</a>. DOI: <a href="https://doi.org/10.5281/zenodo.1308151" class="external-link">10.5281/zenodo.1308151</a>.</p>
+<p>Matthew Kay (2023). <em>tidybayes: Tidy Data and Geoms for Bayesian Models</em>. R package version 3.0.4, <a href="https://mjskay.github.io/tidybayes/" class="external-link uri">https://mjskay.github.io/tidybayes/</a>. DOI: <a href="https://doi.org/10.5281/zenodo.1308151" class="external-link">10.5281/zenodo.1308151</a>.</p>
 </div>
 </div>
   </div>

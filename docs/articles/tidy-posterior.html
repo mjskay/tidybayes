@@ -47,7 +47,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.5</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@
                         <h4 data-toc-skip class="author">Matthew
 Kay</h4>
             
-            <h4 data-toc-skip class="date">2023-02-03</h4>
+            <h4 data-toc-skip class="date">2023-08-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/mjskay/tidybayes/blob/HEAD/vignettes/tidy-posterior.Rmd" class="external-link"><code>vignettes/tidy-posterior.Rmd</code></a></small>
       <div class="hidden name"><code>tidy-posterior.Rmd</code></div>
@@ -229,25 +229,25 @@ compatible with the <code><a href="https://mc-stan.org/posterior/reference/draws
 from the model:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarise_draws</a></span><span class="op">(</span><span class="fu"><a href="../reference/tidy_draws.html">tidy_draws</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 15 × 10</span></span></span>
-<span><span class="co">##    variable                 mean   median      sd     mad       q5      q95     rhat ess_b…¹ ess_t…²</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> b_Intercept            0.504    0.526   0.478  4.56<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  -<span style="color: #BB0000;">0.310</span>    1.26    1.00<span style="color: #949494;">e</span> 0  904.     <span style="text-decoration: underline;">1</span>204.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> sd_condition__Inter…   1.17     1.09    0.428  3.57<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>   0.651    1.94    1.00<span style="color: #949494;">e</span> 0  944.     <span style="text-decoration: underline;">1</span>542.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> sigma                  0.561    0.557   0.060<span style="text-decoration: underline;">2</span> 5.89<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>   0.470    0.668   1.00<span style="color: #949494;">e</span> 0 <span style="text-decoration: underline;">2</span>057.     <span style="text-decoration: underline;">2</span>243.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> r_condition[A,Inter…  -<span style="color: #BB0000;">0.312</span>   -<span style="color: #BB0000;">0.336</span>   0.498  4.80<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  -<span style="color: #BB0000;">1.08</span>     0.526   1.00<span style="color: #949494;">e</span> 0  972.     <span style="text-decoration: underline;">1</span>267.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> r_condition[B,Inter…   0.493    0.480   0.500  4.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  -<span style="color: #BB0000;">0.301</span>    1.34    1.00<span style="color: #949494;">e</span> 0  983.     <span style="text-decoration: underline;">1</span>326.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> r_condition[C,Inter…   1.33     1.32    0.501  4.78<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>   0.557    2.19    1.00<span style="color: #949494;">e</span> 0  994.     <span style="text-decoration: underline;">1</span>489.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> r_condition[D,Inter…   0.512    0.498   0.502  4.77<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  -<span style="color: #BB0000;">0.277</span>    1.36    1.00<span style="color: #949494;">e</span> 0 <span style="text-decoration: underline;">1</span>013.     <span style="text-decoration: underline;">1</span>396.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> r_condition[E,Inter…  -<span style="color: #BB0000;">1.39</span>    -<span style="color: #BB0000;">1.40</span>    0.500  4.68<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  -<span style="color: #BB0000;">2.17</span>    -<span style="color: #BB0000;">0.535</span>   1.00<span style="color: #949494;">e</span> 0  990.     <span style="text-decoration: underline;">1</span>392.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> lp__                 -<span style="color: #BB0000;">51.9</span>    -<span style="color: #BB0000;">51.6</span>     2.41   2.33<span style="color: #949494;">e</span>+0 -<span style="color: #BB0000;">56.3</span>    -<span style="color: #BB0000;">48.7</span>     1.00<span style="color: #949494;">e</span> 0  977.     <span style="text-decoration: underline;">1</span>634.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> accept_stat__          0.988    0.995   0.021<span style="text-decoration: underline;">1</span> 6.66<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>   0.952    1.00    1.05<span style="color: #949494;">e</span> 0   59.5     192.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span> stepsize__             0.054<span style="text-decoration: underline;">4</span>   0.054<span style="text-decoration: underline;">9</span>  0.011<span style="text-decoration: underline;">9</span> 1.62<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>   0.039<span style="text-decoration: underline;">3</span>   0.068<span style="text-decoration: underline;">4</span>  3.38<span style="color: #949494;">e</span>14    4.03     <span style="color: #BB0000;">NA</span> </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span> treedepth__            5.31     5       1.01   1.48<span style="color: #949494;">e</span>+0   4        7       1.07<span style="color: #949494;">e</span> 0   40.9      <span style="color: #BB0000;">NA</span> </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span> n_leapfrog__          65.9     63      42.8    4.74<span style="color: #949494;">e</span>+1  15      127       1.07<span style="color: #949494;">e</span> 0   41.6    <span style="text-decoration: underline;">1</span>530.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span> divergent__            0        0       0      0   <span style="color: #949494;"> </span>     0        0      <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>     <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span> </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span> energy__              55.9     55.6     3.14   3.03<span style="color: #949494;">e</span>+0  51.6     61.7     1.00<span style="color: #949494;">e</span> 0 <span style="text-decoration: underline;">1</span>040.     <span style="text-decoration: underline;">1</span>772.</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​ess_bulk, ²​ess_tail</span></span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 16 × 10</span></span></span>
+<span><span class="co">##    variable                 mean   median      sd     mad       q5      q95   rhat ess_bulk ess_tail</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;num&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> b_Intercept            0.512    0.526   0.469  4.15<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  -<span style="color: #BB0000;">0.261</span>    1.28     1.00   945.     <span style="text-decoration: underline;">1</span>410. </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> sd_condition__Inter…   1.16     1.08    0.422  3.38<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>   0.658    1.95     1.00  <span style="text-decoration: underline;">1</span>014.     <span style="text-decoration: underline;">1</span>444. </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> sigma                  0.563    0.558   0.061<span style="text-decoration: underline;">7</span> 6.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>   0.470    0.674    1.00  <span style="text-decoration: underline;">1</span>734.     <span style="text-decoration: underline;">1</span>803. </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> r_condition[A,Inter…  -<span style="color: #BB0000;">0.312</span>   -<span style="color: #BB0000;">0.329</span>   0.493  4.39<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  -<span style="color: #BB0000;">1.10</span>     0.506    1.00   994.     <span style="text-decoration: underline;">1</span>459. </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> r_condition[B,Inter…   0.488    0.477   0.492  4.40<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  -<span style="color: #BB0000;">0.303</span>    1.32     1.00  <span style="text-decoration: underline;">1</span>032.     <span style="text-decoration: underline;">1</span>492. </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> r_condition[C,Inter…   1.32     1.30    0.491  4.45<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>   0.545    2.16     1.00  <span style="text-decoration: underline;">1</span>032.     <span style="text-decoration: underline;">1</span>433. </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> r_condition[D,Inter…   0.505    0.496   0.493  4.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  -<span style="color: #BB0000;">0.277</span>    1.30     1.00  <span style="text-decoration: underline;">1</span>026.     <span style="text-decoration: underline;">1</span>509. </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> r_condition[E,Inter…  -<span style="color: #BB0000;">1.40</span>    -<span style="color: #BB0000;">1.40</span>    0.486  4.31<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  -<span style="color: #BB0000;">2.19</span>    -<span style="color: #BB0000;">0.586</span>    1.00  <span style="text-decoration: underline;">1</span>038.     <span style="text-decoration: underline;">1</span>561. </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> lprior                -<span style="color: #BB0000;">2.74</span>    -<span style="color: #BB0000;">2.60</span>    0.587  4.36<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>  -<span style="color: #BB0000;">3.85</span>    -<span style="color: #BB0000;">2.12</span>     1.00  <span style="text-decoration: underline;">1</span>030.     <span style="text-decoration: underline;">1</span>468. </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> lp__                 -<span style="color: #BB0000;">51.8</span>    -<span style="color: #BB0000;">51.5</span>     2.32   2.22<span style="color: #949494;">e</span>+0 -<span style="color: #BB0000;">56.3</span>    -<span style="color: #BB0000;">48.7</span>      1.00  <span style="text-decoration: underline;">1</span>002.     <span style="text-decoration: underline;">1</span>633. </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span> accept_stat__          0.990    0.996   0.020<span style="text-decoration: underline;">2</span> 4.67<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>   0.956    1.00     1.12    22.5      54.8</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span> stepsize__             0.044<span style="text-decoration: underline;">6</span>   0.039<span style="text-decoration: underline;">5</span>  0.017<span style="text-decoration: underline;">4</span> 1.50<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>   0.027<span style="text-decoration: underline;">6</span>   0.071<span style="text-decoration: underline;">7</span> <span style="color: #BB0000;">Inf</span>        4.03     <span style="color: #BB0000;">NA</span>  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span> treedepth__            5.62     6       1.07   1.48<span style="color: #949494;">e</span>+0   4        7        1.15    18.0      88.2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span> n_leapfrog__          84.1     63      60.1    4.74<span style="color: #949494;">e</span>+1  15      255        1.15    17.7     164. </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span> divergent__            0        0       0      0   <span style="color: #949494;"> </span>     0        0       <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">16</span> energy__              55.8     55.4     3.03   2.97<span style="color: #949494;">e</span>+0  51.3     61.3      1.00  <span style="text-decoration: underline;">1</span>030.     <span style="text-decoration: underline;">1</span>769.</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="extracting-draws-from-a-fit-in-tidy-format-using-spread_rvars">Extracting draws from a fit in tidy-format using
@@ -261,9 +261,10 @@ variables we can extract from the model:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_variables.html">get_variables</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "b_Intercept"              "sd_condition__Intercept"  "sigma"                   </span></span>
 <span><span class="co">##  [4] "r_condition[A,Intercept]" "r_condition[B,Intercept]" "r_condition[C,Intercept]"</span></span>
-<span><span class="co">##  [7] "r_condition[D,Intercept]" "r_condition[E,Intercept]" "lp__"                    </span></span>
-<span><span class="co">## [10] "accept_stat__"            "stepsize__"               "treedepth__"             </span></span>
-<span><span class="co">## [13] "n_leapfrog__"             "divergent__"              "energy__"</span></span></code></pre>
+<span><span class="co">##  [7] "r_condition[D,Intercept]" "r_condition[E,Intercept]" "lprior"                  </span></span>
+<span><span class="co">## [10] "lp__"                     "accept_stat__"            "stepsize__"              </span></span>
+<span><span class="co">## [13] "treedepth__"              "n_leapfrog__"             "divergent__"             </span></span>
+<span><span class="co">## [16] "energy__"</span></span></code></pre>
 <p>Here, <code>b_Intercept</code> is the global mean, and the
 <code>r_condition[]</code> variables are offsets from that mean for each
 condition. Given these variables:</p>
@@ -312,13 +313,13 @@ the resulting tidy data frame of draws from
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">r_condition</span><span class="op">[</span><span class="va">condition</span>,<span class="va">term</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
-<span><span class="co">##   condition term       r_condition</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A         Intercept  -0.31 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B         Intercept   0.49 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C         Intercept   1.33 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D         Intercept   0.51 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E         Intercept  -1.39 <span style="color: #949494;">± 0.5</span></span></span></code></pre>
+<span><span class="co">##   condition term        r_condition</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A         Intercept  -0.31 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B         Intercept   0.49 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C         Intercept   1.32 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D         Intercept   0.51 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E         Intercept  -1.40 <span style="color: #949494;">± 0.49</span></span></span></code></pre>
 <p>The <code>r_condition</code> column above is a
 <code><a href="https://mc-stan.org/posterior/reference/rvar.html" class="external-link">posterior::rvar()</a></code> datatype, which is an array-like datatype
 representing draws from a random variable:</p>
@@ -327,7 +328,7 @@ representing draws from a random variable:</p>
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">r_condition</span><span class="op">[</span><span class="va">condition</span>,<span class="va">term</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">r_condition</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## rvar&lt;1000,4&gt;[5] <span style="color: #949494;">mean ± sd:</span></span></span>
-<span><span class="co">## [1] -0.31 ± 0.5   0.49 ± 0.5   1.33 ± 0.5   0.51 ± 0.5  -1.39 ± 0.5</span></span></code></pre>
+<span><span class="co">## [1] -0.31 ± 0.49   0.49 ± 0.49   1.32 ± 0.49   0.51 ± 0.49  -1.40 ± 0.49</span></span></code></pre>
 <p>In this case, for each of the 5 elements of this <code>rvar</code>
 vector, we have 1000 draws from each of 4 chains in the model. For more
 on the <code>rvar</code> datatype, see
@@ -337,13 +338,13 @@ on the <code>rvar</code> datatype, see
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">r_condition</span><span class="op">[</span><span class="va">c</span>,<span class="va">t</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
-<span><span class="co">##   c     t          r_condition</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A     Intercept  -0.31 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B     Intercept   0.49 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C     Intercept   1.33 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D     Intercept   0.51 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E     Intercept  -1.39 <span style="color: #949494;">± 0.5</span></span></span></code></pre>
+<span><span class="co">##   c     t           r_condition</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A     Intercept  -0.31 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B     Intercept   0.49 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C     Intercept   1.32 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D     Intercept   0.51 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E     Intercept  -1.40 <span style="color: #949494;">± 0.49</span></span></span></code></pre>
 <p>But the more descriptive and less cryptic names from the previous
 example are probably preferable.</p>
 <p>If we leave off the name for an index, it is left “nested” in the
@@ -355,20 +356,20 @@ has one value <code>"Intercept"</code> anyway:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">##   condition r_condition[,1]</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A             -0.31 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B              0.49 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C              1.33 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D              0.51 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E             -1.39 <span style="color: #949494;">± 0.5</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A            -0.31 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B             0.49 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C             1.32 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D             0.51 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E            -1.40 <span style="color: #949494;">± 0.49</span></span></span></code></pre>
 <p>Or we could nest the <code>condition</code>, though this is probably
 not that useful practically:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">r_condition</span><span class="op">[</span>,<span class="va">term</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 2</span></span></span>
-<span><span class="co">##   term      r_condition[,1]        [,2]       [,3]        [,4]        [,5]</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> Intercept     -0.31 <span style="color: #949494;">± 0.5</span>  0.49 <span style="color: #949494;">± 0.5</span>  1.3 <span style="color: #949494;">± 0.5</span>  0.51 <span style="color: #949494;">± 0.5</span>  -1.4 <span style="color: #949494;">± 0.5</span></span></span></code></pre>
+<span><span class="co">##   term      r_condition[,1]         [,2]        [,3]         [,4]         [,5]</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> Intercept    -0.31 <span style="color: #949494;">± 0.49</span>  0.49 <span style="color: #949494;">± 0.49</span>  1.3 <span style="color: #949494;">± 0.49</span>  0.51 <span style="color: #949494;">± 0.49</span>  -1.4 <span style="color: #949494;">± 0.49</span></span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -396,9 +397,9 @@ observations:</p>
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">sigma</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 2</span></span></span>
-<span><span class="co">##   b_Intercept        sigma</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>  0.5 <span style="color: #949494;">± 0.48</span>  0.56 <span style="color: #949494;">± 0.06</span></span></span></code></pre>
+<span><span class="co">##    b_Intercept         sigma</span></span>
+<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>  0.51 <span style="color: #949494;">± 0.47</span>  0.56 <span style="color: #949494;">± 0.062</span></span></span></code></pre>
 <p>Like with <code>r_condition[condition,term]</code>, this gives us a
 tidy data frame. If we want the median and 95% quantile interval of the
 variables, we can apply <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi()</a></code>:</p>
@@ -407,10 +408,10 @@ variables, we can apply <code><a href="http://mjskay.github.io/ggdist/reference/
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">sigma</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">sigma</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 9</span></span></span>
-<span><span class="co">##   b_Intercept b_Intercept.lower b_Intercept.upper sigma sigma.lower sigma.up…¹ .width .point .inte…²</span></span>
-<span><span class="co">##         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>       0.526            -<span style="color: #BB0000;">0.490</span>              1.41 0.557       0.456      0.696   0.95 median qi     </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​sigma.upper, ²​.interval</span></span></span></code></pre>
+<span><span class="co">##   b_Intercept b_Intercept.lower b_Intercept.upper sigma sigma.lower sigma.upper .width .point</span></span>
+<span><span class="co">##         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>       0.526            -<span style="color: #BB0000;">0.472</span>              1.44 0.558       0.458       0.704   0.95 median</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: .interval &lt;chr&gt;</span></span></span></code></pre>
 <p>We can specify the columns we want to get medians and intervals from,
 as above, or if we omit the list of columns, <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi()</a></code>
 will use every column that is not a grouping column. Thus in the above
@@ -422,20 +423,20 @@ columns we gathered from the model. So we can simplify this to:</p>
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">sigma</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 9</span></span></span>
-<span><span class="co">##   b_Intercept b_Intercept.lower b_Intercept.upper sigma sigma.lower sigma.up…¹ .width .point .inte…²</span></span>
-<span><span class="co">##         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>       0.526            -<span style="color: #BB0000;">0.490</span>              1.41 0.557       0.456      0.696   0.95 median qi     </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​sigma.upper, ²​.interval</span></span></span></code></pre>
+<span><span class="co">##   b_Intercept b_Intercept.lower b_Intercept.upper sigma sigma.lower sigma.upper .width .point</span></span>
+<span><span class="co">##         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>       0.526            -<span style="color: #BB0000;">0.472</span>              1.44 0.558       0.458       0.704   0.95 median</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 1 more variable: .interval &lt;chr&gt;</span></span></span></code></pre>
 <p>If you would rather have a long-format list, use
 <code><a href="../reference/spread_rvars.html">gather_rvars()</a></code> instead:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">gather_rvars</a></span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">sigma</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 2</span></span></span>
-<span><span class="co">##   .variable         .value</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> b_Intercept  0.50 <span style="color: #949494;">± 0.48</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> sigma        0.56 <span style="color: #949494;">± 0.06</span></span></span></code></pre>
+<span><span class="co">##   .variable          .value</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> b_Intercept  0.51 <span style="color: #949494;">± 0.469</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> sigma        0.56 <span style="color: #949494;">± 0.062</span></span></span></code></pre>
 <p>We could also use <code><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi()</a></code> here:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -444,8 +445,8 @@ columns we gathered from the model. So we can simplify this to:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 7</span></span></span>
 <span><span class="co">##   .variable   .value .lower .upper .width .point .interval</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> b_Intercept  0.526 -<span style="color: #BB0000;">0.490</span>  1.41    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> sigma        0.557  0.456  0.696   0.95 median qi</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> b_Intercept  0.526 -<span style="color: #BB0000;">0.472</span>  1.44    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> sigma        0.558  0.458  0.704   0.95 median qi</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="with-indexed-model-variables">With indexed model variables<a class="anchor" aria-label="anchor" href="#with-indexed-model-variables"></a>
@@ -461,11 +462,11 @@ before:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
 <span><span class="co">##   condition r_condition .lower .upper .width .point .interval</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A              -<span style="color: #BB0000;">0.336</span> -<span style="color: #BB0000;">1.23</span>   0.734   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B               0.480 -<span style="color: #BB0000;">0.441</span>  1.54    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C               1.32   0.406  2.38    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D               0.498 -<span style="color: #BB0000;">0.443</span>  1.55    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E              -<span style="color: #BB0000;">1.40</span>  -<span style="color: #BB0000;">2.36</span>  -<span style="color: #BB0000;">0.396</span>   0.95 median qi</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A              -<span style="color: #BB0000;">0.329</span> -<span style="color: #BB0000;">1.27</span>   0.724   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B               0.477 -<span style="color: #BB0000;">0.472</span>  1.51    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C               1.30   0.370  2.35    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D               0.496 -<span style="color: #BB0000;">0.455</span>  1.53    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E              -<span style="color: #BB0000;">1.40</span>  -<span style="color: #BB0000;">2.39</span>  -<span style="color: #BB0000;">0.410</span>   0.95 median qi</span></span></code></pre>
 <p><strong>Note for existing users of
 <code><a href="../reference/spread_draws.html">spread_draws()</a></code></strong>: you may notice that
 <code><a href="../reference/spread_rvars.html">spread_rvars()</a></code> requires us to be a bit more explicit in
@@ -483,14 +484,13 @@ directly into the <code><a href="https://dplyr.tidyverse.org/reference/mutate.ht
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">r_condition</span><span class="op">[</span><span class="va">condition</span>,<span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_summary.html" class="external-link">summarise_draws</a></span><span class="op">(</span><span class="va">r_condition</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 12</span></span></span>
-<span><span class="co">##   condition r_condition[,1] variable     mean median    sd   mad     q5    q95  rhat ess_b…¹ ess_t…²</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;num&gt;</span> <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;num&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A             -0.31 <span style="color: #949494;">± 0.5</span> r_conditi… -<span style="color: #BB0000;">0.312</span> -<span style="color: #BB0000;">0.336</span> 0.498 0.480 -<span style="color: #BB0000;">1.08</span>   0.526  1.00    972.   <span style="text-decoration: underline;">1</span>267.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B              0.49 <span style="color: #949494;">± 0.5</span> r_conditi…  0.493  0.480 0.500 0.474 -<span style="color: #BB0000;">0.301</span>  1.34   1.00    983.   <span style="text-decoration: underline;">1</span>326.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C              1.33 <span style="color: #949494;">± 0.5</span> r_conditi…  1.33   1.32  0.501 0.478  0.557  2.19   1.00    994.   <span style="text-decoration: underline;">1</span>489.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D              0.51 <span style="color: #949494;">± 0.5</span> r_conditi…  0.512  0.498 0.502 0.477 -<span style="color: #BB0000;">0.277</span>  1.36   1.00   <span style="text-decoration: underline;">1</span>013.   <span style="text-decoration: underline;">1</span>396.</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E             -1.39 <span style="color: #949494;">± 0.5</span> r_conditi… -<span style="color: #BB0000;">1.39</span>  -<span style="color: #BB0000;">1.40</span>  0.500 0.468 -<span style="color: #BB0000;">2.17</span>  -<span style="color: #BB0000;">0.535</span>  1.00    990.   <span style="text-decoration: underline;">1</span>392.</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​ess_bulk, ²​ess_tail</span></span></span></code></pre>
+<span><span class="co">##   condition r_condition[,1] variable   mean median    sd   mad     q5    q95  rhat ess_bulk ess_tail</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A            -0.31 <span style="color: #949494;">± 0.49</span> r_condi… -<span style="color: #BB0000;">0.312</span> -<span style="color: #BB0000;">0.329</span> 0.493 0.439 -<span style="color: #BB0000;">1.10</span>   0.506  1.00     994.    <span style="text-decoration: underline;">1</span>459.</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B             0.49 <span style="color: #949494;">± 0.49</span> r_condi…  0.488  0.477 0.492 0.440 -<span style="color: #BB0000;">0.303</span>  1.32   1.00    <span style="text-decoration: underline;">1</span>032.    <span style="text-decoration: underline;">1</span>492.</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C             1.32 <span style="color: #949494;">± 0.49</span> r_condi…  1.32   1.30  0.491 0.445  0.545  2.16   1.00    <span style="text-decoration: underline;">1</span>032.    <span style="text-decoration: underline;">1</span>433.</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D             0.51 <span style="color: #949494;">± 0.49</span> r_condi…  0.505  0.496 0.493 0.452 -<span style="color: #BB0000;">0.277</span>  1.30   1.00    <span style="text-decoration: underline;">1</span>026.    <span style="text-decoration: underline;">1</span>509.</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E            -1.40 <span style="color: #949494;">± 0.49</span> r_condi… -<span style="color: #BB0000;">1.40</span>  -<span style="color: #BB0000;">1.40</span>  0.486 0.431 -<span style="color: #BB0000;">2.19</span>  -<span style="color: #BB0000;">0.586</span>  1.00    <span style="text-decoration: underline;">1</span>038.    <span style="text-decoration: underline;">1</span>561.</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -512,13 +512,13 @@ calculate the mean within each condition (call this
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">r_condition</span><span class="op">[</span><span class="va">condition</span>,<span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
-<span><span class="co">##   b_Intercept condition r_condition[,1]</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>  0.5 <span style="color: #949494;">± 0.48</span> A             -0.31 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>  0.5 <span style="color: #949494;">± 0.48</span> B              0.49 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>  0.5 <span style="color: #949494;">± 0.48</span> C              1.33 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>  0.5 <span style="color: #949494;">± 0.48</span> D              0.51 <span style="color: #949494;">± 0.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>  0.5 <span style="color: #949494;">± 0.48</span> E             -1.39 <span style="color: #949494;">± 0.5</span></span></span></code></pre>
+<span><span class="co">##    b_Intercept condition r_condition[,1]</span></span>
+<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>  0.51 <span style="color: #949494;">± 0.47</span> A            -0.31 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>  0.51 <span style="color: #949494;">± 0.47</span> B             0.49 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>  0.51 <span style="color: #949494;">± 0.47</span> C             1.32 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>  0.51 <span style="color: #949494;">± 0.47</span> D             0.51 <span style="color: #949494;">± 0.49</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>  0.51 <span style="color: #949494;">± 0.47</span> E            -1.40 <span style="color: #949494;">± 0.49</span></span></span></code></pre>
 <p>Within each draw, <code>b_Intercept</code> is repeated as necessary
 to correspond to every index of <code>r_condition</code>. Thus, the
 <code>mutate</code> function from dplyr can be used to find their sum,
@@ -528,13 +528,13 @@ to correspond to every index of <code>r_condition</code>. Thus, the
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">`b_Intercept`</span>, <span class="va">r_condition</span><span class="op">[</span><span class="va">condition</span>,<span class="va">Intercept</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>condition_mean <span class="op">=</span> <span class="va">b_Intercept</span> <span class="op">+</span> <span class="va">r_condition</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 5</span></span></span>
-<span><span class="co">##   b_Intercept condition Intercept  r_condition condition_mean</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>  0.5 <span style="color: #949494;">± 0.48</span> A         Intercept  -0.31 <span style="color: #949494;">± 0.5</span>    0.19 <span style="color: #949494;">± 0.18</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>  0.5 <span style="color: #949494;">± 0.48</span> B         Intercept   0.49 <span style="color: #949494;">± 0.5</span>    1.00 <span style="color: #949494;">± 0.18</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>  0.5 <span style="color: #949494;">± 0.48</span> C         Intercept   1.33 <span style="color: #949494;">± 0.5</span>    1.84 <span style="color: #949494;">± 0.17</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>  0.5 <span style="color: #949494;">± 0.48</span> D         Intercept   0.51 <span style="color: #949494;">± 0.5</span>    1.02 <span style="color: #949494;">± 0.18</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>  0.5 <span style="color: #949494;">± 0.48</span> E         Intercept  -1.39 <span style="color: #949494;">± 0.5</span>   -0.88 <span style="color: #949494;">± 0.18</span></span></span></code></pre>
+<span><span class="co">##    b_Intercept condition Intercept   r_condition condition_mean</span></span>
+<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>  0.51 <span style="color: #949494;">± 0.47</span> A         Intercept  -0.31 <span style="color: #949494;">± 0.49</span>    0.20 <span style="color: #949494;">± 0.17</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>  0.51 <span style="color: #949494;">± 0.47</span> B         Intercept   0.49 <span style="color: #949494;">± 0.49</span>    1.00 <span style="color: #949494;">± 0.17</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>  0.51 <span style="color: #949494;">± 0.47</span> C         Intercept   1.32 <span style="color: #949494;">± 0.49</span>    1.83 <span style="color: #949494;">± 0.18</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>  0.51 <span style="color: #949494;">± 0.47</span> D         Intercept   0.51 <span style="color: #949494;">± 0.49</span>    1.02 <span style="color: #949494;">± 0.18</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>  0.51 <span style="color: #949494;">± 0.47</span> E         Intercept  -1.40 <span style="color: #949494;">± 0.49</span>   -0.89 <span style="color: #949494;">± 0.17</span></span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="plotting-point-summaries-and-intervals">Plotting point summaries and intervals<a class="anchor" aria-label="anchor" href="#plotting-point-summaries-and-intervals"></a>
@@ -559,23 +559,23 @@ arbitrary number of probability intervals by setting the
 <span>  <span class="fu"><a href="../reference/spread_rvars.html">spread_rvars</a></span><span class="op">(</span><span class="va">b_Intercept</span>, <span class="va">r_condition</span><span class="op">[</span><span class="va">condition</span>,<span class="op">]</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="http://mjskay.github.io/ggdist/reference/point_interval.html" class="external-link">median_qi</a></span><span class="op">(</span>condition_mean <span class="op">=</span> <span class="va">b_Intercept</span> <span class="op">+</span> <span class="va">r_condition</span>, .width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.95</span>, <span class="fl">.8</span>, <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 15 × 9</span></span></span>
-<span><span class="co">##    b_Intercept condition r_condition[,1] condition_mean  .lower .upper .width .point .interval</span></span>
-<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>  0.5 <span style="color: #949494;">± 0.48</span> A             -0.31 <span style="color: #949494;">± 0.5</span>          0.190 -<span style="color: #BB0000;">0.146</span>   0.536   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>  0.5 <span style="color: #949494;">± 0.48</span> B              0.49 <span style="color: #949494;">± 0.5</span>          0.998  0.640   1.33    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>  0.5 <span style="color: #949494;">± 0.48</span> C              1.33 <span style="color: #949494;">± 0.5</span>          1.84   1.49    2.18    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>  0.5 <span style="color: #949494;">± 0.48</span> D              0.51 <span style="color: #949494;">± 0.5</span>          1.02   0.670   1.36    0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>  0.5 <span style="color: #949494;">± 0.48</span> E             -1.39 <span style="color: #949494;">± 0.5</span>         -<span style="color: #BB0000;">0.884</span> -<span style="color: #BB0000;">1.24</span>   -<span style="color: #BB0000;">0.528</span>   0.95 median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>  0.5 <span style="color: #949494;">± 0.48</span> A             -0.31 <span style="color: #949494;">± 0.5</span>          0.190 -<span style="color: #BB0000;">0.034</span><span style="color: #BB0000; text-decoration: underline;">0</span>  0.421   0.8  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>  0.5 <span style="color: #949494;">± 0.48</span> B              0.49 <span style="color: #949494;">± 0.5</span>          0.998  0.766   1.22    0.8  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>  0.5 <span style="color: #949494;">± 0.48</span> C              1.33 <span style="color: #949494;">± 0.5</span>          1.84   1.61    2.06    0.8  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>  0.5 <span style="color: #949494;">± 0.48</span> D              0.51 <span style="color: #949494;">± 0.5</span>          1.02   0.786   1.24    0.8  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>  0.5 <span style="color: #949494;">± 0.48</span> E             -1.39 <span style="color: #949494;">± 0.5</span>         -<span style="color: #BB0000;">0.884</span> -<span style="color: #BB0000;">1.11</span>   -<span style="color: #BB0000;">0.656</span>   0.8  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">11</span>  0.5 <span style="color: #949494;">± 0.48</span> A             -0.31 <span style="color: #949494;">± 0.5</span>          0.190  0.077<span style="text-decoration: underline;">8</span>  0.307   0.5  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">12</span>  0.5 <span style="color: #949494;">± 0.48</span> B              0.49 <span style="color: #949494;">± 0.5</span>          0.998  0.881   1.11    0.5  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">13</span>  0.5 <span style="color: #949494;">± 0.48</span> C              1.33 <span style="color: #949494;">± 0.5</span>          1.84   1.72    1.95    0.5  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">14</span>  0.5 <span style="color: #949494;">± 0.48</span> D              0.51 <span style="color: #949494;">± 0.5</span>          1.02   0.898   1.13    0.5  median qi       </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">15</span>  0.5 <span style="color: #949494;">± 0.48</span> E             -1.39 <span style="color: #949494;">± 0.5</span>         -<span style="color: #BB0000;">0.884</span> -<span style="color: #BB0000;">1.01</span>   -<span style="color: #BB0000;">0.767</span>   0.5  median qi</span></span></code></pre>
+<span><span class="co">##     b_Intercept condition r_condition[,1] condition_mean  .lower .upper .width .point .interval</span></span>
+<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span>  0.51 <span style="color: #949494;">± 0.47</span> A            -0.31 <span style="color: #949494;">± 0.49</span>          0.199 -<span style="color: #BB0000;">0.134</span>   0.549   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>  0.51 <span style="color: #949494;">± 0.47</span> B             0.49 <span style="color: #949494;">± 0.49</span>          1.00   0.658   1.34    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>  0.51 <span style="color: #949494;">± 0.47</span> C             1.32 <span style="color: #949494;">± 0.49</span>          1.84   1.47    2.18    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>  0.51 <span style="color: #949494;">± 0.47</span> D             0.51 <span style="color: #949494;">± 0.49</span>          1.02   0.673   1.37    0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>  0.51 <span style="color: #949494;">± 0.47</span> E            -1.40 <span style="color: #949494;">± 0.49</span>         -<span style="color: #BB0000;">0.890</span> -<span style="color: #BB0000;">1.23</span>   -<span style="color: #BB0000;">0.554</span>   0.95 median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>  0.51 <span style="color: #949494;">± 0.47</span> A            -0.31 <span style="color: #949494;">± 0.49</span>          0.199 -<span style="color: #BB0000;">0.019</span><span style="color: #BB0000; text-decoration: underline;">0</span>  0.418   0.8  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>  0.51 <span style="color: #949494;">± 0.47</span> B             0.49 <span style="color: #949494;">± 0.49</span>          1.00   0.779   1.22    0.8  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span>  0.51 <span style="color: #949494;">± 0.47</span> C             1.32 <span style="color: #949494;">± 0.49</span>          1.84   1.61    2.05    0.8  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>  0.51 <span style="color: #949494;">± 0.47</span> D             0.51 <span style="color: #949494;">± 0.49</span>          1.02   0.793   1.24    0.8  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>  0.51 <span style="color: #949494;">± 0.47</span> E            -1.40 <span style="color: #949494;">± 0.49</span>         -<span style="color: #BB0000;">0.890</span> -<span style="color: #BB0000;">1.11</span>   -<span style="color: #BB0000;">0.666</span>   0.8  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">11</span>  0.51 <span style="color: #949494;">± 0.47</span> A            -0.31 <span style="color: #949494;">± 0.49</span>          0.199  0.080<span style="text-decoration: underline;">6</span>  0.317   0.5  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">12</span>  0.51 <span style="color: #949494;">± 0.47</span> B             0.49 <span style="color: #949494;">± 0.49</span>          1.00   0.885   1.11    0.5  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">13</span>  0.51 <span style="color: #949494;">± 0.47</span> C             1.32 <span style="color: #949494;">± 0.49</span>          1.84   1.72    1.95    0.5  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">14</span>  0.51 <span style="color: #949494;">± 0.47</span> D             0.51 <span style="color: #949494;">± 0.49</span>          1.02   0.899   1.14    0.5  median qi       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">15</span>  0.51 <span style="color: #949494;">± 0.47</span> E            -1.40 <span style="color: #949494;">± 0.49</span>         -<span style="color: #BB0000;">0.890</span> -<span style="color: #BB0000;">1.00</span>   -<span style="color: #BB0000;">0.775</span>   0.5  median qi</span></span></code></pre>
 <p>The results are in a tidy format: one row per group and uncertainty
 interval width (<code>.width</code>). This facilitates plotting, and is
 essentially what <code><a href="http://mjskay.github.io/ggdist/reference/stat_pointinterval.html" class="external-link">ggdist::stat_pointinterval()</a></code> is doing for
@@ -644,11 +644,11 @@ grid describing the fits we want, then populate that grid with
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">##   condition        .epred</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A           0.19 <span style="color: #949494;">± 0.18</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B           1.00 <span style="color: #949494;">± 0.18</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C           1.84 <span style="color: #949494;">± 0.17</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A           0.20 <span style="color: #949494;">± 0.17</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B           1.00 <span style="color: #949494;">± 0.17</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C           1.83 <span style="color: #949494;">± 0.18</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">4</span> D           1.02 <span style="color: #949494;">± 0.18</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E          -0.88 <span style="color: #949494;">± 0.18</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E          -0.89 <span style="color: #949494;">± 0.17</span></span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="quantile-dotplots">Quantile dotplots<a class="anchor" aria-label="anchor" href="#quantile-dotplots"></a>
@@ -739,13 +739,13 @@ any response distribution supported by <code><a href="https://rdrr.io/pkg/brms/m
 <span>  <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html" class="external-link">data_grid</a></span><span class="op">(</span><span class="va">condition</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/add_predicted_rvars.html">add_epred_rvars</a></span><span class="op">(</span><span class="va">m</span>, dpar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mu"</span>, <span class="st">"sigma"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 4</span></span></span>
-<span><span class="co">##   condition        .epred            mu        sigma</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> A           0.19 <span style="color: #949494;">± 0.18</span>   0.19 <span style="color: #949494;">± 0.18</span>  0.56 <span style="color: #949494;">± 0.06</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> B           1.00 <span style="color: #949494;">± 0.18</span>   1.00 <span style="color: #949494;">± 0.18</span>  0.56 <span style="color: #949494;">± 0.06</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> C           1.84 <span style="color: #949494;">± 0.17</span>   1.84 <span style="color: #949494;">± 0.17</span>  0.56 <span style="color: #949494;">± 0.06</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> D           1.02 <span style="color: #949494;">± 0.18</span>   1.02 <span style="color: #949494;">± 0.18</span>  0.56 <span style="color: #949494;">± 0.06</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> E          -0.88 <span style="color: #949494;">± 0.18</span>  -0.88 <span style="color: #949494;">± 0.18</span>  0.56 <span style="color: #949494;">± 0.06</span></span></span></code></pre>
+<span><span class="co">##   condition        .epred            mu         sigma</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> A           0.20 <span style="color: #949494;">± 0.17</span>   0.20 <span style="color: #949494;">± 0.17</span>  0.56 <span style="color: #949494;">± 0.062</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> B           1.00 <span style="color: #949494;">± 0.17</span>   1.00 <span style="color: #949494;">± 0.17</span>  0.56 <span style="color: #949494;">± 0.062</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> C           1.83 <span style="color: #949494;">± 0.18</span>   1.83 <span style="color: #949494;">± 0.18</span>  0.56 <span style="color: #949494;">± 0.062</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> D           1.02 <span style="color: #949494;">± 0.18</span>   1.02 <span style="color: #949494;">± 0.18</span>  0.56 <span style="color: #949494;">± 0.062</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> E          -0.89 <span style="color: #949494;">± 0.17</span>  -0.89 <span style="color: #949494;">± 0.17</span>  0.56 <span style="color: #949494;">± 0.062</span></span></span></code></pre>
 <p>At this point, we will need to use the “long-data-frame-of-draws”
 format more typical of the standard tidybayes workflow. What we want to
 do is select a small number of draws from the joint distribution of
@@ -968,10 +968,10 @@ category. For example, here is the fit for two values of
 <code class="sourceCode R"><span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">21</span>,<span class="fl">22</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/add_predicted_rvars.html">add_epred_rvars</a></span><span class="op">(</span><span class="va">m_cyl</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 2</span></span></span>
-<span><span class="co">##     mpg .epred[,"4"]       [,"6"]         [,"8"]</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    21  0.36 <span style="color: #949494;">± 0.16</span>  0.61 <span style="color: #949494;">± 0.16</span>  0.027 <span style="color: #949494;">± 0.035</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>    22  0.72 <span style="color: #949494;">± 0.16</span>  0.27 <span style="color: #949494;">± 0.16</span>  0.008 <span style="color: #949494;">± 0.015</span></span></span></code></pre>
+<span><span class="co">##     mpg .epred[,"4"]       [,"6"]          [,"8"]</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    21  0.37 <span style="color: #949494;">± 0.17</span>  0.60 <span style="color: #949494;">± 0.17</span>  0.0273 <span style="color: #949494;">± 0.036</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>    22  0.73 <span style="color: #949494;">± 0.16</span>  0.26 <span style="color: #949494;">± 0.16</span>  0.0083 <span style="color: #949494;">± 0.016</span></span></span></code></pre>
 <p>This format can be useful in some cases, but for our immediate
 purposes it would be better to have the prediction for each category be
 on a separate row. We can use the <code>columns_to</code> parameter of
@@ -983,14 +983,14 @@ prediction came from:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>mpg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">21</span>,<span class="fl">22</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/add_predicted_rvars.html">add_epred_rvars</a></span><span class="op">(</span><span class="va">m_cyl</span>, columns_to <span class="op">=</span> <span class="st">"cyl"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
-<span><span class="co">##     mpg  .row cyl           .epred</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    21     1 4      0.360 <span style="color: #949494;">± 0.162</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>    22     2 4      0.722 <span style="color: #949494;">± 0.164</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>    21     1 6      0.613 <span style="color: #949494;">± 0.164</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>    22     2 6      0.270 <span style="color: #949494;">± 0.159</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>    21     1 8      0.027 <span style="color: #949494;">± 0.035</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span>    22     2 8      0.008 <span style="color: #949494;">± 0.015</span></span></span></code></pre>
+<span><span class="co">##     mpg  .row cyl            .epred</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;rvar[1d]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    21     1 4      0.3689 <span style="color: #949494;">± 0.168</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>    22     2 4      0.7279 <span style="color: #949494;">± 0.163</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>    21     1 6      0.6038 <span style="color: #949494;">± 0.170</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>    22     2 6      0.2638 <span style="color: #949494;">± 0.157</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>    21     1 8      0.0273 <span style="color: #949494;">± 0.036</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span>    22     2 8      0.0083 <span style="color: #949494;">± 0.016</span></span></span></code></pre>
 <p>Note: for the <code>cyl</code> variable to retain its original factor
 level names you must be using <code>brms</code> greater than or equal to
 version 2.15.9.</p>
@@ -1039,10 +1039,10 @@ example on two rows:</p>
 <span>  <span class="fu"><a href="../reference/add_predicted_rvars.html">add_epred_rvars</a></span><span class="op">(</span><span class="va">m_cyl</span>, value <span class="op">=</span> <span class="st">"P(cyl | mpg)"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>cyl <span class="op">=</span> <span class="va">`P(cyl | mpg)`</span> <span class="op"><a href="https://mc-stan.org/posterior/reference/rvar-matmult.html" class="external-link">%**%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">6</span>,<span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 3</span></span></span>
-<span><span class="co">##     mpg `P(cyl | mpg)`[,"4"]       [,"6"]         [,"8"]     cyl[,1]</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    21          0.36 <span style="color: #949494;">± 0.16</span>  0.61 <span style="color: #949494;">± 0.16</span>  0.027 <span style="color: #949494;">± 0.035</span>  5.3 <span style="color: #949494;">± 0.34</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>    22          0.72 <span style="color: #949494;">± 0.16</span>  0.27 <span style="color: #949494;">± 0.16</span>  0.008 <span style="color: #949494;">± 0.015</span>  4.6 <span style="color: #949494;">± 0.34</span></span></span></code></pre>
+<span><span class="co">##     mpg `P(cyl | mpg)`[,"4"]       [,"6"]          [,"8"]     cyl[,1]</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;rvar[,1]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    21          0.37 <span style="color: #949494;">± 0.17</span>  0.60 <span style="color: #949494;">± 0.17</span>  0.0273 <span style="color: #949494;">± 0.036</span>  5.3 <span style="color: #949494;">± 0.35</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>    22          0.73 <span style="color: #949494;">± 0.16</span>  0.26 <span style="color: #949494;">± 0.16</span>  0.0083 <span style="color: #949494;">± 0.016</span>  4.6 <span style="color: #949494;">± 0.34</span></span></span></code></pre>
 <p>Altogether, followed by <code><a href="../reference/nest_rvars.html">unnest_rvars()</a></code> so we can create
 spaghetti plots:</p>
 <div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
@@ -1082,39 +1082,39 @@ model as <code>rvar</code> objects:</p>
 <span>  <span class="fu"><a href="https://mc-stan.org/posterior/reference/draws_rvars.html" class="external-link">as_draws_rvars</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">draws_cyl</span></span></code></pre></div>
-<pre><code><span><span class="co">## # A draws_rvars: 1000 iterations, 4 chains, and 10 variables</span></span>
+<pre><code><span><span class="co">## # A draws_rvars: 1000 iterations, 4 chains, and 11 variables</span></span>
 <span><span class="co">## $b_Intercept: rvar&lt;1000,4&gt;[2] <span style="color: #949494;">mean ± sd:</span></span></span>
-<span><span class="co">## [1] -38 ± 12  -33 ± 11 </span></span>
+<span><span class="co">## [1] -38 ± 13  -33 ± 11 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $b_mpg: rvar&lt;1000,4&gt;[1] <span style="color: #949494;">mean ± sd:</span></span></span>
-<span><span class="co">## [1] -1.8 ± 0.57 </span></span>
+<span><span class="co">## [1] -1.8 ± 0.61 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $disc: rvar&lt;1000,4&gt;[1] <span style="color: #949494;">mean ± sd:</span></span></span>
 <span><span class="co">## [1] 1 ± 0 </span></span>
 <span><span class="co">## </span></span>
+<span><span class="co">## $lprior: rvar&lt;1000,4&gt;[1] <span style="color: #949494;">mean ± sd:</span></span></span>
+<span><span class="co">## [1] -5.1 ± 0.77 </span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## $lp__: rvar&lt;1000,4&gt;[1] <span style="color: #949494;">mean ± sd:</span></span></span>
-<span><span class="co">## [1] -13 ± 1.3 </span></span>
+<span><span class="co">## [1] -14 ± 1.3 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $accept_stat__: rvar&lt;1000,4&gt;[1] <span style="color: #949494;">mean ± sd:</span></span></span>
-<span><span class="co">## [1] 0.94 ± 0.081 </span></span>
+<span><span class="co">## [1] 0.93 ± 0.11 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $stepsize__: rvar&lt;1000,4&gt;[1] <span style="color: #949494;">mean ± sd:</span></span></span>
-<span><span class="co">## [1] 0.31 ± 0.043 </span></span>
+<span><span class="co">## [1] 0.33 ± 0.023 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $treedepth__: rvar&lt;1000,4&gt;[1] <span style="color: #949494;">mean ± sd:</span></span></span>
-<span><span class="co">## [1] 2.7 ± 0.66 </span></span>
+<span><span class="co">## [1] 2.6 ± 0.64 </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## $n_leapfrog__: rvar&lt;1000,4&gt;[1] <span style="color: #949494;">mean ± sd:</span></span></span>
-<span><span class="co">## [1] 9.1 ± 5.1 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## # ... with 2 more variables</span></span></code></pre>
+<span><span class="co">## # ... with 3 more variables</span></span></code></pre>
 <p>We’re really interested in the <code>b_Intercept</code> parameter,
 which represents thresholds on the latent linear predictor:</p>
 <div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">beta</span> <span class="op">=</span> <span class="va">draws_cyl</span><span class="op">$</span><span class="va">b_Intercept</span></span>
 <span><span class="va">beta</span></span></code></pre></div>
 <pre><code><span><span class="co">## rvar&lt;1000,4&gt;[2] <span style="color: #949494;">mean ± sd:</span></span></span>
-<span><span class="co">## [1] -38 ± 12  -33 ± 11</span></span></code></pre>
+<span><span class="co">## [1] -38 ± 13  -33 ± 11</span></span></code></pre>
 <p>We’re also going to want the positions where the linear predictor
 intercepts those thresholds, which we can calculate using the thresholds
 and the slope (<code>b_mpg</code>):</p>
@@ -1122,7 +1122,7 @@ and the slope (<code>b_mpg</code>):</p>
 <code class="sourceCode R"><span><span class="va">x_intercept</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">draws_cyl</span>, <span class="va">b_Intercept</span> <span class="op">/</span> <span class="va">b_mpg</span><span class="op">)</span></span>
 <span><span class="va">x_intercept</span></span></code></pre></div>
 <pre><code><span><span class="co">## rvar&lt;1000,4&gt;[2] <span style="color: #949494;">mean ± sd:</span></span></span>
-<span><span class="co">## [1] 21 ± 0.50  18 ± 0.52</span></span></code></pre>
+<span><span class="co">## [1] 21 ± 0.51  18 ± 0.51</span></span></code></pre>
 <p>We can use <code><a href="../reference/add_predicted_rvars.html">add_linpred_rvars()</a></code> analogously to
 <code><a href="../reference/add_predicted_rvars.html">add_epred_rvars()</a></code> to get the latent linear predictor. We’ll
 combine this with the thresholds in <code>beta</code>, subtracting

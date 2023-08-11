@@ -24,7 +24,7 @@ dimensions) into one of two types of long-format data frames."><meta property="o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tidybayes</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.5</span>
       </span>
     </div>
 
@@ -252,7 +252,7 @@ the data frame into a wide format based on <code>wide_dimension</code>. For exam
 <code>..</code> syntax is that the <code>|</code> syntax respects prototypes applied to
 dimensions with <code><a href="recover_types.html">recover_types()</a></code>, and thus can be used to get
 columns with nicer names. For example:</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">recover_types</span>(data) <span class="sc">%&gt;%</span> <span class="fu">spread_draws</span>(b[i,v] <span class="sc">|</span> v)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">recover_types</span>(data) <span class="sc">%&gt;%</span> <span class="fu">spread_draws</span>(b[i,v] <span class="sc">|</span> v)</span></code></pre><p></p></div>
 <p>would return a grouped data frame
 (grouped by <code>i</code>), with:</p><ul><li><p>column <code>".chain"</code>: the chain number</p></li>
 <li><p>column <code>".iteration"</code>: the iteration number</p></li>
@@ -310,7 +310,7 @@ missing entries given the value <code>NA</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     1     1 -<span style="color: #BB0000;">1.06</span>       1          8     8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     1     1 -<span style="color: #BB0000;">0.831</span>      1          9     9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>     1     1 -<span style="color: #BB0000;">0.986</span>      1         10    10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 11,990 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 11,990 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">spread_draws</span><span class="op">(</span><span class="va">b</span><span class="op">[</span><span class="va">i</span>, <span class="va">j</span><span class="op">]</span>, <span class="va">tau</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="va">u_tau</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span></span>
@@ -328,7 +328,7 @@ missing entries given the value <code>NA</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     1     1 -<span style="color: #BB0000;">1.06</span>       1          8     8  5.98  6.79</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     1     1 -<span style="color: #BB0000;">0.831</span>      1          9     9  6.75  5.40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>     1     1 -<span style="color: #BB0000;">0.986</span>      1         10    10  6.76  6.63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 11,990 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 11,990 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -347,7 +347,7 @@ missing entries given the value <code>NA</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     1     1      1          8     8 b         -<span style="color: #BB0000;">1.06</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     1     1      1          9     9 b         -<span style="color: #BB0000;">0.831</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>     1     1      1         10    10 b         -<span style="color: #BB0000;">0.986</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 17,990 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 17,990 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">RankCorr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">gather_draws</span><span class="op">(</span><span class="va">tau</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="va">typical_r</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
