@@ -45,8 +45,8 @@ test_that("[add_]residual_draws works on a simple brms model", {
   }
   ref = make_ref()
 
-  expect_equal(residual_draws(m_hp, mtcars_tbl), ref)
-  expect_equal(add_residual_draws(mtcars_tbl, m_hp), ref)
+  expect_equal(residual_draws(m_hp, mtcars_tbl, seed = 1234), ref)
+  expect_equal(add_residual_draws(mtcars_tbl, m_hp, seed = 1234), ref)
 
   # subsetting to test `ndraws`
   set.seed(1234)

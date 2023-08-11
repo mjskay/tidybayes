@@ -1,3 +1,11 @@
+# tidybayes (development version)
+
+Bug fixes:
+
+* Make test for `residual_draws()` more robust (due to change in default value 
+  of the `method` argument to `brms::residuals()`) (#313).
+
+
 # tidybayes 3.0.4
 
 Bug fixes:
