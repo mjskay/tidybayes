@@ -3,10 +3,11 @@
 # Author: mjskay
 ###############################################################################
 
-library(dplyr)
-library(tidyr)
-library(magrittr)
-
+suppressWarnings(suppressPackageStartupMessages({
+  library(dplyr)
+  library(tidyr)
+  library(magrittr)
+}))
 
 
 

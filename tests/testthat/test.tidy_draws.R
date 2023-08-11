@@ -3,11 +3,12 @@
 # Author: mjskay
 ###############################################################################
 
-library(tibble)
-library(dplyr)
-library(magrittr)
-library(coda)
-
+suppressWarnings(suppressPackageStartupMessages({
+  library(tibble)
+  library(dplyr)
+  library(magrittr)
+  library(coda)
+}))
 
 
 
