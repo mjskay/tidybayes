@@ -1,9 +1,16 @@
 # tidybayes (development version)
 
+Deprecations:
+
+* Using `recover_types()` with character vectors is now deprecated, as the 
+  expected order of the levels of the variable is ambiguous, leading to 
+  hard-to-spot errors where indices and names do not line up correctly. A
+  warning message has been added suggesting the use of factors instead. (#312)
+
 Bug fixes:
 
 * Make test for `residual_draws()` more robust (due to change in default value 
-  of the `method` argument to `brms::residuals()`) (#313).
+  of the `method` argument to `brms::residuals()`). (#313)
 
 
 # tidybayes 3.0.4

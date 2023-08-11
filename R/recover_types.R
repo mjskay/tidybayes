@@ -81,7 +81,7 @@ apply_prototypes = function(...) {
 #' n = 10
 #' n_condition = 5
 #' ABC = tibble(
-#'   condition = rep(c("A","B","C","D","E"), n),
+#'   condition = factor(rep(c("A","B","C","D","E"), n)),
 #'   response = rnorm(n * 5, c(0,1,2,1,-1), 0.5)
 #' )
 #'
@@ -168,10 +168,9 @@ recover_types = function(model, ...) {
   # deprecation warning for character variables
   if (length(character_variables) > 0) {
     cli::cli_warn(c(
-      "It is no longer recommended to use character vectors with {.help recover_types},
-         as the intended order of the levels of the variable is ambiguous.",
+      "It is no longer recommended to use character vectors with {.help recover_types}, as the intended order of the levels of the variable is ambiguous.",
       "i" = "The following character vectors were provided to {.fun recover_types}: {.var {character_variables}}",
-      "i" = "Instead of using character vectors, convert the variable to a {.fun factor}
+      ">" = "Instead of using character vectors, convert the variable to a {.fun factor}
         {.emph before} passing the data into your model, then pass the {.emph same}
         factor variable to {.fun recover_types} after the model is fit. This will
         ensure that the level order matches exactly when variable indices are
