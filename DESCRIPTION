@@ -28,6 +28,7 @@ Imports:
     magrittr,
     posterior (>= 1.0.1),
     withr,
+    cli,
     vctrs
 Suggests:
     knitr,
