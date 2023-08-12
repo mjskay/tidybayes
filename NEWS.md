@@ -1,4 +1,4 @@
-# tidybayes 3.0.5
+# tidybayes 3.0.6
 
 Deprecations:
 

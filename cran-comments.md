@@ -1,3 +1,6 @@
+## Resubmission
+This is a resubmission fixing some failures of some examples on Windows on CRAN. Original submission comments are below.
+
 ## Submission comments
 This submission fixes a few bugs, including a minor test case failure caused by the next version of brms (2.20.1).
 
