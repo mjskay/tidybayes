@@ -34,6 +34,7 @@ globalVariables(".draw")
 #' @author Matthew Kay
 #' @seealso [add_predicted_draws()], [add_draws()]
 #' @keywords manip
+#' @examples
 #' \dontrun{
 #'
 #' library(ggplot2)

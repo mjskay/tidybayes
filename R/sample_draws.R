@@ -23,6 +23,7 @@
 #' @param draw The name of the column indexing the draws; default `".draw"`.
 #' @author Matthew Kay
 #' @keywords manip
+#' @examples
 #' \dontrun{
 #'
 #' library(ggplot2)

@@ -52,8 +52,7 @@ Additional data types can be supported by providing a custom implementation
 of the generic function \code{as_constructor}.
 }
 \examples{
-\dontshow{if (requireNamespace("rstan", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\donttest{
+\dontrun{
 
 library(dplyr)
 library(magrittr)
@@ -122,7 +121,6 @@ m \%>\%
   median_qi()
 
 }
-\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=spread_draws]{spread_draws()}}, \code{\link[=gather_draws]{gather_draws()}}, \code{\link[=compose_data]{compose_data()}}.

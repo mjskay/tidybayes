@@ -37,6 +37,7 @@
 #' @seealso [add_predicted_draws()] for the analogous functions that use a long-data-frame-of-draws
 #' format instead of a data-frame-of-`rvar`s format. See [spread_rvars()] for manipulating posteriors directly.
 #' @keywords manip
+#' @examples
 #' \dontrun{
 #'
 #' library(ggplot2)

@@ -36,6 +36,7 @@
 #' @seealso See [add_predicted_draws()] and [stat_lineribbon()] for a better approach. These
 #' functions may be deprecated in the future.
 #' @keywords manip
+#' @examples
 #' \dontrun{
 #'
 #' library(ggplot2)

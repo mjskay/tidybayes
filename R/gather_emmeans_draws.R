@@ -38,6 +38,7 @@
 #' @author Matthew Kay
 #' @seealso [emmeans::emmeans()]
 #' @keywords manip
+#' @examples
 #' \dontrun{
 #'
 #' library(dplyr)

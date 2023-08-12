@@ -69,8 +69,8 @@ apply_prototypes = function(...) {
 #' @aliases apply_prototypes
 #' @seealso [spread_draws()], [gather_draws()], [compose_data()].
 #' @keywords manip
-#' @examplesIf requireNamespace("rstan", quietly = TRUE)
-#' \donttest{
+#' @examples
+#' \dontrun{
 #'
 #' library(dplyr)
 #' library(magrittr)

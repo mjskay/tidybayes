@@ -26,96 +26,36 @@ the naive approach of using \code{filter} with the \code{.draw} column will give
 select a different sample within each group. \code{sample_draws()} ensures the same sample is selected within
 each group.
 }
+\examples{
+\dontrun{
+
+library(ggplot2)
+library(dplyr)
+library(brms)
+library(modelr)
+
+theme_set(theme_light())
+
+m_mpg = brm(mpg ~ hp * cyl, data = mtcars,
+  # 1 chain / few iterations just so example runs quickly
+  # do not use in practice
+  chains = 1, iter = 500)
+
+# draw 100 fit lines from the posterior and overplot them
+mtcars \%>\%
+  group_by(cyl) \%>\%
+  data_grid(hp = seq_range(hp, n = 101)) \%>\%
+  add_epred_draws(m_mpg) \%>\%
+  # NOTE: only use sample_draws here when making spaghetti plots; for
+  # plotting intervals it is always best to use all draws
+  sample_draws(100) \%>\%
+  ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
+  geom_line(aes(y = .epred, group = paste(cyl, .draw)), alpha = 0.25) +
+  geom_point(data = mtcars)
+
+}
+}
 \author{
 Matthew Kay
 }
-\keyword{#}
-\keyword{%>%}
-\keyword{*}
-\keyword{+}
-\keyword{.draw)),}
-\keyword{.epred,}
-\keyword{/}
-\keyword{0.25)}
-\keyword{1}
-\keyword{1,}
-\keyword{100}
-\keyword{101))}
-\keyword{500)}
-\keyword{=}
-\keyword{NOTE:}
-\keyword{\dontrun{}
-\keyword{add_epred_draws(m_mpg)}
-\keyword{all}
-\keyword{alpha}
-\keyword{always}
-\keyword{and}
-\keyword{best}
-\keyword{brm(mpg}
-\keyword{chain}
-\keyword{chains}
-\keyword{color}
-\keyword{cyl,}
-\keyword{data}
-\keyword{data_grid(hp}
-\keyword{do}
-\keyword{draw}
-\keyword{draws}
-\keyword{example}
-\keyword{few}
-\keyword{fit}
-\keyword{for}
-\keyword{from}
-\keyword{geom_line(aes(y}
-\keyword{geom_point(data}
-\keyword{ggplot(aes(x}
-\keyword{group}
-\keyword{group_by(cyl)}
-\keyword{here}
-\keyword{hp}
-\keyword{hp,}
-\keyword{in}
-\keyword{intervals}
-\keyword{is}
-\keyword{it}
-\keyword{iter}
-\keyword{iterations}
-\keyword{just}
-\keyword{library(brms)}
-\keyword{library(dplyr)}
-\keyword{library(ggplot2)}
-\keyword{library(modelr)}
-\keyword{lines}
-\keyword{m_mpg}
-\keyword{making}
 \keyword{manip}
-\keyword{mpg,}
-\keyword{mtcars}
-\keyword{mtcars)}
-\keyword{mtcars,}
-\keyword{n}
-\keyword{not}
-\keyword{only}
-\keyword{ordered(cyl)))}
-\keyword{overplot}
-\keyword{paste(cyl,}
-\keyword{plots;}
-\keyword{plotting}
-\keyword{posterior}
-\keyword{practice}
-\keyword{quickly}
-\keyword{runs}
-\keyword{sample_draws}
-\keyword{sample_draws(100)}
-\keyword{seq_range(hp,}
-\keyword{so}
-\keyword{spaghetti}
-\keyword{the}
-\keyword{them}
-\keyword{theme_set(theme_light())}
-\keyword{to}
-\keyword{use}
-\keyword{when}
-\keyword{y}
-\keyword{}}
-\keyword{~}
