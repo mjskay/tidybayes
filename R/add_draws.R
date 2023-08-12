@@ -34,8 +34,7 @@ globalVariables(".draw")
 #' @author Matthew Kay
 #' @seealso [add_predicted_draws()], [add_draws()]
 #' @keywords manip
-#' @examplesIf requireNamespace("brms", quietly = TRUE) && requireNamespace("modelr", quietly = TRUE)
-#' \donttest{
+#' \dontrun{
 #'
 #' library(ggplot2)
 #' library(dplyr)

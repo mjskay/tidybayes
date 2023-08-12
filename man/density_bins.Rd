@@ -44,37 +44,6 @@ the now-deprecated \code{\link[=predict_curve]{predict_curve()}}.
 
 \code{histogram_bins} computes a density histogram using \code{\link[=hist]{hist()}}.
 }
-\examples{
-\dontshow{if (requireNamespace("brms", quietly = TRUE) && requireNamespace("modelr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\donttest{
-
-library(ggplot2)
-library(dplyr)
-library(brms)
-library(modelr)
-
-theme_set(theme_light())
-
-m_mpg = brm(mpg ~ hp * cyl, data = mtcars)
-
-step = 1
-mtcars \%>\%
-  group_by(cyl) \%>\%
-  data_grid(hp = seq_range(hp, by = step)) \%>\%
-  add_predicted_draws(m_mpg) \%>\%
-  summarise(density_bins(.prediction), .groups = "drop") \%>\%
-  ggplot() +
-  geom_rect(aes(
-    xmin = hp - step/2, ymin = lower, ymax = upper, xmax = hp + step/2,
-    fill = ordered(cyl), alpha = density
-  )) +
-  geom_point(aes(x = hp, y = mpg, fill = ordered(cyl)), shape = 21, data = mtcars) +
-  scale_alpha_continuous(range = c(0, 1)) +
-  scale_fill_brewer(palette = "Set2")
-
-}
-\dontshow{\}) # examplesIf}
-}
 \seealso{
 See \code{\link[=add_predicted_draws]{add_predicted_draws()}} and \code{\link[=stat_lineribbon]{stat_lineribbon()}} for a better approach. These
 functions may be deprecated in the future.
@@ -82,4 +51,61 @@ functions may be deprecated in the future.
 \author{
 Matthew Kay
 }
+\keyword{"Set2")}
+\keyword{"drop")}
+\keyword{%>%}
+\keyword{))}
+\keyword{*}
+\keyword{+}
+\keyword{-}
+\keyword{.groups}
+\keyword{1}
+\keyword{1))}
+\keyword{21,}
+\keyword{=}
+\keyword{\dontrun{}
+\keyword{add_predicted_draws(m_mpg)}
+\keyword{alpha}
+\keyword{brm(mpg}
+\keyword{by}
+\keyword{c(0,}
+\keyword{cyl,}
+\keyword{data}
+\keyword{data_grid(hp}
+\keyword{density}
+\keyword{fill}
+\keyword{geom_point(aes(x}
+\keyword{geom_rect(aes(}
+\keyword{ggplot()}
+\keyword{group_by(cyl)}
+\keyword{hp}
+\keyword{hp,}
+\keyword{library(brms)}
+\keyword{library(dplyr)}
+\keyword{library(ggplot2)}
+\keyword{library(modelr)}
+\keyword{lower,}
+\keyword{m_mpg}
 \keyword{manip}
+\keyword{mpg,}
+\keyword{mtcars}
+\keyword{mtcars)}
+\keyword{ordered(cyl)),}
+\keyword{ordered(cyl),}
+\keyword{scale_alpha_continuous(range}
+\keyword{scale_fill_brewer(palette}
+\keyword{seq_range(hp,}
+\keyword{shape}
+\keyword{step}
+\keyword{step))}
+\keyword{step/2,}
+\keyword{summarise(density_bins(.prediction),}
+\keyword{theme_set(theme_light())}
+\keyword{upper,}
+\keyword{xmax}
+\keyword{xmin}
+\keyword{y}
+\keyword{ymax}
+\keyword{ymin}
+\keyword{}}
+\keyword{~}

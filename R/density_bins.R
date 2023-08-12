@@ -36,8 +36,7 @@
 #' @seealso See [add_predicted_draws()] and [stat_lineribbon()] for a better approach. These
 #' functions may be deprecated in the future.
 #' @keywords manip
-#' @examplesIf requireNamespace("brms", quietly = TRUE) && requireNamespace("modelr", quietly = TRUE)
-#' \donttest{
+#' \dontrun{
 #'
 #' library(ggplot2)
 #' library(dplyr)

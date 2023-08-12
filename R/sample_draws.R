@@ -23,8 +23,7 @@
 #' @param draw The name of the column indexing the draws; default `".draw"`.
 #' @author Matthew Kay
 #' @keywords manip
-#' @examplesIf requireNamespace("brms", quietly = TRUE) && requireNamespace("modelr", quietly = TRUE)
-#' \donttest{
+#' \dontrun{
 #'
 #' library(ggplot2)
 #' library(dplyr)

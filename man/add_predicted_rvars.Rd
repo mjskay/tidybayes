@@ -316,58 +316,6 @@ processing pipelines that start either with a data frame or a model.
 Given equal choice between the two, the spellings prefixed with \code{add_}
 are preferred.
 }
-\examples{
-\dontshow{if (requireNamespace("brms", quietly = TRUE) && requireNamespace("modelr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\donttest{
-
-library(ggplot2)
-library(dplyr)
-library(posterior)
-library(brms)
-library(modelr)
-
-theme_set(theme_light())
-
-m_mpg = brm(mpg ~ hp * cyl, data = mtcars, family = lognormal(),
-  # 1 chain / few iterations just so example runs quickly
-  # do not use in practice
-  chains = 1, iter = 500)
-
-# Look at mean predictions for some cars (epred) and compare to
-# the exponeniated mu parameter of the lognormal distribution (linpred).
-# Notice how they are NOT the same. This is because exp(mu) for a
-# lognormal distribution is equal to its median, not its mean.
-mtcars \%>\%
-  select(hp, cyl, mpg) \%>\%
-  add_epred_rvars(m_mpg) \%>\%
-  add_linpred_rvars(m_mpg, value = "mu") \%>\%
-  mutate(expmu = exp(mu), .epred - expmu)
-
-# plot intervals around conditional means (epred_rvars)
-mtcars \%>\%
-  group_by(cyl) \%>\%
-  data_grid(hp = seq_range(hp, n = 101)) \%>\%
-  add_epred_rvars(m_mpg) \%>\%
-  ggplot(aes(x = hp, color = ordered(cyl), fill = ordered(cyl))) +
-  stat_lineribbon(aes(dist = .epred), .width = c(.95, .8, .5), alpha = 1/3) +
-  geom_point(aes(y = mpg), data = mtcars) +
-  scale_color_brewer(palette = "Dark2") +
-  scale_fill_brewer(palette = "Set2")
-
-# plot posterior predictive intervals (predicted_rvars)
-mtcars \%>\%
-  group_by(cyl) \%>\%
-  data_grid(hp = seq_range(hp, n = 101)) \%>\%
-  add_predicted_rvars(m_mpg) \%>\%
-  ggplot(aes(x = hp, color = ordered(cyl), fill = ordered(cyl))) +
-  stat_lineribbon(aes(dist = .prediction), .width = c(.95, .8, .5), alpha = 1/3) +
-  geom_point(aes(y = mpg), data = mtcars) +
-  scale_color_brewer(palette = "Dark2") +
-  scale_fill_brewer(palette = "Set2")
-
-}
-\dontshow{\}) # examplesIf}
-}
 \seealso{
 \code{\link[=add_predicted_draws]{add_predicted_draws()}} for the analogous functions that use a long-data-frame-of-draws
 format instead of a data-frame-of-\code{rvar}s format. See \code{\link[=spread_rvars]{spread_rvars()}} for manipulating posteriors directly.
@@ -375,4 +323,128 @@ format instead of a data-frame-of-\code{rvar}s format. See \code{\link[=spread_r
 \author{
 Matthew Kay
 }
+\keyword{"Dark2")}
+\keyword{"Set2")}
+\keyword{"mu")}
+\keyword{#}
+\keyword{%>%}
+\keyword{(epred)}
+\keyword{(epred_rvars)}
+\keyword{(linpred).}
+\keyword{(predicted_rvars)}
+\keyword{*}
+\keyword{+}
+\keyword{-}
+\keyword{.5),}
+\keyword{.8,}
+\keyword{.epred}
+\keyword{.epred),}
+\keyword{.prediction),}
+\keyword{.width}
+\keyword{/}
+\keyword{1}
+\keyword{1,}
+\keyword{1/3)}
+\keyword{101))}
+\keyword{500)}
+\keyword{=}
+\keyword{Look}
+\keyword{NOT}
+\keyword{Notice}
+\keyword{This}
+\keyword{\dontrun{}
+\keyword{a}
+\keyword{add_epred_rvars(m_mpg)}
+\keyword{add_linpred_rvars(m_mpg,}
+\keyword{add_predicted_rvars(m_mpg)}
+\keyword{alpha}
+\keyword{and}
+\keyword{are}
+\keyword{around}
+\keyword{at}
+\keyword{because}
+\keyword{brm(mpg}
+\keyword{c(.95,}
+\keyword{cars}
+\keyword{chain}
+\keyword{chains}
+\keyword{color}
+\keyword{compare}
+\keyword{conditional}
+\keyword{cyl,}
+\keyword{data}
+\keyword{data_grid(hp}
+\keyword{distribution}
+\keyword{do}
+\keyword{equal}
+\keyword{example}
+\keyword{exp(mu)}
+\keyword{exp(mu),}
+\keyword{expmu)}
+\keyword{exponeniated}
+\keyword{family}
+\keyword{few}
+\keyword{fill}
+\keyword{for}
+\keyword{geom_point(aes(y}
+\keyword{ggplot(aes(x}
+\keyword{group_by(cyl)}
+\keyword{how}
+\keyword{hp}
+\keyword{hp,}
+\keyword{in}
+\keyword{intervals}
+\keyword{is}
+\keyword{iter}
+\keyword{iterations}
+\keyword{its}
+\keyword{just}
+\keyword{library(brms)}
+\keyword{library(dplyr)}
+\keyword{library(ggplot2)}
+\keyword{library(modelr)}
+\keyword{library(posterior)}
+\keyword{lognormal}
+\keyword{lognormal(),}
+\keyword{m_mpg}
 \keyword{manip}
+\keyword{mean}
+\keyword{mean.}
+\keyword{means}
+\keyword{median,}
+\keyword{mpg)}
+\keyword{mpg),}
+\keyword{mtcars}
+\keyword{mtcars)}
+\keyword{mtcars,}
+\keyword{mu}
+\keyword{mutate(expmu}
+\keyword{n}
+\keyword{not}
+\keyword{of}
+\keyword{ordered(cyl)))}
+\keyword{ordered(cyl),}
+\keyword{parameter}
+\keyword{plot}
+\keyword{posterior}
+\keyword{practice}
+\keyword{predictions}
+\keyword{predictive}
+\keyword{quickly}
+\keyword{runs}
+\keyword{same.}
+\keyword{scale_color_brewer(palette}
+\keyword{scale_fill_brewer(palette}
+\keyword{select(hp,}
+\keyword{seq_range(hp,}
+\keyword{so}
+\keyword{some}
+\keyword{stat_lineribbon(aes(dist}
+\keyword{the}
+\keyword{theme_set(theme_light())}
+\keyword{they}
+\keyword{to}
+\keyword{use}
+\keyword{value}
+\keyword{}}
+\keyword{~}

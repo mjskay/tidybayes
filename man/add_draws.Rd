@@ -35,41 +35,92 @@ model types (like handling ordinal responses and distributional parameters in br
 \code{add_predicted_draws(df, m)} is roughly equivalent to \code{add_draws(df, posterior_predict(m, newdata = df))}, except
 that \code{add_predicted_draws} standardizes argument names and values across packages.
 }
-\examples{
-\dontshow{if (requireNamespace("brms", quietly = TRUE) && requireNamespace("modelr", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-\donttest{
-
-library(ggplot2)
-library(dplyr)
-library(brms)
-library(modelr)
-
-theme_set(theme_light())
-
-m_mpg = brm(mpg ~ hp * cyl, data = mtcars,
-  # 1 chain / few iterations just so example runs quickly
-  # do not use in practice
-  chains = 1, iter = 500)
-
-# plot posterior predictive intervals
-mtcars \%>\%
-  group_by(cyl) \%>\%
-  data_grid(hp = seq_range(hp, n = 101)) \%>\%
-  # the line below is roughly equivalent to add_epred_draws(m_mpg), except
-  # that it does not standardize arguments across model types.
-  add_draws(posterior_epred(m_mpg, newdata = .)) \%>\%
-  ggplot(aes(x = hp, y = mpg, color = ordered(cyl))) +
-  stat_lineribbon(aes(y = .value), alpha = 0.25) +
-  geom_point(data = mtcars) +
-  scale_fill_brewer(palette = "Greys")
-
-}
-\dontshow{\}) # examplesIf}
-}
 \seealso{
 \code{\link[=add_predicted_draws]{add_predicted_draws()}}, \code{\link[=add_draws]{add_draws()}}
 }
 \author{
 Matthew Kay
 }
+\keyword{"Greys")}
+\keyword{#}
+\keyword{%>%}
+\keyword{*}
+\keyword{+}
+\keyword{.))}
+\keyword{.value),}
+\keyword{/}
+\keyword{0.25)}
+\keyword{1}
+\keyword{1,}
+\keyword{101))}
+\keyword{500)}
+\keyword{=}
+\keyword{\dontrun{}
+\keyword{across}
+\keyword{add_draws(posterior_epred(m_mpg,}
+\keyword{add_epred_draws(m_mpg),}
+\keyword{alpha}
+\keyword{arguments}
+\keyword{below}
+\keyword{brm(mpg}
+\keyword{chain}
+\keyword{chains}
+\keyword{color}
+\keyword{cyl,}
+\keyword{data}
+\keyword{data_grid(hp}
+\keyword{do}
+\keyword{does}
+\keyword{equivalent}
+\keyword{example}
+\keyword{except}
+\keyword{few}
+\keyword{geom_point(data}
+\keyword{ggplot(aes(x}
+\keyword{group_by(cyl)}
+\keyword{hp}
+\keyword{hp,}
+\keyword{in}
+\keyword{intervals}
+\keyword{is}
+\keyword{it}
+\keyword{iter}
+\keyword{iterations}
+\keyword{just}
+\keyword{library(brms)}
+\keyword{library(dplyr)}
+\keyword{library(ggplot2)}
+\keyword{library(modelr)}
+\keyword{line}
+\keyword{m_mpg}
 \keyword{manip}
+\keyword{model}
+\keyword{mpg,}
+\keyword{mtcars}
+\keyword{mtcars)}
+\keyword{mtcars,}
+\keyword{n}
+\keyword{newdata}
+\keyword{not}
+\keyword{ordered(cyl)))}
+\keyword{plot}
+\keyword{posterior}
+\keyword{practice}
+\keyword{predictive}
+\keyword{quickly}
+\keyword{roughly}
+\keyword{runs}
+\keyword{scale_fill_brewer(palette}
+\keyword{seq_range(hp,}
+\keyword{so}
+\keyword{standardize}
+\keyword{stat_lineribbon(aes(y}
+\keyword{that}
+\keyword{the}
+\keyword{theme_set(theme_light())}
+\keyword{to}
+\keyword{types.}
+\keyword{use}
+\keyword{y}
+\keyword{}}
+\keyword{~}
