@@ -1,5 +1,10 @@
 # tidybayes (development version)
 
+Buf fixes:
+
+* Support for matrix columns in `nest_rvars()` and `unnest_rvars()`. (#316)
+
+
 # tidybayes 3.0.6
 
 Deprecations:

@@ -79,10 +79,7 @@ unnest_rvars = function(data) {
     # convert from draws_df to plain data.frame to avoid
     # warning about meta-data being dropped
     class(draws_df) = "data.frame"
-    # convert from tibble to plain data.frame to fix
-    # incorrect binding in cbind() in R < 4
-    class(constants) = "data.frame"
-    cbind(constants, draws_df)
+    vctrs::vec_cbind(constants, draws_df)
   }))
 
   group_by_at(out, groups_)

@@ -24,9 +24,6 @@ test_that("nest_rvars works", {
 
   draws_df = RankCorr_s %>%
     spread_draws(b[i,..], tau[i]) %>%
-    rename(
-
-    ) %>%
     select(i,
       `b[1,1]` = b.1,
       `b[1,2]` = b.2,
@@ -85,9 +82,6 @@ test_that("missing / NA .chain and .iteration columns work", {
 
   draws_df = RankCorr_s %>%
     spread_draws(b[i,..], tau[i]) %>%
-    rename(
-
-    ) %>%
     select(i,
       `b[1,1]` = b.1,
       `b[1,2]` = b.2,
@@ -98,4 +92,29 @@ test_that("missing / NA .chain and .iteration columns work", {
 
   expect_equal(unnest_rvars(rvar_df), draws_df)
   expect_equal(nest_rvars(draws_df), group_by(rvar_df, i))
+})
+
+
+# matrix columns ----------------------------------------------------------
+
+test_that("matrix columns work", {
+  rvar_df = tibble::tibble(
+    x = 1:3,
+    m = matrix(1:9, 3, 3),
+    y = rvar(array(1:12, dim = c(4, 3)))
+  ) %>%
+    group_by(x, m)
+
+  draws_df = tibble::tibble(
+    x = rep(1:3, each = 4),
+    m = matrix(rep(1:9, each = 4), 12, 3),
+    y = 1:12,
+    .chain = 1L,
+    .iteration = rep(1:4, 3),
+    .draw = rep(1:4, 3)
+  ) %>%
+    group_by(x, m)
+
+  expect_equal(unnest_rvars(rvar_df), draws_df)
+  expect_equal(nest_rvars(draws_df), rvar_df)
 })
