@@ -53,15 +53,11 @@ in the output \code{variable} column instead converting the unevaluated
 expression to a string. You can also use \code{\link[=emmeans_comparison]{emmeans_comparison()}} to generate
 a comparison function based on contrast methods from the \code{emmeans} package.}
 
-\item{draw_indices}{Character vector of column names in \code{data} that
-should be treated as indices when making the comparison (i.e. values of
-\code{variable} within each level of \code{by} will be compared at each
-unique combination of levels of \code{draw_indices}). Columns in \code{draw_indices}
-not found in \code{data} are ignored. The default is \code{c(".chain",".iteration",".draw")},
-which are the same names used for chain/iteration/draw indices returned by
-\code{\link[=spread_draws]{spread_draws()}} or \code{\link[=gather_draws]{gather_draws()}}; thus if you are using \code{compare_levels}
-with \code{\link[=spread_draws]{spread_draws()}} or \code{\link[=gather_draws]{gather_draws()}} you generally should not need to change this
-value.}
+\item{draw_indices}{Character vector of column names that should be treated
+as indices of draws. Operations are done within combinations of these values.
+The default is \code{c(".chain", ".iteration", ".draw")}, which is the same names
+used for chain, iteration, and draw indices returned by \code{\link[=tidy_draws]{tidy_draws()}}.
+Names in \code{draw_indices} that are not found in the data are ignored.}
 
 \item{ignore_groups}{character vector of names of groups to ignore by
 default in the input grouping. This is primarily provided to make it

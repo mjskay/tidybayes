@@ -32,3 +32,21 @@ For a list of supported models, see \link{tidybayes-models}.
 Wickham, Hadley. (2014). Tidy data. \emph{Journal of Statistical Software},
 59(10), 1-23. \doi{10.18637/jss.v059.i10}.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://mjskay.github.io/tidybayes/}
+  \item \url{https://github.com/mjskay/tidybayes/}
+  \item Report bugs at \url{https://github.com/mjskay/tidybayes/issues/new}
+}
+
+}
+\author{
+\strong{Maintainer}: Matthew Kay \email{mjskay@northwestern.edu}
+
+Other contributors:
+\itemize{
+  \item Timothy Mastny \email{tim.mastny@gmail.com} [contributor]
+}
+
+}

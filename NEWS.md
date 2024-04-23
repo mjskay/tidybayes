@@ -1,6 +1,12 @@
 # tidybayes (development version)
 
-Buf fixes:
+New features:
+
+* Add support for `draw_indices` parameter in `spread_draws()` and
+  `gather_draws()`. (#323)
+
+
+Bug fixes:
 
 * Support for matrix columns in `nest_rvars()` and `unnest_rvars()`. (#316)
 

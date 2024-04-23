@@ -20,10 +20,7 @@ globalVariables(c("..dimension_values"))
 #' @param data A tidy data frame of draws, such as one output by `spread_draws` or `gather_draws`.
 #' @param ... Expressions in the form of
 #' `variable_name[dimension_1, dimension_2, ...]`. See [spread_draws()].
-#' @param draw_indices Character vector of column names in `data` that
-#' should be treated as indices of draws. The default is `c(".chain",".iteration",".draw")`,
-#' which are the same names used for chain, iteration, and draw indices returned by
-#' [spread_draws()] or [gather_draws()].
+#' @template param-draw_indices
 #' @param drop_indices Drop the columns specified by `draw_indices` from the resulting data frame. Default `FALSE`.
 #' @param variable The name of the column in `data` that contains the names of variables from the model.
 #' @param value The name of the column in `data` that contains draws from the variables.
@@ -62,6 +59,7 @@ globalVariables(c("..dimension_values"))
 #' @rdname unspread_draws
 #' @export
 unspread_draws = function(data, ..., draw_indices = c(".chain", ".iteration", ".draw"), drop_indices = FALSE) {
+  draw_indices = intersect(draw_indices, names(data))
   result =
     lapply(enquos(...), function(variable_spec) {
       unspread_draws_(data, variable_spec, draw_indices = draw_indices)

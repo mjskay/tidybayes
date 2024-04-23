@@ -12,6 +12,7 @@ gather_draws(
   sep = "[, ]",
   ndraws = NULL,
   seed = NULL,
+  draw_indices = c(".chain", ".iteration", ".draw"),
   n
 )
 
@@ -22,6 +23,7 @@ spread_draws(
   sep = "[, ]",
   ndraws = NULL,
   seed = NULL,
+  draw_indices = c(".chain", ".iteration", ".draw"),
   n
 )
 }
@@ -40,6 +42,12 @@ regular expression and number of dimensions are included in the output. Default 
 \item{ndraws}{The number of draws to return, or \code{NULL} to return all draws.}
 
 \item{seed}{A seed to use when subsampling draws (i.e. when \code{ndraws} is not \code{NULL}).}
+
+\item{draw_indices}{Character vector of column names that should be treated
+as indices of draws. Operations are done within combinations of these values.
+The default is \code{c(".chain", ".iteration", ".draw")}, which is the same names
+used for chain, iteration, and draw indices returned by \code{\link[=tidy_draws]{tidy_draws()}}.
+Names in \code{draw_indices} that are not found in the data are ignored.}
 
 \item{n}{(Deprecated). Use \code{ndraws}.}
 }

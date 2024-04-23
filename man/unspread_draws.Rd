@@ -31,10 +31,11 @@ unspread_draws(
 
 \item{value}{The name of the column in \code{data} that contains draws from the variables.}
 
-\item{draw_indices}{Character vector of column names in \code{data} that
-should be treated as indices of draws. The default is \code{c(".chain",".iteration",".draw")},
-which are the same names used for chain, iteration, and draw indices returned by
-\code{\link[=spread_draws]{spread_draws()}} or \code{\link[=gather_draws]{gather_draws()}}.}
+\item{draw_indices}{Character vector of column names that should be treated
+as indices of draws. Operations are done within combinations of these values.
+The default is \code{c(".chain", ".iteration", ".draw")}, which is the same names
+used for chain, iteration, and draw indices returned by \code{\link[=tidy_draws]{tidy_draws()}}.
+Names in \code{draw_indices} that are not found in the data are ignored.}
 
 \item{drop_indices}{Drop the columns specified by \code{draw_indices} from the resulting data frame. Default \code{FALSE}.}
 }

@@ -335,6 +335,33 @@ test_that("variable names containing regex special chars work", {
   expect_equal(spread_draws(RankCorr_t, `(Intercept)`), ref)
 })
 
+test_that("draw_indices works", {
+  df = data.frame(
+    .chain = rep(1:4, each = 4),
+    .iteration = rep(1:4, 4),
+    .draw = 1:16,
+    .warmup = rep(c(TRUE, TRUE, FALSE, FALSE), 4),
+    `x[1]` = 2:17,
+    `x[2]` = 3:18,
+    check.names = FALSE
+  )
+
+  ref = tibble(
+    i = rep(1:2, each = 16),
+    x = c(2:17, 3:18),
+    .chain = rep(1:4, each = 4, times = 2),
+    .iteration = rep(1:4, 8),
+    .draw = rep(1:16, 2),
+    .warmup = rep(c(TRUE, TRUE, FALSE, FALSE), 8)
+  ) %>%
+    group_by(i)
+
+  result = spread_draws(df, x[i], draw_indices = c(".chain", ".iteration", ".draw", ".warmup"))
+
+  expect_equivalent(result, ref)
+  expect_equal(group_vars(result), group_vars(ref))
+})
+
 
 # tests for nested syntax -------------------------------------------------
 

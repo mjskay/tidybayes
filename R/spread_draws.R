@@ -202,6 +202,7 @@ globalVariables(c(".."))
 #' @param sep Separator used to separate dimensions in variable names, as a regular expression.
 #' @template param-ndraws
 #' @template param-seed
+#' @template param-draw_indices
 #' @template param-deprecated-n
 #' @return A data frame.
 #' @author Matthew Kay
@@ -232,13 +233,29 @@ globalVariables(c(".."))
 #' @importFrom dplyr inner_join group_by_at
 #' @rdname spread_draws
 #' @export
-spread_draws = function(model, ..., regex = FALSE, sep = "[, ]", ndraws = NULL, seed = NULL, n) {
+spread_draws = function(
+  model,
+  ...,
+  regex = FALSE,
+  sep = "[, ]",
+  ndraws = NULL,
+  seed = NULL,
+  draw_indices = c(".chain", ".iteration", ".draw"),
+  n
+) {
   ndraws = .Deprecated_argument_alias(ndraws, n)
 
   draws = sample_draws_from_model_(model, ndraws, seed)
 
+  draw_indices = intersect(draw_indices, names(draws))
   tidysamples = lapply(enquos(...), function(variable_spec) {
-    spread_draws_(draws, variable_spec, regex = regex, sep = sep)
+    spread_draws_(
+      draws,
+      variable_spec,
+      regex = regex,
+      sep = sep,
+      draw_indices = draw_indices
+    )
   })
 
   #get the groups from all the samples --- when we join them together,
@@ -260,7 +277,13 @@ spread_draws = function(model, ..., regex = FALSE, sep = "[, ]", ndraws = NULL, 
 #' @importFrom dplyr mutate group_by_at
 #' @importFrom tidyr spread
 #' @importFrom rlang has_name
-spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
+spread_draws_ = function(
+  draws,
+  variable_spec,
+  regex = FALSE,
+  sep = "[, ]",
+  draw_indices = c(".chain", ".iteration", ".draw")
+) {
   #parse a variable spec in the form variable_name[dimension_name_1, dimension_name_2, ..] | wide_dimension
   spec = parse_variable_spec(variable_spec)
   variable_names = spec[[1]]
@@ -268,7 +291,7 @@ spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
   wide_dimension_name = spec[[3]]
 
   #extract the draws into a long format data frame
-  long_draws = spread_draws_long_(draws, variable_names, dimension_names, regex = regex, sep = sep)
+  long_draws = spread_draws_long_(draws, variable_names, dimension_names, regex = regex, sep = sep, draw_indices = draw_indices)
 
   #convert variable and/or dimensions back into usable data types
   #that were set on the model using recover_types
@@ -309,7 +332,14 @@ spread_draws_ = function(draws, variable_spec, regex = FALSE, sep = "[, ]") {
 ## dimension_names: a character vector of dimension names
 #' @importFrom tidyr spread separate gather
 #' @importFrom dplyr summarise_all group_by_at
-spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FALSE, sep = "[, ]") {
+spread_draws_long_ = function(
+  draws,
+  variable_names,
+  dimension_names,
+  regex = FALSE,
+  sep = "[, ]",
+  draw_indices = c(".chain", ".iteration", ".draw")
+) {
   if (!regex) {
     variable_names = escape_regex(variable_names)
   }
@@ -326,7 +356,7 @@ spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FA
     }
 
     variable_names = colnames(draws)[variable_names_index]
-    unnest_legacy(draws[, c(".chain", ".iteration", ".draw", variable_names)])
+    unnest_legacy(draws[, c(draw_indices, variable_names)])
   }
   else {
     dimension_sep_regex = sep
@@ -399,11 +429,11 @@ spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FA
       # some dimensions were requested to be nested as list columns containing arrays.
       # thus we have to ADD CHAIN INFO then UNNEST, then NEST DIMENSIONS then SPREAD
       # 2. ADD CHAIN INFO
-      nested_draws[[".chain_info"]] = list(draws[,c(".chain", ".iteration", ".draw")])
+      nested_draws[[".chain_info"]] = list(draws[, draw_indices])
       # 3. UNNEST
       long_draws = unnest_legacy(nested_draws)
       # NEST DIMENSIONS
-      long_draws = nest_dimensions_(long_draws, temp_dimension_names, nested_dimension_names)
+      long_draws = nest_dimensions_(long_draws, temp_dimension_names, nested_dimension_names, draw_indices)
       # 1. SPREAD
       long_draws = spread(long_draws, ".variable", ".value")
     } else {
@@ -411,7 +441,7 @@ spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FA
       # 1. SPREAD
       nested_draws = spread(nested_draws, ".variable", ".value")
       # 2. ADD CHAIN INFO
-      nested_draws[[".chain_info"]] = list(draws[,c(".chain", ".iteration", ".draw")])
+      nested_draws[[".chain_info"]] = list(draws[, draw_indices])
       # 3. UNNEST
       long_draws = unnest_legacy(nested_draws)
     }
@@ -429,7 +459,12 @@ spread_draws_long_ = function(draws, variable_names, dimension_names, regex = FA
 ## dimension_names: dimensions not used for nesting
 ## nested_dimension_names: dimensions to be nested
 #' @importFrom dplyr filter summarise_at
-nest_dimensions_ = function(long_draws, dimension_names, nested_dimension_names) {
+nest_dimensions_ = function(
+  long_draws,
+  dimension_names,
+  nested_dimension_names,
+  draw_indices = c(".chain", ".iteration", ".draw")
+) {
   ragged = FALSE
   value_name = ".value"
   value = as.name(value_name)
@@ -443,7 +478,7 @@ nest_dimensions_ = function(long_draws, dimension_names, nested_dimension_names)
   }
 
   long_draws = group_by_at(long_draws,
-    c(".chain", ".iteration", ".draw", ".variable", dimension_names) %>%
+    c(draw_indices, ".variable", dimension_names) %>%
       # nested dimension names must come at the end of the group list
       # (minus the last nested dimension) so that we summarise in the
       # correct order

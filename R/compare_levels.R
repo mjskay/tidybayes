@@ -88,15 +88,7 @@ comparison_types = within(list(), {
 #' in the output `variable` column instead converting the unevaluated
 #' expression to a string. You can also use [emmeans_comparison()] to generate
 #' a comparison function based on contrast methods from the `emmeans` package.
-#' @param draw_indices Character vector of column names in `data` that
-#' should be treated as indices when making the comparison (i.e. values of
-#' `variable` within each level of `by` will be compared at each
-#' unique combination of levels of `draw_indices`). Columns in `draw_indices`
-#' not found in `data` are ignored. The default is `c(".chain",".iteration",".draw")`,
-#' which are the same names used for chain/iteration/draw indices returned by
-#' [spread_draws()] or [gather_draws()]; thus if you are using `compare_levels`
-#' with [spread_draws()] or [gather_draws()] you generally should not need to change this
-#' value.
+#' @template param-draw_indices
 #' @param ignore_groups character vector of names of groups to ignore by
 #' default in the input grouping. This is primarily provided to make it
 #' easier to pipe output of [add_epred_draws()] into this function,

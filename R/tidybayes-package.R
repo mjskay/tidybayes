@@ -1,6 +1,5 @@
 #' Tidy Data and 'Geoms' for Bayesian Models
 #'
-#' @docType package
 #' @name tidybayes-package
 #' @aliases tidybayes
 #'
@@ -34,4 +33,4 @@
 #' Wickham, Hadley. (2014). Tidy data. _Journal of Statistical Software_,
 #' 59(10), 1-23. \doi{10.18637/jss.v059.i10}.
 #'
-NULL
+"_PACKAGE"

@@ -29,17 +29,20 @@ flip_aes = function(x, lookup = flip_aes_lookup) {
   UseMethod("flip_aes")
 }
 
+#' @export
 flip_aes.character = function(x, lookup = flip_aes_lookup) {
   flipped = lookup[x]
   x[!is.na(flipped)] = flipped[!is.na(flipped)]
   x
 }
 
+#' @export
 flip_aes.data.frame = function(x, lookup = flip_aes_lookup) {
   names(x) = flip_aes(names(x), lookup = lookup)
   x
 }
 
+#' @export
 flip_aes.function = function(x, lookup = flip_aes_lookup) {
   name = force(deparse(substitute(x)))
   function(...) {
