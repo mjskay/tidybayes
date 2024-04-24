@@ -547,7 +547,7 @@ p = mtcars %>%
   transition_states(.draw, 0, 1) +
   shadow_mark(future = TRUE, color = "gray50", alpha = 1/20)
 
-animate(p, nframes = ndraws, fps = 2.5, width = 432, height = 288, res = 96, dev = "png", type = "cairo")
+animate(p, nframes = ndraws, fps = 2.5, width = 432, height = 288, units = "px", res = 96, dev = "ragg_png")
 ```
 
 ```{r echo=FALSE, results='asis'}
@@ -757,7 +757,7 @@ p = mtcars_clean %>%
   scale_fill_brewer(palette = "Dark2") +
   transition_manual(.draw)
 
-animate(p, nframes = ndraws, fps = 2.5, width = 576, height = 192, res = 96, dev = "png", type = "cairo")
+animate(p, nframes = ndraws, fps = 2.5, width = 576, height = 192, units = "px", res = 96, dev = "ragg_png")
 ```
 
 ```{r echo=FALSE, results='asis'}

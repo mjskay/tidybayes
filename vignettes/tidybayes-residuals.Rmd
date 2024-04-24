@@ -381,7 +381,7 @@ p = cens_df %>%
   geom_abline() +
   transition_manual(residual_draw)
 
-animate(p, nframes = k, width = 384, height = 384, res = 96, dev = "png", type = "cairo")
+animate(p, nframes = k, width = 384, height = 384, units = "px", res = 96, dev = "ragg_png")
 ```
 
 ```{r echo=FALSE, results='asis'}
@@ -710,7 +710,7 @@ p = bin_df %>%
   geom_abline() +
   transition_manual(.residual_draw)
 
-animate(p, nframes = k, width = 384, height = 384, res = 96, dev = "png", type = "cairo")
+animate(p, nframes = k, width = 384, height = 384, units = "px", res = 96, dev = "ragg_png")
 ```
 
 ```{r echo=FALSE, results='asis'}
