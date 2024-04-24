@@ -46,16 +46,54 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: |
-            any::rcmdcheck
-            any::BH
-            any::RcppEigen
-            any::Matrix@>=1.6-2
-            emmeans=?ignore-before-r=4.3.0
-          needs: check
+      - name: Query dependencies
+        run: |
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+        shell: Rscript {0}
 
+      - name: Cache R packages
+        if: runner.os != 'Windows'
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-1-
+
+      - name: Install system dependencies
+        if: runner.os == 'Linux'
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          Rscript -e "install.packages('pak')"
+          sysreqs=$(Rscript -e "cat(pak::pkg_sysreqs(".")$install_scripts)")
+          sudo -s eval "$sysreqs"
+
+
+#      - uses: r-lib/actions/setup-r-dependencies@v2
+#        with:
+#          extra-packages: |
+#            any::rcmdcheck
+#            any::BH
+#            any::RcppEigen
+#            any::Matrix@>=1.6-2
+#            emmeans=?ignore-before-r=4.3.0
+#          needs: check
+#
+#     - name: Install dependencies
+#       run: |
+#         remotes::install_deps(dependencies = TRUE)
+#         remotes::install_cran("rcmdcheck")
+#         remotes::install_cran("pak")
+#       shell: Rscript {0}
+
+#     - name: Install system dependencies
+#       run: |
+#         pak::sysreqs_fix_installed()
+#         remotes::install_cran("rcmdcheck")
+#         remotes::install_cran("pak")
+#       shell: Rscript {0}
+#
 #      - name: Install system dependencies
 #        if: runner.os == 'Linux'
 #        env:
