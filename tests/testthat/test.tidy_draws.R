@@ -140,6 +140,7 @@ test_that("tidy_draws works with rjags", {
 })
 
 test_that("tidy_draws works with jagsUI", {
+  skip_if_not_installed("rjags")
   skip_if_not_installed("jagsUI")
 
   # this test model is kind of dumb because jagsUI doesn't seem to allow you to not input data

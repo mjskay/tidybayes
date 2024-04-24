@@ -20,15 +20,15 @@ jobs:
       matrix:
         config:
 # running Windows and Mac with --no-examples to avoid spurious Stan crashes in examples
-          - {os: windows-latest, r: 'release', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--no-examples"'}
-          - {os: macOS-latest, r: 'release', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--no-examples"'}
-          - {os: ubuntu-latest, r: 'devel', suffix: '', not_cran: 'true', check_options: 'NULL', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+          - {os: windows-latest, r: 'release', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes", "--no-examples"'}
+          - {os: macOS-latest, r: 'release', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes", "--no-examples"'}
+          - {os: ubuntu-latest, r: 'devel', suffix: '', not_cran: 'true', check_options: 'NULL', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest", http-user-agent: 'release'}
           - {os: ubuntu-latest, r: 'release', suffix: '', not_cran: 'true', check_options: 'NULL', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-latest, r: 'release', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-latest, r: 'oldrel', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-latest, r: '4.1', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-latest, r: '4.0', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-latest, r: '3.6', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+          - {os: ubuntu-latest, r: 'release', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+          - {os: ubuntu-latest, r: 'oldrel', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+          - {os: ubuntu-latest, r: '4.1', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+          - {os: ubuntu-latest, r: '4.0', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+          - {os: ubuntu-latest, r: '3.6', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -36,14 +36,15 @@ jobs:
       _R_CHECK_FORCE_SUGGESTS_: false
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-pandoc@v2
 
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
-      - uses: r-lib/actions/setup-pandoc@v2
 
       - name: Query dependencies
         run: |
@@ -64,13 +65,9 @@ jobs:
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          Rscript -e "install.packages('pak')"
+          sysreqs=$(Rscript -e "cat(tryCatch(pak::pkg_sysreqs('.', dependencies = TRUE), error = function(e) pak::pkg_sysreqs('.'))[['install_scripts']])")
           sudo -s eval "$sysreqs"
-          sudo apt-get install jags cargo libudunits2-dev libgdal-dev
-# cargo: for gifski
-# libudunits2-dev   for units (transformr)
-# libgdal-dev       for sf (transformr)
 
       - name: Install dependencies
         run: |

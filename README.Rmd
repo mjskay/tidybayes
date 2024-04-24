@@ -371,14 +371,6 @@ bind_rows(linear_results, bayes_results) %>%
 
 Shrinkage towards the overall mean is visible in the Bayesian results.
 
-Compatibility with `broom::tidy` also gives compatibility with `dotwhisker::dwplot`:
-
-```{r dwplot, warning = FALSE}
-bind_rows(linear_results, bayes_results) %>%
-  rename(term = condition) %>%
-  dotwhisker::dwplot() 
-```
-
 ### Posterior prediction and complex custom plots
 
 The tidy data format returned by `spread_draws` also facilitates additional computation on variables followed by the construction of more complex custom plots. For example, we can generate posterior predictions easily, and use the `.width` argument (passed internally to `median_qi`) to generate any number of intervals from the posterior predictions, then plot them alongside point summaries and the data:
@@ -502,7 +494,7 @@ p = mtcars %>%
   transition_states(.draw, 0, 1) +
   shadow_mark(past = TRUE, future = TRUE, alpha = 1/20, color = "gray50")
 
-animate(p, nframes = ndraws, fps = 2.5, width = 672, height = 480, res = 100, dev = "png", type = "cairo")
+animate(p, nframes = ndraws, fps = 2.5, width = 672, height = 480, units = "px", res = 100, dev = "ragg_png")
 ```
 
 See `vignette("tidybayes")` for a variety of additional examples and more explanation of how it works.

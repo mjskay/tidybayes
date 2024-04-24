@@ -318,21 +318,21 @@ m %>%
     ## # Groups:   condition [1]
     ##    condition condition_mean .chain .iteration .draw response_sd
     ##    <fct>              <dbl>  <int>      <int> <int>       <dbl>
-    ##  1 A                 0.234       1          1     1       0.640
-    ##  2 A                 0.156       1          2     2       0.455
-    ##  3 A                 0.0598      1          3     3       0.713
-    ##  4 A                 0.426       1          4     4       0.681
-    ##  5 A                 0.0164      1          5     5       0.626
-    ##  6 A                 0.131       1          6     6       0.501
-    ##  7 A                 0.397       1          7     7       0.537
-    ##  8 A                 0.325       1          8     8       0.543
-    ##  9 A                 0.363       1          9     9       0.504
-    ## 10 A                 0.152       1         10    10       0.620
-    ## 11 A                 0.263       1         11    11       0.473
-    ## 12 A                 0.328       1         12    12       0.463
-    ## 13 A                -0.114       1         13    13       0.705
-    ## 14 A                 0.486       1         14    14       0.564
-    ## 15 A                 0.0881      1         15    15       0.492
+    ##  1 A                0.00544      1          1     1       0.576
+    ##  2 A               -0.0836       1          2     2       0.576
+    ##  3 A                0.0324       1          3     3       0.551
+    ##  4 A                0.113        1          4     4       0.576
+    ##  5 A                0.157        1          5     5       0.583
+    ##  6 A                0.218        1          6     6       0.621
+    ##  7 A                0.276        1          7     7       0.641
+    ##  8 A                0.0130       1          8     8       0.637
+    ##  9 A                0.152        1          9     9       0.609
+    ## 10 A                0.192        1         10    10       0.521
+    ## 11 A                0.154        1         11    11       0.558
+    ## 12 A                0.298        1         12    12       0.552
+    ## 13 A                0.349        1         13    13       0.531
+    ## 14 A                0.471        1         14    14       0.566
+    ## 15 A                0.313        1         15    15       0.568
 
 The condition numbers are automatically turned back into text (“A”, “B”,
 “C”, …) and split into their own column. A long-format data frame is
@@ -428,11 +428,11 @@ m %>%
     ## # A tibble: 5 × 7
     ##   condition condition_mean .lower .upper .width .point .interval
     ##   <fct>              <dbl>  <dbl>  <dbl>  <dbl> <chr>  <chr>    
-    ## 1 A                  0.195 -0.141  0.540   0.95 median qi       
-    ## 2 B                  0.999  0.647  1.34    0.95 median qi       
+    ## 1 A                  0.199 -0.142  0.549   0.95 median qi       
+    ## 2 B                  1.01   0.651  1.34    0.95 median qi       
     ## 3 C                  1.84   1.48   2.19    0.95 median qi       
-    ## 4 D                  1.02   0.663  1.35    0.95 median qi       
-    ## 5 E                 -0.886 -1.23  -0.528   0.95 median qi
+    ## 4 D                  1.02   0.681  1.37    0.95 median qi       
+    ## 5 E                 -0.890 -1.23  -0.529   0.95 median qi
 
 ### Comparison to other models via compatibility with `broom`
 
@@ -481,11 +481,11 @@ bayes_results
     ## # A tibble: 5 × 8
     ##   condition estimate conf.low conf.high .width .point .interval model
     ##   <fct>        <dbl>    <dbl>     <dbl>  <dbl> <chr>  <chr>     <chr>
-    ## 1 A            0.195   -0.141     0.540   0.95 median qi        Bayes
-    ## 2 B            0.999    0.647     1.34    0.95 median qi        Bayes
+    ## 1 A            0.199   -0.142     0.549   0.95 median qi        Bayes
+    ## 2 B            1.01     0.651     1.34    0.95 median qi        Bayes
     ## 3 C            1.84     1.48      2.19    0.95 median qi        Bayes
-    ## 4 D            1.02     0.663     1.35    0.95 median qi        Bayes
-    ## 5 E           -0.886   -1.23     -0.528   0.95 median qi        Bayes
+    ## 4 D            1.02     0.681     1.37    0.95 median qi        Bayes
+    ## 5 E           -0.890   -1.23     -0.529   0.95 median qi        Bayes
 
 This makes it easy to bind the two results together and plot them:
 
@@ -498,17 +498,6 @@ bind_rows(linear_results, bayes_results) %>%
 ![](man/figures/README/broom_bind-1.png)<!-- -->
 
 Shrinkage towards the overall mean is visible in the Bayesian results.
-
-Compatibility with `broom::tidy` also gives compatibility with
-`dotwhisker::dwplot`:
-
-``` r
-bind_rows(linear_results, bayes_results) %>%
-  rename(term = condition) %>%
-  dotwhisker::dwplot() 
-```
-
-![](man/figures/README/dwplot-1.png)<!-- -->
 
 ### Posterior prediction and complex custom plots
 
@@ -667,7 +656,7 @@ p = mtcars %>%
   transition_states(.draw, 0, 1) +
   shadow_mark(past = TRUE, future = TRUE, alpha = 1/20, color = "gray50")
 
-animate(p, nframes = ndraws, fps = 2.5, width = 672, height = 480, res = 100, dev = "png", type = "cairo")
+animate(p, nframes = ndraws, fps = 2.5, width = 672, height = 480, units = "px", res = 100, dev = "ragg_png")
 ```
 
 ![](man/figures/README/hops-1.gif)<!-- -->
@@ -689,6 +678,6 @@ have encountered, but I would love to make it cover more!
 
 ## Citing `tidybayes`
 
-Matthew Kay (2023). *tidybayes: Tidy Data and Geoms for Bayesian
-Models*. R package version 3.0.4, <https://mjskay.github.io/tidybayes/>.
+Matthew Kay (2024). *tidybayes: Tidy Data and Geoms for Bayesian
+Models*. R package version 3.0.6, <https://mjskay.github.io/tidybayes/>.
 DOI: [10.5281/zenodo.1308151](https://doi.org/10.5281/zenodo.1308151).

@@ -38,10 +38,11 @@ if (requireNamespace("pkgdown", quietly = TRUE) && pkgdown::in_pkgdown()) {
   large_height = 5.25
 }
 
+eval_chunks = if (isTRUE(exists("params"))) params$EVAL else FALSE
 knitr::opts_chunk$set(
   fig.width = small_width,
   fig.height = small_height,
-  eval = if (isTRUE(exists("params"))) params$EVAL else FALSE
+  eval = eval_chunks
 )
 if (capabilities("cairo") && Sys.info()[['sysname']] != "Darwin") {
   knitr::opts_chunk$set(
@@ -104,7 +105,6 @@ library(ggdist)
 library(tidybayes)
 library(ggplot2)
 library(cowplot)
-library(emmeans)
 library(broom)
 library(rstan)
 library(rstanarm)
@@ -643,9 +643,9 @@ m_linear = lm(response ~ condition, data = ABC)
 
 Combining `emmeans::emmeans` with `broom::tidy`, we can generate tidy-format summaries of conditional means from the above model:
 
-```{r}
+```{r, eval = eval_chunks && requireNamespace("emmeans", quietly = TRUE)}
 linear_results = m_linear %>% 
-  emmeans(~ condition) %>% 
+  emmeans::emmeans(~ condition) %>%
   tidy(conf.int = TRUE) %>%
   mutate(model = "OLS")
 
@@ -733,19 +733,19 @@ m_rst = stan_glm(response ~ condition, data = ABC)
 
 We can use `emmeans::emmeans()` to get conditional means with uncertainty:
 
-```{r}
+```{r, eval = eval_chunks && requireNamespace("emmeans", quietly = TRUE)}
 m_rst %>%
-  emmeans( ~ condition) %>%
+  emmeans::emmeans( ~ condition) %>%
   gather_emmeans_draws() %>%
   median_qi()
 ```
 
 Or `emmeans::emmeans()` with `emmeans::contrast()` to do all pairwise comparisons:
 
-```{r}
+```{r, eval = eval_chunks && requireNamespace("emmeans", quietly = TRUE)}
 m_rst %>%
-  emmeans( ~ condition) %>%
-  contrast(method = "pairwise") %>%
+  emmeans::emmeans( ~ condition) %>%
+  emmeans::contrast(method = "pairwise") %>%
   gather_emmeans_draws() %>%
   median_qi()
 ```
@@ -754,10 +754,10 @@ See the documentation for `emmeans::pairwise.emmc()` for a list of the numerous 
 
 As before, we can plot the results instead of using a table:
 
-```{r fig.width = tiny_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height, eval = eval_chunks && requireNamespace("emmeans", quietly = TRUE)}
 m_rst %>%
-  emmeans( ~ condition) %>%
-  contrast(method = "pairwise") %>%
+  emmeans::emmeans( ~ condition) %>%
+  emmeans::contrast(method = "pairwise") %>%
   gather_emmeans_draws() %>%
   ggplot(aes(x = .value, y = contrast)) +
   stat_halfeye()
@@ -765,9 +765,9 @@ m_rst %>%
 
 `gather_emmeans_draws()` also supports `emm_list` objects, which contain estimates from different reference grids (see `emmeans::ref_grid()` for more information on reference grids). An additional column with the default name of `.grid` is added to indicate the reference grid for each row in the output:
 
-```{r}
+```{r, eval = eval_chunks && requireNamespace("emmeans", quietly = TRUE)}
 m_rst %>%
-  emmeans(pairwise ~ condition) %>%
+  emmeans::emmeans(pairwise ~ condition) %>%
   gather_emmeans_draws() %>%
   median_qi()
 ```
@@ -789,8 +789,8 @@ Now we can use `emmeans()` and `gather_emmeans_draws()` exactly as we did with `
 
 ```r
 m_glmm %>%
-  emmeans( ~ condition, data = ABC) %>%
-  contrast(method = "pairwise") %>%
+  emmeans::emmeans( ~ condition, data = ABC) %>%
+  emmeans::contrast(method = "pairwise") %>%
   gather_emmeans_draws() %>%
   ggplot(aes(x = .value, y = contrast)) +
   stat_halfeye()
