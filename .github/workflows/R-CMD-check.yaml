@@ -69,6 +69,11 @@ jobs:
           sysreqs=$(Rscript -e "cat(pak::pkg_sysreqs('.')[['install_scripts']])")
           sudo -s eval "$sysreqs"
 
+      - name: Install dependencies
+        run: |
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("rcmdcheck")
+        shell: Rscript {0}
 
 #      - uses: r-lib/actions/setup-r-dependencies@v2
 #        with:
