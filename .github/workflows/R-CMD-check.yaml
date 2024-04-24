@@ -52,7 +52,7 @@ jobs:
             any::rcmdcheck
             any::BH
             any::RcppEigen
-            Matrix
+            any::Matrix@>=1.6-2
             emmeans=?ignore-before-r=4.3.0
           needs: check
 
