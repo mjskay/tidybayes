@@ -51,8 +51,8 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             any::BH
-            emmeans=?ignore-before-r=4.1.0
-            estimability=?ignore-before-r=4.3.0
+            any::RcppEigen
+            emmeans=?ignore-before-r=4.3.0
           needs: check
 
 #      - name: Install system dependencies
