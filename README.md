@@ -236,7 +236,7 @@ ABC %>%
   ylab("condition")
 ```
 
-![](man/figures/README/make_data-1.png)<!-- -->
+<img src="man/figures/README/make_data-1.png" width="672" />
 
 A hierarchical model of this data might fit an overall mean across the
 conditions (`overall_mean`), the standard deviation of the condition
@@ -363,7 +363,7 @@ m %>%
   stat_eye()
 ```
 
-![](man/figures/README/stat_eye-1.png)<!-- -->
+<img src="man/figures/README/stat_eye-1.png" width="672" />
 
 Or one can employ the similar “half-eye” plot:
 
@@ -374,7 +374,7 @@ m %>%
   stat_halfeye()
 ```
 
-![](man/figures/README/stat_halfeye-1.png)<!-- -->
+<img src="man/figures/README/stat_halfeye-1.png" width="672" />
 
 A variety of other stats and geoms for visualizing priors and posteriors
 are available; see `vignette("slabinterval", package = "ggdist")` for an
@@ -407,7 +407,7 @@ m %>%
   stat_dots(quantiles = 100) 
 ```
 
-![](man/figures/README/quantile_dotplots-1.png)<!-- -->
+<img src="man/figures/README/quantile_dotplots-1.png" width="672" />
 
 The idea is to get away from thinking about the posterior as indicating
 one canonical point or interval, but instead to represent it as (say)
@@ -495,7 +495,7 @@ bind_rows(linear_results, bayes_results) %>%
   geom_pointinterval(position = position_dodge(width = .3))
 ```
 
-![](man/figures/README/broom_bind-1.png)<!-- -->
+<img src="man/figures/README/broom_bind-1.png" width="672" />
 
 Shrinkage towards the overall mean is visible in the Bayesian results.
 
@@ -525,7 +525,7 @@ m %>%
   geom_point(aes(x = response), data = ABC)
 ```
 
-![](man/figures/README/pp_intervals-1.png)<!-- -->
+<img src="man/figures/README/pp_intervals-1.png" width="672" />
 
 This plot shows 66% and 95% quantile credible intervals of posterior
 median for each condition (point + black line); 95%, 80%, and 50%
@@ -566,7 +566,7 @@ mtcars %>%
   scale_fill_brewer()
 ```
 
-![](man/figures/README/pp_bands-1.png)<!-- -->
+<img src="man/figures/README/pp_bands-1.png" width="672" />
 
 `ggdist::stat_lineribbon(aes(y = .prediction), .width = c(.99, .95, .8, .5))`
 is one of several shortcut geoms that simplify common combinations of
@@ -614,7 +614,7 @@ mtcars %>%
   facet_wrap(~ am)                                  # facet by am
 ```
 
-![](man/figures/README/pp_bands_facet-1.png)<!-- -->
+<img src="man/figures/README/pp_bands_facet-1.png" width="672" />
 
 Or, if you would like overplotted posterior fit lines, you can instead
 use `tidybayes::add_epred_draws()` to get draws from conditional means
@@ -634,7 +634,7 @@ mtcars %>%
   facet_wrap(~ am)
 ```
 
-![](man/figures/README/spaghetti-1.png)<!-- -->
+<img src="man/figures/README/spaghetti-1.png" width="672" />
 
 Animated hypothetical outcome plots (HOPs) can also be easily
 constructed by using `gganimate`:
@@ -679,5 +679,5 @@ have encountered, but I would love to make it cover more!
 ## Citing `tidybayes`
 
 Matthew Kay (2024). *tidybayes: Tidy Data and Geoms for Bayesian
-Models*. R package version 3.0.6, <https://mjskay.github.io/tidybayes/>.
+Models*. R package version 3.0.7, <https://mjskay.github.io/tidybayes/>.
 DOI: [10.5281/zenodo.1308151](https://doi.org/10.5281/zenodo.1308151).

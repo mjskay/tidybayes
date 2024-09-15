@@ -1,123 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/404.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/articles/tidy-brms.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/articles/tidy-posterior.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/articles/tidy-rstanarm.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/articles/tidybayes-residuals.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/articles/tidybayes.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/authors.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/index.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/news/index.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/add_draws.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/add_predicted_draws.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/add_predicted_rvars.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/combine_chains.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/compare_levels.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/compose_data.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/data_list.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/density_bins.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/emmeans_comparison.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/gather_emmeans_draws.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/gather_pairs.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/gather_variables.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/get_variables.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/n_prefix.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/nest_rvars.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/predict_curve.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/recover_types.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/sample_draws.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/spread_draws.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/spread_rvars.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/summarise_draws.grouped_df.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/tidy_draws.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/tidybayes-deprecated.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/tidybayes-models.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/tidybayes-package.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/unspread_draws.html</loc>
-  </url>
-  <url>
-    <loc>http://mjskay.github.io/tidybayes/reference/x_at_y.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://mjskay.github.io/tidybayes/404.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/articles/index.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/articles/tidy-brms.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/articles/tidy-posterior.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/articles/tidy-rstanarm.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/articles/tidybayes-residuals.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/articles/tidybayes.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/authors.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/index.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/LICENSE-text.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/news/index.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/add_draws.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/add_predicted_draws.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/add_predicted_rvars.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/combine_chains.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/compare_levels.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/compose_data.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/data_list.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/density_bins.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/emmeans_comparison.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/gather_emmeans_draws.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/gather_pairs.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/gather_variables.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/get_variables.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/index.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/nest_rvars.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/n_prefix.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/predict_curve.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/recover_types.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/reexports.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/sample_draws.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/spread_draws.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/spread_rvars.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/summarise_draws.grouped_df.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/tidybayes-deprecated.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/tidybayes-models.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/tidybayes-package.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/tidy_draws.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/unspread_draws.html</loc></url>
+<url><loc>https://mjskay.github.io/tidybayes/reference/x_at_y.html</loc></url>
 </urlset>
+
