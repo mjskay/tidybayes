@@ -25,10 +25,10 @@ jobs:
           - {os: ubuntu-latest, r: 'devel', suffix: '', not_cran: 'true', check_options: 'NULL', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest", http-user-agent: 'release'}
           - {os: ubuntu-latest, r: 'release', suffix: '', not_cran: 'true', check_options: 'NULL', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
           - {os: ubuntu-latest, r: 'release', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-latest, r: 'oldrel', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-latest, r: '4.1', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-latest, r: '4.0', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
-          - {os: ubuntu-latest, r: '3.6', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+          - {os: ubuntu-latest, r: 'oldrel-1', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+          - {os: ubuntu-latest, r: 'oldrel-2', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+          - {os: ubuntu-latest, r: 'oldrel-3', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+          - {os: ubuntu-latest, r: 'oldrel-4', suffix: 'quick', not_cran: 'false', check_options: '"--no-build-vignettes", "--ignore-vignettes"', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
