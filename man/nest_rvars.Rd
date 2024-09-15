@@ -17,17 +17,17 @@ format; i.e. it should contain a \code{.draw} column (and optionally \code{.chai
 and \code{.iteration} columns) indexing draws. It should be a grouped by any
 columns that are not intended to be nested.
 \item For \code{unnest_rvars()}, the data frame should have at least one column that
-is an \code{\link{rvar}}; all \code{rvar} columns will be unnested.
+is an \code{\link[posterior:rvar]{rvar}}; all \code{rvar} columns will be unnested.
 }}
 }
 \value{
 For \code{nest_rvars()}, returns a data frame without \code{.chain}, \code{.iteration}, and
-\code{.draw} columns, where all non-grouped columns have been converted to \code{\link{rvar}}s.
+\code{.draw} columns, where all non-grouped columns have been converted to \code{\link[posterior:rvar]{rvar}}s.
 
 For \code{unnest_rvars()}, returns a data frame with \code{.chain}, \code{.iteration}, and
-\code{.draw} columns added, where every \code{\link{rvar}} column in the input has been
-converted to (one or more) columns containing draws from those \code{\link{rvar}}s
-in long format. The result is grouped by all non-\code{\link{rvar}} columns in the
+\code{.draw} columns added, where every \code{\link[posterior:rvar]{rvar}} column in the input has been
+converted to (one or more) columns containing draws from those \code{\link[posterior:rvar]{rvar}}s
+in long format. The result is grouped by all non-\code{\link[posterior:rvar]{rvar}} columns in the
 input; this ensures that \code{nest_rvars(unnest_rvars(x))} returns \code{x}.
 }
 \description{

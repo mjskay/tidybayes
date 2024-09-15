@@ -59,7 +59,7 @@ from a data frame that is not needed in the model).
 \item all other types are dropped (and a warning given)
 }
 
-As in functions like \code{\link[=mutate]{mutate()}}, each expression is evaluated in an
+As in functions like \code{\link[dplyr:mutate]{dplyr::mutate()}}, each expression is evaluated in an
 environment containing the data list built up so far.
 
 For example, this means that if the first argument to \code{compose_data}

@@ -16,7 +16,7 @@
 #' The function generates a predictive curve given posterior draws
 #' (`data`), an expression (`formula`), and a set of variables
 #' defining the curve (`...`). For every group in `data` (if it is a
-#' grouped data frame---see [group_by()]; otherwise the entire data
+#' grouped data frame---see [group_by()][dplyr::group_by]; otherwise the entire data
 #' frame is taken at once), and for each combination of values in `...`,
 #' the right-hand side of `formula` is evaluated and its results passed to
 #' the `summary` function. This allows a predictive curve to be generated,
@@ -33,10 +33,10 @@
 #' convenient argument for adjusting the number of bins per point on the
 #' curve.
 #'
-#' @param data A [data.frame], [tbl_df] or
-#' [grouped_df] representing posteriors from a Bayesian model as
+#' @param data A [`data.frame`], [`tibble`][tibble::tibble], or
+#' [`grouped_df`][dplyr::grouped_df] representing posteriors from a Bayesian model as
 #' might be obtained through [spread_draws()]. Grouped data frames
-#' as returned by [group_by()] are supported.
+#' as returned by [group_by()][dplyr::group_by] are supported.
 #' @param formula A formula specifying the prediction curve. The left-hand side
 #' of the formula should be a name representing the name of the column that
 #' will hold the predicted response in the returned data frame. The right-hand

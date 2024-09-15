@@ -16,10 +16,10 @@ predict_curve_density(
 )
 }
 \arguments{
-\item{data}{A \link{data.frame}, \link{tbl_df} or
-\link{grouped_df} representing posteriors from a Bayesian model as
+\item{data}{A \code{\link{data.frame}}, \code{\link[tibble:tibble]{tibble}}, or
+\code{\link[dplyr:grouped_df]{grouped_df}} representing posteriors from a Bayesian model as
 might be obtained through \code{\link[=spread_draws]{spread_draws()}}. Grouped data frames
-as returned by \code{\link[=group_by]{group_by()}} are supported.}
+as returned by \link[dplyr:group_by]{group_by()} are supported.}
 
 \item{formula}{A formula specifying the prediction curve. The left-hand side
 of the formula should be a name representing the name of the column that
@@ -70,7 +70,7 @@ with \code{\link[=point_interval]{point_interval()}} or \code{\link[dplyr:do]{dp
 The function generates a predictive curve given posterior draws
 (\code{data}), an expression (\code{formula}), and a set of variables
 defining the curve (\code{...}). For every group in \code{data} (if it is a
-grouped data frame---see \code{\link[=group_by]{group_by()}}; otherwise the entire data
+grouped data frame---see \link[dplyr:group_by]{group_by()}; otherwise the entire data
 frame is taken at once), and for each combination of values in \code{...},
 the right-hand side of \code{formula} is evaluated and its results passed to
 the \code{summary} function. This allows a predictive curve to be generated,

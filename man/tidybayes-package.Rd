@@ -37,7 +37,7 @@ Useful links:
 \itemize{
   \item \url{https://mjskay.github.io/tidybayes/}
   \item \url{https://github.com/mjskay/tidybayes/}
-  \item Report bugs at \url{https://github.com/mjskay/tidybayes/issues/new}
+  \item Report bugs at \url{https://github.com/mjskay/tidybayes/issues}
 }
 
 }

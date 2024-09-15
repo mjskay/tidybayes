@@ -239,10 +239,10 @@ See \code{vignette("tidy-posterior")} for examples of dealing with output ordina
 }
 \value{
 A data frame (actually, a \link[tibble:tibble]{tibble}) equal to the input \code{newdata} with
-additional columns added containing \code{\link{rvar}}s representing the requested predictions or fits.
+additional columns added containing \code{\link[posterior:rvar]{rvar}}s representing the requested predictions or fits.
 }
 \description{
-Given a data frame and a model, adds \code{\link{rvar}}s of draws from the linear/link-level predictor,
+Given a data frame and a model, adds \code{\link[posterior:rvar]{rvar}}s of draws from the linear/link-level predictor,
 the expectation of the posterior predictive, or the posterior predictive to
 the data frame.
 }
@@ -273,17 +273,17 @@ We fit this model to some observed data, \eqn{y_\textrm{obs}}{y_obs}, and predic
 supplied in the data frame \code{newdata}, the functions for posterior draws are
 defined as follows:
 \itemize{
-\item \code{add_predicted_rvars()} adds \code{\link{rvar}}s containing draws from the \strong{posterior predictive distribution},
+\item \code{add_predicted_rvars()} adds \code{\link[posterior:rvar]{rvar}}s containing draws from the \strong{posterior predictive distribution},
 \eqn{p(y_\textrm{new} | x_\textrm{new}, y_\textrm{obs})}{p(y_new | x_new, y_obs)},
 to the data.
 It corresponds to \code{\link[rstanarm:posterior_predict.stanreg]{rstanarm::posterior_predict()}} or \code{\link[brms:posterior_predict.brmsfit]{brms::posterior_predict()}}.
-\item \code{add_epred_rvars()} adds \code{\link{rvar}}s containing draws from the \strong{expectation of the posterior predictive
+\item \code{add_epred_rvars()} adds \code{\link[posterior:rvar]{rvar}}s containing draws from the \strong{expectation of the posterior predictive
 distribution}, aka the conditional expectation,
 \eqn{E(y_\textrm{new} | x_\textrm{new}, y_\textrm{obs})}{E(y_new | x_new, y_obs)},
 to the data.
 It corresponds to \code{\link[rstanarm:posterior_linpred.stanreg]{rstanarm::posterior_epred()}} or \code{\link[brms:posterior_epred.brmsfit]{brms::posterior_epred()}}.
 Not all models support this function.
-\item \code{add_linpred_rvars()} adds \code{\link{rvar}}s containing draws from the \strong{posterior linear predictors} to the data.
+\item \code{add_linpred_rvars()} adds \code{\link[posterior:rvar]{rvar}}s containing draws from the \strong{posterior linear predictors} to the data.
 It corresponds to \code{\link[rstanarm:posterior_linpred.stanreg]{rstanarm::posterior_linpred()}} or \code{\link[brms:posterior_linpred.brmsfit]{brms::posterior_linpred()}}.
 Depending on the model type and additional parameters passed, this may be:
 \itemize{
@@ -368,7 +368,7 @@ mtcars \%>\%
 }
 \seealso{
 \code{\link[=add_predicted_draws]{add_predicted_draws()}} for the analogous functions that use a long-data-frame-of-draws
-format instead of a data-frame-of-\code{rvar}s format. See \code{\link[=spread_rvars]{spread_rvars()}} for manipulating posteriors directly.
+format instead of a data-frame-of-\code{\link[posterior:rvar]{rvar}}s format. See \code{\link[=spread_rvars]{spread_rvars()}} for manipulating posteriors directly.
 }
 \author{
 Matthew Kay

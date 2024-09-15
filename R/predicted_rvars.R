@@ -8,12 +8,12 @@
 
 #' Add `rvar`s for the linear predictor, posterior expectation, posterior predictive, or residuals of a model to a data frame
 #'
-#' Given a data frame and a model, adds [`rvar`]s of draws from the linear/link-level predictor,
+#' Given a data frame and a model, adds [`rvar`][posterior::rvar]s of draws from the linear/link-level predictor,
 #' the expectation of the posterior predictive, or the posterior predictive to
 #' the data frame.
 #'
 #' @templateVar pred_type rvars
-#' @templateVar draws [`rvar`]s containing draws
+#' @templateVar draws [`rvar`][posterior::rvar]s containing draws
 #' @template details-pred
 #' @template param-pred-newdata
 #' @template param-pred-object
@@ -32,10 +32,10 @@
 #' correspond to the same row in `newdata`.
 #' See `vignette("tidy-posterior")` for examples of dealing with output ordinal models.
 #' @return A data frame (actually, a [tibble][tibble::tibble]) equal to the input `newdata` with
-#' additional columns added containing [`rvar`]s representing the requested predictions or fits.
+#' additional columns added containing [`rvar`][posterior::rvar]s representing the requested predictions or fits.
 #' @author Matthew Kay
 #' @seealso [add_predicted_draws()] for the analogous functions that use a long-data-frame-of-draws
-#' format instead of a data-frame-of-`rvar`s format. See [spread_rvars()] for manipulating posteriors directly.
+#' format instead of a data-frame-of-[`rvar`][posterior::rvar]s format. See [spread_rvars()] for manipulating posteriors directly.
 #' @keywords manip
 #' @examples
 #' \dontrun{

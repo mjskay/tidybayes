@@ -531,7 +531,7 @@ nest_dimensions_ = function(
     }
 
     if (reindex) {
-      is_character_index = is.character(indices)
+      is_character_index = is.character(indices) || is.factor(indices)
 
       #create a template list that we can use to re-index the values
       template_vector = long_draws[[value_name]][[1]][[1]]

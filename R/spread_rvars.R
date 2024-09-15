@@ -18,7 +18,7 @@
 #' they will have multiple columns with names like `"b[1,1]"`, `"b[2,1]"`, etc.
 #'
 #' `spread_rvars` and `gather_rvars` provide a straightforward
-#' syntax to translate these columns back into properly-indexed [`rvar`]s in two different
+#' syntax to translate these columns back into properly-indexed [`rvar`][posterior::rvar]s in two different
 #' tidy data frame formats, optionally recovering dimension types (e.g. factor levels) as it does so.
 #'
 #' `spread_rvars` will spread names of variables in the model across the data frame as column names,
@@ -31,8 +31,8 @@
 #' \itemize{
 #'    \item column `"i"`: value in `1:5`
 #'    \item column `"v"`: value in `1:10`
-#'    \item column `"a"`: [rvar] containing draws from `"a[i]"`
-#'    \item column `"b"`: [rvar] containing draws from `"b[i,v]"`
+#'    \item column `"a"`: [`rvar`][posterior::rvar] containing draws from `"a[i]"`
+#'    \item column `"b"`: [`rvar`][posterior::rvar] containing draws from `"b[i,v]"`
 #'  }
 #'
 #' `gather_rvars(model, a[i], b[i,v])` on the same model would return a data frame with:
@@ -41,7 +41,7 @@
 #'    \item column `"v"`: value in `1:10`, or `NA`
 #'      on rows where `".variable"` is `"a"`.
 #'    \item column `".variable"`: value in `c("a", "b")`.
-#'    \item column `".value"`: [rvar] containing draws from `"a[i]"` (when `".variable"` is `"a"`)
+#'    \item column `".value"`: [`rvar`][posterior::rvar] containing draws from `"a[i]"` (when `".variable"` is `"a"`)
 #'      or `"b[i,v]"` (when `".variable"` is `"b"`)
 #'  }
 #'
@@ -100,7 +100,7 @@
 #' Besides being more compact, the `c()`-style syntax is currently also slightly
 #' faster (though that may change).
 #'
-#' Dimensions can be left nested in the resulting [rvar] objects by leaving their names
+#' Dimensions can be left nested in the resulting [`rvar`][posterior::rvar] objects by leaving their names
 #' blank; e.g. `spread_rvars(model, b[i,])` will place the first index (`i`) into
 #' rows of the data frame but leave the second index nested in the `b` column
 #' (see *Examples* below).

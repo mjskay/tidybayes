@@ -35,7 +35,7 @@ JAGS or Stan in R will not reflect this indexing structure, instead
 they will have multiple columns with names like \code{"b[1,1]"}, \code{"b[2,1]"}, etc.
 
 \code{spread_rvars} and \code{gather_rvars} provide a straightforward
-syntax to translate these columns back into properly-indexed \code{\link{rvar}}s in two different
+syntax to translate these columns back into properly-indexed \code{\link[posterior:rvar]{rvar}}s in two different
 tidy data frame formats, optionally recovering dimension types (e.g. factor levels) as it does so.
 
 \code{spread_rvars} will spread names of variables in the model across the data frame as column names,
@@ -48,8 +48,8 @@ For example, \code{spread_rvars(model, a[i], b[i,v])} might return a data frame 
 \itemize{
 \item column \code{"i"}: value in \code{1:5}
 \item column \code{"v"}: value in \code{1:10}
-\item column \code{"a"}: \link{rvar} containing draws from \code{"a[i]"}
-\item column \code{"b"}: \link{rvar} containing draws from \code{"b[i,v]"}
+\item column \code{"a"}: \code{\link[posterior:rvar]{rvar}} containing draws from \code{"a[i]"}
+\item column \code{"b"}: \code{\link[posterior:rvar]{rvar}} containing draws from \code{"b[i,v]"}
 }
 
 \code{gather_rvars(model, a[i], b[i,v])} on the same model would return a data frame with:
@@ -58,7 +58,7 @@ For example, \code{spread_rvars(model, a[i], b[i,v])} might return a data frame 
 \item column \code{"v"}: value in \code{1:10}, or \code{NA}
 on rows where \code{".variable"} is \code{"a"}.
 \item column \code{".variable"}: value in \code{c("a", "b")}.
-\item column \code{".value"}: \link{rvar} containing draws from \code{"a[i]"} (when \code{".variable"} is \code{"a"})
+\item column \code{".value"}: \code{\link[posterior:rvar]{rvar}} containing draws from \code{"a[i]"} (when \code{".variable"} is \code{"a"})
 or \code{"b[i,v]"} (when \code{".variable"} is \code{"b"})
 }
 
@@ -117,7 +117,7 @@ Each of which is roughly equivalent to this:
 Besides being more compact, the \code{c()}-style syntax is currently also slightly
 faster (though that may change).
 
-Dimensions can be left nested in the resulting \link{rvar} objects by leaving their names
+Dimensions can be left nested in the resulting \code{\link[posterior:rvar]{rvar}} objects by leaving their names
 blank; e.g. \code{spread_rvars(model, b[i,])} will place the first index (\code{i}) into
 rows of the data frame but leave the second index nested in the \code{b} column
 (see \emph{Examples} below).

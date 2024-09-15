@@ -64,10 +64,10 @@ Suggests:
     transformr
 License: GPL (>= 3)
 Language: en-US
-BugReports: https://github.com/mjskay/tidybayes/issues/new
+BugReports: https://github.com/mjskay/tidybayes/issues
 URL: https://mjskay.github.io/tidybayes/, https://github.com/mjskay/tidybayes/
 VignetteBuilder: knitr
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 LazyData: true
 Encoding: UTF-8
 Collate:
