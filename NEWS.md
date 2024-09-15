@@ -1,4 +1,4 @@
-# tidybayes (development version)
+# tidybayes 3.0.7
 
 New features:
 
@@ -9,6 +9,8 @@ New features:
 Bug fixes:
 
 * Support for matrix columns in `nest_rvars()` and `unnest_rvars()`. (#316)
+* Fix some named dimensions being converted to numeric indices in 
+  `spread_draws()` on R >= 4.5.
 
 
 # tidybayes 3.0.6
