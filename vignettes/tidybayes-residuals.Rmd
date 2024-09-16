@@ -6,49 +6,13 @@ output:
   rmarkdown::html_vignette:
     toc: true
     df_print: kable
-params:
-  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 vignette: >
   %\VignetteIndexEntry{Extracting and visualizing tidy residuals from Bayesian models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
   
-<style type="text/css">
-.kable-table table {
-  margin-left: 0;
-}
-img {
-  border: none;
-}
-</style>
-
-```{r chunk_options, include=FALSE}
-if (requireNamespace("pkgdown", quietly = TRUE) && pkgdown::in_pkgdown()) {
-  tiny_width = small_width = med_width = 6.75
-  tiny_height = small_height = med_height = 4.5
-  large_width = 8
-  large_height = 5.25
-} else {
-  tiny_width = 5.5
-  tiny_height = 3 + 2/3
-  small_width = med_width = 6.75
-  small_height = med_height = 4.5
-  large_width = 8
-  large_height = 5.25
-}
-
-knitr::opts_chunk$set(
-  fig.width = small_width,
-  fig.height = small_height,
-  eval = if (isTRUE(exists("params"))) params$EVAL else FALSE
-)
-if (capabilities("cairo") && Sys.info()[['sysname']] != "Darwin") {
-  knitr::opts_chunk$set(
-    dev.args = list(png = list(type = "cairo"))
-  )
-}
-dir.create("models", showWarnings = FALSE)
+```{r, child="children/chunk_options.txt"}
 ```
 
 ## Introduction
@@ -565,7 +529,7 @@ m_o = brm(
 
 Now, let's check out those residuals:
 
-```{r, error = TRUE}
+```{r, error = TRUE, purl = FALSE}
 cens_df_o %>%
   add_residual_draws(m_o) %>%
   median_qi(.residual) %>%
