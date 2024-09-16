@@ -26,7 +26,8 @@ eval_chunks = identical(Sys.getenv("NOT_CRAN"), "true")
 knitr::opts_chunk$set(
   fig.width = small_width,
   fig.height = small_height,
-  eval = eval_chunks
+  eval = eval_chunks,
+  purl = eval_chunks
 )
 if (capabilities("cairo") && Sys.info()[['sysname']] != "Darwin") {
   knitr::opts_chunk$set(

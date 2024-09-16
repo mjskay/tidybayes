@@ -1,12 +1,14 @@
 # tidybayes (development version)
 
+* Ensure vignette code run through `knitr::purl()` can be executed. (#328)
+
+
 # tidybayes 3.0.7
 
 New features:
 
 * Add support for `draw_indices` parameter in `spread_draws()` and
   `gather_draws()`. (#323)
-
 
 Bug fixes:
 

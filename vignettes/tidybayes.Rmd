@@ -133,7 +133,48 @@ Shunting data from a data frame into a format usable in samplers like JAGS or St
 
 A hierarchical model of our example data might fit an overall mean across the conditions (`overall_mean`), the standard deviation of the condition means (`condition_mean_sd`), the mean within each condition (`condition_mean[condition]`) and the standard deviation of the responses given a condition mean (`response_sd`):
 
-```{stan ABC_stan_model, output.var = "ABC_stan", results = "hide"}
+```{r ABC_stan_model_R, include = FALSE}
+# a stupid workaround for the fact that knitr::purl() will not generate an
+# R script that can be executed from top to bottom if a vignette contains a stan
+# code block (i.e. the very next code block), and some R CMD CHECK configurations
+# unreasonably expect that it can. (see https://stat.ethz.ch/pipermail/r-devel/2014-May/069113.html)
+
+# so for now we'll just do this in R code behind the scenes, even though the best
+# solution would be that people don't run R CMD CHECK with those configurations 
+# (most configurations on CRAN have this problem except macos on R 4.3
+# for some reason, which as of 9/16/2024 appears to be configured differently
+# from other platforms). See https://github.com/mjskay/tidybayes/issues/328
+ABC_stan = stan_model(model_code = '
+  data {
+    int<lower=1> n;
+    int<lower=1> n_condition;
+    int<lower=1, upper=n_condition> condition[n];
+    real response[n];
+  }
+  parameters {
+    real overall_mean;
+    vector[n_condition] condition_zoffset;
+    real<lower=0> response_sd;
+    real<lower=0> condition_mean_sd;
+  }
+  transformed parameters {
+    vector[n_condition] condition_mean;
+    condition_mean = overall_mean + condition_zoffset * condition_mean_sd;
+  }
+  model {
+    response_sd ~ cauchy(0, 1);         // => half-cauchy(0, 1)
+    condition_mean_sd ~ cauchy(0, 1);   // => half-cauchy(0, 1)
+    overall_mean ~ normal(0, 5);
+    condition_zoffset ~ normal(0, 1);   // => condition_mean ~ normal(overall_mean, condition_mean_sd)
+    for (i in 1:n) {
+      response[i] ~ normal(condition_mean[condition[i]], response_sd);
+    }
+  }
+')
+```
+
+
+```{stan ABC_stan_model, output.var = "ABC_stan", results = "hide", eval = FALSE}
 data {
   int<lower=1> n;
   int<lower=1> n_condition;
@@ -629,7 +670,7 @@ bayes_results
 
 Here, `to_broom_names()` will convert `.lower` and `.upper` into `conf.low` and `conf.high` so the names of the columns we need to make the comparison (`condition`, `estimate`, `conf.low`, and `conf.high`) all line up easily. This makes it simple to combine the two tidy data frames together using `bind_rows`, and plot them:
 
-```{r fig.width = tiny_width, fig.height = tiny_height}
+```{r fig.width = tiny_width, fig.height = tiny_height, eval = eval_chunks && requireNamespace("emmeans", quietly = TRUE)}
 bind_rows(linear_results, bayes_results) %>%
   mutate(condition = fct_rev(condition)) %>%
   ggplot(aes(y = condition, x = estimate, xmin = conf.low, xmax = conf.high, color = model)) +
