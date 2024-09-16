@@ -11,6 +11,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
   
+```{r models_dir, include = FALSE}
+# must be created from inside the vignette dir, not the children subdir
+dir.create("models", showWarnings = FALSE)
+```
+
 ```{r, child="children/chunk_options.txt"}
 ```
 

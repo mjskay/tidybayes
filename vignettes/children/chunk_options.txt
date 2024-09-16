@@ -34,5 +34,4 @@ if (capabilities("cairo") && Sys.info()[['sysname']] != "Darwin") {
     dev.args = list(png = list(type = "cairo"))
   )
 }
-dir.create("models", showWarnings = FALSE)
 ```
