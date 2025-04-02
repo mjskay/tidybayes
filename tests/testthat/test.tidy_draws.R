@@ -48,6 +48,13 @@ test_that("tidy_draws works with rstanarm", {
   expect_equal(tidy_draws(m_ranef), draws_tidy)
 })
 
+test_that("tidy_draws works with rstanarm models with one variable", {
+  skip_if_not_installed("rstanarm")
+  
+  m_one_var = readRDS(test_path("../models/models.rstanarm.m_one_var.rds"))
+  expect_contains(colnames(tidy_draws(m_one_var)), "(Intercept)")
+})
+
 
 # rstan -------------------------------------------------------------------
 test_that("tidy_draws works with rstan", {

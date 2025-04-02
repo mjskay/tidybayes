@@ -186,7 +186,7 @@ rstanarm.m_cyl = stan_glmer(mpg ~ (1|cyl), data = mtcars_tbl,
 )
 saveRDS(strip_rstanarm_model(rstanarm.m_cyl), "tests/models/models.rstanarm.m_cyl.rds", compress = "xz")
 
-#rstanarm model with random intercept
+# rstanarm model with random intercept
 set.seed(48431)
 rstanarm.m_ranef = stan_glmer(
   y ~ x + (1|group),
@@ -196,6 +196,16 @@ rstanarm.m_ranef = stan_glmer(
 )
 saveRDS(strip_rstanarm_model(rstanarm.m_ranef), "tests/models/models.rstanarm.m_ranef.rds", compress = "xz")
 
+# rstanarm model with one variable
+set.seed(48431)
+rstanarm.m_one_var <- stan_glm(cbind(hits, misses) ~ 1,
+                               data = data.frame(
+                                 hits = c(3L, 3L, 1L, 2L, 4L, 3L, 5L, 3L, 5L, 2L, 4L, 4L, 5L, 2L, 5L, 4L, 6L, 5L, 5L, 4L),
+                                 misses = c(15L, 10L, 15L, 8L, 7L, 13L, 15L, 8L, 15L, 10L, 6L, 10L, 9L, 17L, 10L, 15L, 10L, 13L, 9L, 10L)
+                               ), family = binomial(),
+                               warmup = 150, iter = 200, chains = 2, seed = 1, save_warmup = FALSE
+)
+saveRDS(strip_rstanarm_model(rstanarm.m_one_var), "tests/models/models.rstanarm.m_one_var.rds", compress = "xz")
 
 # Stan models -----------------------------------------------------------------
 set.seed(94302)
