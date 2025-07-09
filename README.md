@@ -188,7 +188,7 @@ install.packages("tidybayes")
 Alternatively, you can install the latest development version from
 GitHub with these R commands:
 
-``` r
+```r
 install.packages("devtools")
 devtools::install_github("mjskay/tidybayes")
 ```
@@ -200,7 +200,7 @@ however, tidybayes supports many other model types, such as JAGS, brm,
 rstanarm, and (theoretically) any model type supported by
 `coda::as.mcmc.list`.
 
-``` r
+```r
 library(magrittr)
 library(dplyr)
 library(ggplot2)
@@ -244,7 +244,8 @@ means (`condition_mean_sd`), the mean within each condition
 (`condition_mean[condition]`) and the standard deviation of the
 responses given a condition mean (`response_sd`):
 
-``` stan
+```r
+ABC_stan_text <- " 
 data {
   int<lower=1> n;
   int<lower=1> n_condition;
@@ -270,6 +271,8 @@ model {
     response[i] ~ normal(condition_mean[condition[i]], response_sd);
   }
 }
+"
+
 ```
 
 ### Composing data for input to model: `compose_data`
@@ -286,8 +289,10 @@ frame and automatically generates a list of the following elements:
 - `response`: a vector of observations
 
 So we can skip right to modeling:
-
-``` r
+```
+ABC_stan <- stan_model(model_code=ABC_stan_text)
+```
+```r
 m = sampling(ABC_stan, data = compose_data(ABC), control = list(adapt_delta = 0.99))
 ```
 
@@ -297,7 +302,7 @@ We decorate the fitted model using `tidybayes::recover_types()`, which
 will ensure that numeric indices (like `condition`) are back-translated
 back into factors when we extract data:
 
-``` r
+```r
 m %<>% recover_types(ABC)
 ```
 
@@ -308,7 +313,7 @@ symbolic specification of Stan variables using the same syntax you would
 to index columns in Stan. For example, we can extract the condition
 means and the residual standard deviation:
 
-``` r
+```r
 m %>%
   spread_draws(condition_mean[condition], response_sd) %>%
   head(15)  # just show the first few rows
