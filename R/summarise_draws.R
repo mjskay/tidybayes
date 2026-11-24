@@ -7,6 +7,10 @@
 #' @export
 posterior::summarise_draws
 
+#' @importFrom posterior summarize_draws
+#' @export
+posterior::summarize_draws
+
 #' Summaries of draws in `grouped_df` objects
 #'
 #' An implementation of `posterior::summarise_draws()` for grouped data frames
