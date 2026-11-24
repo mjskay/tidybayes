@@ -20,3 +20,7 @@ test_that("summarise_draws.grouped_df works", {
 
   expect_equal(d %>% spread_draws(theta[i]) %>% summarise_draws(), ref)
 })
+
+test_that("summarize_draws is exported as an alias", {
+  expect_identical(tidybayes::summarize_draws, tidybayes::summarise_draws)
+})
